@@ -1,0 +1,3147 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.4.22)  22 APR 2022 04:46
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**\nonstopmode\nofiles\PassOptionsToPackage{active,tightpage,auctex}{preview}\A
+tBeginDocument{\ifx\ifPreview\undefined\RequirePackage[displaymath,floats,graph
+ics,textmath,sections,footnotes]{preview}[2004/11/05]\fi} \input \detokenize{ 2
+.tex }
+(2.tex (/home/appleade/.miktex/texmfs/install/tex/latex/ctex/ctexart.cls
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/config/ctexbackend.cfg
+File: ctexbackend.cfg 2021/12/12 v2.5.8 Backend configuration file (CTEX)
+)
+(/usr/local/share/miktex-texmf/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-02-21 L3 programming layer (loader) 
+
+(/usr/local/share/miktex-texmf/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count185
+\l__pdf_internal_box=\box50
+))
+Document Class: ctexart 2021/12/12 v2.5.8 Chinese adapter for class article (CT
+EX)
+(/usr/local/share/miktex-texmf/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2022-01-12 L3 Experimental document command parser
+)
+(/usr/local/share/miktex-texmf/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/ctexhook.sty
+Package: ctexhook 2021/12/12 v2.5.8 Document and package hooks (CTEX)
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/ctexpatch.sty
+Package: ctexpatch 2021/12/12 v2.5.8 Patching commands (CTEX)
+)
+(/usr/local/share/miktex-texmf/tex/latex/base/fix-cm.sty
+Package: fix-cm 2020/11/24 v1.1t fixes to LaTeX
+
+(/usr/local/share/miktex-texmf/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding TS1 on input line 47.
+))
+\l__ctex_tmp_int=\count186
+\l__ctex_tmp_box=\box51
+\l__ctex_tmp_dim=\dimen138
+\g__ctex_section_depth_int=\count187
+\g__ctex_font_size_int=\count188
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/config/ctexopts.cfg
+File: ctexopts.cfg 2021/12/12 v2.5.8 Option configuration file (CTEX)
+)
+
+Package ctex Warning: UTF8 will be used as the default encoding.
+
+(/usr/local/share/miktex-texmf/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/local/share/miktex-texmf/tex/latex/base/size10.clo
+File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count189
+\c@section=\count190
+\c@subsection=\count191
+\c@subsubsection=\count192
+\c@paragraph=\count193
+\c@subparagraph=\count194
+\c@figure=\count195
+\c@table=\count196
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen139
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/engine/ctex-engine-pdftex
+.def
+File: ctex-engine-pdftex.def 2021/12/12 v2.5.8 (pdf)LaTeX adapter (CTEX)
+ (/home/appleade/.miktex/texmfs/install/tex/latex/cjk/CJKutf8.sty
+Package: CJKutf8 2021/10/16 4.8.5
+
+(/usr/local/share/miktex-texmf/tex/generic/iftex/ifpdf.sty
+Package: ifpdf 2019/10/25 v3.4 ifpdf legacy package. Use iftex instead.
+
+(/usr/local/share/miktex-texmf/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+(/usr/local/share/miktex-texmf/tex/latex/base/inputenc.sty
+Package: inputenc 2021/02/14 v1.3d Input encoding file
+\inpenc@prehook=\toks16
+\inpenc@posthook=\toks17
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/CJK.sty
+Package: CJK 2021/10/16 4.8.5
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/mule/MULEenc.sty
+Package: MULEenc 2021/10/16 4.8.5
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/CJK.enc
+File: CJK.enc 2021/10/16 4.8.5
+Now handling font encoding C00 ...
+... no UTF-8 mapping file for font encoding C00
+Now handling font encoding C05 ...
+... no UTF-8 mapping file for font encoding C05
+Now handling font encoding C09 ...
+... no UTF-8 mapping file for font encoding C09
+Now handling font encoding C10 ...
+... no UTF-8 mapping file for font encoding C10
+Now handling font encoding C20 ...
+... no UTF-8 mapping file for font encoding C20
+Now handling font encoding C19 ...
+... no UTF-8 mapping file for font encoding C19
+Now handling font encoding C40 ...
+... no UTF-8 mapping file for font encoding C40
+Now handling font encoding C42 ...
+... no UTF-8 mapping file for font encoding C42
+Now handling font encoding C43 ...
+... no UTF-8 mapping file for font encoding C43
+Now handling font encoding C50 ...
+... no UTF-8 mapping file for font encoding C50
+Now handling font encoding C52 ...
+... no UTF-8 mapping file for font encoding C52
+Now handling font encoding C49 ...
+... no UTF-8 mapping file for font encoding C49
+Now handling font encoding C60 ...
+... no UTF-8 mapping file for font encoding C60
+Now handling font encoding C61 ...
+... no UTF-8 mapping file for font encoding C61
+Now handling font encoding C63 ...
+... no UTF-8 mapping file for font encoding C63
+Now handling font encoding C64 ...
+... no UTF-8 mapping file for font encoding C64
+Now handling font encoding C65 ...
+... no UTF-8 mapping file for font encoding C65
+Now handling font encoding C70 ...
+... no UTF-8 mapping file for font encoding C70
+Now handling font encoding C31 ...
+... no UTF-8 mapping file for font encoding C31
+Now handling font encoding C32 ...
+... no UTF-8 mapping file for font encoding C32
+Now handling font encoding C33 ...
+... no UTF-8 mapping file for font encoding C33
+Now handling font encoding C34 ...
+... no UTF-8 mapping file for font encoding C34
+Now handling font encoding C35 ...
+... no UTF-8 mapping file for font encoding C35
+Now handling font encoding C36 ...
+... no UTF-8 mapping file for font encoding C36
+Now handling font encoding C37 ...
+... no UTF-8 mapping file for font encoding C37
+Now handling font encoding C80 ...
+... no UTF-8 mapping file for font encoding C80
+Now handling font encoding C81 ...
+... no UTF-8 mapping file for font encoding C81
+Now handling font encoding C01 ...
+... no UTF-8 mapping file for font encoding C01
+Now handling font encoding C11 ...
+... no UTF-8 mapping file for font encoding C11
+Now handling font encoding C21 ...
+... no UTF-8 mapping file for font encoding C21
+Now handling font encoding C41 ...
+... no UTF-8 mapping file for font encoding C41
+Now handling font encoding C62 ...
+... no UTF-8 mapping file for font encoding C62
+)
+\CJK@indent=\box52
+)
+(/usr/local/share/miktex-texmf/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+))
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjkpunct/CJKpunct.sty
+Package: CJKpunct 2016/05/14 4.8.4
+\CJKpunct@cnta=\count197
+\CJKpunct@cntb=\count198
+\CJKpunct@cntc=\count199
+\CJKpunct@cntd=\count266
+\CJKpunct@cnte=\count267
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2026 (decimal 8230)
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjkpunct/CJKpunct.spa))
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/CJKspace.sty
+Package: CJKspace 2021/10/16 3.8.0
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/ctexspa.def
+File: ctexspa.def 2021/12/12 v2.5.8 Space info for CJKpunct (CTEX)
+)
+\ccwd=\dimen140
+\l__ctex_ccglue_skip=\skip49
+)
+\l__ctex_ziju_dim=\dimen141
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/zhnumber/zhnumber.sty
+Package: zhnumber 2020/05/01 v2.8 Typesetting numbers with Chinese glyphs
+\l__zhnum_scale_int=\count268
+\l__zhnum_byte_min_int=\count269
+\l__zhnum_byte_max_int=\count270
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/zhnumber/zhnumber-utf8.cfg
+File: zhnumber-utf8.cfg 2020/05/01 v2.8 Chinese numerals with UTF8 encoding
+))
+\l__ctex_heading_skip=\skip50
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/scheme/ctex-scheme-chines
+e-article.def
+File: ctex-scheme-chinese-article.def 2021/12/12 v2.5.8 Chinese scheme for arti
+cle (CTEX)
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/config/ctex-name-utf8.cfg
+File: ctex-name-utf8.cfg 2021/12/12 v2.5.8 Caption with encoding UTF-8 (CTEX)
+)) (/home/appleade/.miktex/texmfs/install/tex/latex/ctex/ctex-c5size.clo
+File: ctex-c5size.clo 2021/12/12 v2.5.8 c5size option (CTEX)
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/ctex/fontset/ctex-fontset-fand
+ol.def
+File: ctex-fontset-fandol.def 2021/12/12 v2.5.8 Fandol fonts definition (CTEX)
+
+
+/home/appleade/.miktex/texmfs/install/tex/latex/ctex/fontset/ctex-fontset-fando
+l.def:103: Critical Package ctex Error: CTeX fontset `fandol' is unavailable in
+ current
+(ctex)                         mode.
+
+Type <return> to continue.
+ ...                                              
+                                                  
+l.103   }
+         
+
+LaTeX does not know anything more about this error, sorry.
+
+Try typing <return> to proceed.
+If that doesn't work, type X <return> to quit.
+
+Reading the current file 'ctex-fontset-fandol' will stop.
+
+
+)) (/home/appleade/.miktex/texmfs/install/tex/latex/ctex/config/ctex.cfg
+File: ctex.cfg 2021/12/12 v2.5.8 Configuration file (CTEX)
+)
+(/usr/local/share/miktex-texmf/tex/latex/tools/bm.sty
+Package: bm 2021/04/25 v1.2e Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup4
+\symboldletters=\mathgroup5
+\symboldsymbols=\mathgroup6
+Package bm Info: No bold for \OMX/cmex/m/n, using \pmb.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 149.
+)
+(/usr/local/share/miktex-texmf/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2021/10/15 v2.17l AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/share/miktex-texmf/tex/latex/amsmath/amstext.sty
+Package: amstext 2021/08/26 v2.01 AMS text
+
+(/usr/local/share/miktex-texmf/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks18
+\ex@=\dimen142
+))
+(/usr/local/share/miktex-texmf/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+LaTeX Info: Redefining \boldsymbol on input line 28.
+\pmbraise@=\dimen143
+)
+(/usr/local/share/miktex-texmf/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2021/08/26 v2.02 operator names
+)
+\inf@bad=\count271
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count272
+\leftroot@=\count273
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count274
+\DOTSCASE@=\count275
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+\big@size=\dimen144
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count276
+\c@MaxMatrixCols=\count277
+\dotsspace@=\muskip16
+\c@parentequation=\count278
+\dspbrk@lvl=\count279
+\tag@help=\toks19
+\row@=\count280
+\column@=\count281
+\maxfields@=\count282
+\andhelp@=\toks20
+\eqnshift@=\dimen145
+\alignsep@=\dimen146
+\tagshift@=\dimen147
+\tagwidth@=\dimen148
+\totwidth@=\dimen149
+\lineht@=\dimen150
+\@envbody=\toks21
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks22
+LaTeX Info: Redefining \[ on input line 2938.
+LaTeX Info: Redefining \] on input line 2939.
+)
+(/usr/local/share/miktex-texmf/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/share/miktex-texmf/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup7
+\symAMSb=\mathgroup8
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/home/appleade/.miktex/texmfs/install/tex/latex/amscls/amsthm.sty
+Package: amsthm 2020/05/29 v2.20.6
+\thm@style=\toks23
+\thm@bodyfont=\toks24
+\thm@headfont=\toks25
+\thm@notefont=\toks26
+\thm@headpunct=\toks27
+\thm@preskip=\skip54
+\thm@postskip=\skip55
+\thm@headsep=\skip56
+\dth@everypar=\toks28
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/share/miktex-texmf/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks29
+)
+(/usr/local/share/miktex-texmf/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+)
+\Gm@cnth=\count283
+\Gm@cntv=\count284
+\c@Gm@tempcnt=\count285
+\Gm@bindingoffset=\dimen151
+\Gm@wd@mp=\dimen152
+\Gm@odd@mp=\dimen153
+\Gm@even@mp=\dimen154
+\Gm@layoutwidth=\dimen155
+\Gm@layoutheight=\dimen156
+\Gm@layouthoffset=\dimen157
+\Gm@layoutvoffset=\dimen158
+\Gm@dimlist=\toks30
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/geometry/geometry.cfg))
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/UTF8/UTF8.bdg
+File: UTF8.bdg 2021/10/16 4.8.5
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/UTF8/UTF8.enc
+File: UTF8.enc 2021/10/16 4.8.5
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/cjk/UTF8/UTF8.chr
+File: UTF8.chr 2021/10/16 4.8.5
+) (2.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C00/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C05/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C09/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C10/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C20/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C19/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C40/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C42/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C43/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C50/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C52/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C49/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C60/mj/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C61/mj/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C63/mj/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C64/mj/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C65/mj/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C70/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C31/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C32/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C33/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C34/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C35/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C36/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C37/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C80/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C81/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C01/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C11/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C21/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C41/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for C62/song/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/home/appleade/.miktex/texmfs/install/tex/latex/preview/preview.sty
+Package: preview 2017/04/24 13.1 (AUCTeX/preview-latex)
+
+(/usr/local/share/miktex-texmf/tex/latex/luatex85/luatex85.sty
+Package: luatex85 2016/06/15 v1.4 pdftex aliases for luatex
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/preview/prtightpage.def
+\PreviewBorder=\dimen159
+)
+(/home/appleade/.miktex/texmfs/install/tex/latex/preview/prauctex.def
+No auxiliary output files.
+
+
+\hbadness=\count286
+\hfuzz=\dimen160
+) (/home/appleade/.miktex/texmfs/install/tex/latex/preview/prfootnotes.def)
+\pr@snippet=\count287
+\pr@box=\box55
+\pr@output=\toks31
+
+Preview: Fontsize 10.53937pt
+Preview: PDFoutput 1
+)
+2.tex:10: Preview: Snippet 1 started.
+<-><->
+      
+l.10 \paragraph
+               {(B1)}
+Not a real error.
+
+Preview: Tightpage -32891 -32891 32891 32891
+2.tex:10: Preview: Snippet 1 ended.(518031+172677x1579984).
+<-><->
+      
+l.10 \paragraph{(B1)}
+                     
+Not a real error.
+
+[1{/home/appleade/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map}
+
+]
+2.tex:11: Preview: Snippet 2 started.
+<-><->
+      
+l.11 \subparagraph
+                  {(i)}
+Not a real error.
+
+2.tex:11: Preview: Snippet 2 ended.(518031+172677x838437).
+<-><->
+      
+l.11 \subparagraph{(i)}
+                       
+Not a real error.
+
+[2
+
+]
+LaTeX Font Info:    Trying to load font information for C70+rm on input line 13
+.
+ (/home/appleade/.miktex/texmfs/install/tex/latex/ctex/fd/c70rm.fd
+File: c70rm.fd 2021/12/12 v2.5.8 Chinese font definition (CTEX)
+)
+2.tex:13: Preview: Snippet 3 started.
+<-><->
+      
+l.13   取$
+           m=\inf\{a|P(X\leq a)\geq \frac{1}{2}\}$。断言：$m$即为中�...
+
+Not a real error.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 13.
+
+(/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 13.
+
+
+(/usr/local/share/miktex-texmf/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+2.tex:13: Preview: Snippet 3 ended.(567593+238184x7943952).
+<-><->
+      
+l.13   取$m=\inf\{a|P(X\leq a)\geq \frac{1}{2}\}$
+                                                  。断言：$m$即为中�...
+
+Not a real error.
+
+[3]
+Package CJKpunct Info: punctuation spaces for family 'rm' do not exist. Use fam
+ily 'def' instead. on input line 13.
+
+2.tex:13: Preview: Snippet 4 started.
+<-><->
+      
+l.13 ...P(X\leq a)\geq \frac{1}{2}\}$。断言：$
+                                                  m$即为中位数。
+Not a real error.
+
+2.tex:13: Preview: Snippet 4 ended.(297388+0x606451).
+<-><->
+      
+l.13 ...X\leq a)\geq \frac{1}{2}\}$。断言：$m$
+                                                  即为中位数。
+Not a real error.
+
+[4]
+2.tex:15: Preview: Snippet 5 started.
+<-><->
+      
+l.15   \item 一方面，$
+                          \forall b<m, P(X\leq b)<\frac{1}{2}$。故$P(X< m)...
+
+Not a real error.
+
+2.tex:15: Preview: Snippet 5 ended.(567593+238184x6774377).
+<-><->
+      
+l.15 ...��，$\forall b<m, P(X\leq b)<\frac{1}{2}$
+                                                  。故$P(X< m)=\lim_{b\to ...
+
+Not a real error.
+
+[5]
+2.tex:15: Preview: Snippet 6 started.
+<-><->
+      
+l.15 ...forall b<m, P(X\leq b)<\frac{1}{2}$。故$
+                                                  P(X< m)=\lim_{b\to m^{-}}P...
+
+Not a real error.
+
+2.tex:15: Preview: Snippet 6 ended.(567593+238184x22109366).
+<-><->
+      
+l.15 ...arrow P(X\geq m)=1-P(X<m)\geq \frac{1}{2}$
+                                                  
+Not a real error.
+
+[6]
+2.tex:16: Preview: Snippet 7 started.
+<-><->
+      
+l.16   \item 另一方面，$
+                             \forall a>m, P(X\leq a)\geq\frac{1}{2}$，故$P...
+
+Not a real error.
+
+2.tex:16: Preview: Snippet 7 ended.(567593+238184x6911723).
+<-><->
+      
+l.16 ...��$\forall a>m, P(X\leq a)\geq\frac{1}{2}$
+                                                  ，故$P(X\leq m)=\lim_{a\...
+
+Not a real error.
+
+[7]
+2.tex:16: Preview: Snippet 8 started.
+<-><->
+      
+l.16 ...all a>m, P(X\leq a)\geq\frac{1}{2}$，故$
+                                                  P(X\leq m)=\lim_{a\to m^{+...
+
+Not a real error.
+
+2.tex:16: Preview: Snippet 8 ended.(567593+238184x11228430).
+<-><->
+      
+l.16 ...lim_{a\to m^{+}}P(X\leq a)\geq\frac{1}{2}$
+                                                  
+Not a real error.
+
+[8]
+2.tex:20: Preview: Snippet 9 started.
+<-><->
+      
+l.20 \subparagraph
+                  {(ii)}
+Not a real error.
+
+2.tex:20: Preview: Snippet 9 ended.(518031+172677x1059078).
+<-><->
+      
+l.20 \subparagraph{(ii)}
+                        
+Not a real error.
+
+[9
+
+]
+2.tex:21: Preview: Snippet 10 started.
+<-><->
+      
+l.21 WLOG，设中位数$
+                         m=0$，否则取$\tilde X=X-m$。
+Not a real error.
+
+2.tex:21: Preview: Snippet 10 ended.(445122+0x1872745).
+<-><->
+      
+l.21 WLOG，设中位数$m=0$
+                             ，否则取$\tilde X=X-m$。
+Not a real error.
+
+[10]
+2.tex:21: Preview: Snippet 11 started.
+<-><->
+      
+l.21 WLOG，设中位数$m=0$，否则取$
+                                          \tilde X=X-m$。
+Not a real error.
+
+2.tex:21: Preview: Snippet 11 ended.(635890+57559x3624451).
+<-><->
+      
+l.21 ...��中位数$m=0$，否则取$\tilde X=X-m$
+                                                  。
+Not a real error.
+
+[11]
+2.tex:23: Preview: Snippet 12 started.
+<-><->
+      
+l.23 考察$
+            c\geq 0$的情形，$c\leq 0$的情形是类似的。注意到
+Not a real error.
+
+2.tex:23: Preview: Snippet 12 ended.(445122+93916x1565202).
+<-><->
+      
+l.23 考察$c\geq 0$
+                    的情形，$c\leq 0$的情形是类似的。注意到
+Not a real error.
+
+[12]
+2.tex:23: Preview: Snippet 13 started.
+<-><->
+      
+l.23 考察$c\geq 0$的情形，$
+                                 c\leq 0$的情形是类似的。注意到
+Not a real error.
+
+2.tex:23: Preview: Snippet 13 ended.(445122+93916x1565202).
+<-><->
+      
+l.23 考察$c\geq 0$的情形，$c\leq 0$
+                                         的情形是类似的。注意到
+Not a real error.
+
+[13]
+2.tex:24: Preview: Snippet 14 started.
+<-><->
+      
+l.24 \[
+       |X-c|-|X|=
+Not a real error.
+
+2.tex:30: Preview: Snippet 14 ended.(3879009+0x22041134).
+<-><->
+      
+l.30 \]
+       
+Not a real error.
+
+[14]
+2.tex:33: Preview: Snippet 15 started.
+<-><->
+      
+l.33 \[
+       (|X-c|-|X|)\bm{1}_{X\leq 0}=c\bm{1}_{X\leq 0}\]
+Not a real error.
+
+2.tex:33: Preview: Snippet 15 ended.(706720+0x19841475).
+<-><->
+      
+l.33 ...|-|X|)\bm{1}_{X\leq 0}=c\bm{1}_{X\leq 0}\]
+                                                  
+Not a real error.
+
+[15]
+2.tex:34: Preview: Snippet 16 started.
+<-><->
+      
+l.34 \[
+       (|X-c|-|X|)\bm{1}_{X\geq 0}\geq -c\bm{1}_{X> 0}\]
+Not a real error.
+
+2.tex:34: Preview: Snippet 16 ended.(706720+0x20110085).
+<-><->
+      
+l.34 ...|X|)\bm{1}_{X\geq 0}\geq -c\bm{1}_{X> 0}\]
+                                                  
+Not a real error.
+
+[16]
+2.tex:36: Preview: Snippet 17 started.
+<-><->
+      
+l.36 \[
+       E[|X-c|]-E[|X|]\geq c(2P(X\leq 0)-1)\]
+Not a real error.
+
+2.tex:36: Preview: Snippet 17 ended.(690708+0x21460800).
+<-><->
+      
+l.36 \[E[|X-c|]-E[|X|]\geq c(2P(X\leq 0)-1)\]
+                                             
+Not a real error.
+
+[17]
+2.tex:38: Preview: Snippet 18 started.
+<-><->
+      
+l.38 充分性：若$
+                     E[|X|]=\min E[|X-c|]$，则$c(2P(X\leq 0)-1)\geq 0\Righ...
+
+Not a real error.
+
+2.tex:38: Preview: Snippet 18 ended.(518031+172677x7217485).
+<-><->
+      
+l.38 充分性：若$E[|X|]=\min E[|X-c|]$
+                                          ，则$c(2P(X\leq 0)-1)\geq 0\Righ...
+
+Not a real error.
+
+[18]
+2.tex:38: Preview: Snippet 19 started.
+<-><->
+      
+l.38 充分性：若$E[|X|]=\min E[|X-c|]$，则$
+                                                 c(2P(X\leq 0)-1)\geq 0\Righ...
+
+Not a real error.
+
+2.tex:38: Preview: Snippet 19 ended.(567593+238184x11989854).
+<-><->
+      
+l.38 ...q 0\Rightarrow P(X\leq 0)\geq \frac{1}{2}$
+                                                  。同理可证$P(X\geq 0)...
+
+Not a real error.
+
+[19]
+2.tex:38: Preview: Snippet 20 started.
+<-><->
+      
+l.38 ...(X\leq 0)\geq \frac{1}{2}$。同理可证$
+                                                  P(X\geq 0)\geq \frac{1}{2}...
+
+Not a real error.
+
+2.tex:38: Preview: Snippet 20 ended.(567593+238184x4308780).
+<-><->
+      
+l.38 ...��同理可证$P(X\geq 0)\geq \frac{1}{2}$
+                                                  ，故0是中位数。
+Not a real error.
+
+[20]
+2.tex:40: Preview: Snippet 21 started.
+<-><->
+      
+l.40 必要性：若$
+                     0$是中位数，则$\forall c\neq 0,E[|X-c|]-E[|X|]\ge...
+
+Not a real error.
+
+2.tex:40: Preview: Snippet 21 ended.(445122+0x345355).
+<-><->
+      
+l.40 必要性：若$0$
+                       是中位数，则$\forall c\neq 0,E[|X-c|]-E[|X|]\ge...
+
+Not a real error.
+
+[21]
+2.tex:40: Preview: Snippet 22 started.
+<-><->
+      
+l.40 必要性：若$0$是中位数，则$
+                                          \forall c\neq 0,E[|X-c|]-E[|X|]\ge...
+
+Not a real error.
+
+2.tex:40: Preview: Snippet 22 ended.(518031+172677x9396646).
+<-><->
+      
+l.40 ...则$\forall c\neq 0,E[|X-c|]-E[|X|]\geq 0$
+                                                  ，故$E[|X|]=\min E[|X-c|]$
+Not a real error.
+
+[22]
+2.tex:40: Preview: Snippet 23 started.
+<-><->
+      
+l.40 ...rall c\neq 0,E[|X-c|]-E[|X|]\geq 0$，故$
+                                                  E[|X|]=\min E[|X-c|]$
+Not a real error.
+
+2.tex:40: Preview: Snippet 23 ended.(518031+172677x7217485).
+<-><->
+      
+l.40 ...-E[|X|]\geq 0$，故$E[|X|]=\min E[|X-c|]$
+                                                  
+Not a real error.
+
+[23]
+2.tex:42: Preview: Snippet 24 started.
+<-><->
+      
+l.42 \subparagraph
+                  {(iii)}
+Not a real error.
+
+2.tex:42: Preview: Snippet 24 ended.(518031+172677x1279719).
+<-><->
+      
+l.42 \subparagraph{(iii)}
+                         
+Not a real error.
+
+[24
+
+]
+2.tex:43: Preview: Snippet 25 started.
+<-><->
+      
+l.43 $
+      f(c)=E[|X-c|^{2}]=c^{2}-2cE[X]+E[X^{2}]$，由二次函数之性质得...
+
+Not a real error.
+
+2.tex:43: Preview: Snippet 25 ended.(546292+172677x12810451).
+<-><->
+      
+l.43 $f(c)=E[|X-c|^{2}]=c^{2}-2cE[X]+E[X^{2}]$
+                                              ，由二次函数之性质得...
+
+Not a real error.
+
+[25]
+2.tex:43: Preview: Snippet 26 started.
+<-><->
+      
+l.43 ...]+E[X^{2}]$，由二次函数之性质得$
+                                                  f(c)$于$c=E[X]$处取最�...
+
+Not a real error.
+
+2.tex:43: Preview: Snippet 26 ended.(518031+172677x1248633).
+<-><->
+      
+l.43 ...^{2}]$，由二次函数之性质得$f(c)$
+                                                  于$c=E[X]$处取最小值。
+
+Not a real error.
+
+[26]
+2.tex:43: Preview: Snippet 27 started.
+<-><->
+      
+l.43 ...]$，由二次函数之性质得$f(c)$于$
+                                                  c=E[X]$处取最小值。
+Not a real error.
+
+2.tex:43: Preview: Snippet 27 ended.(518031+172677x2779694).
+<-><->
+      
+l.43 ...�二次函数之性质得$f(c)$于$c=E[X]$
+                                                  处取最小值。
+Not a real error.
+
+[27]
+2.tex:45: Preview: Snippet 28 started.
+<-><->
+      
+l.45 \subparagraph
+                  {(iv)}
+Not a real error.
+
+2.tex:45: Preview: Snippet 28 ended.(518031+172677x1257656).
+<-><->
+      
+l.45 \subparagraph{(iv)}
+                        
+Not a real error.
+
+[28
+
+]
+2.tex:47: Preview: Snippet 29 started.
+<-><->
+      
+l.47   由Jensen不等式，由于$
+                                   \phi(x)=x^{2}$是凸函数，故$E[X]^{2}...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 29 ended.(546292+172677x2953225).
+<-><->
+      
+l.47   由Jensen不等式，由于$\phi(x)=x^{2}$
+                                                 是凸函数，故$E[X]^{2}...
+
+Not a real error.
+
+[29]
+2.tex:47: Preview: Snippet 30 started.
+<-><->
+      
+l.47 ...��由于$\phi(x)=x^{2}$是凸函数，故$
+                                                  E[X]^{2}\leq E[X^{2}]$，�...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 30 ended.(546292+172677x4628639).
+<-><->
+      
+l.47 ...$是凸函数，故$E[X]^{2}\leq E[X^{2}]$
+                                                  ，将其代入LHS得$LHS\...
+
+Not a real error.
+
+[30]
+2.tex:47: Preview: Snippet 31 started.
+<-><->
+      
+l.47 ...X]^{2}\leq E[X^{2}]$，将其代入LHS得$
+                                                  LHS\leq E[|X-m|^{2}]$。�...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 31 ended.(546292+172677x6172845).
+<-><->
+      
+l.47 ...��将其代入LHS得$LHS\leq E[|X-m|^{2}]$
+                                                  。再由(ii)，$\forall c...
+
+Not a real error.
+
+[31]
+2.tex:47: Preview: Snippet 32 started.
+<-><->
+      
+l.47 ...得$LHS\leq E[|X-m|^{2}]$。再由(ii)，$
+                                                  \forall c,LHS\leq E[|X-c|]...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 32 ended.(546292+172677x6854916).
+<-><->
+      
+l.47 ...由(ii)，$\forall c,LHS\leq E[|X-c|]^{2}$
+                                                  。又由(iii)，$RHS=\min...
+
+Not a real error.
+
+[32]
+2.tex:47: Preview: Snippet 33 started.
+<-><->
+      
+l.47 ... c,LHS\leq E[|X-c|]^{2}$。又由(iii)，$
+                                                  RHS=\min E[|X-c|^{2}]$，�...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 33 ended.(546292+172677x7191316).
+<-><->
+      
+l.47 ...}$。又由(iii)，$RHS=\min E[|X-c|^{2}]$
+                                                  ，故在$LHS\leq E[|X-c|^...
+
+Not a real error.
+
+[33]
+2.tex:47: Preview: Snippet 34 started.
+<-><->
+      
+l.47 ...�(iii)，$RHS=\min E[|X-c|^{2}]$，故在$
+                                                  LHS\leq E[|X-c|^{2}]$中�...
+
+Not a real error.
+
+2.tex:47: Preview: Snippet 34 ended.(546292+172677x5865302).
+<-><->
+      
+l.47 ...|X-c|^{2}]$，故在$LHS\leq E[|X-c|^{2}]$
+                                                  中取右侧的最小值�...
+
+Not a real error.
+
+[34]
+2.tex:50: Preview: Snippet 35 started.
+<-><->
+      
+l.50 \paragraph
+               {(B2)}
+Not a real error.
+
+2.tex:50: Preview: Snippet 35 ended.(518031+172677x1579984).
+<-><->
+      
+l.50 \paragraph{(B2)}
+                     
+Not a real error.
+
+[35
+
+]
+2.tex:51: Preview: Snippet 36 started.
+<-><->
+      
+l.51 WLOG，设$
+                X$是恒正的随机变量（毕竟题设中只考察了$|X|...
+
+Not a real error.
+
+2.tex:51: Preview: Snippet 36 ended.(471983+0x626433).
+<-><->
+      
+l.51 WLOG，设$X$
+                  是恒正的随机变量（毕竟题设中只考察了$|X|...
+
+Not a real error.
+
+[36]
+2.tex:51: Preview: Snippet 37 started.
+<-><->
+      
+l.51 ...��机变量（毕竟题设中只考察了$
+                                                  |X|$）。
+Not a real error.
+
+2.tex:51: Preview: Snippet 37 ended.(518031+172677x1010159).
+<-><->
+      
+l.51 ...�变量（毕竟题设中只考察了$|X|$
+                                                  ）。
+Not a real error.
+
+[37]
+2.tex:52: Preview: Snippet 38 started.
+<-><->
+      
+l.52 \begin{align*}
+                   
+Not a real error.
+
+2.tex:56: Preview: Snippet 38 ended.(4851862+0x23172615).
+<-><->
+      
+l.56 \end{align*}
+                 
+Not a real error.
+
+[38]
+2.tex:60: Preview: Snippet 39 started.
+<-><->
+      
+l.60 \paragraph
+               {(B3)}
+Not a real error.
+
+2.tex:60: Preview: Snippet 39 ended.(518031+172677x1579984).
+<-><->
+      
+l.60 \paragraph{(B3)}
+                     
+Not a real error.
+
+[39
+
+]
+2.tex:62: Preview: Snippet 40 started.
+<-><->
+      
+l.62 \subparagraph
+                  {(i)}
+Not a real error.
+
+2.tex:62: Preview: Snippet 40 ended.(518031+172677x838437).
+<-><->
+      
+l.62 \subparagraph{(i)}
+                       
+Not a real error.
+
+[40
+
+]
+2.tex:63: Preview: Snippet 41 started.
+<-><->
+      
+l.63 固知$
+            \sum_{i=1}^{\infty}2^{-i}=1$，故
+Not a real error.
+
+2.tex:63: Preview: Snippet 41 ended.(554210+205449x3965380).
+<-><->
+      
+l.63 固知$\sum_{i=1}^{\infty}2^{-i}=1$
+                                        ，故
+Not a real error.
+
+[41]
+2.tex:65: Preview: Snippet 42 started.
+<-><->
+      
+l.65 $
+      P(X_{1}=2n)=P(X_{1}=2n+1)=2^{-(n+1)}\quad n\in\mathbb{N}$ 对应$N=2$
+Not a real error.
+
+2.tex:65: Preview: Snippet 42 ended.(594716+172677x14912030).
+<-><->
+      
+l.65 ..._{1}=2n+1)=2^{-(n+1)}\quad n\in\mathbb{N}$
+                                                   对应$N=2$
+Not a real error.
+
+[42]
+2.tex:65: Preview: Snippet 43 started.
+<-><->
+      
+l.65 ...1)=2^{-(n+1)}\quad n\in\mathbb{N}$ 对应$
+                                                  N=2$
+Not a real error.
+
+2.tex:65: Preview: Snippet 43 ended.(471983+0x1896563).
+<-><->
+      
+l.65 ...^{-(n+1)}\quad n\in\mathbb{N}$ 对应$N=2$
+                                                  
+Not a real error.
+
+[43]
+2.tex:67: Preview: Snippet 44 started.
+<-><->
+      
+l.67 $
+      P(X_{2}=3n)=P(X_{2}=3n+1)=P(X_{2}=3n+2)=\frac{2^{-n}}{3}\quad n\in\mat...
+
+Not a real error.
+
+2.tex:67: Preview: Snippet 44 ended.(688182+238184x19556282).
+<-><->
+      
+l.67 ...n+2)=\frac{2^{-n}}{3}\quad n\in\mathbb{N}$
+                                                   对应$N=3$
+Not a real error.
+
+[44]
+2.tex:67: Preview: Snippet 45 started.
+<-><->
+      
+l.67 ...ac{2^{-n}}{3}\quad n\in\mathbb{N}$ 对应$
+                                                  N=3$
+Not a real error.
+
+2.tex:67: Preview: Snippet 45 ended.(471983+0x1896563).
+<-><->
+      
+l.67 ...^{-n}}{3}\quad n\in\mathbb{N}$ 对应$N=3$
+                                                  
+Not a real error.
+
+[45]
+2.tex:69: Preview: Snippet 46 started.
+<-><->
+      
+l.69 \subparagraph
+                  {(ii)}
+Not a real error.
+
+2.tex:69: Preview: Snippet 46 ended.(518031+172677x1059078).
+<-><->
+      
+l.69 \subparagraph{(ii)}
+                        
+Not a real error.
+
+[46
+
+]
+2.tex:70: Preview: Snippet 47 started.
+<-><->
+      
+l.70 $
+      m=0$时，$E[e^{2\pi i mX/N}]=E[1]=1$
+Not a real error.
+
+2.tex:70: Preview: Snippet 47 ended.(445122+0x1872745).
+<-><->
+      
+l.70 $m=0$
+          时，$E[e^{2\pi i mX/N}]=E[1]=1$
+Not a real error.
+
+[47]
+2.tex:70: Preview: Snippet 48 started.
+<-><->
+      
+l.70 $m=0$时，$
+                 E[e^{2\pi i mX/N}]=E[1]=1$
+Not a real error.
+
+2.tex:70: Preview: Snippet 48 ended.(594716+172677x7116151).
+<-><->
+      
+l.70 $m=0$时，$E[e^{2\pi i mX/N}]=E[1]=1$
+                                           
+Not a real error.
+
+[48]
+2.tex:72: Preview: Snippet 49 started.
+<-><->
+      
+l.72 $
+      m\neq 0$时，$E[e^{2\pi imX/N}]=\sum_{n=0}^{N-1}P(X\equiv n\pmod{N})e...
+
+Not a real error.
+
+2.tex:72: Preview: Snippet 49 ended.(479658+134303x1872745).
+<-><->
+      
+l.72 $m\neq 0$
+              时，$E[e^{2\pi imX/N}]=\sum_{n=0}^{N-1}P(X\equiv n\pmod{N})e...
+
+Not a real error.
+
+[49]
+2.tex:72: Preview: Snippet 50 started.
+<-><->
+      
+l.72 $m\neq 0$时，$
+                     E[e^{2\pi imX/N}]=\sum_{n=0}^{N-1}P(X\equiv n\pmod{N})e...
+
+Not a real error.
+
+2.tex:72: Preview: Snippet 50 ended.(688115+292798x27179532).
+<-><->
+      
+l.72 ...N}\frac{e^{2\pi i m}-1}{e^{2\pi im }-1}=0$
+                                                  
+Not a real error.
+
+[50]
+2.tex:74: Preview: Snippet 51 started.
+<-><->
+      
+l.74 \paragraph
+               {(B4)}
+Not a real error.
+
+2.tex:74: Preview: Snippet 51 ended.(518031+172677x1579984).
+<-><->
+      
+l.74 \paragraph{(B4)}
+                     
+Not a real error.
+
+[51
+
+]
+2.tex:75: Preview: Snippet 52 started.
+<-><->
+      
+l.75 （推广至$
+                  n$个示性函数函数的和需要用Lagrange乘子法求...
+
+Not a real error.
+
+2.tex:75: Preview: Snippet 52 ended.(297388+0x414587).
+<-><->
+      
+l.75 （推广至$n$
+                    个示性函数函数的和需要用Lagrange乘子法求...
+
+Not a real error.
+
+[52]
+2.tex:77: Preview: Snippet 53 started.
+<-><->
+      
+l.77 显然当$
+               X$取极限值时才能得出该集合的值的极限。
+Not a real error.
+
+2.tex:77: Preview: Snippet 53 ended.(471983+0x626433).
+<-><->
+      
+l.77 显然当$X$
+                 取极限值时才能得出该集合的值的极限。
+Not a real error.
+
+[53]
+2.tex:79: Preview: Snippet 54 started.
+<-><->
+      
+l.79 $
+      X=a1_{\Omega}$时，$E[X]=a,E[1/X]=\frac{1}{a}\Rightarrow E[X]E[1/X]=1$
+Not a real error.
+
+2.tex:79: Preview: Snippet 54 ended.(471983+103605x2664699).
+<-><->
+      
+l.79 $X=a1_{\Omega}$
+                    时，$E[X]=a,E[1/X]=\frac{1}{a}\Rightarrow E[X]E[1/X]=1$
+Not a real error.
+
+[54]
+2.tex:79: Preview: Snippet 55 started.
+<-><->
+      
+l.79 $X=a1_{\Omega}$时，$
+                           E[X]=a,E[1/X]=\frac{1}{a}\Rightarrow E[X]E[1/X]=1$
+Not a real error.
+
+2.tex:79: Preview: Snippet 55 ended.(567593+238184x12917047).
+<-><->
+      
+l.79 ...[1/X]=\frac{1}{a}\Rightarrow E[X]E[1/X]=1$
+                                                  
+Not a real error.
+
+[55]
+2.tex:81: Preview: Snippet 56 started.
+<-><->
+      
+l.81 $
+      X=a1_{A}+b1_{A^{c}}$，其中$P(A)=x$，则$E[X]E[1/X]=(\frac{a}{b}+\f...
+
+Not a real error.
+
+2.tex:81: Preview: Snippet 56 ended.(479658+103605x4843170).
+<-><->
+      
+l.81 $X=a1_{A}+b1_{A^{c}}$
+                          ，其中$P(A)=x$，则$E[X]E[1/X]=(\frac{a}{b}+\f...
+
+Not a real error.
+
+[56]
+2.tex:81: Preview: Snippet 57 started.
+<-><->
+      
+l.81 $X=a1_{A}+b1_{A^{c}}$，其中$
+                                    P(A)=x$，则$E[X]E[1/X]=(\frac{a}{b}+\f...
+
+Not a real error.
+
+2.tex:81: Preview: Snippet 57 ended.(518031+172677x2910323).
+<-><->
+      
+l.81 $X=a1_{A}+b1_{A^{c}}$，其中$P(A)=x$
+                                           ，则$E[X]E[1/X]=(\frac{a}{b}+\f...
+
+Not a real error.
+
+[57]
+2.tex:81: Preview: Snippet 58 started.
+<-><->
+      
+l.81 $X=a1_{A}+b1_{A^{c}}$，其中$P(A)=x$，则$
+                                                  E[X]E[1/X]=(\frac{a}{b}+\f...
+
+Not a real error.
+
+2.tex:81: Preview: Snippet 58 ended.(590530+238184x16757963).
+<-><->
+      
+l.81 ...}{2}+\frac{1}{4}(\frac{a}{b}+\frac{b}{a})$
+                                                  
+Not a real error.
+
+[58]
+2.tex:83: Preview: Snippet 59 started.
+<-><->
+      
+l.83 故该集合取值范围为$
+                                 [1,\frac{1}{2}(1+\frac{a}{b}+\frac{b}{a})]$
+Not a real error.
+
+2.tex:83: Preview: Snippet 59 ended.(590530+238184x4908660).
+<-><->
+      
+l.83 ...1,\frac{1}{2}(1+\frac{a}{b}+\frac{b}{a})]$
+                                                  
+Not a real error.
+
+[59]
+2.tex:85: Preview: Snippet 60 started.
+<-><->
+      
+l.85 \paragraph
+               {(B5)}
+Not a real error.
+
+2.tex:85: Preview: Snippet 60 ended.(518031+172677x1579984).
+<-><->
+      
+l.85 \paragraph{(B5)}
+                     
+Not a real error.
+
+[60
+
+]
+2.tex:86: Preview: Snippet 61 started.
+<-><->
+      
+l.86 \subparagraph
+                  {(i)}
+Not a real error.
+
+2.tex:86: Preview: Snippet 61 ended.(518031+172677x838437).
+<-><->
+      
+l.86 \subparagraph{(i)}
+                       
+Not a real error.
+
+[61
+
+]
+2.tex:87: Preview: Snippet 62 started.
+<-><->
+      
+l.87 $
+      E[X^{0}]=\int_{\R}f(x)=1$
+Not a real error.
+
+2.tex:87: Preview: Snippet 62 ended.(556407+243820x6190936).
+<-><->
+      
+l.87 $E[X^{0}]=\int_{\R}f(x)=1$
+                               
+Not a real error.
+
+[62]
+2.tex:89: Preview: Snippet 63 started.
+<-><->
+      
+l.89 $
+      \forall n\in\mathbb{N}_{+},E[X^{2n-1}]=\int_{\R}x^{2n-2}f(x)\dd\frac{x...
+
+Not a real error.
+
+2.tex:89: Preview: Snippet 63 ended.(688182+349796x30731736).
+<-><->
+      
+l.89 ...}\dd s=\frac{1}{\sqrt{2\pi}}2^{n-1}(n-1)!$
+                                                  
+Not a real error.
+
+[63]
+2.tex:91: Preview: Snippet 64 started.
+<-><->
+      
+l.91 \subparagraph
+                  {(ii)}
+Not a real error.
+
+2.tex:91: Preview: Snippet 64 ended.(518031+172677x1059078).
+<-><->
+      
+l.91 \subparagraph{(ii)}
+                        
+Not a real error.
+
+[64
+
+]
+2.tex:92: Preview: Snippet 65 started.
+<-><->
+      
+l.92 $
+      f'(x)=(\frac{e^{-x^{2}/2}}{\sqrt{2\pi}})'=-x\frac{e^{-x^{2}/2}}{\sqrt{...
+
+Not a real error.
+
+2.tex:92: Preview: Snippet 65 ended.(813134+349796x11766901).
+<-><->
+      
+l.92 ...-x\frac{e^{-x^{2}/2}}{\sqrt{2\pi}}=-xf(x)$
+                                                  
+Not a real error.
+
+[65]
+2.tex:94: Preview: Snippet 66 started.
+<-><->
+      
+l.94 \subparagraph
+                  {(iii)}
+Not a real error.
+
+2.tex:94: Preview: Snippet 66 ended.(518031+172677x1279719).
+<-><->
+      
+l.94 \subparagraph{(iii)}
+                         
+Not a real error.
+
+[66
+
+]
+2.tex:95: Preview: Snippet 67 started.
+<-><->
+      
+l.95 注意到$
+               \forall n\in\mathbb{N}, \lim\limits_{x\to\pm\infty}x^{n}f(x)=...
+
+Not a real error.
+
+2.tex:95: Preview: Snippet 67 ended.(518031+538110x7677446).
+<-><->
+      
+l.95 ...}, \lim\limits_{x\to\pm\infty}x^{n}f(x)=0$
+                                                  ，故
+Not a real error.
+
+[67]
+2.tex:96: Preview: Snippet 68 started.
+<-><->
+      
+l.96 \begin{align*}
+                   
+Not a real error.
+
+2.tex:101: Preview: Snippet 68 ended.(7057192+0x23458662).
+<-><->
+      
+l.101 \end{align*}
+                  
+Not a real error.
+
+[68]
+2.tex:104: Preview: Snippet 69 started.
+<-><->
+      
+l.104 \subparagraph
+                   {(iv)}
+Not a real error.
+
+2.tex:104: Preview: Snippet 69 ended.(518031+172677x1257656).
+<-><->
+      
+l.104 \subparagraph{(iv)}
+                         
+Not a real error.
+
+[69
+
+]
+2.tex:105: Preview: Snippet 70 started.
+<-><->
+      
+l.105 $
+       p\equiv 1\pmod{2}$时，$E[X^{p}]=\frac{1}{\sqrt{2\pi}}2^{\frac{p-1}{...
+
+Not a real error.
+
+2.tex:105: Preview: Snippet 70 ended.(518031+172677x4357447).
+<-><->
+      
+l.105 $p\equiv 1\pmod{2}$
+                         时，$E[X^{p}]=\frac{1}{\sqrt{2\pi}}2^{\frac{p-1}{...
+
+Not a real error.
+
+[70]
+2.tex:105: Preview: Snippet 71 started.
+<-><->
+      
+l.105 $p\equiv 1\pmod{2}$时，$
+                                E[X^{p}]=\frac{1}{\sqrt{2\pi}}2^{\frac{p-1}{...
+
+Not a real error.
+
+2.tex:105: Preview: Snippet 71 ended.(680932+349796x7138862).
+<-><->
+      
+l.105 ...{2\pi}}2^{\frac{p-1}{2}}(\frac{p-1}{2})!$
+                                                  ；$p\equiv 0\mod 2$时，...
+
+Not a real error.
+
+[71]
+2.tex:105: Preview: Snippet 72 started.
+<-><->
+      
+l.105 ...i}}2^{\frac{p-1}{2}}(\frac{p-1}{2})!$；$
+                                                  p\equiv 0\mod 2$时，$E[X...
+
+Not a real error.
+
+2.tex:105: Preview: Snippet 72 ended.(479658+134304x3973717).
+<-><->
+      
+l.105 ...{2}}(\frac{p-1}{2})!$；$p\equiv 0\mod 2$
+                                                  时，$E[X^{p}]=(p-1)!!$
+Not a real error.
+
+[72]
+2.tex:105: Preview: Snippet 73 started.
+<-><->
+      
+l.105 ...rac{p-1}{2})!$；$p\equiv 0\mod 2$时，$
+                                                  E[X^{p}]=(p-1)!!$
+Not a real error.
+
+2.tex:105: Preview: Snippet 73 ended.(518031+172677x5241723).
+<-><->
+      
+l.105 ...$p\equiv 0\mod 2$时，$E[X^{p}]=(p-1)!!$
+                                                  
+Not a real error.
+
+[73]
+2.tex:107: Preview: Snippet 74 started.
+<-><->
+      
+l.107 \paragraph
+                {(B6)}
+Not a real error.
+
+2.tex:107: Preview: Snippet 74 ended.(518031+172677x1579984).
+<-><->
+      
+l.107 \paragraph{(B6)}
+                      
+Not a real error.
+
+[74
+
+]
+2.tex:108: Preview: Snippet 75 started.
+<-><->
+      
+l.108 \subparagraph
+                   {(i)}
+Not a real error.
+
+2.tex:108: Preview: Snippet 75 ended.(518031+172677x838437).
+<-><->
+      
+l.108 \subparagraph{(i)}
+                        
+Not a real error.
+
+[75
+
+]
+2.tex:109: Preview: Snippet 76 started.
+<-><->
+      
+l.109 先考察其c.d.f.：$
+                            F_{1/X}(x)=P(\frac{1}{X}\leq x)=P(X\geq \frac{1}...
+
+Not a real error.
+
+2.tex:109: Preview: Snippet 76 ended.(567593+238184x14383999).
+<-><->
+      
+l.109 ...(X\geq \frac{1}{x})=1-F_{X}(\frac{1}{x})$
+                                                  
+Not a real error.
+
+[76]
+2.tex:111: Preview: Snippet 77 started.
+<-><->
+      
+l.111 $
+       f_{\frac{1}{X}}(x)=(1-F_{X}(\frac{1}{x}))'=\frac{1}{x^{2}}f(\frac{1}{...
+
+Not a real error.
+
+2.tex:111: Preview: Snippet 77 ended.(567593+307286x9651027).
+<-><->
+      
+l.111 ...c{1}{x}))'=\frac{1}{x^{2}}f(\frac{1}{x})$
+                                                  
+Not a real error.
+
+[77]
+2.tex:113: Preview: Snippet 78 started.
+<-><->
+      
+l.113 \subparagraph
+                   {(ii)}
+Not a real error.
+
+2.tex:113: Preview: Snippet 78 ended.(518031+172677x1059078).
+<-><->
+      
+l.113 \subparagraph{(ii)}
+                         
+Not a real error.
+
+[78
+
+]
+2.tex:114: Preview: Snippet 79 started.
+<-><->
+      
+l.114 易见$
+             \forall y\leq 0, f_{Y}(y)=0$。
+Not a real error.
+
+2.tex:114: Preview: Snippet 79 ended.(518031+172677x5279221).
+<-><->
+      
+l.114 易见$\forall y\leq 0, f_{Y}(y)=0$
+                                         。
+Not a real error.
+
+[79]
+2.tex:116: Preview: Snippet 80 started.
+<-><->
+      
+l.116 设$
+          y>0$，则先考察其c.d.f.$F_{Y}(y)=P(|X|\leq y)=P(-y\leq X\leq ...
+
+Not a real error.
+
+2.tex:116: Preview: Snippet 80 ended.(445122+134304x1629717).
+<-><->
+      
+l.116 设$y>0$
+              ，则先考察其c.d.f.$F_{Y}(y)=P(|X|\leq y)=P(-y\leq X\leq ...
+
+Not a real error.
+
+[80]
+2.tex:116: Preview: Snippet 81 started.
+<-><->
+      
+l.116 设$y>0$，则先考察其c.d.f.$
+                                       F_{Y}(y)=P(|X|\leq y)=P(-y\leq X\leq ...
+
+Not a real error.
+
+2.tex:116: Preview: Snippet 81 ended.(518031+172677x17808856).
+<-><->
+      
+l.116 ... y)=P(-y\leq X\leq y)=F_{X}(y)-F_{X}(-y)$
+                                                  ，故$f_{Y}(y)=f(y)+f(-y)$
+Not a real error.
+
+[81]
+2.tex:116: Preview: Snippet 82 started.
+<-><->
+      
+l.116 ...y\leq X\leq y)=F_{X}(y)-F_{X}(-y)$，故$
+                                                  f_{Y}(y)=f(y)+f(-y)$
+Not a real error.
+
+2.tex:116: Preview: Snippet 82 ended.(518031+172677x6621153).
+<-><->
+      
+l.116 ...(y)-F_{X}(-y)$，故$f_{Y}(y)=f(y)+f(-y)$
+                                                  
+Not a real error.
+
+[82]
+2.tex:119: Preview: Snippet 83 started.
+<-><->
+      
+l.119 \[
+        f_{Y}(y)=
+Not a real error.
+
+2.tex:124: Preview: Snippet 83 ended.(2586006+0x20210026).
+<-><->
+      
+l.124 \]
+        
+Not a real error.
+
+[83]
+2.tex:125: Preview: Snippet 84 started.
+<-><->
+      
+l.125 \subparagraph
+                   {(iii)}
+Not a real error.
+
+2.tex:125: Preview: Snippet 84 ended.(518031+172677x1279719).
+<-><->
+      
+l.125 \subparagraph{(iii)}
+                          
+Not a real error.
+
+[84
+
+]
+2.tex:126: Preview: Snippet 85 started.
+<-><->
+      
+l.126 $
+       F_{Y}(y)=P(\tan X\leq y)=P(X\leq \arctan(y))=F_{X}(\arctan(y))$，故...
+
+Not a real error.
+
+2.tex:126: Preview: Snippet 85 ended.(518031+172677x18407473).
+<-><->
+      
+l.126 ...y)=P(X\leq \arctan(y))=F_{X}(\arctan(y))$
+                                                  ，故$f_{Y}(y)=\frac{f(\a...
+
+Not a real error.
+
+[85]
+2.tex:126: Preview: Snippet 86 started.
+<-><->
+      
+l.126 ...leq \arctan(y))=F_{X}(\arctan(y))$，故$
+                                                  f_{Y}(y)=\frac{f(\arctan(y...
+
+Not a real error.
+
+2.tex:126: Preview: Snippet 86 ended.(672870+327385x5633698).
+<-><->
+      
+l.126 ...�$f_{Y}(y)=\frac{f(\arctan(y))}{1+y^{2}}$
+                                                  
+Not a real error.
+
+[86]
+2.tex:130: Preview: Snippet 87 started.
+<-><->
+      
+l.130 \paragraph
+                {(C1)}
+Not a real error.
+
+2.tex:130: Preview: Snippet 87 ended.(518031+172677x1588618).
+<-><->
+      
+l.130 \paragraph{(C1)}
+                      
+Not a real error.
+
+[87
+
+]
+2.tex:131: Preview: Snippet 88 started.
+<-><->
+      
+l.131 \subparagraph
+                   {(i)}
+Not a real error.
+
+2.tex:131: Preview: Snippet 88 ended.(518031+172677x838437).
+<-><->
+      
+l.131 \subparagraph{(i)}
+                        
+Not a real error.
+
+[88
+
+]
+2.tex:132: Preview: Snippet 89 started.
+<-><->
+      
+l.132 $
+       \forall X,Y\in \L_{0}, c\in\R$, $P(\{cX=\infty\})=P(\{X=\infty\}=0, P...
+
+Not a real error.
+
+2.tex:132: Preview: Snippet 89 ended.(479658+134304x5396772).
+<-><->
+      
+l.132 $\forall X,Y\in \L_{0}, c\in\R$
+                                     , $P(\{cX=\infty\})=P(\{X=\infty\}=0, P...
+
+Not a real error.
+
+[89]
+2.tex:132: Preview: Snippet 90 started.
+<-><->
+      
+l.132 $\forall X,Y\in \L_{0}, c\in\R$, $
+                                        P(\{cX=\infty\})=P(\{X=\infty\}=0, P...
+
+Not a real error.
+
+2.tex:132: Preview: Snippet 90 ended.(518031+172677x26218885).
+<-><->
+      
+l.132 ...+Y=\infty\})\leq P(\{X=0\})+P(\{Y=0\})=0$
+                                                  ，故$\L_{0}$是线性空...
+
+Not a real error.
+
+[90]
+2.tex:132: Preview: Snippet 91 started.
+<-><->
+      
+l.132 ...ty\})\leq P(\{X=0\})+P(\{Y=0\})=0$，故$
+                                                  \L_{0}$是线性空间。
+Not a real error.
+
+2.tex:132: Preview: Snippet 91 ended.(471983+103605x770401).
+<-><->
+      
+l.132 ...eq P(\{X=0\})+P(\{Y=0\})=0$，故$\L_{0}$
+                                                  是线性空间。
+Not a real error.
+
+[91]
+2.tex:133: Preview: Snippet 92 started.
+<-><->
+      
+l.133 \subparagraph
+                   {(ii)}
+Not a real error.
+
+2.tex:133: Preview: Snippet 92 ended.(518031+172677x1059078).
+<-><->
+      
+l.133 \subparagraph{(ii)}
+                         
+Not a real error.
+
+[92
+
+]
+2.tex:135: Preview: Snippet 93 started.
+<-><->
+      
+l.135   因$
+            1+|X-Y|>1$，故$Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$\L_{0}$中�...
+
+Not a real error.
+
+2.tex:135: Preview: Snippet 93 ended.(518031+172677x4864684).
+<-><->
+      
+l.135   因$1+|X-Y|>1$
+                      ，故$Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$\L_{0}$中�...
+
+Not a real error.
+
+[93]
+2.tex:135: Preview: Snippet 94 started.
+<-><->
+      
+l.135   因$1+|X-Y|>1$，故$
+                             Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$\L_{0}$中�...
+
+Not a real error.
+
+2.tex:135: Preview: Snippet 94 ended.(672870+352872x5856707).
+<-><->
+      
+l.135 ...Y|>1$，故$Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$
+                                                  仍是$\L_{0}$中的随机...
+
+Not a real error.
+
+[94]
+2.tex:135: Preview: Snippet 95 started.
+<-><->
+      
+l.135 ...�故$Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$
+                                                  \L_{0}$中的随机变量�...
+
+Not a real error.
+
+2.tex:135: Preview: Snippet 95 ended.(471983+103605x770401).
+<-><->
+      
+l.135 ...X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$\L_{0}$
+                                                  中的随机变量，且$0...
+
+Not a real error.
+
+[95]
+2.tex:135: Preview: Snippet 96 started.
+<-><->
+      
+l.135 ...}$仍是$\L_{0}$中的随机变量，且$
+                                                  0\leq Z\leq 1\Rightarrow \...
+
+Not a real error.
+
+2.tex:135: Preview: Snippet 96 ended.(518031+172677x11072643).
+<-><->
+      
+l.135 ...leq 1\Rightarrow \rho(X,Y)=E[Z]\in [0,1]$
+                                                  ，故它是良定的。
+Not a real error.
+
+[96]
+2.tex:138: Preview: Snippet 97 started.
+<-><->
+      
+l.138 \subparagraph
+                   {(iii)}
+Not a real error.
+
+2.tex:138: Preview: Snippet 97 ended.(518031+172677x1279719).
+<-><->
+      
+l.138 \subparagraph{(iii)}
+                          
+Not a real error.
+
+[97
+
+]
+2.tex:141: Preview: Snippet 98 started.
+<-><->
+      
+l.141   \item 正定性：因$
+                              \frac{|X-Y|}{1+|X-Y|}\geq 0$，故$\rho(X,Y)=E...
+
+Not a real error.
+
+2.tex:141: Preview: Snippet 98 ended.(672870+352872x3694411).
+<-><->
+      
+l.141 ...定性：因$\frac{|X-Y|}{1+|X-Y|}\geq 0$
+                                                  ，故$\rho(X,Y)=E[\frac{|...
+
+Not a real error.
+
+[98]
+2.tex:141: Preview: Snippet 99 started.
+<-><->
+      
+l.141 ...��因$\frac{|X-Y|}{1+|X-Y|}\geq 0$，故$
+                                                  \rho(X,Y)=E[\frac{|X-Y|}{1...
+
+Not a real error.
+
+2.tex:141: Preview: Snippet 99 ended.(672870+352872x7892613).
+<-><->
+      
+l.141 ...\rho(X,Y)=E[\frac{|X-Y|}{1+|X-Y|}]\geq 0$
+                                                  
+Not a real error.
+
+[99]
+2.tex:142: Preview: Snippet 100 started.
+<-><->
+      
+l.142   \item 对称性：$
+                           \rho(X,Y)=E[\frac{|X-Y|}{1+|X-Y|}]=E[\frac{|Y-X|}...
+
+Not a real error.
+
+2.tex:142: Preview: Snippet 100 ended.(672870+352872x14096831).
+<-><->
+      
+l.142 ...-Y|}]=E[\frac{|Y-X|}{1+|Y-X|}]=\rho(Y,X)$
+                                                  
+Not a real error.
+
+[100]
+2.tex:143: Preview: Snippet 101 started.
+<-><->
+      
+l.143   \item 三角不等式：$
+                                 \rho(X,Y)+\rho(Y,Z)=E[\frac{|X-Y|+|Y-Z|+2|X...
+
+Not a real error.
+
+2.tex:143: Preview: Snippet 101 ended.(672870+352872x27870469).
+<-><->
+      
+l.143 ...Z|}]\geq \frac{|X-Z|}{1+|X-Z|}=\rho(X,Z)$
+                                                  
+Not a real error.
+
+[101]
+2.tex:147: Preview: Snippet 102 started.
+<-><->
+      
+l.147 \subparagraph
+                   {(iv)}
+Not a real error.
+
+2.tex:147: Preview: Snippet 102 ended.(518031+172677x1257656).
+<-><->
+      
+l.147 \subparagraph{(iv)}
+                         
+Not a real error.
+
+[102
+
+]
+2.tex:148: Preview: Snippet 103 started.
+<-><->
+      
+l.148 简记$
+             |X_{n}-X_{m}|=\Delta X$。固定任意的$\delta,\varepsilon$。
+Not a real error.
+
+2.tex:148: Preview: Snippet 103 ended.(518031+172677x5349903).
+<-><->
+      
+l.148 简记$|X_{n}-X_{m}|=\Delta X$
+                                    。固定任意的$\delta,\varepsilon$。
+Not a real error.
+
+[103]
+2.tex:148: Preview: Snippet 104 started.
+<-><->
+      
+l.148 ...X_{n}-X_{m}|=\Delta X$。固定任意的$
+                                                  \delta,\varepsilon$。
+Not a real error.
+
+2.tex:148: Preview: Snippet 104 ended.(479658+134304x923816).
+<-><->
+      
+l.148 ... X$。固定任意的$\delta,\varepsilon$
+                                                  。
+Not a real error.
+
+[104]
+2.tex:150: Preview: Snippet 105 started.
+<-><->
+      
+l.150 $
+       P(\Delta X\geq \delta)=P(\frac{\Delta X}{1+\Delta X}\geq \frac{\delta...
+
+Not a real error.
+
+2.tex:150: Preview: Snippet 105 ended.(590530+292798x15510201).
+<-><->
+      
+l.150 ...eq \rho(X_{n},X_{m})(1+\frac{1}{\delta})$
+                                                  。故若$\{X_{n}\}$是$\r...
+
+Not a real error.
+
+[105]
+2.tex:150: Preview: Snippet 106 started.
+<-><->
+      
+l.150 ...{n},X_{m})(1+\frac{1}{\delta})$。故若$
+                                                  \{X_{n}\}$是$\rho$意义�...
+
+Not a real error.
+
+2.tex:150: Preview: Snippet 106 ended.(518031+172677x1619677).
+<-><->
+      
+l.150 ...(1+\frac{1}{\delta})$。故若$\{X_{n}\}$
+                                                  是$\rho$意义下的Cauch...
+
+Not a real error.
+
+[106]
+2.tex:150: Preview: Snippet 107 started.
+<-><->
+      
+l.150 ...frac{1}{\delta})$。故若$\{X_{n}\}$是$
+                                                  \rho$意义下的Cauchy列...
+
+Not a real error.
+
+2.tex:150: Preview: Snippet 107 ended.(297388+134304x357106).
+<-><->
+      
+l.150 ...1}{\delta})$。故若$\{X_{n}\}$是$\rho$
+                                                  意义下的Cauchy列，�...
+
+Not a real error.
+
+[107]
+2.tex:150: Preview: Snippet 108 started.
+<-><->
+      
+l.150 ...}\}$是$\rho$意义下的Cauchy列，则$
+                                                  \exists N\in\mathbb{N}\st ...
+
+Not a real error.
+
+2.tex:150: Preview: Snippet 108 ended.(590530+292798x20422583).
+<-><->
+      
+l.150 ... P(|X_{n}-X_{m}|\geq \delta)<\varepsilon$
+                                                  ，故$\{X_{n}\}$依概率...
+
+Not a real error.
+
+[108]
+2.tex:150: Preview: Snippet 109 started.
+<-><->
+      
+l.150 ...n}-X_{m}|\geq \delta)<\varepsilon$，故$
+                                                  \{X_{n}\}$依概率Cauchy。
+Not a real error.
+
+2.tex:150: Preview: Snippet 109 ended.(518031+172677x1619677).
+<-><->
+      
+l.150 ...geq \delta)<\varepsilon$，故$\{X_{n}\}$
+                                                  依概率Cauchy。
+Not a real error.
+
+[109]
+2.tex:152: Preview: Snippet 110 started.
+<-><->
+      
+l.152 \[
+        \rho(X_{m},X_{n})\leq E[\Delta X]=\lim_{\delta\to 0}P(\Delta X>\delt...
+
+Not a real error.
+
+2.tex:152: Preview: Snippet 110 ended.(1020797+0x21324920).
+<-><->
+      
+l.152 ...X]=\lim_{\delta\to 0}P(\Delta X>\delta)\]
+                                                  
+Not a real error.
+
+[110]
+2.tex:153: Preview: Snippet 111 started.
+<-><->
+      
+l.153 若$
+          \{X_{n}\}$依概率Cauchy，则对于固定的$\varepsilon,\forall...
+
+Not a real error.
+
+2.tex:153: Preview: Snippet 111 ended.(518031+172677x1619677).
+<-><->
+      
+l.153 若$\{X_{n}\}$
+                    依概率Cauchy，则对于固定的$\varepsilon,\forall...
+
+Not a real error.
+
+[111]
+2.tex:153: Preview: Snippet 112 started.
+<-><->
+      
+l.153 ...}\}$依概率Cauchy，则对于固定的$
+                                                  \varepsilon,\forall \delta...
+
+Not a real error.
+
+2.tex:153: Preview: Snippet 112 ended.(518031+172677x15045485).
+<-><->
+      
+l.153 ...ll m,n>N, P(\Delta X>\delta)<\varepsilon$
+                                                  。代入上式得$\lim_{\...
+
+Not a real error.
+
+[112]
+2.tex:153: Preview: Snippet 113 started.
+<-><->
+      
+l.153 ...X>\delta)<\varepsilon$。代入上式得$
+                                                  \lim_{\min\{m,n\}}\rho(X_{...
+
+Not a real error.
+
+2.tex:153: Preview: Snippet 113 ended.(518031+220842x7923870).
+<-><->
+      
+l.153 ...��$\lim_{\min\{m,n\}}\rho(X_{m},X_{n})=0$
+                                                  ，故$\{X_{n}\}$在$\rho$...
+
+Not a real error.
+
+[113]
+2.tex:153: Preview: Snippet 114 started.
+<-><->
+      
+l.153 ..._{\min\{m,n\}}\rho(X_{m},X_{n})=0$，故$
+                                                  \{X_{n}\}$在$\rho$意义�...
+
+Not a real error.
+
+2.tex:153: Preview: Snippet 114 ended.(518031+172677x1619677).
+<-><->
+      
+l.153 ...n\}}\rho(X_{m},X_{n})=0$，故$\{X_{n}\}$
+                                                  在$\rho$意义下收敛。
+Not a real error.
+
+[114]
+2.tex:153: Preview: Snippet 115 started.
+<-><->
+      
+l.153 ...\rho(X_{m},X_{n})=0$，故$\{X_{n}\}$在$
+                                                  \rho$意义下收敛。
+Not a real error.
+
+2.tex:153: Preview: Snippet 115 ended.(297388+134304x357106).
+<-><->
+      
+l.153 ...X_{m},X_{n})=0$，故$\{X_{n}\}$在$\rho$
+                                                  意义下收敛。
+Not a real error.
+
+[115]
+2.tex:155: Preview: Snippet 116 started.
+<-><->
+      
+l.155 \subparagraph
+                   {(v)}
+Not a real error.
+
+2.tex:155: Preview: Snippet 116 ended.(518031+172677x1037015).
+<-><->
+      
+l.155 \subparagraph{(v)}
+                        
+Not a real error.
+
+[116
+
+]
+2.tex:157: Preview: Snippet 117 started.
+<-><->
+      
+l.157   取$
+            \L_{0}$中的Cauchy列，由(iv)知它是依概率Cauchy的，�...
+
+Not a real error.
+
+2.tex:157: Preview: Snippet 117 ended.(471983+103605x770401).
+<-><->
+      
+l.157   取$\L_{0}$
+                   中的Cauchy列，由(iv)知它是依概率Cauchy的，�...
+
+Not a real error.
+
+[117]
+2.tex:157: Preview: Snippet 118 started.
+<-><->
+      
+l.157 ...�是依概率Cauchy的，故由练习，$
+                                                  \exists X\st \lim_{n\to\in...
+
+Not a real error.
+
+2.tex:157: Preview: Snippet 118 ended.(479658+103605x9959354).
+<-><->
+      
+l.157 ...n\to\infty}X_{n}\to X\quad \text{ in } P$
+                                                  。注意到$\phi(X_{n},X)...
+
+Not a real error.
+
+[118]
+2.tex:157: Preview: Snippet 119 started.
+<-><->
+      
+l.157 ...{n}\to X\quad \text{ in } P$。注意到$
+                                                  \phi(X_{n},X)\leq E[|X_{n}...
+
+Not a real error.
+
+2.tex:157: Preview: Snippet 119 ended.(518031+502766x15903685).
+<-><->
+      
+l.157 ...imits_{\delta\to 0}P(|X_{n}-X|>\delta)=0$
+                                                  ，故$\{X_{n}\}$在$\rho$...
+
+Not a real error.
+
+[119]
+2.tex:157: Preview: Snippet 120 started.
+<-><->
+      
+l.157 ...\delta\to 0}P(|X_{n}-X|>\delta)=0$，故$
+                                                  \{X_{n}\}$在$\rho$的意�...
+
+Not a real error.
+
+2.tex:157: Preview: Snippet 120 ended.(518031+172677x1619677).
+<-><->
+      
+l.157 ...0}P(|X_{n}-X|>\delta)=0$，故$\{X_{n}\}$
+                                                  在$\rho$的意义下收�...
+
+Not a real error.
+
+[120]
+2.tex:157: Preview: Snippet 121 started.
+<-><->
+      
+l.157 ...|X_{n}-X|>\delta)=0$，故$\{X_{n}\}$在$
+                                                  \rho$的意义下收敛于...
+
+Not a real error.
+
+2.tex:157: Preview: Snippet 121 ended.(297388+134304x357106).
+<-><->
+      
+l.157 ...}-X|>\delta)=0$，故$\{X_{n}\}$在$\rho$
+                                                  的意义下收敛于$X$。
+Not a real error.
+
+[121]
+2.tex:157: Preview: Snippet 122 started.
+<-><->
+      
+l.157 ...\{X_{n}\}$在$\rho$的意义下收敛于$
+                                                  X$。
+Not a real error.
+
+2.tex:157: Preview: Snippet 122 ended.(471983+0x626433).
+<-><->
+      
+l.157 ...X_{n}\}$在$\rho$的意义下收敛于$X$
+                                                  。
+Not a real error.
+
+[122]
+2.tex:160: Preview: Snippet 123 started.
+<-><->
+      
+l.160 \paragraph
+                {(C2)}
+Not a real error.
+
+2.tex:160: Preview: Snippet 123 ended.(518031+172677x1588618).
+<-><->
+      
+l.160 \paragraph{(C2)}
+                      
+Not a real error.
+
+[123
+
+]
+2.tex:161: Preview: Snippet 124 started.
+<-><->
+      
+l.161 \subparagraph
+                   {(i)}
+Not a real error.
+
+2.tex:161: Preview: Snippet 124 ended.(518031+172677x838437).
+<-><->
+      
+l.161 \subparagraph{(i)}
+                        
+Not a real error.
+
+[124
+
+]
+2.tex:162: Preview: Snippet 125 started.
+<-><->
+      
+l.162 设$
+          A_{N,\delta}=\{x: \sup_{n\geq N}|X_{n}(w)-X(x)|>\delta\}$，则若...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 125 ended.(518031+252155x12384675).
+<-><->
+      
+l.162 ...: \sup_{n\geq N}|X_{n}(w)-X(x)|>\delta\}$
+                                                  ，则若$X_{n}(w)\to X(w)...
+
+Not a real error.
+
+[125]
+2.tex:162: Preview: Snippet 126 started.
+<-><->
+      
+l.162 ...geq N}|X_{n}(w)-X(x)|>\delta\}$，则若$
+                                                  X_{n}(w)\to X(w)$，则$w\...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 126 ended.(518031+172677x4730417).
+<-><->
+      
+l.162 ...(x)|>\delta\}$，则若$X_{n}(w)\to X(w)$
+                                                  ，则$w\not \in A_{N,\del...
+
+Not a real error.
+
+[126]
+2.tex:162: Preview: Snippet 127 started.
+<-><->
+      
+l.162 ...elta\}$，则若$X_{n}(w)\to X(w)$，则$
+                                                  w\not \in A_{N,\delta}$。...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 127 ended.(479658+192806x2754645).
+<-><->
+      
+l.162 ...w)\to X(w)$，则$w\not \in A_{N,\delta}$
+                                                  。故由a.s. 收敛及集...
+
+Not a real error.
+
+[127]
+2.tex:162: Preview: Snippet 128 started.
+<-><->
+      
+l.162 ...�敛及集合的下连续性（注意到$
+                                                  P(\Omega=1)$），$\mu(\bi...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 128 ended.(518031+172677x2841733).
+<-><->
+      
+l.162 ...�的下连续性（注意到$P(\Omega=1)$
+                                                  ），$\mu(\bigcap\limits_...
+
+Not a real error.
+
+[128]
+2.tex:162: Preview: Snippet 129 started.
+<-><->
+      
+l.162 ...连续性（注意到$P(\Omega=1)$），$
+                                                  \mu(\bigcap\limits_{N\in\m...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 129 ended.(518035+707616x4880978).
+<-><->
+      
+l.162 ...p\limits_{N\in\mathbb{N}}A_{N,\delta})=0$
+                                                  。故$\forall\varepsilon>...
+
+Not a real error.
+
+[129]
+2.tex:162: Preview: Snippet 130 started.
+<-><->
+      
+l.162 ...s_{N\in\mathbb{N}}A_{N,\delta})=0$。故$
+                                                  \forall\varepsilon>0, \del...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 130 ended.(567593+307286x12751693).
+<-><->
+      
+l.162 ...,\frac{1}{k}})<\frac{\varepsilon}{2^{k}}$
+                                                  。取$E=\bigcup\limits_{k...
+
+Not a real error.
+
+[130]
+2.tex:162: Preview: Snippet 131 started.
+<-><->
+      
+l.162 ...1}{k}})<\frac{\varepsilon}{2^{k}}$。取$
+                                                  E=\bigcup\limits_{k\in\mat...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 131 ended.(518035+710164x4378972).
+<-><->
+      
+l.162 ...ts_{k\in\mathbb{N}}A_{N_{k},\frac{1}{k}}$
+                                                  ，则$\mu(A)\leq\sum\limi...
+
+Not a real error.
+
+[131]
+2.tex:162: Preview: Snippet 132 started.
+<-><->
+      
+l.162 ...n\mathbb{N}}A_{N_{k},\frac{1}{k}}$，则$
+                                                  \mu(A)\leq\sum\limits_{k\i...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 132 ended.(518035+710164x7497150).
+<-><->
+      
+l.162 ...}}\mu(A_{N_{k},\frac{1}{k}})=\varepsilon$
+                                                  ，且$\forall w\in E^{c},...
+
+Not a real error.
+
+[132]
+2.tex:162: Preview: Snippet 133 started.
+<-><->
+      
+l.162 ..._{N_{k},\frac{1}{k}})=\varepsilon$，且$
+                                                  \forall w\in E^{c}, k\in\m...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 133 ended.(479658+134304x4589008).
+<-><->
+      
+l.162 ...��且$\forall w\in E^{c}, k\in\mathbb{N}$
+                                                  ，都有$\forall n>N_{k},...
+
+Not a real error.
+
+[133]
+2.tex:162: Preview: Snippet 134 started.
+<-><->
+      
+l.162 ...all w\in E^{c}, k\in\mathbb{N}$，都有$
+                                                  \forall n>N_{k}, |X_{n}(w)...
+
+Not a real error.
+
+2.tex:162: Preview: Snippet 134 ended.(567593+483496x20452071).
+<-><->
+      
+l.162 ...infty}\sup_{w\in E^{c}}|X_{n}(w)-X(w)|=0$
+                                                  
+Not a real error.
+
+[134]
+2.tex:164: Preview: Snippet 135 started.
+<-><->
+      
+l.164 \subparagraph
+                   {(ii)}
+Not a real error.
+
+2.tex:164: Preview: Snippet 135 ended.(518031+172677x1059078).
+<-><->
+      
+l.164 \subparagraph{(ii)}
+                         
+Not a real error.
+
+[135
+
+]
+2.tex:166: Preview: Snippet 136 started.
+<-><->
+      
+l.166   易见$
+               |X|\leq Y$ a.s. 。反设$\mu(A_{N,\delta})=\infty$，则$\li...
+
+Not a real error.
+
+2.tex:166: Preview: Snippet 136 ended.(518031+172677x2485584).
+<-><->
+      
+l.166   易见$|X|\leq Y$
+                          a.s. 。反设$\mu(A_{N,\delta})=\infty$，则$\li...
+
+Not a real error.
+
+[136]
+2.tex:166: Preview: Snippet 137 started.
+<-><->
+      
+l.166   易见$|X|\leq Y$ a.s. 。反设$
+                                         \mu(A_{N,\delta})=\infty$，则$\li...
+
+Not a real error.
+
+2.tex:166: Preview: Snippet 137 ended.(518031+192806x3962427).
+<-><->
+      
+l.166 ... a.s. 。反设$\mu(A_{N,\delta})=\infty$
+                                                  ，则$\lim\limits_{n\to\i...
+
+Not a real error.
+
+[137]
+2.tex:166: Preview: Snippet 138 started.
+<-><->
+      
+l.166 ...��反设$\mu(A_{N,\delta})=\infty$，则$
+                                                  \lim\limits_{n\to\infty}\i...
+
+Not a real error.
+
+2.tex:166: Preview: Snippet 138 ended.(556407+483496x11370201).
+<-><->
+      
+l.166 ...\dd P\geq \delta\mu(A_{N,\delta})=\infty$
+                                                  。但$\lim\limits_{n\to\i...
+
+Not a real error.
+
+[138]
+2.tex:166: Preview: Snippet 139 started.
+<-><->
+      
+l.166 ...eq \delta\mu(A_{N,\delta})=\infty$。但$
+                                                  \lim\limits_{n\to\infty}\i...
+
+Not a real error.
+
+2.tex:166: Preview: Snippet 139 ended.(556407+483496x11971357).
+<-><->
+      
+l.166 ...|\dd P\leq 2\int_{\Omega}|Y|\dd P<\infty$
+                                                  ，矛盾！故仍有集�...
+
+Not a real error.
+
+[139]
+2.tex:169: Preview: Snippet 140 started.
+<-><->
+      
+l.169 \paragraph
+                {(C3)}
+Not a real error.
+
+2.tex:169: Preview: Snippet 140 ended.(518031+172677x1588618).
+<-><->
+      
+l.169 \paragraph{(C3)}
+                      
+Not a real error.
+
+[140
+
+]
+2.tex:170: Preview: Snippet 141 started.
+<-><->
+      
+l.170 \subparagraph
+                   {(i)}
+Not a real error.
+
+2.tex:170: Preview: Snippet 141 ended.(518031+172677x838437).
+<-><->
+      
+l.170 \subparagraph{(i)}
+                        
+Not a real error.
+
+[141
+
+]
+2.tex:171: Preview: Snippet 142 started.
+<-><->
+      
+l.171 $
+       w\in \{|X(w)-X_{n}(w)|>\varepsilon\quad i.o.\}\Leftrightarrow w\in\li...
+
+Not a real error.
+
+2.tex:171: Preview: Snippet 142 ended.(1844718+172677x30785865).
+<-><->
+      
+l.171 ...^{\infty}\{|X(w)-X_{n}(w)|>\varepsilon\}$
+                                                  。记$\{|X_{n}(w)-X(w)|>\...
+
+Not a real error.
+
+[142]
+2.tex:171: Preview: Snippet 143 started.
+<-><->
+      
+l.171 ...y}\{|X(w)-X_{n}(w)|>\varepsilon\}$。记$
+                                                  \{|X_{n}(w)-X(w)|>\varepsi...
+
+Not a real error.
+
+2.tex:171: Preview: Snippet 143 ended.(518031+192806x9016604).
+<-><->
+      
+l.171 ...w)-X(w)|>\varepsilon\}=A_{n,\varepsilon}$
+                                                  
+Not a real error.
+
+[143]
+2.tex:173: Preview: Snippet 144 started.
+<-><->
+      
+l.173 若$
+          X_{n}\to X\quad a.s.$，则$\exists E\st P(E)=1, \forall w\in E, \...
+
+Not a real error.
+
+2.tex:173: Preview: Snippet 144 ended.(471983+103605x4393134).
+<-><->
+      
+l.173 若$X_{n}\to X\quad a.s.$
+                               ，则$\exists E\st P(E)=1, \forall w\in E, \...
+
+Not a real error.
+
+[144]
+2.tex:173: Preview: Snippet 145 started.
+<-><->
+      
+l.173 若$X_{n}\to X\quad a.s.$，则$
+                                      \exists E\st P(E)=1, \forall w\in E, \...
+
+Not a real error.
+
+2.tex:173: Preview: Snippet 145 ended.(1595538+707616x30785865).
+<-><->
+      
+l.173 ...ightarrow P[\{|X-X_{n}|>\varepsilon\}]=0$
+                                                  
+Not a real error.
+
+[145]
+2.tex:175: Preview: Snippet 146 started.
+<-><->
+      
+l.175 记$
+          A=\{|X-X_{n}|>\varepsilon\quad i.o.\}$。$\forall w\not\in A, \for...
+
+Not a real error.
+
+2.tex:175: Preview: Snippet 146 ended.(518031+172677x7803224).
+<-><->
+      
+l.175 记$A=\{|X-X_{n}|>\varepsilon\quad i.o.\}$
+                                                。$\forall w\not\in A, \for...
+
+Not a real error.
+
+[146]
+2.tex:175: Preview: Snippet 147 started.
+<-><->
+      
+l.175 ...=\{|X-X_{n}|>\varepsilon\quad i.o.\}$。$
+                                                  \forall w\not\in A, \foral...
+
+Not a real error.
+
+2.tex:175: Preview: Snippet 147 ended.(567593+240165x31132999).
+<-><->
+      
+l.175 ...rac{1}{k}\}\Leftrightarrow X_{n}(w)\to X$
+                                                  。又$P(A)=0$，故$X_{n}...
+
+Not a real error.
+
+[147]
+2.tex:175: Preview: Snippet 148 started.
+<-><->
+      
+l.175 ...k}\}\Leftrightarrow X_{n}(w)\to X$。又$
+                                                  P(A)=0$，故$X_{n}\to X\q...
+
+Not a real error.
+
+2.tex:175: Preview: Snippet 148 ended.(518031+172677x2860919).
+<-><->
+      
+l.175 ...ftrightarrow X_{n}(w)\to X$。又$P(A)=0$
+                                                  ，故$X_{n}\to X\quad a.s.$
+Not a real error.
+
+[148]
+2.tex:175: Preview: Snippet 149 started.
+<-><->
+      
+l.175 ...arrow X_{n}(w)\to X$。又$P(A)=0$，故$
+                                                  X_{n}\to X\quad a.s.$
+Not a real error.
+
+2.tex:175: Preview: Snippet 149 ended.(471983+103605x4393134).
+<-><->
+      
+l.175 ...��又$P(A)=0$，故$X_{n}\to X\quad a.s.$
+                                                  
+Not a real error.
+
+[149]
+2.tex:177: Preview: Snippet 150 started.
+<-><->
+      
+l.177 \subparagraph
+                   {(ii)}
+Not a real error.
+
+2.tex:177: Preview: Snippet 150 ended.(518031+172677x1059078).
+<-><->
+      
+l.177 \subparagraph{(ii)}
+                         
+Not a real error.
+
+[150
+
+]
+2.tex:179: Preview: Snippet 151 started.
+<-><->
+      
+l.179   由Borel-Cantelli第一引理，$
+                                         P(\limsup\limits_{n\to\infty}A_{n,\...
+
+Not a real error.
+
+2.tex:179: Preview: Snippet 151 ended.(518031+617800x5850354).
+<-><->
+      
+l.179 ...\limits_{n\to\infty}A_{n,\varepsilon})=0$
+                                                  ，故由(i)开头的等�...
+
+Not a real error.
+
+[151]
+2.tex:179: Preview: Snippet 152 started.
+<-><->
+      
+l.179 ...�，这等价于(i)的条件，故由(i)$
+                                                  X_{n}\to X\quad a.s.$
+Not a real error.
+
+2.tex:179: Preview: Snippet 152 ended.(471983+103605x4393134).
+<-><->
+      
+l.179 ...�条件，故由(i)$X_{n}\to X\quad a.s.$
+                                                  
+Not a real error.
+
+[152]
+2.tex:181: Preview: Snippet 153 started.
+<-><->
+      
+l.181 \subparagraph
+                   {(iii)}
+Not a real error.
+
+2.tex:181: Preview: Snippet 153 ended.(518031+172677x1279719).
+<-><->
+      
+l.181 \subparagraph{(iii)}
+                          
+Not a real error.
+
+[153
+
+]
+2.tex:183: Preview: Snippet 154 started.
+<-><->
+      
+l.183   由Markov不等式，对任意固定的$
+                                                \varepsilon>0$，$\sum_{n\in...
+
+Not a real error.
+
+2.tex:183: Preview: Snippet 154 ended.(445122+27005x1588383).
+<-><->
+      
+l.183 ...��式，对任意固定的$\varepsilon>0$
+                                                  ，$\sum_{n\in\mathbb{N}}P...
+
+Not a real error.
+
+[154]
+2.tex:183: Preview: Snippet 155 started.
+<-><->
+      
+l.183 ...�，对任意固定的$\varepsilon>0$，$
+                                                  \sum_{n\in\mathbb{N}}P[\{|...
+
+Not a real error.
+
+2.tex:183: Preview: Snippet 155 ended.(567593+240165x16758408).
+<-><->
+      
+l.183 ..._{n\in\mathbb{N}}E[|X_{n}-X|^{p}]<\infty$
+                                                  ，故由(ii)知$X_{n}\to ...
+
+Not a real error.
+
+[155]
+2.tex:183: Preview: Snippet 156 started.
+<-><->
+      
+l.183 ...E[|X_{n}-X|^{p}]<\infty$，故由(ii)知$
+                                                  X_{n}\to X\quad a.s.$。�...
+
+Not a real error.
+
+2.tex:183: Preview: Snippet 156 ended.(471983+103605x4393134).
+<-><->
+      
+l.183 ...ty$，故由(ii)知$X_{n}\to X\quad a.s.$
+                                                  。又概率空间之测�...
+
+Not a real error.
+
+[156]
+2.tex:183: Preview: Snippet 157 started.
+<-><->
+      
+l.183 ...$。又概率空间之测度有限，故$
+                                                  X_{n}\to X\quad a.s.\Right...
+
+Not a real error.
+
+2.tex:183: Preview: Snippet 157 ended.(471983+103605x10133302).
+<-><->
+      
+l.183 ....\Rightarrow X_{n}\to X\quad\text{in } P$
+                                                  。
+Not a real error.
+
+[157]
+2.tex:185: Preview: Snippet 158 started.
+<-><->
+      
+l.185   反设$
+               L^{p}$收敛不成立，则$\exists \varepsilon_{0}>0\st \for...
+
+Not a real error.
+
+2.tex:185: Preview: Snippet 158 ended.(471983+0x772996).
+<-><->
+      
+l.185   反设$L^{p}$
+                     收敛不成立，则$\exists \varepsilon_{0}>0\st \for...
+
+Not a real error.
+
+[158]
+2.tex:185: Preview: Snippet 159 started.
+<-><->
+      
+l.185   反设$L^{p}$收敛不成立，则$
+                                           \exists \varepsilon_{0}>0\st \for...
+
+Not a real error.
+
+2.tex:185: Preview: Snippet 159 ended.(683258+240165x23492246).
+<-><->
+      
+l.185 ...q \varepsilon_{0}^{p}\cdot \infty=\infty$
+                                                  ，矛盾！
+Not a real error.
+
+[159] ) 
+Here is how much of TeX's memory you used:
+ 7364 strings out of 478585
+ 136621 string characters out of 2851488
+ 406582 words of memory out of 3000000
+ 25291 multiletter control sequences out of 15000+600000
+ 492690 words of font info for 111 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 76i,11n,78p,970b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr
+/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local
+/share/miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/share/
+miktex-texmf/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/share/miktex-
+texmf/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/share/miktex-texmf/f
+onts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/share/miktex-texmf/fonts/typ
+e1/public/amsfonts/cm/cmr7.pfb></usr/local/share/miktex-texmf/fonts/type1/publi
+c/amsfonts/cm/cmsy10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsf
+onts/cm/cmsy5.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/cm
+/cmsy7.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/symbols/m
+sbm10.pfb></usr/local/share/miktex-texmf/fonts/type1/public/amsfonts/symbols/ms
+bm7.pfb>
+Output written on 2.pdf (159 pages, 249062 bytes).
+PDF statistics:
+ 630 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 213 words of extra memory for PDF output out of 10000 (max. 10000000)
+

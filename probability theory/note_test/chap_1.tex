@@ -1,0 +1,958 @@
+\ifx\allfiles\undefined
+\documentclass{ctexart}
+\usepackage{mathrsfs,amsmath,amssymb,amsthm,bm,ulem,comment,hyperref}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+\begin{document}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+\newcommand{\alsu}{\text{ a.s. }}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\G}{\mathscr{G}}
+\newcommand{\Bor}{\mathscr{B}}
+\newcommand{\pw}{\text{ p.w. }}
+\newcommand{\inof}{\text{ i.o. }}
+\newcommand{\X}{\bm{X}}
+\newcommand{\iid}{\mathrm{i.i.d.}~}
+\newcommand{\C}{\mathbb{C}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\else
+\chapter{可测空间与测度空间}
+\fi
+\section{集合}
+下面以$X$表全集，$\varnothing$表空集，$A\backslash B=\{p\in A:p\not \in B\}$。称$A\backslash B$为真差，若此时$B\subset A$。$A\Delta B=(A\backslash B)\cup(B\backslash A)$称对称差。
+
+若有一族集合$\{A_{t}\in 2^{X}:t\in T\}$。无论$T$基数如何，总可以定义$\bigcap_{t\in T}A_{t}=\{p\in X:\forall t,p\in A_{t}\}$。同理总可以定义$\bigcup_{t\in T}A_{t}=\{p\in X:\exists t\in T, p\in A_{t}\}$
+
+\begin{Thm}[De Morgan]
+  \[(\bigcap_{t\in T}A_{t})^{c}=\bigcup_{t\in T}A_{t}^{c}\]
+  \[(\bigcup_{t\in T}A_{t})^{c}=\bigcap_{t\in T}A_{t}^{c}\]
+  
+\end{Thm}
+若$A_{n}\nearrow A$，即$\{A_{n}\}$递增，若$A_{n}\subset A_{n+1}$。对于递增的序列，可以定义$A:=\bigcup_{n\in\mathbb{N}}A_{n}=\lim\limits_{n\to\infty}A_{n}$
+
+若$A_{n}\searrow A$，即$\{A_{n}\}$递减，可以定义$A=\bigcap_{n\in\mathbb{N}}A_{n}=\lim\limits_{n\to\infty}A_{n}$
+
+对于一般的集合，不能一般地定义极限。对其定义递减、递增序列：
+
+\[B_{m}=\bigcup_{n=m}^{\infty}A_{n}\quad C_{m}\bigcap_{n=m}^{\infty}A_{n}\]
+
+遂可以定义上、下极限
+\[\limsup_{n\to\infty} A_{n}=\lim_{m\to\infty}B_{m}\quad \liminf A_{n}=\lim_{m\to\infty}C_{m}\]称$\lim_{n\to\infty}A_{n}$存在，若$\limsup_{n\to\infty}A_{n}=\liminf_{n\to\infty}A_{n}$。此时$\lim_{n\to\infty}A_{n}=\limsup_{n\to\infty}A_{n}=\liminf_{n\to\infty}A_{n}$
+
+\begin{Prop}
+  $A_{n}\nearrow A\Rightarrow F\cap A_{n}\nearrow F\cap A$，$F\backslash A_{n}\searrow F\backslash A$
+\end{Prop}
+
+\section{集合系}
+\begin{Def}
+集合$X$的子集之集$\mathcal{E}$称$X$上的集合系。
+\end{Def}
+
+\begin{Def}
+  若$\E$是$X$上的集合系，称
+  \begin{enumerate}
+  \item $\E$是一个$\pi-$系，若$A,B\in \E\Rightarrow A\cap B\in\E$
+
+    即：$\pi-$系对交运算封闭。
+  
+  \item $\E$是一个半环，若$\E$是一个$\pi-$系，且$\forall A,B\in \E, B\subset A\Rightarrow \exists \{C_{j}\}_{j=1}^{n}\subset \E$两两不交$\st A\backslash B=\bigcup_{j=1}^{n}C_{j}$
+   
+  \item $\E$是一个环，若$A,B\in\E\Rightarrow A\cup B\in \E,A\backslash B\in \E$。
+
+    一个环一定是半环。
+
+    $A\cap B=A\cup B\backslash (A\Delta B)$，故环同样对交运算封闭。
+
+    环对集合的并和差封闭。此时$\E$在运算$(\cap,\Delta)$的意义下是一个环。（可以视作集合对应的示性函数在$\mathbf{F}_{2}$的$(+,\times)$中构成环）
+  \item $\E$是一个代数，若
+    \begin{itemize}
+    \item $\E$是一个$\pi-$系
+    \item $\varnothing\in\E$
+      
+    \item $\E$对集合的补运算封闭
+    \end{itemize}
+    故$X\in\E,A\cup B\in \E$，再由De Morgan定律$\E$同样对交封闭。$A\backslash B=A\cap B^{c}$。综上一个代数一定是一个环。
+    
+  \item $\E$是一个$\sigma$-代数，若$\E$是代数，且其对可数并封闭：$\{C_{n}\}_{n\in\mathbb{N}}\subset \E\Rightarrow\bigcup_{n\in\mathbb{N}}\E$
+  \item $\E$是一个单调类，若$A_{n}\searrow A\Rightarrow A\in \E,A_{n}\nearrow A\Rightarrow A\in E$
+  \item $\E$是一个$\lambda$系（Dinkin类）若
+    \begin{itemize}
+    \item $X\in\E$
+     
+    \item $\E$对真差封闭
+      
+    \item $\E$对单调序列的极限封闭
+    \end{itemize}
+%    $X\in\E$，对真差封闭，对单调序列的极限封闭。
+  \end{enumerate}
+\end{Def}
+$\pi-$系$\subset$半环$\subset$环$\subset $代数$\subset \sigma-$代数
+
+单调类$\subset \lambda-$系$\subset\sigma-$代数
+\begin{Eg}
+  $\R$上左开右闭的集合是半环。%：$A\backslash B=A\backslash (A\cap B)$
+\end{Eg}
+
+\begin{Eg}
+  $\{\varnothing,X\}$是最小的$\sigma$代数，称平凡$\sigma$代数。
+\end{Eg}
+\begin{Eg}
+  $2^{X}$，即$X$的幂集是最大的$\sigma$代数。
+\end{Eg}
+
+\begin{Prop}
+  \begin{enumerate}
+  \item  设$\E$是一个代数，则它是一个单调类当且仅当$\E$是一个$\sigma$代数。
+  \item $\E$是一个$\pi-$系且是$\lambda-$系，则$\E$是$\sigma-$代数。
+  \end{enumerate}
+ \end{Prop}
+
+ \begin{proof}
+   \textbf{1.} 任取$\{A_{n}\}_{n\in\mathbb{N}}\in \E$，只需证$\bigcup_{n\in\mathbb{N}} A_{n}\in \E$。为此定义单调递增序列$B_{n}=\bigcup_{i=1}^{n}A_{i}$。因$\E$是代数，$B_{n}\in E$则$\bigcup_{n\in\N}B_{n}=\bigcup_{n\in \N}A_{n}$
+
+   此时再定义$C_{n}=B_{n}\backslash B_{n-1}$，则$\bigcup_{n\in\N}C_{n}=\bigcup_{n\in\N}A_{n}$
+ \end{proof}
+
+ \begin{Rmk}
+   今有一族集合系$\{E_{t}\}_{t\in T}$，且$\forall t\in T, \E_{t}$是$X$上的单调类，则$\bigcap_{t\in T}\E_{t}$犹为单调系。
+ \end{Rmk}
+即：单调类之交犹为单调系。
+ 
+事实上，半环是唯一不满足上述性质的。
+
+\begin{Def}
+  设$\E$是$X$上的集合系，称$\mathcal{G}$为$\E$生成的$\sigma-$代数（单调类，$\lambda-$系），若
+  \begin{enumerate}
+  \item $\E\subset \mathcal{G}$
+  \item $\mathcal{G}$是一个$\sigma-$代数（单调类，Dinkin类）
+  \item $\forall \mathcal{G}'$满足1.2. 都有$\mathcal{G}\subset\mathcal{G}'$
+  \end{enumerate}
+  将其记为$\sigma(\E),m(\E),l(\E)$
+\end{Def}
+$2^{X}$总满足$1,2$，故上述定义的集合总是存在的，且$\sigma(\E)=\bigcap_{t\in T}G_{t}$，其中$t$使得$\forall t\in T, G_{t}$满足1,2。
+
+\begin{Def}
+  $X$是一个拓扑空间，$O_{X}=\{X\text{中的开集}\}$，则称$\sigma(O_{X})$为Borel $\sigma-$代数。
+\end{Def}
+
+\begin{Prop}
+  $Q$是$X$上的一个半环，则其生成的环$r(Q)=Q$中有限无交并$=\bigcup_{n\in\N}\{\bigcup_{j=1}^{n}C_{n,j}: \{C_{n,j}\text{两两不交}\}\}$
+\end{Prop}
+
+\begin{Prop}
+  \begin{enumerate}
+  \item $\E_{1}\subset \E_{2}\Rightarrow m(\E_{1})\subset m(\E_{2}),\sigma(\E_{1})\subset \sigma(\E_{2})$
+  \item $\E$是一个代数$\Rightarrow \sigma(\E)=m(\E)$ 
+  \item $\E$是一个$\pi-$系$\Rightarrow \sigma(\E)=l(\E)$
+  \item $\E_{1}\subset \E_{2}$，$\E_{1}$是代数，$\E_{2}$是单调类$\Rightarrow\sigma(\E_{1})\subset \E_{2}$
+  \item $\E_{1}$是$\pi-$系，$\E_{2}$是$\lambda-$系$\Rightarrow \sigma(\E_{1})\subset\E_{2}$
+  \end{enumerate}
+\end{Prop}
+
+\begin{proof}
+  \textbf{1.} trivial
+
+  \textbf{4.} 是2.的推论。
+
+  \textbf{2.} $m(\E)\subset \sigma(\E)$是平凡的。下证明$\sigma(\E)\subset m(\E)$，为此只需证明$m(\E)$是一个代数（因$m(\E)$是一个含$\E$的单调类）。只需证明$X\in m(\E)$，对补封闭，对交封闭。
+
+  \begin{enumerate}
+  \item $m(E)$对交封闭：$\forall A,B\in m(\E)$，定义\[G_{1}=\{D\in m(\E):D\cap A\in m(E),\forall A\in m(\E)\}\]\[G_{2}=\{D\in m(\E):D\cap A\in m(\E),\forall A\in E\}\]\[G_{3}=\{D\in m(\E):D^{c}\in m(\E)\}\]目标：证明$m(\E)=G_{1}$，只需证$\E\subset G_{1}$，且$G_{1}$为单调类。
+
+    由于$\E$是代数，易见$\E\subset G_{2}$，且$G_{2}$是单调类：取$\{D_{n}\}\subset G_{2}\st D_{n}\nearrow D\Rightarrow D_{n}\cap A\nearrow D\cap A$，而$D_{n}\cap A\in m(E)$，故得（递减序列是类似的）。故$G_{2}=m(E)$。故$\forall D\in\E,\forall A\in m(\E),D\cap A\in m(\E)$，对换$D,A$得知$G_{1}=m(\E)$。
+    \item $m(\E)$对补封闭。$G_{3}$是单调类且$G_{3}\supset \E$，故$G_{3}=m(E)$。
+  \end{enumerate}
+\end{proof}
+
+\section{集函数}
+\begin{Def}
+  集函数：集合系$\to \bar{\R}_{+}=[0,+\infty]$
+\end{Def}
+
+\begin{Def}[可测空间]
+  $(X,\mathscr{F})$，其中$\mathscr{F}$是$X$上的$\sigma$-代数。
+\end{Def}
+
+\begin{Def}
+  $\nu:\E\to [0,+\infty]$，其中$\E$是$X$上集合系。
+  \begin{enumerate}
+  \item 单调性：$A,B\in\E,A\subset \E\Rightarrow \nu(A)\leq \nu(B)$
+  \item 可减性：$A,B\in \E,A\subset B,B\backslash A\in \E\Rightarrow \nu(B\backslash A)=\nu(A)-\nu(B)$
+  \item 有限可加性：$\{E_{i}\}_{i=1}^{n}$两两不交$\Rightarrow \nu(\bigcup_{i=1}^{n}E_{i})=\sum_{i=1}^{n}\nu(E_{i})$
+  \item 有限次可加性：$\{E_{i}\}_{i=1}^{n}$不要求两两不交$\Rightarrow \nu(\bigcup_{i=1}^{n}E_{i})\leq\sum_{i=1}^{n}\nu(E_{i})$
+ 
+  \item 可数可加性：$\{E_{i}\}_{i\in\mathbb{N}}$两两不交$\Rightarrow \nu(\bigcup_{i\in\mathbb{N}}E_{i})=\sum_{i\in\mathbb{N}}\nu(E_{i})$
+  \item 可数次可加性：$\{E_{i}\}_{i\in\mathbb{N}}$不要求两两不交$\Rightarrow \nu(\bigcup_{i\in\mathbb{N}}E_{i})=\sum_{i\in\mathbb{N}}\nu(E_{i})$
+  \item 下连续性：$A_{n}\nearrow A,\{A_{n}\}\subset \E,A\in\E\Rightarrow \nu(\lim_{n\to\infty} A_{n})=\nu(A)=\lim_{n\to\infty}\nu(A_{n})$
+  \item 上连续性：$A_{n}\searrow A,\{A_{n}\}\subset \E,A\in\E,\nu(A_{1})<\infty\Rightarrow \nu(\lim_{n\to\infty} A_{n})=\nu(A)=\lim_{n\to\infty}\nu(A_{n})$
+  \end{enumerate}
+如果$\E$是一个半环，我们称$\nu$为一个预测度，若其满足：
+\begin{enumerate}
+\item $\nu(\varnothing)=0$
+\item 可数可加性
+\end{enumerate}
+如果$\E$还是一个$\sigma$-代数，则称$\nu$为一个测度，若其满足上述性质。
+\end{Def}
+
+\begin{Def}[测度空间]
+  可测空间$(X,\mathscr{F})$与其上测度$\nu$构成测度空间。
+\end{Def}
+
+
+若$\nu$是半环$\E$上的预测度，那么上述性质都满足：可数可加$\Rightarrow$有限可加$\Rightarrow$可减性$\Rightarrow$单调性。
+
+\begin{Thm}
+  半环$\E$上的预测度$\mu$满足下连续性和可数次可加性。
+\end{Thm}
+
+
+\begin{proof}
+  \textbf{下连续性：}设$\{A_{n}\}_{n\in\mathbb{N}}\subset \E,A_{n}\nearrow A,A\in\E$。令$B_{1}=A_{1},B_{n}=A_{n}\backslash (\bigcup_{i=1}^{n}A_{i})\Rightarrow A=\bigcup_{n\in\mathbb{N}}A_{n}=\bigcup_{n\in\mathbb{N}}B_{n}$。
+
+  由半环之定义，$\forall n,\exists\{C_{n,j}\}_{j=1}^{p_{n}}$两两不交$\st B_{n}=\bigcup_{j=1}^{p_{n}}C_{n,j}\Rightarrow A_{m}=\bigcup_{i=1}^{m}\bigcup_{j=1}^{p_{n}}C_{i,j}$。故由有限可加性$\nu(A_{m})=\sum_{i=1}^{m}\sum_{j=1}^{p_{i}}\nu(C_{i,j})$。故  
+\[\lim_{m\to\infty}\nu(A_{m})=\lim_{m\to\infty}\sum_{i=1}^{m}\sum_{j=1}^{p_{j}}\nu(C_{i,j})=\sum_{i=1}^{\infty}\sum_{j=1}^{p_{j}}\nu(C_{i,j})=\nu(A)\]
+故得。
+
+\textbf{可数次可加性：}设$B_{n}=A_{n}\backslash ((\bigcup_{i=1}^{n}A_{i}))$。因$B\in r(\E)$，其仍然能写成有限不交并：$B_{n}=\bigcup_{j=1}^{n}C_{n,j}\Rightarrow A=\bigcup_{i\in\mathbb{N}}B_{i}=\bigcup_{i=1}^{\infty}\bigcup_{j=1}^{p_{i}}C_{i,j}$
+
+$A_{m}=B_{m}\cup((\bigcup_{i=1}^{m-1}A_{i})\cap A_{m})
+%=B_{m}\cup(\bigcup_{i=1}^{m-1}A_{i}\cap A_{m})
+%=(\bigcup_{j=1}^{p_{m}}C_{m,j})\cup (\bigcup_{i=1}^{m-1}(A_{i}\cap A_{m}))
+=(\bigcup_{j=1}^{p_{m}}C_{m,j})\cup (\bigcup_{i=1}^{m-1}B_{i}\cap A_{m})$
+%=(\bigcup_{j=1}^{p_{m}}C_{m,j})\bigcup_{i=1}^{m-1}\bigcup_{j=1}^{p_{i}}C_{i,j}
+故
+\[\nu(A_{m})=\sum_{j=1}^{p_{m}}\nu(C_{m,j})+\sum_{i=1}^{m-1}\sum_{j=1}^{p_{i}}\nu(A_{m}\cap C_{i,j})
+%  \geq \sum_{i=1}^{m}\sum_{j=1}^{p_{i}}\nu(C_{i,j})
+\]
+求和再由a有限次可加性得$\sum_{m=1}^{M}\nu(A_{m})\geq \sum_{m=1}^{M}\sum_{j=1}^{p_{m}}\nu(C_{m,j})$。令$M\to\infty$，则$\nu(A)\leq \sum_{m=1}^{\infty}\nu(A_{m})$
+\end{proof}
+
+\section{Borel-Cantelli引理}
+\begin{Thm}
+  设$(X,\mathscr{F},\mu)$是测度空间，$\{E_{n}\}\subset\mathscr{F},\sum_{n=1}^{\infty}\nu(E_{n})<\infty\Rightarrow \nu(\limsup\limits_{n\to\infty}E_{n})=0$
+\end{Thm}
+$\limsup_{n\to\infty}E_{n}=\bigcap_{n\in\mathbb{N}}\bigcup_{i=n}^{\infty}E_{i}$($x\in\limsup_{n\to\infty}\Leftrightarrow x\in E_{n}$ infnitely often)
+
+$\liminf_{n\to\infty} E_{n}=\bigcup_{n\in\mathbb{N}}\bigcap_{i=n}^{\infty} E_{i}$($x\in\liminf_{n\to\infty}E_{n}\Leftrightarrow x\not\in E_{n}$ finitely often)
+
+由此易见$\limsup_{n\to\infty}E_{n}\supset\liminf_{n\to\infty}E_{n}$
+
+\begin{proof}
+  由定义：$\limsup_{n\to\infty} E_{n}=\bigcap_{m\in\mathbb{N}}T_{m},T_{m}:=\bigcup_{i=m}^{\infty}E_{i}$。
+
+  $\{T_{m}\}$满足：
+  \begin{itemize}
+  \item $T_{m}\searrow \limsup_{n\to\infty} E_{n}$
+  \item $\nu(T_{1})=\nu(\bigcup_{n=1}^\infty E_{n})\leq \sum_{n=1}^{\infty}\nu(E_{n})<\infty$
+  \end{itemize}
+  故$\nu(\limsup E_{n})=\lim_{m\to\infty}\nu(T_{m})$。同时$\nu(T_{m})=\nu(\bigcup_{n=m}^{\infty}E_{n})\leq \sum_{n=m}^{\infty}\nu(E_{n})$。令$m\to\infty$，则$\nu(\limsup E_{n})=\nu(T_{m})\to 0$
+\end{proof}
+
+\section{测度扩张}
+
+由半环上$Q$的预测度$\nu$，生成测度空间$(X,\mathscr{F},\mu)$
+\begin{Eg}
+  $Q_{\R}=\{(a,b]:a\leq b\in\R\},\nu((a,b])=F(b)-F(a)$（$F$单调增，右连续）是一个预测度。
+\end{Eg}
+\begin{proof}
+显然$\nu(\varnothing)=0$。
+
+\textbf{有限可加性：}设$\{(a_{i},b_{i}]\}_{i=1}^{n}$是$\E$中一族集合。此时只需考虑集合相连的情形。
+
+一方面，若$\bigcup_{i=1}^{n}(a_{i},b_{i}]\subset (c,d]$则由$F$的单调性：$\nu((c,d])=F(d)-F(c)\geq\sum_{i=1}^{n}F(b_{i})-F(a_{i})=\sum_{i=1}^{n}\nu((a_{i,b_{i}}])$。
+
+另一方面，若$(c,d]\subset \bigcup_{i=1}^{n}(a_{i},b_{i}]$则同样由$F$的单调性$ \nu((c,d])\leq \sum_{i=1}^{n}\nu((a_{i},b_{i}])$。
+
+\textbf{可数可加性：}设$\{(a_{i},b_{i}]\}_{i\in\mathbb{N}}$两两不交，$(c,d]=\bigcup_{i\in\mathbb{N}}(a_{i},b_{i}]$。仍然只需考虑集合相连的情形。
+
+一方面，由可数可加性，$\nu((c,d])\geq \sum_{i=1}^{n}\nu((a_{i},b_{i}])$。令$n\to\infty$，得$\nu(c,d]\geq\sum_{i\in\mathbb{N}}\nu((a_{i},b_{i}])$
+
+另一方面，由$F$于$b_{i}$的右连续性，$\forall\varepsilon>0$，$\exists \delta_{i}>0\st 0\leq F(b_{i}+\delta_{i})-F(b_{i})<\frac{\varepsilon}{2^{i+1}}$，故$\{(a_{i},b_{i}+\delta_{i})\}_{i\in\mathbb{N}}$覆盖了$[c+\varepsilon,d]$，由紧性$\exists \{i_{k}:1\leq k\leq K<\infty\}\st [c+\epsilon,d]\subset \bigcup_{i_{k}=1}^{K}(a_{i_{k}},b_{i_{k}}+\delta_{ik}]\Rightarrow$
+\[\nu((c+\epsilon,d])\leq \sum_{k=1}^{K}F(b_{i_{k}}+\delta_{i_{k}})-F(a_{i_{k}})<\varepsilon+\sum_{i=1}^{\infty}\nu((a_{i},b_{i}])\]
+先令RHS$\varepsilon\to 0$，再令LHS$\epsilon\to 0$，得$\nu((c,d])\leq \sum_{i=1}^{n}\nu((a_{i},b_{i}])$
+\end{proof}
+
+\begin{Def}[概率空间]
+  称$(X,\mathcal{F},\mu)$ 为概率空间，若$\mathcal{F}$ 是$\sigma$-代数，且$\mu:\mathcal{F}\to [0,+\infty]$满足$\mu(\varnothing)=0$与可数可加性。
+\end{Def}
+\begin{Eg}[Dirac测度]
+  $(\R,2^{\R},\delta),\delta_{0}(A)=\begin{cases}1&0\in A\\0&0\not\in A\end{cases}$
+\end{Eg}
+\begin{Eg}[Lebesgue测度]
+  $(\R,\mathbb{F}_{\lambda},\lambda):$由半环$Q_{\R}=\{(a,b]:a,b\in\R\}$上的预测度$\mu((a,b])=b-a$生成。
+\end{Eg}
+
+\begin{Eg}[Lebesgue-Stieltjes]
+  $(\R,\mathbb{F}_{\lambda},\lambda_{F}):$由半环$Q_{\R}=\{(a,b]:a,b\in\R\}$上的预测度$\mu((a,b])=F(b)-F(a)$生成，其中$F$单增且右连续。  
+\end{Eg}
+
+给定集合$\E$与集函数$\nu$，可以由其扩张为幂集上的外测度$\nu^{*}$：
+\begin{Def}[外测度]
+  外测度$\tau:2^{X}\to[0,+\infty]$满足
+  \begin{itemize}
+  \item $\tau(\varnothing)=0$
+  \item 单调性：$A\subset B\Rightarrow \tau(A)\leq \tau(B)$
+  \item 可数次可加性。
+  \end{itemize}
+\end{Def}
+
+再从外测度出发限制到子$\sigma$-代数，由Caratheodory定理生成测度。特别地，当$\nu$是预测度时，$(\sigma(\E),\nu^{*}|_{\E})$于上述构造的测度空间只差完备化。
+
+\paragraph{Step 1}
+\begin{Prop}
+  $(\E,\nu)$ 时$X$上的集合系与$\E$上的非负集函数，且满足$\varnothing\in\E,\nu(\varnothing)=0$。$\forall A\in E$，定义
+  \[\nu^{*}(A):=\inf\{\sum_{n\in \N}\nu(E_{n}):\{E_{n}\}_{n\in\N}\subset\E,\bigcup_{n\in\N}E_{n}\supset A\}\]
+  特别地，当找不到$A$的覆盖时，定义$\nu^{*}(A)=\infty$。
+
+  这是$X$上的外测度。
+\end{Prop}
+
+\begin{proof}
+  只需对测度有限的情形证明可数次可加性（无穷的情形是trivial的），即欲证
+  \[\nu^{*}(\bigcup_{n\in\N}A_{n})\leq \sum_{n\in\N}\nu^{*}(A_{n})\]
+  $\forall n\in \N,\exists \{E_{n,j}\}\subset \E\st \sum_{j\in\N}\nu(E_{n,j})\leq \nu^{*}(A_{n})+\frac{\varepsilon}{2^{n+1}}$ 且$A_{n}\subset \bigcup_{j\in\N}E_{n,j}$。
+
+  对于$A=\bigcup_{n\in \N}A_{n}, \bigcup_{n\in\N}\bigcup_{j\in \N}E_{n,j}\supset A,\nu^{*}(A)<\sum_{n,j\in\N^{2}}\nu(E_{n,j})=\sum_{n\in\N}\nu^{*}(A_{n})+\varepsilon$。令$\varepsilon\to 0$即得。
+\end{proof}
+\paragraph{Step 2}
+\begin{Thm}[Caratheodory]
+  若$\tau$是$X$上的外测度，定义
+  \[\F_{\tau}:=\{A\subset X:\tau(D)\geq \tau(D\cap A)+\tau(D\cap A^{c})\quad \forall D\subset X\}\]
+  则$\F_{\tau}$是完备的测度空间。
+\end{Thm}
+
+注意到（由有限次可加性）$\tau(D)\leq \tau(D\cap A)+\tau(D\cap A^{c})$，且对于$\tau(D)=\infty$总有$\tau(D)\geq \tau(D\cap A)+\tau(D\cap A^{c})$，故
+\[F_{\tau}:=\{A\subset X:\tau(D)= \tau(D\cap A)+\tau(D\cap A^{c})\quad \forall D\subset X,\tau(D)<\infty\}\]
+
+\begin{Def}[完备性]
+  $(X,\F,\mu)$是测度空间。 若$\mu(A)=0$，则称其为零测集；若$B\subset A,\mu(A)=0$，则称其为$\mu$-可略集。记$N$为所有$\mu$-可略集之集合。称该测度空间为$\mu$-完备的，若$N\subset \F$
+\end{Def}
+
+\begin{proof}[Caratheodory定理的证明]
+  \begin{enumerate}
+  \item \textbf{$\bm{\F}$是$\sigma$-代数}
+
+    $X\in\F_{\tau}$，对补对称故封闭，下只需证对可数并封闭。
+
+    对有限并封闭：$\forall A,B\in\F_{\tau}$，我们有如下分解：\[A\cup B=(A\cap B)\cup(A\cap B^{c})\cup (A^{c}\cap B)\]
+
+    故任取$D\subset X\st \tau(D)<\infty$, 有如下无交并之分解
+    \[D\cap(A\cup B)=(D\cap A\cap B)\cup (D\cap A\cap B^{c})\cup (D\cap A^{c}\cap B)\]
+
+    故$\tau(D\cap (A\cup B))+\tau(D\cap(A\cup B)^{c})\leq \tau(D\cap A\cap B)+\tau(D\cap A\cap B^{c})+\tau(D\cap A^{c}\cap B)+\tau(D\cap A^{c}\cap B^{c})\leq\tau(D\cap A)+\tau(D\cap A^{c})\leq \tau(D)$
+
+    故$\F_{\tau}$是一个代数。下面证明$\F_{\tau}$是一个$\sigma$-代数（即证明可数可加性）。
+
+    断言：$\forall D\subset X,\tau(D)<\infty,\forall\{E_{i}\}_{i=1}^{n}\subset\F_{\tau}$两两不交，则$\tau(D\cap (\bigcap_{i=1}^{n}E_{i})=\sum_{i=1}^{n}\tau(D\cap E_{i})$。这是因为：
+    \begin{align*}
+      &\tau(D\cap(\bigcup_{i=1}^{n}E_{i}))\\
+      =&\tau(D\cap(\bigcup_{i=1}^{n-1}E_{i})\cap E_{n})+\tau(D\cap(\bigcup_{i=1}^{n-1}E_{i})\cap E_{n}^{c})\\
+      =&\tau(D\cap E_{n})+\tau(D\cap (\bigcup_{i=1}^{n-1}E_{i}))\\
+      =&\cdots\\
+      =&\sum_{i=1}^{n}\tau(D\cap E_{i})
+    \end{align*}
+    下证$\F_{\tau}$对可数并封闭：$\{E_{i}\}_{i\in\N}\subset \F_{\tau}$且因$\sigma$-代数等价于代数+单调类可不妨假定其两两不交。欲证$\bigcup_{i\in\N}E_{i}\in\F_{\tau}$。$\forall n$
+    \begin{align*}
+      \tau(D)&=\tau(D\cap (\bigcup_{i=1}^{n}E_{i}))+\tau(D\cap(\bigcup_{i=1}^{n}E_{i})^{c})\\
+      &\geq \sum_{i=1}^{n}\tau(D\cap E_{i})+\tau(D\cap(\bigcup_{i\in\N}E_{i})^{c})
+    \end{align*}
+    令$n\to\infty$即得。
+  \item \textbf{$\bm{\tau|_{\F_{\tau}}}$是一个测度}
+
+    可数可加性：$\forall \{E_{i}\}\subset \F_{\tau}$两两不交， $E=\bigcup_{i\in\N}E_{i}$。在上述对$\sigma$-代数证明中$D$取$E$即得$\tau(E)\geq\sum_{i=1}^{\infty}\tau(E_{i})$，故得。
+
+    完备性：$A\in\F_{\tau},\tau(A)=0,B\subset A\Rightarrow \tau(B)=0$. $\forall D\subset X,\tau(D\cap B)+\tau(D\cap B^{c})\leq \tau(B)+\tau(D)=\tau(D)$（各由单调性），完备性得证。
+  \end{enumerate}
+\end{proof}
+\paragraph{Step 3}
+问题（测度扩张的存在性）：若$(\E,\nu)$是半环及其预测度，由Caratheodory延拓为测度空间$(X,\F_{\nu^{*}},\nu^{*})$，那么$\sigma(\E)\subset\F_{\nu^{*}}$？$\nu^{*}|_{\E}=\nu$？
+
+\begin{Def}[集函数的扩张]
+  $\nu:\E\to\infty,\mu:\E_{1}\to[0,+\infty]$。称$\mu$是$\nu$的扩张，若$\E\subset \E_{1}$，且$\mu|_{\E}=\nu$
+\end{Def}
+
+\begin{Thm}[Caratheodory-Hahn-Kolmogorov测度扩张定理]
+  $(\E,\nu)$是半环及其上的预测度，$(X,\F,\mu)$是其扩张：$\F=\F_{\nu^{*}},\mu=\nu^{*}$，则
+  \begin{enumerate}
+  \item $\sigma(\E)\subset\F$，即扩张存在。
+  \item 若$(X,\sigma(\E),\rho)$为测度空间且$\rho$是$\nu$的扩张，则$\rho(A)\leq\mu(A)\quad\forall A\in\sigma(\E)$，且若$\mu(A)<\infty$，则$\rho(A)=\mu(A)$
+  \item 若$\nu$在$\E$上$\sigma$-有限（$\exists \{E_{n}\}_{n\in\N}\subset \E,\bigcup_{n\in\N}E_{n}=X$，且$\forall n\in\N,\nu(E_{n})<\infty$），则若$\rho$如上且$\rho=\mu$ on $\E\Rightarrow \rho=\mu$ on $\sigma(\E)$
+  \end{enumerate}
+\end{Thm}
+
+\begin{proof}
+  \begin{enumerate}
+  \item 求证$\E\subset \F_{\nu^{*}}$，即证$\forall A\in\E,\forall D\subset X,\nu^{*}(D)\geq \nu^{*}(D\cap A)+\nu^{*}(D\cap A^{c})$.
+    \begin{enumerate}
+    \item $\forall A,D\in\E\Rightarrow \nu^{*}(D)=\nu^{*}(D\cap A)+\nu^{*}(D\cap A^{c})$
+    \item 任取$D\subset X, \nu^{*}(D)<\infty$，求证$\forall\varepsilon>0, \nu^{*}(D)+\varepsilon>\nu^{*}(D\cap A)+\nu^{*}(D\cap A^{c})$。
+
+      首先由Caratheodory延拓之定义，$\exists \{E_{n}\}_{n\in\N}\subset\E,E=\bigcup_{n\in\N}E_{n}\supset D$且$\nu^{*}(D)+\varepsilon>\sum_{n\in\N}\nu(E_{n})$.
+
+      $\forall n\in\N,\nu(E_n)=\nu^{*}(E_{n}\cap A)+\nu^{*}(E_{n}\cap A^{c})$。求和，得$\sum_{n\in\N}\nu(E_{n})=\sum_{n\in\N}\nu^{*}(E_{n}\cap A)+\sum_{n\in\N}\nu^{*}(E_{n}\cap A^{c})\geq\nu^{*}((\bigcup_{n\in\N}E_{n})\cap A)+\nu^{*}((\bigcup_{n\in\N}E_{n})\cap A^{c})\geq \nu^{*}(D\cap A)+\nu^{*}(D\cap A^{c})$
+    \end{enumerate}
+    
+  \item 见讲义
+    
+  \item 见讲义
+  \end{enumerate}
+\end{proof}
+\paragraph{Step 4}
+\begin{Thm}
+  若上述3.成立，则$\F_{\nu^{*}}=\overline{\sigma(\E)}$，即$\sigma(\E)$的完备化。
+\end{Thm}
+
+\begin{Thm}[完备化定理]
+  设$(X,\F,\mu)$是测度空间（不一定完备），$N$为$\mu$-可略集之集合系。定义
+  \[\overline{\F}:=\{A\cup B:A\in\F, B\in N\}\quad  \overline{\mu}(A\cup B):=\mu(A)\quad\forall A\in\F, B\in N\]
+  则$(X,\overline{F},\overline{\mu})$为一个（良定的）完备的测度空间。
+\end{Thm}
+
+\begin{comment}
+\begin{Prop}
+  $(\E,\nu)$是半环及其上的预测度，则$\nu^{*}|_{\E}=\nu$。
+\end{Prop}
+\end{comment}
+
+\begin{Eg}
+  $(\E,\nu)=(Q_{\R},\nu((a,b])=b-a)$，则由上述扩张便得到了$(\R,\F_{\lambda},\lambda)=\overline{(\R,\mathcal{B}(\R),\lambda)}$是Lebesgue测度。
+\end{Eg}
+
+\begin{Eg}
+  $X=\mathbb{Q}, \E=\mathbb{Q}\cap Q_{\R},\nu((a,b]\cap \mathbb{Q})=\#((a,b]\cap\mathbb{Q})=
+  \begin{cases}
+    0& a\geq b\\+\infty&a<b
+  \end{cases}  $
+
+  易见$\sigma(\E)=2^{\mathbb{Q}}$，其扩张得到$(\mathbb{Q},\F,\mu),\mu(A)=
+  \begin{cases}
+    0&A=\varnothing\\+\infty &A\neq\varnothing
+  \end{cases}  $
+
+  但$\rho(A)=\#(A)$同样是原测度的扩张。这是因为$\sigma$-有限条件没有得到满足。
+\end{Eg}
+
+\section{可测函数及其积分}
+%测度空间$(\Omega,\F,P)$称概率空间，若$P(\Omega)=1$。
+
+这是Lebesgue积分的推广，有时仍称Lebesgue积分。
+\subsection{可测函数}
+\begin{Def}[可测映射]
+  $f:X\to Y$, $(X,\F),(Y,M)$是可测空间. $f$称一个$\F-M$可测映射，若$\forall E\in M, f^{-1}(E)\in\F$
+
+  特别地，此时称$f$为可测函数，若$Y=\R,M=\mathcal{B}(\R)$。称$f$为随机变量，若还满足定义域$(\Omega, \F,P)$是概率空间。
+\end{Def}
+\begin{Rmk}
+  $f^{-1}$所指代的不是反函数，而是纤维：$f^{-1}:2^{Y}\to 2^{X},f^{-1}(E)=\{w\in X:f(w)\in E\}$
+\end{Rmk}
+
+\begin{Prop}\label{nosig}
+  若$M=\sigma(\E),\E\subset Y$，则$f:(X,\F)\to (Y,M)$是$(\F-M)$可测的，当且仅当$f^{-1}(\E)\subset \F$
+\end{Prop}
+\begin{Prop}
+  $\sigma(f^{-1}(\E))=f^{-1}(\sigma(\E))$
+\end{Prop}
+\begin{proof}
+  一方面，$f^{-1}(\sigma(\E))\supset f^{-1}(\E)$。又容易验证$f^{-1}(\sigma(\E))$是一个$\sigma$-代数：
+  \[f^{-1}(\bigcup_{\alpha\in T} A_{\alpha})=\bigcup_{\alpha\in T}f^{-1}(A_{\alpha})\]
+  且$f^{-1}(Y)=X, f^{-1}(E^{c})=(f^{-1}(E))^{c}$。综上$\sigma(f^{-1}(\E))\subset f^{-1}(\sigma(\E))$
+
+  另一方面，$\sigma(f^{-1}(\E))\supset f^{-1}(\sigma(\E))$。即$\forall E\in\sigma(\E), f^{-1}(E)\in\sigma(f^{-1}(\E))$。定义$G=\{E\in\sigma(\E):f^{-1}(E)\in \sigma(f^{-1}(\E))\}$，只需验证$G$包含$\E$且为$\sigma$-代数。
+\end{proof}
+
+\begin{Cor}
+  $f:\Omega\to\R, f$可测$\Leftrightarrow\forall a\in\R, \{w:f(w)\in(-\infty,a)\}\in\F$
+
+  （事实上，取区间$(-\infty,a],(a,\infty),[a,\infty)$亦可）
+\end{Cor}
+
+即只需验证$\{f<a\}$即可。
+
+\begin{Eg}[指示函数]
+  $E\subset X, \bm{1}_{E}(w)=
+  \begin{cases}
+    1&w\in E\\0 &w\not\in E
+  \end{cases}
+  $
+
+  \[\{\bm{1}_{E}<a\}=
+    \begin{cases}
+      \varnothing&a\leq 0\\E^{c} &0<a\leq 1\\X&1<a<\infty
+    \end{cases}
+  \]
+  故欲使$\bm{1}_{E}$可测，只需$E\in\F$
+\end{Eg}
+
+\begin{Eg}
+  $f:(X,\F)\to (Y,M),g:(Y,M)\to (Z,H)$,$f,g$可测，则$g\circ f:X\to Z$是$\F-H$可测的。
+\end{Eg}
+
+\begin{Eg}
+  $f:(X,\F)\to (Y,\mathcal{B}),g:(\R,\mathcal{B})\to (\R,\mathcal{B})$,$f,g$可测，则$g\circ f:X\to Z$是$\F-\mathcal{B}$可测的（即Borel可测）。
+\end{Eg}
+
+$f: X\to \R,g: \R\to \R$是可测函数$\not\Rightarrow f\circ g$是可测函数：$f$是$(\F-\mathcal{B})$可测，$g$是$\F_{\lambda}-\mathbb{B}$可测：Lebesgue可测集的原像不一定Borel可测。
+
+\begin{Prop}
+  $f,g$可测，则其四则运算可测： $f+g, cf,f\cdot g, \frac{f}{g}(g\neq 0)$可测
+\end{Prop}
+
+\begin{proof}
+  断言：$\{f+g<a\}=\bigcup_{q\in\mathbb{Q}}(\{f<q\}\cap\{g<a-q\})$
+
+  只需证明 LHS$\subset$RHS：若$w$满足$f(w)+g(w)<a$，则$\exists \varepsilon\st f(w)+g(w)<a-\varepsilon$。故$\exists q\in\mathbb{Q},q-\varepsilon<f(w)<q\Rightarrow f(w)<q, g<a-\varepsilon-f<a-q$
+\end{proof}
+
+\begin{Rmk}
+  $f:\Omega\to\bar\R=\R\cup\{\pm \infty\}, \mathbb{\bar\R}=\sigma(\{[-\infty,a)\}\{[-\infty,a]\},\{[a,+\infty]\},\{(a,+\infty]\})$。$f$可测$\Leftrightarrow$ $\{f\leq a\}\in\F\quad a\in\bar\R$
+\end{Rmk}
+
+\begin{Prop}
+  $\{f_{n}\}\subset \mathcal{L},\mathcal{L}=\{\text{可测函数}\}$，则$\sup\limits_{n\in\N} f_{n},\inf\limits_{n\in\N}f_{n},\limsup\limits_{n\to\infty}f_{n},\liminf\limits_{n\to\infty}f_{n}$可测
+\end{Prop}
+\begin{proof}
+  $\{\sup\limits_{n\in\N}f_{n}>a\}=\bigcup\limits_{n\in\N}\{f_{n}>a\}\in M$
+
+  $\limsup\limits_{n\to\infty}f_{n}(w)=\inf\limits_{n\in\N}\sup_{m\geq n}f_{m}(w)$
+\end{proof}
+
+\begin{Eg}
+  存在$E\subset \R$，$E$非Lebesgue可测。
+
+  $\forall \alpha\in(0,1),f_{\alpha}=\bm{1}_{\{\alpha\}}$可测，$f(w)=\sup\{f_{\alpha}(w):\alpha\in E\}=\bm{1}_{E}$非Lebesgue可测。这是因为这不是可数并。
+\end{Eg}
+\begin{Def}[简单函数 simple function]
+  称$f$为简单函数，若$\exists N\in\mathbb{N}\st f(w)=\sum_{i=1}^{N}a_{i}\bm{1}_{E_{i}}(w)$，其中$\{E_{i}\}_{i=1}^{N}\subset \F, \{a_{i}\}_{i=1}^{N}\R$。简单函数都是可测的。$SP=$\{简单函数\}，$\mathcal{L}^{+}$=\{非负可测函数\}
+\end{Def}
+
+\begin{Prop}[简单函数逼近可测函数]
+  \begin{itemize}
+  \item $f\in \mathcal{L}^{+},\exists \{f_{n}\}_{n\in\N}\subset SP\cap \mathcal{L}^{+}$，且$f_{n}(w)\nearrow f(w)\quad\forall w\in X$
+  \item $f\in \mathcal{L},\exists \{f_{n}\}_{n\in\N}\subset SP,|f_{n}|\nearrow |f|,f_{n}(w)\to f(w)\quad \forall w\in X$
+  \end{itemize}
+\end{Prop}
+
+\begin{proof}
+  $\forall n\in\mathbb{N}$，令$E_{n}=\{f(w)\geq n\}$. $\forall 1\leq k\leq n2^{n}, E_{n,k}=\{\frac{k-1}{2^{n}}\leq f(w)<\frac{k}{2^{n}}\}$，则$\{E_{n},E_{n,k}\}$构成了$X$的一个分割。
+  \[f_{n}(w)=n\bm 1_{E_{n}}(w)+\sum_{k=1}^{n2^{n}}\frac{k-1}{2^{n}}\bm{1}_{E_{n,k}}(w)\]
+下证明其逐点收敛：$0\leq f(w)-f_{n}(w)\leq
+\begin{cases}
+  f(w)-n&w\in E_{n}\\ \frac{1}{2^{n}}&w\in E_{n,k}
+\end{cases}
+$
+
+对非恒正的$f$，只需作分解$f=f^{+}-f^{-}$
+\end{proof}
+
+\subsection{积分}
+\begin{Def}
+  \begin{enumerate}
+  \item 若$f\in SP\cap\mathcal{L}^{+},f(w)=\sum_{i=1}^{N}a_{i}\bm{1}_{E_{i}}(w)$, $\int f\dd\mu=\sum_{i=1}^{N}a_{i}\mu(E_{i})$
+
+    注意：简单函数的表示不唯一，取其规范表示：$\sum_{i=1}^{M}b_{i}\bm{1}_{F_{i}}$，其中$b_{i}$两两不同，$\{F_{i}\}$是$X$的分割（两两不同且$\bigcup F_{i}=X$）。规范表示总存在且唯一。事实上，$F_{i}=f^{-1}(b_{i})$。以规范表示代入上述定义便得其良定性。
+
+  \item $\forall f\in\mathcal{L}^{+}=\mathcal{L}(\Omega;[0,+\infty])$，定义$\int_{\Omega}f\dd\mu=\sup\{\int_{\Omega} g\dd \mu:g\in SP(\Omega;[0,+\infty]),g\leq f\}$
+  \item $\forall f\in\mathcal{L}$，称其积分存在，若$\int f_{+}\dd\mu,\int f_{-}\dd\mu$存在，并定义$\int f\dd\mu=\int f_{+}\dd\mu-\int f_{-}\dd\mu$
+  \end{enumerate}
+\end{Def}
+
+
+\begin{Prop}
+  $f\in SP$的积分不依赖于表示方法。
+\end{Prop}
+
+\begin{Prop}
+  $f,g\in SP\cap \mathbb{L}^{+}$，则
+  \begin{enumerate}
+  \item $\int cf\dd\mu=c(\int f\dd\mu)\quad\forall c\geq 0$
+  \item $\int(f+g)\dd \mu=\int f\dd\mu+\int g\dd\mu$
+  \item $f\leq g\Rightarrow \int f\dd\mu\leq\int g\dd\mu$
+  \end{enumerate}
+\end{Prop}
+
+\begin{proof}
+  \textbf{(ii)} 取$f$的规范与不规范表示：$f=\sum_{i=1}^{M}b_{i}\bm 1_{F_{i}}=\sum_{i=1}^{N}a_{i}\bm 1_{E_{i}}$，其中$\{E_{i}\}$是分割但$a_{i}$不要求两两不同（故$M\leq N$），则\textbf{断言}：$\int f\dd\mu=\sum_{i=1}^{N}a_{i}\mu(E_{i})$。
+
+  这是因为：$\forall 1\leq i\leq M,1\leq j\leq N$，则要么$E_{i}\subset F_{j}$，要么$E_{i}\cap F_{j}=\varnothing$。故
+  \[RHS=\sum_{i=1}^{N}a_{i}(\sum_{j=1}^{M}\mu(E_{i}\cap F_{j}))=\sum_{j=1}^{M}\sum_{i=1}^{N}a_{i}\mu(E_{i}\cap F_{j})=\sum_{j=1}^{M}\sum_{i=1}^{N}b_{j}\mu(E_{i}\cap F_{j})=\sum_{j=1}^{n}b_{j}\mu(F_{j})=LHS\]
+
+    今取规范表示：$f=\sum_{i=1}^{N}a_{i}\bm{1}_{E_{i}},g=\sum_{k=1}^{K}c_{k}\bm{1}_{G_{k}}$，则$\{G_{k}\},\{E_{i}\}$都是分割，故$\{E_{i}\cap G_{k}\}_{i,k}$仍为分割。$f=\sum_{i=1}^{N}a_{i}(\sum_{k=1}^{K}\bm{1}_{E_{i}\cap G_{k}})=\sum_{i}\sum_{k}a_{i}\bm 1_{E_{i}\cap G_{k}}$。同理，$g=\sum_{i}\sum_{k}c_{k}\bm{1}_{E_{i}\cap G_{k}}$
+\end{proof}
+\begin{Def}
+$X$是概率空间$(\Omega,\F,P)\to\bar\R$上的随机变量，称$E[X]:=\int_{\Omega}X\dd P$为$X$的数学期望。
+\end{Def}
+
+\begin{Rmk}
+  积分与极限可“交换”：Levi's单调收敛定理，Fatou's引理（对于$\mathcal{L}^{+}$），控制收敛定理（对于$L^{1}$）。
+\end{Rmk}
+
+\begin{Prop}
+  对于$\mathcal{L}^{+}$，线性性和单调性仍成立。
+\end{Prop}
+\begin{proof}
+对于$f\in \mathcal{L}^{+},c\int f\dd\mu=\int cf\dd\mu$，单调性由定义即得。为证明对加法成立，需用单调收敛定理改写定义。
+\end{proof}
+\begin{Thm}[单调收敛定理(MCT)]
+  $\{f_{n}\}\subset \mathcal L^{+},f\in\mathcal{L}^{+}$，且
+  \begin{enumerate}
+  \item $f_{n}\leq f_{n+1}$
+  \item $f_{n}\to f\quad \text{ p.w. }$ 
+  \end{enumerate}
+  则
+  \[\lim_{n\to\infty}\int f_{n}\dd\mu=\int f\dd\mu\]
+\end{Thm}
+\begin{proof}
+  易见：
+  \begin{enumerate}
+  \item $f_{n}\leq f_{n+1}\Rightarrow \int f_{n}\dd\mu\nearrow\alpha$
+  \item $\forall n\in\N, f_{n}\leq f\Rightarrow \int f_{n}\dd\mu\leq \int f\dd\mu$
+  \end{enumerate}
+  故$\alpha\leq\int f\dd\mu$。只需证明相反的不等式。为此，只需证明$\forall c\in (0,1),\forall g\in SP(\Omega;\R_{+})$且$g\leq f$，都有
+  \[\alpha\geq c\int_{\Omega}g\dd\mu\]
+
+  固定$c$，$g=\sum_{j=1}^{M}b_{j}1_{E_{j}},\{b_{j}\}\subset\R$，则$RHS=\sum_{j=1}^{M}(cb_{j})\mu(E_{j})$。$\forall n\in\N$，定义$F_{n}:=\{cg\leq f_{n}\}$，则$F_{n}\nearrow \Omega$。故由测度的下连续性
+  \[RHS=\sum_{j=1}^{M}(cb_{j})\lim_{n\to\infty}\mu(E_{j}\cap F_{n})=\lim_{n\to\infty}\sum_{j=1}^{M}(cb_{j})\mu(E_{j}\cap F_{n})\]
+  又$(cg)\bm 1_{F_{n}}=\sum_{j=1}^{M}(cb_{j})\bm 1_{F_{n}}\bm 1_{E_{j}}+ 0\cdot\bm 1_{F_{n}^{c}}$，故
+  \[RHS=\lim\limits_{n\to\infty}\int (cg)\bm 1_{F_{n}}\dd\mu\leq \lim\limits_{n\to\infty}\int f_{n}\bm 1_{F_{n}}\dd\mu\leq \int f\dd\mu=\alpha=LHS\]
+\end{proof}
+
+\begin{Cor}
+  记号如上，则得到非负可测函数积分的另一种定义：
+  \[\int f\dd\mu=\lim_{n\to\infty}\int f_{n}\dd\mu=\lim_{n\to\infty}n\mu\{f_{n}\geq n\}+\sum_{k}\frac{k-1}{2^{n}}\mu\{\frac{k-1}{2^{n}}\leq f_{n}<\frac{k}{2^{n}}\}\]
+\end{Cor}
+
+由此$\mathcal{L}^{+}$的线性性易得。
+
+\begin{Rmk}
+  下述函数不满足单调收敛定理之条件，故极限不可交换：
+  \begin{itemize}
+  \item $f_{n}=\bm 1_{(n,n+1]}$
+  \item $f_{n}=n\bm 1_{(0,\frac{1}{n}]}$
+  \end{itemize}
+\end{Rmk}
+
+\begin{Thm}[Fatou's引理]
+  $\{f_{n}\}\subset \mathcal{L}^{+},f_{n}\to f \quad \pw$，则
+  \[\int f\dd\mu=\int(\liminf_{n\to\infty}f_{n})\dd\mu\leq\liminf_{n\to\infty}\int f_{n}\dd\mu\]
+\end{Thm}
+
+\begin{proof}
+  $\liminf\limits_{n\to\infty} f_{n}(w)=\lim\limits_{n\to\infty}\inf\limits_{m\geq n}f_{m}(w)$。设$g_{n}=\inf\limits_{m\geq n}f_{m}$，则$g_{n}\nearrow \liminf\limits_{n\to\infty} f_{n}$。
+  \begin{itemize}
+  \item 一方面，由单调收敛定理，$LHS=\int \lim\limits_{n\to\infty}g_{n}\dd\mu=\lim\limits_{n\to\infty}\int g_{n}\dd\mu$。
+  \item 另一方面，$g_{n}=\inf\limits_{m\geq n}f_{m}\leq f_{n}(w)\Rightarrow \int g_{n}\dd\mu\leq\int f_{n}\dd\mu\Rightarrow \lim\limits_{n\to\infty}\int g_{n}\dd\mu\leq \liminf\limits_{n\to\infty}\int f_{n}\dd\mu$。
+    \end{itemize}
+    综上即得。
+\end{proof}
+
+\begin{Eg}
+  $\forall f\in\mathcal{L}^{+},E\in\F,\nu(E):=\int_{E}f\dd\mu=\int f\bm 1_{E}\dd\mu$是$\F$上的一个测度。
+\end{Eg}
+
+\begin{Eg}
+  $\{f_{n}\}\subset \mathcal{L}^{+},\sum_{n=1}^{m}f_{n}\nearrow \sum_{n=1}^{\infty}f_{n}\Rightarrow \int \sum_{n=1}^{\infty}f\dd\mu=\sum_{n=1}^{\infty}\int f_{n}\dd\mu$
+\end{Eg}
+
+\begin{Eg}
+  $f\in\mathcal{L^{+}}\Rightarrow \forall a\in\R^{+},\int f\dd\mu\geq a\mu\{f\geq a\}$
+\end{Eg}
+
+\begin{Eg}
+  $f\in\mathcal{L^{+}}$，则$\int f\dd\mu=0\Leftrightarrow f=0\quad \alev$
+\end{Eg}
+
+\begin{Eg}
+  $f,g\in\mathcal{L}^{1},\int |f-g|\dd\mu=0\Leftrightarrow f=g\alev$
+\end{Eg}
+即零测集上的值不影响积分的值。
+
+\begin{proof}
+  $\Leftarrow:$ trivial
+
+  $\Rightarrow:$ $\forall n\in\N,E_{n}=\{f\geq \frac{1}{n}\}\nearrow \Omega$，故$0\geq\frac{1}{n}\mu\{f\geq\frac{1}{n}\}\Rightarrow \mu(f\geq \frac{1}{n})=0$。又$\{f\neq 0\}=\bigcup_{n\in\N}E_{n}$，故得。
+\end{proof}
+
+\begin{Cor}
+  $\int |f|\dd\mu=0\Leftrightarrow f=0\alev$
+\end{Cor}
+
+$f,g$积分存在$\Rightarrow f+g$积分不一定存在。
+
+\begin{Def}
+  $\mathcal{L^{1}}=\{f\in\mathcal{L}:\int|f|\dd\mu<\infty\}$
+\end{Def}
+
+\begin{Lemma}
+  $\forall f,g\in\mathcal{L}^{1}$
+  \begin{enumerate}
+  \item $\forall c\in\R,cf\in \mathcal{L}^{1},\int_{\Omega}cf\dd\mu=c\int f\dd\mu$
+  \item $f+g\in\mathcal{L^{1}}$，且$\int f+g\dd\mu=\int f\dd\mu+\int g\dd\mu$
+  \item $f\leq g\Rightarrow \int f\leq \int g$
+  \end{enumerate}
+\end{Lemma}
+
+\begin{proof}
+  $\int |cf|=\int |c||f|=|c|\int |f|<\infty,\int|f+g|\leq \int |f|+\int|g|$。
+
+  对于第一条，只需分别计算$c>0.c<0,c=0$的情形。
+
+  对于第二条，$h_{+}-h_{-}=(f_{+}-f_{-})+(g_{+}-g_{-})\Rightarrow h_{+}+f_{-}+g_{-}=h_{-}+f_{+}+g_{+}$，取积分再由非负函数积分的线性性移项即得。
+\end{proof}
+
+$\nm{f}_{\mathcal L^{1}}=\int |f|\dd\mu$不是范数，因为$\nm{f}=0\not\Rightarrow f\equiv 0$
+
+\begin{Def}
+  定义等价关系：称$f\sim g$，若$f=g\alev$。定义$L^{1}=\mathcal L^{1}/\sim$。则$L^{1}$犹为线性空间，且$\nm{f}_{L^{1}}$是其上范数。
+\end{Def}
+
+\begin{Rmk}
+  $f=g\alev$，且$f\in\mathcal{L}$，则$g\in\mathcal{L}$
+
+  $\{f_{n}\}\subset \mathcal{L},f_{n}\to g\alev\Rightarrow g\in \mathcal{L}$
+
+  上述结论对Borel测度不成立（存在Lebesgue零测但Borel非可测的集合）。上述结论成立当且仅当测度空间$(\Omega,\F,\mu)$是完备的。
+\end{Rmk}
+
+下文总假定测度空间完备。
+
+\begin{Thm}[控制收敛定理(DCT)]
+  $\{f_{n}\}_{n\in\N}\subset L^{1}\st$
+  \begin{enumerate}
+  \item $f_{n}\to f\alev$
+  \item $\exists g\in L^{1}\st |f_{n}|\leq g\alev\quad\forall n\in\N$
+  \end{enumerate}
+  则$f\in L^{1}$，且\[\lim_{n\to\infty}\int f_{n}\dd\mu=\int f\dd\mu\]
+\end{Thm}
+
+\begin{proof}
+  易见$f$可测。$|f_{n}|\leq g\Rightarrow |f|\leq g\in L^{1}\Rightarrow f\in L^{1}$。注意到：
+  \begin{enumerate}
+  \item $g+f_{n}\geq 0\alev$，故由Fatou's 引理
+    \begin{align*}
+      &\int \lim_{n\to\infty}(g+f_{n})\\
+      \leq &\liminf_{n\to\infty}(\int_{\Omega}g+\int_{\Omega}f_{n})\\
+      =&\int_{\Omega}g+\liminf_{n\to\infty}\int_{\Omega}f_{n}
+      \end{align*}
+    两边同消去$\int g$，得$\int_{\Omega}f\leq\liminf\limits_{n\to\infty}\int_{\Omega}f_{n}$
+  \item $g-f_{n}\geq 0\alev$。同理可得$\int_{\Omega}f\geq\limsup_{n\to\infty}\int_{\Omega}f_{n}$
+  \end{enumerate}
+  综上即得。
+\end{proof}
+
+\begin{Eg}
+  $\{f_{n}\}\subset \mathcal L^{1},\int\sum|f_{n}|<\infty\Rightarrow \int\sum|f_{n}|=\sum\int|f_{n}|$
+\end{Eg}
+\begin{Eg}
+  $SP(\Omega,\R)$在$L^{1}$中稠密。
+\end{Eg}
+
+\begin{Eg}[符号测度]
+  $f\in L^{1},E\in\F,\nu(E):=\int_{E}f\dd\mu$仍满足$\nu(\varnothing)=0$与可数可加性。
+\end{Eg}
+
+\begin{Prop}[Layered公式]
+  $X$是随机变量，则\[\sum_{n=1}^{\infty}P\{|X|\geq n\}\leq E[|X|]\leq 1+\sum_{n=1}^{\infty}P\{|X|>n\}\]
+\end{Prop}
+\begin{proof}
+  $|X|=|X|\sum_{n\in\N}\bm 1_{E_{n}},E_{n}=\{n-1\leq|X|< n\}\quad\forall n\in N$，由MCT，$E[|X|]=\sum_{n\in\N}E[|X|\bm 1_{E_{n}}]$。又$(n-1)P(E_{n})\leq E[|X|\bm 1_{E_{n}}]\leq nE[\bm 1_{E_{n}}]=nP(E_{n})$。故
+\begin{align*}
+  E[|X|]&=\sum_{n=1}^{\infty}\sum_{k=1}^{n}1\cdot P(E_{n})\\
+        &=\sum_{k=1}^{\infty}\sum_{n=k}^{\infty}P(E_{n})\\
+        &=\sum_{k=1}^{\infty}P(|X|\geq k-1)\\
+        &=1+\sum_{k=1}^{\infty}P(|X|\geq k)
+\end{align*}
+    LHS的证明是类似的。
+\end{proof}
+
+\subsection{积分换元公式}
+\begin{Thm}
+  $(\Omega,\F,\mu)$为测度空间，$(Y,M)$为可测空间，$\phi: \Omega\to Y$为$\F-M$可测的，则$\nu=\phi_{*}\mu: E\mapsto \mu(\phi^{-1}E)$是$M$上的测度，称为$\mu$在$\phi$下的前推(push-forward)。且若$\mu(\Omega)=1$，则$\nu(Y)=1$。
+
+  $f:Y\to\R$为$M$-可测函数，$X:=f\circ \phi$是$\F$可测的，则
+  \[\int_{Y}f\dd\nu=\int_{\Omega}f\circ\phi\dd\mu\]
+  \[
+\begin{tikzcd}                                                                                   & \mathbb{R}_+                                           \\
+{(\Omega,\mathscr{F})} \arrow[ru, "\mu", shift right] \arrow[r, "\phi"] \arrow[rd, "f\circ \phi"] & {(Y,M)} \arrow[u, "\mu\circ \phi^{-1}"] \arrow[d, "f"] \\
+                                                                                                  & \mathbb{R}                                            
+\end{tikzcd}  \]
+  
+\end{Thm}
+
+\begin{proof}
+  用典型方法。
+
+  首先断言：$\forall E\in M$，命题对$f=\bm 1_{E}$成立。
+
+  $LHS=\int_{Y}\bm 1_{E}\dd\nu=\nu(E)=\mu(\phi^{-1}(E))$
+
+  $f\circ \phi=\bm 1_{E}(\phi(w))=\bm 1_{\phi^{-1}(E)}(w)$，故$RHS=\mu(\phi^{-1}(E))$
+
+  再断言上述命题对非负简单函数成立：直接由线性性。再断言对非负可测函数成立：由单调收敛定理。最后将一般的可测函数拆为正部、负部便证明了一般的结论。
+\end{proof}
+
+\begin{Eg}
+  $X:(\Omega,\F,\mu)\to(\R,\mathscr{B}(\R))$为可测函数，则记$X_{*}\mu=\mu_{X}:\mu_{X}(B):=\mu(\{w\in\Omega:X(w)\in B\})$是$\mathscr{B}(\R)$的测度。若$\mu(\Omega)=1$，则$\mu_{X}$为$(\R,\mathscr{B}(\R))$上的概率测度，称之为$X$诱导的测度（又称$X$的分布(distribution)，$X$的law）。
+\end{Eg}
+
+\begin{Def}
+  $F:\R\to\R$单调增，右连续，则称之为一个分布函数(distribution function)。若还有$\lim\limits_{x\to +\infty}F(x)=1,\lim\limits_{x\to -\infty}F(x)=0$，则称之为一个（累积）概率分布函数(c.d.f.)。
+
+$F_{X}(a):=\mu_{X}\{(-\infty,a]\}$，即由随机变量确定了一个概率分布函数。
+\end{Def}
+
+\begin{Rmk}
+  给定一个概率分布函数$F$，存在$X:(\Omega,\F,\mu)\to\R\st F_{X}=F$。这样的$X$不唯一。
+\end{Rmk}
+
+\begin{Def}
+  $F_{X}=F_{Y}$，则称$X=Y\cvin d$，$X$与$Y$同分布(identically distributed)。
+\end{Def}
+
+$X=Y\cvin d\not\Rightarrow X=Y$
+\begin{Eg}
+  $(\Omega,\mathscr{F},P)=([0,1],\F_{\lambda},\lambda)$，考察$X(w)=w.Y(w)=1-w$，则$X=Y\cvin d$，但$X\neq Y\alev$
+\end{Eg}
+
+\begin{Thm}
+  $f:\R\to\R$ 是Borel(-Borel)可测（即$\forall B\in \mathscr{B}(\R),f^{-1}(B)\in\mathscr{B}(\R)$），则
+  \[\int_{\R}f\dd F_{X}=\int_{\R}f\dd\mu_{X} =\int_{\Omega}f(X(\omega))\dd P(w)\]
+\end{Thm}
+
+\begin{Eg}
+  $E[f(X)]=\int_{\R}f(z)\dd F_{X}(z), E[X]=\int_{\R}x\dd F_{X}(z), E[|X|^{2}]=\int_{R}x^{2}\dd F_{X}$
+
+  $Var[X]=E[|X-E[X]|^{2}]=E[(X-m)^{2}]=E[X^{2}-2mX+m^{2}]=E[|X|^{2}]-(E[X])^{2}$
+\end{Eg}
+
+\begin{Eg}
+  \begin{enumerate}
+  \item purely discrete 离散型：$\mu_{X}$的质量集中在离散点$\{x_{n}\}$上，即$X$的值域为至多可数多个点$\{p_{n}\}$，其中$\mu(\{x_{n}\})=p_{n}>0,\sum_{n}p_{n}=1$。此时$F_{X}$为阶梯函数。此时
+    \[E[f(x)]=\int_{\bigcup_{i}\{x_{i}\}}f(x)\dd\mu_{X}=\sum_{i}f(x_{i})\mu_{X}(\{x_{i}\})=\sum_{i}f(x_{i})P(\{X=x_{i}\})=\sum_{i}f(x_{i})p_{i}\]
+  \end{enumerate}
+\item absolutely continuous 绝对连续型：$\exists f=F'_{X}$，其中$f$非负可积，称$f$为概率密度函数(p.d.f.)，$\int_{\R}f\dd\mu=1$，$E[\phi(X)]=\int_{\R}\phi(x)\dd F(x)=\int_{\R}\phi(x)f(x)\dd x$
+\end{Eg}
+
+\begin{Eg}
+  \begin{enumerate}
+  \item Bernoulli: $\mu_{X}(\{0\})=1-p,\mu_{X}(\{1\})=p$
+  \item Poisson: $\mu_{X}(\{k\})=\frac{\lambda^{k}}{k!}e^{-\lambda}\quad k\in\N_{+}$
+  \item Geometric: $\mu_{X}(\{k\})=p(1-p)^{k-1} k\in\N$
+  \end{enumerate}
+
+  \begin{enumerate}
+  \item Uniform: $f(x)=\frac{1}{b-a}\bm 1_{[a,b]}$
+  \item Normal: $f(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}},f(x;\mu,\sigma)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-m)^{2}}{2\sigma^{2}}}$
+  \item exponential: $f(x)=\lambda e^{-\lambda x}\bm 1_{(0,+\infty)}$
+  \end{enumerate}
+\end{Eg}
+
+\begin{Eg}
+  对于$X\sim P(\lambda)$, $E[X^{2}]=\sum_{k=0}^{\infty}k^{2}\frac{\lambda^{k}}{k!}e^{-\lambda}=\sum_{k=0}^{\infty}k(k-1)\frac{\lambda^{k}}{k!}e^{-\lambda}+\sum_{k=0}^{\infty}k\frac{\lambda^{k}}{k!}e^{-\lambda}=e^{-\lambda}(\lambda^{2}+\lambda)(\sum_{l=0}^{\infty}\frac{\lambda^{l}}{l!})=\lambda^{2}+\lambda$
+\end{Eg}
+
+\begin{Def}[矩，moment]
+  $p\in \N, E[|X|^{p}]<\infty$，称$E[|X|^{p}]$为$X$的$p$阶矩。
+\end{Def}
+
+\subsection{积分不等式}
+$\mathscr{L}^{0}:$取无穷的部分为零测集的函数。
+
+\begin{Def}
+  $L^{p}(\Omega)=\{X\in \mathscr{L}^{0}:E[|X|^{p}]<\infty\}/\sim$
+
+  $\nm{x}_{p}=(E[|X|^{p}])^{\frac 1 p}\quad 1\leq p<\infty$是$L^{p}(\Omega)$上的一个范数。
+
+  $L^{\infty}(\Omega)=\{X\in\mathscr{L}^{0}:\nm{X}_{\infty}<\infty\}/\sim$
+
+  $\nm{X}_{\infty}=\inf\{a\geq 0:P\{|X|>a\}=0\}=\inf\{a\geq 0: |X|\leq a\quad\alev\}=\sup\{a\geq 0: P\{|X|>a\}>0\}$
+
+  $(L^{\infty},\nm{\cdot}_{\infty})$是一个赋范线性空间。
+\end{Def}
+
+\begin{Thm}[H\"older]
+  $1\leq p,q\leq \infty,\frac{1}{p}+\frac{1}{q}=1$，则
+  \[\nm{XY}_{1}\leq \nm{X}_{p}\nm{Y}_{q}\quad \forall X\in L^{p}, Y\in L^{q}\]
+  且对于$1<p,q<\infty$，等号成立$\Leftrightarrow \alpha |X|^{p}=\beta|X|^{q}$对于某$\alpha,\beta\geq 0$成立。
+\end{Thm}
+
+\begin{proof}
+  利用Young不等式：$ab\leq \frac{1}{p}a^{p}+\frac{1}{q}b^{q}$
+\end{proof}
+
+\begin{Rmk}
+  $\forall p\in(0,1)$，H\"older不等式不成立。
+\end{Rmk}
+
+\begin{Thm}[Minkowski]
+  $X,Y\in L^{p}(\Omega)\Rightarrow \nm{X+Y}_{p}\leq \nm{X}_{p}+\nm{Y}_{p}$
+\end{Thm}
+
+\begin{Rmk}
+  $\forall p\in(0,1)$，Minkowski不等式不成立。
+\end{Rmk}
+
+\begin{proof}
+  $|X+Y|^{p}\leq (|X|+|Y|)|X+Y|^{p-1}=|X||X+Y|^{p-1}+|Y||X+Y|^{p-1}$，施H\"older不等式即得。
+\end{proof}
+
+\begin{Thm}[Jensen]
+  设$\phi$凸，$X\in L^{1}(\Omega)$，则$\phi(E[|X|])\leq E[\phi(X)]$
+\end{Thm}
+
+\begin{proof}
+  $\forall c\in\R,\phi(c)=\sup\{ac+b:ay+b\leq \phi(y)\quad\forall y\}$
+
+  取$c=E[X],\phi(E[X])=\sup\{aE[|X|]+b:ay+b\leq \phi(y)\quad\forall y\}$。若$ay+b\leq\phi(y)$，则$aX(w)+b\leq \phi(X(w))\Rightarrow aE[X]+b\leq E[\phi(X)]$
+\end{proof}
+
+\begin{Thm}[Chebyshev]
+  $\phi:\R_{+}\to\R_{+}$单增，则$\forall a\in\R_{+}$且$\phi(a)>0$
+  \[P\{|X|\geq a\}\leq \frac{E[\phi(X)]}{\phi(a)}\]
+\end{Thm}
+\begin{proof}
+  $E[\phi(|X|)]\geq \int_{\{|X|\geq a\}}\phi(X)\dd\mu\geq \phi(a)\int_{\{|X|\geq a\}}1\dd\mu=\phi(a)P(\{|X|\geq a\})$
+\end{proof}
+
+\begin{Eg}[Interpolation]
+  $1\leq p\leq q\leq r$，则$L^{p}\cap L^{r}\subset L^{q}$，且
+  \[\nm{X}_{q}\leq \nm{X}_{p}^{l}\nm{X}_{r}^{1-l}\quad \frac{1}{q}=\frac{l}{p}+\frac{1-l}{r}\]
+\end{Eg}
+
+\begin{Eg}
+  $P(\Omega)<\infty, 1\leq p\leq r\leq \infty\Rightarrow L^{r}\subset L^{q}$，且
+  \[\nm{X}_{p}\leq \nm{X}_{r}(P(\Omega))^{\frac{1}{q}}\quad \frac{1}{q}+\frac{1}{r}=\frac{1}{p}\]
+\end{Eg}
+
+\begin{Rmk}
+  上式对$P(\Omega)=\infty$不成立。
+\end{Rmk}
+
+\ifx\allfiles\undefined
+\end{document}
+\fi
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

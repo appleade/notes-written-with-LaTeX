@@ -1,0 +1,126 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin = 1 in]{geometry}
+
+\title{分析力学作业8}
+\author{2019011985\and 数91\and 董浚哲}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\subsection*{1.}
+\paragraph{(i)}
+设$\bm{f}=\psi\circ \phi^{-1}\Rightarrow Q^i=f^i(q^1,\dots, q^n)$，则$\,\mathrm{d} Q^i =\sum\limits_{j=1}^{n} \frac{\partial f^{i}}{\partial q^{j}} \,\mathrm{d} q^j$
+\paragraph{(ii)}
+$\alpha=\sum\limits_i \tilde{\alpha}_i \,\mathrm{d}Q^i =\sum\limits_i^{} \tilde{\alpha}_i \sum\limits_j^{} \frac{\partial f^{i}}{\partial q^{j}} \,\mathrm{d}q^j=\sum\limits_j^{} \left( \sum\limits_i^{} \frac{\partial f^{i}}{\partial q^{j}}\tilde{\alpha}_i \right) \,\mathrm{d} q^{j}$，故$\alpha_j= \sum\limits_i^{} \frac{\partial f^{i}}{\partial q^{j}}\tilde{\alpha}_{i}$
+\subsection*{2.}
+\paragraph{(i)}
+设$\bm{v}=(q^i, v^i \frac{\partial  }{\partial q^i})$，则$\mathbb{F}L(\bm{v})= (q^i, (A \bm{v})^i \,\mathrm{d} \bm{ \dot{q}^i})\Rightarrow \mathbb{F}L^{-1}(q^i, w^i \,\mathrm{d}q^i)= (q^i, (A^{-1} \bm{w})^i)$。因$A$正定，$\mathbb{F}L$总是可逆的且$\mathbb{F}L, \mathbb{F}L^{-1}$都是可微的，故得。
+\paragraph{(ii)}
+
+\subsection*{3.}
+\paragraph{(i)}
+$L=\frac{1}{2}(m_1+m_2)l_1^2 \dot{\theta}_1^2+m_2l_1l_2 \cos(\theta_1-\theta_2) \dot{\theta}_1 \dot{\theta}_2 +\frac{1}{2}m_2 l_2^2 \dot{\theta}_2^2+(m_1+m_2)gl_1 \cos\theta_1+m_2gl_2\cos\theta_2$
+
+$\mathbb{F}L(\bm{\theta}, \bm{ \dot{\theta}})=(\bm{\theta}, (m_1+m_2)l_1^2\dot{\theta}_1+m_2l_1l_2\cos(\theta_1-\theta_2) \dot{\theta}_2, m_2l_2^2\dot{\theta}_2+m_2l_1l_2\cos(\theta_1-\theta_2) \dot{\theta}_1)$
+
+$\dot{\theta}_1= \dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(m_2l_2^2 p_{\theta_1}-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_2})$
+
+$\dot{\theta}_2=\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_1} +(m_1+m_2)l_1^2 p_{\theta_2})$
+
+$H=p_{\theta_1}\dot{\theta}_1+p_{\theta_2}\dot{\theta}_2-L=\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(m_2l_2^2 p_{\theta_1}^2-2m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_1}p_{\theta_2}+(m_1+m_2)l_1^2 p_{\theta_2}^2)-(m_1+m_2)gl_1 \cos\theta_1-m_2gl_2\cos\theta_2-\frac{1}{2}(m_1+m_2)l_1^2(\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(m_2l_2^2 p_{\theta_1}-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_2}))^2-m_2l_1l_2 \cos(\theta_1-\theta_2)(\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(m_2l_2^2 p_{\theta_1}-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_2}))\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_1} +(m_1+m_2)l_1^2 p_{\theta_2})-\frac{1}{2}l_2^2 (\dfrac{1}{m_1m_2 l_1^2l_2^2+m_2^2 l_1^2l_2^2 \sin(\theta_1-\theta_2)^2}(-m_2l_1l_2 \cos(\theta_1-\theta_2)p_{\theta_1} +(m_1+m_2)l_1^2 p_{\theta_2}))^{2}$
+
+以下部分由Matlab计算得来，绝对不会有错。
+
+将$H$整理得：
+
+$H=\dfrac{ p_{\theta_2} (l_1 m_1  p_{\theta_2} + l_1 m_2  p_{\theta_2} - l_2 m_2  p_{\theta_1} cos( \theta_1 -  \theta_2))}{l_1 l_2^2 (sin( \theta_1 -  \theta_2) m_2^2 + m_1 m_2)}
+ - g l_2 m_2 cos( \theta_2)
+ - g l_1 cos( \theta_1) (m_1 + m_2) 
+- \dfrac{(l_2 p_{\theta_1} - l_1 p_{\theta_2} cos(\theta_1 -  \theta_2))^2 (m_1/2 + m_2/2)}{l_1^2 l_2^2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^2} 
++ \dfrac{ p_{\theta_1} (l_2  p_{\theta_1} - l_1  p_{\theta_2} cos( \theta_1 -  \theta_2))}{l_1^2 l_2 (m_1 + m_2 sin( \theta_1 -  \theta_2))}
+ - \dfrac{(l_1 m_1  p_{\theta_2} + l_1 m_2  p_{\theta_2} - l_2 m_2  p_{\theta_1} cos( \theta_1 -  \theta_2)))^2}{2 l_1^2 l_2^2 m_2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^2} 
+- (cos( \theta_1 -  \theta_2) \dfrac{l_2  p_{\theta_1} - l_1  p_{\theta_2} cos( \theta_1 -  \theta_2)) (l_1 m_1  p_{\theta_2} + l_1 m_2  p_{\theta_2} - l_2 m_2  p_{\theta_1} cos( \theta_1 -  \theta_2))}{l_1^2 l_2^2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^2}$
+
+得：
+
+$\frac{\mathrm{d}}{\mathrm{d}t} p_{\theta_1}=-[ -\frac{\partial H}{\partial \theta_1}=-((l_1^2 m_1^2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2))/2 + (l_1^2 m_2^2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2))/2 + (l_2^2 m_2^2  p_{\theta_1}^2 sin(2  \theta_1 - 2  \theta_2))/2 - (3 g l_1^3 l_2^2 m_2^4 cos( \theta_2))/8 - g l_1^3 l_2^2 m_1^4 sin( \theta_1) + l_1^2 m_1 m_2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2) + (l_2^2 m_1 m_2  p_{\theta_1}^2 sin(2  \theta_1 - 2  \theta_2))/2 + (3 g l_1^3 l_2^2 m_2^4 cos(2  \theta_1 -  \theta_2))/8 + (g l_1^3 l_2^2 m_2^4 cos(2  \theta_1 - 3  \theta_2))/8 - (g l_1^3 l_2^2 m_2^4 cos(4  \theta_1 - 3  \theta_2))/8 + (3 l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2})/8 + (3 g l_1^3 l_2^2 m_1 m_2^3 cos(2  \theta_1 -  \theta_2))/8 + (3 g l_1^3 l_2^2 m_1^3 m_2 cos(2  \theta_1 -  \theta_2))/2 + (g l_1^3 l_2^2 m_1 m_2^3 cos(2  \theta_1 - 3  \theta_2))/8 - (g l_1^3 l_2^2 m_1 m_2^3 cos(4  \theta_1 - 3  \theta_2))/8 + (3 g l_1^3 l_2^2 m_1 m_2^3 sin(3  \theta_1 - 2  \theta_2))/4 - (3 g l_1^3 l_2^2 m_1^2 m_2^2 sin( \theta_1 - 2  \theta_2))/4 - (l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} cos(2  \theta_1 - 2  \theta_2))/2 + (l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} cos(4  \theta_1 - 4  \theta_2))/8 + (3 g l_1^3 l_2^2 m_1^2 m_2^2 cos(2  \theta_1 -  \theta_2))/2 - (3 g l_1^3 l_2^2 m_1 m_2^3 cos( \theta_2))/8 - (3 g l_1^3 l_2^2 m_1^3 m_2 cos( \theta_2))/2 + (3 g l_1^3 l_2^2 m_1^2 m_2^2 sin(3  \theta_1 - 2  \theta_2))/4 - (3 g l_1^3 l_2^2 m_1 m_2^3 sin( \theta_1))/2 - g l_1^3 l_2^2 m_1^3 m_2 sin( \theta_1) - (3 g l_1^3 l_2^2 m_1 m_2^3 sin( \theta_1 - 2  \theta_2))/4 - (3 g l_1^3 l_2^2 m_1^2 m_2^2 cos( \theta_2))/2 - (3 g l_1^3 l_2^2 m_1^2 m_2^2 sin( \theta_1))/2 - (3 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2})/2 - l_1 l_2 m_1^2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2) - 2 l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2) + (l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2))/4 + (3 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} cos(2  \theta_1 - 2  \theta_2))/2 - (3 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} sin(3  \theta_1 - 3  \theta_2))/4)/(l_1^2 l_2^2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^3)]$
+
+$\frac{\mathrm{d}}{\mathrm{d}t} p_{\theta_2}= \frac{\partial H}{\partial \theta_2}=-[(4 l_1^2 m_1^2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2) + 4 l_1^2 m_2^2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2) + 4 l_2^2 m_2^2  p_{\theta_1}^2 sin(2  \theta_1 - 2  \theta_2) - 3 g l_1^2 l_2^3 m_2^4 cos( \theta_1) + 3 g l_1^2 l_2^3 m_2^4 cos( \theta_1 - 2  \theta_2) + 8 l_1^2 m_1 m_2  p_{\theta_2}^2 sin(2  \theta_1 - 2  \theta_2) + 4 l_2^2 m_1 m_2  p_{\theta_1}^2 sin(2  \theta_1 - 2  \theta_2) + g l_1^2 l_2^3 m_2^4 cos(3  \theta_1 - 2  \theta_2) - g l_1^2 l_2^3 m_2^4 cos(3  \theta_1 - 4  \theta_2) + 3 l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} + 12 g l_1^2 l_2^3 m_1^2 m_2^2 cos( \theta_1 - 2  \theta_2) - 6 g l_1^2 l_2^3 m_1 m_2^3 sin(2  \theta_1 -  \theta_2) + 6 g l_1^2 l_2^3 m_1 m_2^3 sin(2  \theta_1 - 3  \theta_2) - 4 l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} cos(2  \theta_1 - 2  \theta_2) + l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} cos(4  \theta_1 - 4  \theta_2) + 12 g l_1^2 l_2^3 m_1 m_2^3 sin( \theta_2) + 8 g l_1^2 l_2^3 m_1^3 m_2 sin( \theta_2) - 12 g l_1^2 l_2^3 m_1^2 m_2^2 cos( \theta_1) - 12 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} - 8 l_1 l_2 m_1^2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2) - 16 l_1 l_2 m_2^2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2) + 2 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} sin( \theta_1 -  \theta_2) + 12 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} cos(2  \theta_1 - 2  \theta_2) - 6 l_1 l_2 m_1 m_2  p_{\theta_1}  p_{\theta_2} sin(3  \theta_1 - 3  \theta_2))/(2 l_1^2 l_2^2 (3 m_2^3 sin( \theta_1 -  \theta_2) + 6 m_1 m_2^2 - m_2^3 sin(3  \theta_1 - 3  \theta_2) + 4 m_1^3 - 6 m_1 m_2^2 cos(2  \theta_1 - 2  \theta_2) + 12 m_1^2 m_2 sin( \theta_1 -  \theta_2)))]$
+
+$\frac{\mathrm{d}}{\mathrm{d}t} \theta_1= \frac{\partial H}{\partial p_{\theta_1}}=
+((l_2  p_{\theta_1} - l_1  p_{\theta_2} cos( \theta_1 -  \theta_2)) (m_1 - m_2 sin( \theta_1 -  \theta_2)^2 + 2 m_2 sin( \theta_1 -  \theta_2)))/(l_1^2 l_2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^2)
+$
+
+$\frac{\mathrm{d}}{\mathrm{d}t} \theta_2= -\frac{\partial H}{\partial p_{\theta_2}}=((l_1 m_1  p_{\theta_2} + l_1 m_2  p_{\theta_2} - l_2 m_2  p_{\theta_1} cos( \theta_1 -  \theta_2)) (m_1 - m_2 sin( \theta_1 -  \theta_2)^2 + 2 m_2 sin( \theta_1 -  \theta_2)))/(l_1 l_2^2 m_2 (m_1 + m_2 sin( \theta_1 -  \theta_2))^2)$
+
+\paragraph{(ii)}
+$L=\frac{1}{2}ml^2 \dot{\theta}^2+\frac{1}{6}\lambda l^{3}\dot{\theta}^2+mgl\cos\theta+\frac{1}{2}\lambda l^2 g\cos(\theta)$
+
+$\mathbb{F}L(\theta,\dot{\theta})=(\theta, ml^2\dot{\theta}+\frac{1}{3}\lambda l^3 \dot{\theta})$
+
+$\dot{\theta}=(m+\frac{1}{3}\lambda l)^{-1} \frac{p}{\theta}$
+
+$H=p \dot{\theta}-L=\frac{p^2}{2l^2 (m+ \frac{1}{3}\lambda l )}-mgl\cos\theta-\frac{1}{2}\lambda l^2 g\cos\theta$
+
+$\frac{\mathrm{d}}{\mathrm{d}t}p= -\frac{\partial H}{\partial \theta}=-mgl\sin\theta-\frac{1}{2}\lambda l^2 g\sin\theta$
+
+$\frac{\mathrm{d}}{\mathrm{d}t}\theta= \frac{\partial H}{\partial p}=\frac{p}{l^2(m+\frac{1}{3}\lambda l)}$
+
+\paragraph{(iii)}
+$L=\frac{1}{2}\sum\limits_{i=1}^N m_i \dot{x}_i^2-\frac{k}{2}\sum\limits_{i=1}^{N-1} (x_i-x_{i+1}-l)^2$
+
+$\mathbb{F}L(x^i,\dot{x}^i)= (x^i, m_i\dot{x}_i)$
+
+$\dot{x}_i=\frac{p_i}{m_i}$
+
+$H=\frac{1}{2}\sum\limits_{i=1}^N \frac{p_i^2}{m_i}+\frac{k}{2}\sum\limits_{i=1}^{N-1}(x_i-x_{i+1}-l)^2$
+
+$\frac{\mathrm{d}}{\mathrm{d}t}p_i=-\frac{\partial H}{\partial x_{i}}=-
+\begin{cases}
+  k(x_1-x_2-l) & i=1\\
+  k(x_N-x_{N-1}-l) & i=N\\
+  k(2x_i-x_{i+1}-x_{i-1}) & \text{otherwise}
+\end{cases}
+$
+$\frac{\mathrm{d}}{\mathrm{d}t}x_i=\frac{\partial H}{\partial p_{i}}=\frac{p_i}{m_i}$
+
+\paragraph{(iv)}
+$L=\frac{1}{2}mr^2(\dot{\theta}^2+\omega^2 \sin^2\theta)-mgr\cos\theta$
+
+$\mathbb{F}L(\theta,\dot{\theta})=(\theta, mr^2\dot{\theta})$
+
+$\dot{\theta}=\frac{p}{mr^2}$
+
+$H=\frac{1}{2}\frac{p^2}{mr^2}-\frac{1}{2}mr^2\omega^2\sin^2\theta+mgr\cos\theta$
+
+$\frac{\mathrm{d}}{\mathrm{d}t}p=-\frac{\partial H}{\partial \theta}=\frac{1}{2}mr^2 \omega^2 \sin(2\theta)+mgr\sin\theta$
+
+$\frac{\mathrm{d}}{\mathrm{d}t}\theta=\frac{\partial H}{\partial p}=\frac{p}{mr^2}$
+
+\subsection*{4.}
+将原图镜像。以$m_1$初始位置的楔尖为原点建坐标系，设$m_1,m_2,m_3$的横、纵坐标分别为$(x_1,y_1),(x_2,y_2),(x_3,y_3)$。
+
+$L=\frac{m_1}{2}\dot{x}_1^2+\frac{m_2}{2}(\frac{\dot{x}_2}{\cos\theta})^2+\frac{m_3}{2}((\dot{x}_2-\dot{x}_1)\tan\theta)^2-(m_2+m_3)g(x_2-x_1)\tan\theta$
+
+$\frac{\partial L}{\partial x_{1}}=(m_2+m_3)g\tan\theta$
+
+$\frac{\partial L}{\partial \dot{x}_1}=m_1\dot{x}_1+m_3(\dot{x}_1-\dot{x}_2)\tan\theta$
+
+$\frac{\partial L}{\partial x_2}=-(m_2+m_3)g\tan\theta$
+
+$\frac{\partial L}{\partial \dot{x}_2}=m_2 \frac{\dot{x}_2}{\cos\theta}+m_3(\dot{x}_2-\dot{x}_1)\tan\theta$
+
+故E-L方程为
+\[m_1\ddot{x}_1+m_3(\ddot{x}_1-\ddot{x}_{2})\tan\theta=(m_2+m_3)g\tan\theta\]
+\[m_2 \frac{\ddot{x}_2}{\cos\theta}+m_3(\ddot{x}_2-\ddot{x}_1)\tan\theta=-(m_2+m_3)g\tan\theta \]
+
+其中$(m_2+m_3)g\tan\theta$对应于重力，$m_3(\ddot{x}_1-\ddot{x}_2)\tan\theta$对应于支持力。
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

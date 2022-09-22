@@ -1,0 +1,36 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,hyperref,comment}
+\usepackage[margin= 1 in]{geometry}
+
+\begin{document}
+\section{Markov chains and Mixing times}
+
+\subsection{Markov chains}
+设$\left\{ X_n \right\}$是一列取值于可数集$\mathcal{X}$上的随机变量，满足
+\begin{equation*}
+\mathbb{P}\left[ X_{t+1}=x_{t+1}| X_i=x_i \quad i\leq t\right]= \mathbb{P}\left[ X_{t+1}=x_{t+1}| X_t=x_t \right]
+\end{equation*}
+上述性质称Markov性，上述概率$P(x_{t+1},x_t)$称转移概率，推广为$s$步转移概率$P^{(s)}_t(x_{t+s},x_{t})=P^{s}$。称其为其次的若其与时间无关。
+
+Markov性的直接推论是
+\begin{equation*}
+\mathbb{P}\left[ X_{t+s}=y|X_t=x, X_{ik}=x_{ik},\dots, X_{1i}=x_{i1} \right]=\mathbb{P}\left[ X_{t+s}=y| X_t=x \right]
+\end{equation*}
+
+$P(x,y)\in [0,1], \sum\limits_{x\in \mathcal{X}}^{}P(x,y)$
+
+满足$P: \mathcal{X}^{2}\to [0,1]$的函数称转移矩阵或随机矩阵。
+
+记$\pi_t(y)=\mathbb{P}\left[ X_t=y \right]$，则$\pi_{t+1}(y)=\sum\limits_{x_1,\dots, x_t}^{}\pi_0(x_1)P(x_1,x_2)\dots P(x_t,y)$。
+
+
+
+
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

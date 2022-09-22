@@ -1,0 +1,1150 @@
+\documentclass{ctexbook}
+\usepackage{mathrsfs,amsmath,amssymb,amsthm,bm,ulem,comment}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+\title{分析力学笔记}
+\author{数91\and 董浚哲}
+\begin{document}
+\maketitle
+
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+%\newcommand{\E}{\mathcal{E}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+
+\chapter{运动学}
+力学是物理学最古老的分支。它最早是用来研究天体运动的。另一个研究力学的动机是弹道学。Newton最早意识到天体运动所遵循规律与炮弹落地所遵循规律是相同的。
+
+问题首先是如何描述系统的运动，此即运动学，欲用数学模型描述物理运动。至于如何预测之后的运动，则是动力学的问题。
+
+在研究运动时，有时位置是重要的而形状不是重要的，遂可以将其视作空间中的一个点，其轨迹为空间中的曲线，此即“质点”。
+
+\section{伽利略时空}
+欲描述位置，需三个空间参数。遂以$\R^{3}$作为基本模型。
+
+注意伽利略时空与$\R^{3}$不完全相同，以其没有原点与零向量。地心说、日心说分别选取地球、太阳为原点。至布鲁诺时提出“宇宙没有中心”，恒星不过是遥远的太阳。至此时空观中没有原点。至伽利略时有相对性原理，认为绝对静止是不存在的，所有物理规律在匀速运动者上是一样的。
+
+\subsection{仿射空间}
+\begin{Def}[Affine Space]
+  设集合$A$上有线性空间$V$。$V$作为加法群，可以定义$A$上传递的、自由的右作用：
+  \[f:A\times V\to V:(a,v)\mapsto a+v\]
+  满足如下性质：
+  \begin{itemize}
+  \item 右幺性：$\forall a\in A,a+0=a$
+  \item 结合律：$\forall u,v\in V,a\in A,(a+u)+v=a+(u+v)$
+  \item 正则性：$\forall a\in A$，映射$V\to A:v\mapsto a+v$是一个双射。
+  \end{itemize}
+ 
+\end{Def}
+ 传递：$\forall a,b\in A,\exists v\in V\st b=a+v$
+
+  自由：$\forall v\in V,\exists a\in A\st a+u=a+v\Rightarrow u=v$
+
+  这两条性质等价于正则性。
+
+  \begin{Eg}
+    设$V$是线性空间，则$(V,V)$是仿射空间，且$f:V\times V\to V:(u,v)\to u+v$
+  \end{Eg}
+
+  \begin{Eg}
+    $\R^{2}$中的线性子空间都是过原点的直线。考虑$V$是$\R^{2}$的线性子空间，$u\in \R^{2}$，则$(V+u,V)$是一个仿射空间。即：过原点的直线经过平移$u$得到的直线。
+  \end{Eg}
+
+由定义$\forall a,b\in A.\exists !v\in V\st a+v=b$，记为$v=b-a$。
+
+记$\A^{n}$为与$\R^{n}$相伴的仿射空间。
+
+\begin{Def}[仿设标架]
+  设$(A,V)$是仿射空间，$(v_{1},\cdots,v_{n})$是其一组基，若$\forall a\in A$，$a$可以唯一地写成
+  \[a=\bm 0+\lambda^{1}v_{1}+\cdots+\lambda^{n}v_{n}\]
+  其中$\bm 0$是参考点，不同的基可以选取不同的参考点。
+\end{Def}
+
+放射空间的维数即是其相伴的线性空间的维数，也即基中元素数。
+
+\subsection{伽利略结构}
+只有空间是不足以刻画运动的，还需要引入时间。
+\begin{Def}[伽利略时空]
+  称$(\A^{4},\R^{4})$为伽利略时空（其中$\forall a\in\A^{4}$称为事件、世界点），若其有下面的结构：
+  \begin{itemize}
+  \item 时间：$T:\R^{4}\to\R$的线性函数，$T(a-b)$称$a,b$间的时间间隔。
+
+    伽利略时空中，具体的时刻是没有意义的（$T(a)$是没有意义的），时间没有特殊的起点或终点。
+  \item 同时空间：$T(a-b)=0$，则称$a,b$是同时的。遂考虑集合$\A_{a}=\{b\in\A^{4}:T(b-a)=0\}$，称$a$的同时空间。
+  \item （同时事件之间的）距离：$\forall a,b\in\A_{c},d(a-b)=|a-b|=\sqrt{(a-b,a-b)}$
+
+    只有在两事件在同一时刻时，距离才是有意义的，否则有刻舟求剑之嫌。
+  \end{itemize}
+  伽利略结构即是上述三条结构。
+\end{Def}
+
+\begin{Eg}
+  $(\R_{t}\times \R^{3},\R^{4})$，在其上赋予欧式度量。$T:\R_{t}\times \R^{3}\to \R_{t}:(t,x,y,z)\mapsto t$。这一仿射空间称“伽利略坐标时空”。
+\end{Eg}
+\begin{Prop}
+  所有的伽利略时空都是同构的。特别地，同构于伽利略坐标时空。
+\end{Prop}
+伽利略时空是$\R$上的平凡丛。经典力学中总是平凡丛，区别于相对论力学的闵氏度量。
+
+\begin{Def}[伽利略群]
+ $Gal(3)$是$\A^{4}$上所有保持伽利略结构的仿射变换构成的群。
+\end{Def}
+\begin{Rmk}
+  保持伽利略结构：$g\in Gal(3)\Rightarrow T(g(a)-g(b))=T(a-b)$，且若$T(a-b)=0$，$d(g(a),g(b))=d(a,b)$
+\end{Rmk}
+
+\begin{Prop}
+  $\R_{t}\times\R^{3}$上的$Gal(3)$是由以下变换复合而成的：
+  \begin{enumerate}
+  \item 匀速运动：$g_{1}:(t,\bm x)\mapsto (t,\bm x+\bm v t)$
+  \item 平移：$g_{2}:(t,\bm x)\to (t+s,\bm x+\bm s)\quad\forall s\in\R,\bm s\in\R^{3}$
+  \item 转动：$g_{3}:(t,\bm{x})\mapsto (t,S\bm x)\quad S\in O(3)$
+  \end{enumerate}
+\end{Prop}
+注意：时间反演将破坏伽利略结构：$T(g(a)-g(b))=T(a-b)$
+
+\subsubsection{单粒子的运动}
+\begin{Def}[世界线]
+  一个粒子的轨迹（世界线）是一个可微映射:$q:\R_{t}\to\R^{3}$。特别地，若$I\subset \R^{3}$，仍称$q:I\to \R^{3}$为世界线。
+\end{Def}
+
+\begin{Def}[速度]
+  设粒子运动由$\bm x(t):\R_{t}\to\R^{3}$描述，则$\dot{\bm{x}}(t_{0})=\dif{\bm x}{t}|_{t=t_{0}}$称速度向量。
+\end{Def}
+
+\begin{Eg}
+  $\bm x=\bm a+\bm v t\Rightarrow \dot{\bm x}(t)=\bm v$
+\end{Eg}
+
+\subsubsection{自由的多粒子的运动}
+考察$N$个粒子的运动：$\bm x_{1}(t),\cdots,\bm x_{n}(t):\R_{t}\to \R^{3}$。同时可以视作$q:\R_{t}\to\R^{3N}:t\mapsto (\bm x_{1}(t),\cdots,\bm x_{n}(t))$（这里允许粒子重叠）。称$\R^{3N}$为$N$个自由粒子的位形空间。
+
+\subsubsection{约束}
+$f(\bm x_{1}(t),\cdots,\bm x_{n}(t))=0$。有时约束会破坏伽利略结构。
+
+在有约束的情形下，直角坐标不一定是最优的。如在球上更适用球极坐标：$\bm x=(r\cos\phi\sin\theta,r\sin\phi\sin\theta,r\cos\theta)$：
+% pic
+在固定$r$的情况下，以$(\theta,\phi)$为参数不再具有约束：约束已在坐标中。
+
+
+\begin{Eg}
+  $(\bm x_{1},m_{1}),(\bm x_{2}.m_{2})$被长为$l$的杆固定，这与伽利略结构相容。
+
+  再将$\bm x_{1}$固定在原点，选特殊的点破坏了伽利略结构，但可以视作在更大的箱子内而取消特殊性。
+
+  此时可以取坐标$\bm x_{1}=(x,y,z), \bm x_{2}=\bm x_{1}+(l\cos\phi\sin\theta,l\sin\phi\sin\theta,l\cos\theta)$
+
+  此时$\bm x_{2}$满足约束$\bm x(t)\cdot\bm x(t)=\^{2}\Rightarrow \bm x(t)\cdot \dot{\bm x(t)}=0\Rightarrow \ddot{\bm x}(t)\cdot \bm x(t)+2\dot{\bm x}(t)^{2}=0$。这样解微分方程将十分复杂，故取消约束可以极大简化方程求解。
+\end{Eg}
+
+\section{微分流形与广义坐标}
+只考虑实流形。
+\begin{Def}[坐标卡(chart)]
+  设$X$是拓扑空间\footnote{此处有开集的概念足矣}，$U\subset X$是开集，则坐标卡是$\phi:U\to V\subset \R^{n}$的同胚（双射，且$\phi,\phi^{-1}$都是连续的）。
+\end{Def}
+
+对于一般的$f:M\to\R$，由于只要求拓扑结构不能对其定义微积分，但$f\circ \phi^{-1}:\R^{n}\to \R$则可以直接用多元微积分处理。特别地，我们希望其可微性质是与坐标卡选取无关的：
+
+\begin{Def}[连接函数]
+  设有坐标卡$\phi:U_{1}\to V_{1},\psi:U_{2}\to V_{2}$，其中$U_{1},U_{2}$是$X$中的开集，$V_{1},V_{2}$是$\R^{n}$中的开集，
+  \[\begin{tikzcd}
+U_1\cap U_2 \arrow[d, "\psi"] \arrow[r, "\phi"]  & \phi(U_1\cap U_2) \arrow[ld, "{\psi\circ \phi^{-1}|_{\phi(U_{1}\cap U_{2})}\equiv f_{\psi\phi}:(U_1,\phi)\to (U_2,\psi)}"] \\
+\psi(U_1\cap U_2)\subset V_2\subset \mathbb{R}^n &                                              \end{tikzcd}  \]
+
+$f_{\psi\phi}:$即称连接函数。它是用来变换函数在不同坐标卡中的描述方式的。
+
+若$f_{\psi\phi}$是可微的，则称$(U_{1},\phi),(U_{2},\psi)$是相容的。
+\end{Def}
+
+只要连接函数有同样的、足够的光滑性，便可以保证$f\circ \psi^{-1}=(f\circ \phi^{-1})\circ (\phi\circ \psi^{-1})$仍然具有$f\circ \phi^{-1}$的光滑性。
+
+
+
+\begin{Def}[图册(Atlas)]
+  设有一族坐标卡$\mathscr{A}=\{(U_{i},\phi_{i})\}_{i\in I}\st X=\bigcup_{i\in I}U_{i}$，且$\forall i,j\in I,(U_{i},\phi_{i}),(U_{j},\phi_{j})$相容，则称$\mathscr{A}$是$X$上的图册。
+
+$\mathscr{A}_{1},\mathscr{A}_{2}$是$X$上的图册，则$\mathscr{A}_{1}\sim \mathscr{A}_{2}\Leftrightarrow \mathscr{A}_{1}\cup\mathscr{A}_{2}$也是$X$的图册。
+\end{Def}
+
+\begin{Def}[微分流形]
+  $X$是拓扑空间。$X$上的\textbf{微分结构}$D$是$X$上图册的一个等价类。一个\textbf{微分流形}是拓扑空间及其微分结构：$M=(X,D)$。$D$中所有图册的并$\mathscr{A}_{D}=\bigcup\{\mathscr{A}|\mathscr{A}\in D\}$称最大图册。若$\mathscr{A}_{D}$中的图册都是$C^{r}$的，则称$M$是$C^{r}$流形。
+\end{Def}
+
+本课程总以图册（为代表元）代表微分结构，且不考虑同胚但不微分同胚的情形（如Milnor的7维怪球）。
+
+\begin{Eg}
+  考虑$n$维仿射空间$(A,V)$，其上有仿射标架$\{\bm o;e_{1},\cdots,e_{n}\}$。$\forall v\in A,v=\bm o+\sum_{i=1}^{n}\lambda^{i}e_{i}$。则$(A,\phi_{\{\bm o;e_{1},\cdots,e_{n}\}})v\mapsto (\lambda^{1},\cdots,\lambda^{n})$便给出了一个坐标卡。
+
+
+  考虑其另一组基$\{\bm o';e_{1}',\cdots,e_{n}'\}$，则$\phi_{\{\bm o';e_{1}',\cdots,e_{n}'\}}\circ \phi^{-1}_{\{\bm o;e_{1},\cdots,e_{n}\}}$ 是连接函数，其有形式$A(\lambda^{1},\cdots,\lambda^{n})^{T}+b $，故任意两个仿射标架作为坐标卡都是相容的。
+\end{Eg}
+
+\begin{Eg}
+  考虑球面$S^{1}$，其中$S^{d}=\{\bm x\in\R^{d+1}:\|\bm x\|^{2}=1\}$。考察坐标卡:
+  \[\phi:S^{1}\backslash \{(1,0)\}\to (0,2\pi)\quad (\cos(\theta),\sin(\theta))\mapsto \theta\]
+  \[\psi_{\alpha}:S^{1}\backslash (\cos\alpha,\sin\alpha)\to(-\alpha,2\pi+\alpha)\]
+其连接函数只是平移$\alpha$，故总为光滑。是以在极坐标系下，总假定$\theta$可以取任意的值，因为对每一个点总能找到合适的坐标卡。
+\end{Eg}
+
+\begin{Eg}
+  对于$S^{2}$，考虑$U_{S}=S^{2}\backslash \{(0,0,1)\}$，以北极为中心将球面上的点投影至$\{z=-1\}$:
+  \[\phi_{S}:U_{S}\to \R^{2}:(x,y,z)\mapsto (\frac{2x}{1-z},\frac{2y}{1-z},-1)\]
+  类似地有从南极投影$\phi_{N}$，则
+  \[\phi_{NS}=\phi_{N}\circ \phi_{S}^{-1}:\R^{2*}\to\R^{2*}:(X,Y)\to (\frac{2X}{X^{2}+Y^{2}}.\frac{2Y}{X^{2}+Y^{2}})\]
+  其中$\R^{2*}=\R^{2}\backslash \{(0,0)\}$。
+
+  上述连接函数的定义域同伦于$S^{1}$，故其性质常与$S^{1}$相关。
+\end{Eg}
+
+\begin{Eg}[积流形]
+  设已有流形$(M_{1},D_{2}),(M_{2},D_{2})$，定义其积流形记做$(M_{1}\times M_{2},D_{1}\times D_{2})$，其中
+  \[D_{1}\times D_{2}=[\mathscr{A}=\{(U_{1}\times U_{2},\phi_{1}\times \phi_{2})|\forall (U_{1},\phi_{1})\in M_{1}\text{的chart};\forall(U_{2},\phi_{2})\in M_{2}\text{的chart} \}]\]
+  其中$\phi_{1}\times \phi_{2}:(m_{1},m_{2})\in M_{1}\times M_{2}\mapsto (\phi_{1}(m_{1}),\phi_{2}(m_{2}))$
+
+  $\R^{n}$是最简单的积流形的例子。另一个积流形的例子是环面$T^{n}=S^{1}\times S^{1}\times\cdots S^{1}$
+\end{Eg}
+
+\begin{Eg}[子流形]
+  设$(M,D)$是$m$维的流形，$N\subset M$满足$\forall p\in N,\exists M\text{ 的chart }(U,\phi)\st p\in U,\phi(N\cap U)=\R^{n}\cap \phi(U)$，且$\R^{n}=\{x\in \R^{m}|x_{n+1}=x_{n+2}=\cdots=x_{m}=0\}$
+\end{Eg}
+
+\begin{Prop}
+ 设$f^{1},\cdots,f^{r}$是$U\subset\R^{n}$上的一族可微函数($r<n$)，且其Jacobi矩阵$[\pp{f^{i}}{x^{j}}]$在$U$上每一点的秩都是$r$，则$M=\{x\in U|f^{1}(\bm x)=\cdots=f^{r}(\bm x)=0\}$是一个$n-r$维的流形。
+\end{Prop}
+
+\begin{Eg}
+  $\R^{2}$在$f(x,y)=ax+by+c\quad a^{2}+b^{2}\neq 0$的限制下是一个1维流形，坐标卡为$\R\to M: y\mapsto (-\frac{by+c}{a},y)$
+\end{Eg}
+
+\begin{proof}
+  只需在$p$构造坐标卡。不妨设$p$是原点（否则平移），且不妨（经过交换）设前$r\times r$子矩阵在原点附近可逆。
+
+  设$x=(x^{1},\cdots,x^{r}),y=(x^{r+1},\cdots,x^{n})$。据隐函数定理，$\exists B(0,\varepsilon)\subset \R^{n}, B(0,\eta)\subset \R^{n-r}$和可微映射$\phi_{p}:B(0,\eta)\to B(0,\varepsilon):y\mapsto \phi_{p}(y)\st$ \[f^{i}(\phi_{p}(y),y)=0\]
+  定义积流形$V=B(0,\varepsilon)\times B(0,\eta)\subset U, M\cap V=\{(\phi_{p}(y),y)| y\in B(0,\eta)\}$. $\phi^{-1}: B(0,\eta)\to M\quad y\mapsto (\phi(y),y)$即为所求坐标卡（的逆）。
+\end{proof}
+
+对于流形M:$(U,\phi),q\in U,\phi(q)\in\R^{n}$，则$\bm{q}=\phi(q)=(q^{1},\cdots,q^{n})$称为广义坐标。
+
+对于流形$M:(U,\phi),N:(V,\psi)$，考虑流形之间的映射：$F:M\to N$，则
+\[
+\begin{tikzcd}
+{(U,\phi)} \arrow[r, "F"] \arrow[d, "\phi"] & {(V,\psi)} \arrow[d, "\psi"] \\
+\phi(U) \arrow[r, "F_{\phi\psi}"]           & \psi(V)                     
+\end{tikzcd}
+\]
+$F_{\phi\psi}=\psi\circ F\circ \phi^{-1}:\R^{m}\to \R^{n}$，则$F_{\phi\psi}$是$C^{r}$的$\Rightarrow F$是$C^{r}$的。称$F_{\phi\psi}$为$F$在$\phi,\psi$的代表。
+
+若$F:M\to N$是$C^{r}$的，则称$F$是$M,N$之间的$(C^{r})$微分同胚。用$Diff(M)$表示所有$M\to M$的微分同胚。
+
+我们常需考虑映射$q(t):I\to M$，其中$I$是$\R_{t}$的一个区间。类似地，记$\bm q(t)=\phi\circ q(t):I\to\R^{n}$，则定义$\dot{ q}^{i}(t)=\dif{q^{i}(t)}{t}$为广义速度。
+
+\begin{Def}[相切]
+  设$M$是流形，$m\in M$，$c_{1},c_{2}$是$M$中足够光滑的曲线，$c_{1}(0)=c_{2}(0)=m$。则称$c_{1},c_{2}$相切当且仅当$\exists m\in U\st $\[\lim\limits_{t\to 0}\frac{|\phi\circ c_{1}(t)- \phi\circ c_{2}(t)|}{|t|}=0\]
+  这等价于$(\phi\circ c_{1})'(0)=(\phi\circ c_{2})'(0)$。这一定义不依赖于坐标卡的选取（只要连接函数有$C^{2}$的光滑性）。
+\end{Def}
+
+注：速度方向相同但大小不同不算作相切：在$\R_{t}\times\R^{n}$上是不同的向量。
+
+相切是一个等价关系：$c_{1}(t)\sim c_{2}(t)$在$t=0$等价$\Leftrightarrow \exists (U,\phi), \dot c_{1}^{i}(t)=\dot c_{2}^{i}(t)$
+
+\begin{Def}[切空间]
+  $m\in M,m$上的切空间$T_{m}(M)$是相切关系下所有等价类的集合：
+  \[T_{m}(M)=\{[c]_{m}|c\text{是}M\text{上过}m\text{的曲线}\}\]
+  $A\subset M, TM|_{A}=\bigcup\limits_{m\in A}T_{m}(M)$。$M$上的切丛$TM\equiv \bigcup_{m\in M}T_{m}M$
+\end{Def}
+
+\begin{Prop}
+  $M$是流形，$q(t)$是其上曲线，$q(0)=m$, $(U,\phi)$为坐标卡，则$\exists !$曲线
+  \[c(t)=\phi^{-1}(\bm q(0)+\dot{\bm q}(0)t)\]
+  $\st c(0)\sim q(0)$
+\end{Prop}
+
+这是因为相切的定义不考虑$t$的更高次项。
+
+\begin{Cor}
+  $T_{m}(M)$是与$M$具有同样维数的线性空间。
+\end{Cor}
+故$T_{m}(M)\cong \R^{\mathrm{dim}M}$: \[d{\phi_{m}}:T_{m}M\to \R^{\mathrm{dim}M}\quad[q(t)]_{m}\mapsto \dif{}{t}(\phi\circ q)(t)\]
+
+考虑某座山作为流形$M$，其高度函数$h:M\to \R$。今在山上游走得一路径$q:I\to M$，则$(h\circ q): I\to M\to\R, \dif{}{t}(h\circ q)|_{t=0}=\sum_{i=1}^{n}\pp{h}{q_{i}}\dot{q}^{i}|_{t=0}$。定义方向导数之算符：$D_{\dot{q}}=\sum_{i=1}^{n}\dot{q}^{i}\pp{}{q^{i}}|_{m}$。这是一个线性算符，且$\dif{}{t}(h\circ q)=D_{\dot{q}}h$。
+
+由此可以建立切向量到（沿切线的）方向导数的一一映射：
+\[D_{[q]_{m}}: [q]_{m}\mapsto \sum_{i}\dot{q}^{i}(\phi(m))\pp{}{q^{i}}|_{\phi(m)}\]
+故$T_{m}M\cong \{\sum_{i}v^{i}\pp{}{q^{i}}|_{\phi(m)}\}$，有时也称其为切空间。$\{q_{1},\cdots,q_{n}\}$是一组基，对应$\{\pp{}{q^{1}},\cdots,\pp{}{q^{n}}\}$是一组基。
+
+\begin{Rmk}
+切空间共有4种定义方法，上面只是其中两种。
+\end{Rmk}
+
+\begin{Def}
+  $TM=\bigcup_{p\in M}T_{p}M$称为流形上的切丛。
+\end{Def}
+
+遂有自然的投影映射：$\pi: TM\to M: [c]_{p}\mapsto p$
+
+当我们说$v\in TM$时，其包含了两个信息：$\pi(v)$的位置信息和$v'\in T_{\pi(v)}M$向量信息。
+
+若$M$是流形，则$TM$同样是流形，其维数是$M$的两倍。
+
+\paragraph{切映射}
+\[
+\begin{tikzcd}
+TM \arrow[d, "\pi_M"] \arrow[r, "F_{*}"] & TN \arrow[d, "\pi_N"] \\
+M \arrow[r, "F"]                     & N                    
+\end{tikzcd}
+\]
+设$\{q^{i}\},\{Q^{i}\}$分别是$M,N$的局部坐标，则
+\[Q^{i}=F^{i}(\bm q)\Rightarrow \pp{}{q^{i}}=\sum_{j}\pp{Q^{j}}{q^{i}}\pp{}{Q^{j}}\]
+这给出了其切空间的变换。
+
+\begin{Def}[切映射]
+  $F:M\to N$可微，$p\in M$。定义切映射$T_{p}M\to T_{F(p)}N$
+  \[F_{*}p:T_{p}M\to T_{F(p)}N\quad [q]_{p}\mapsto [F\circ q]_{F(p)}\]
+  $F_{*}$称为$F$的前推。
+\end{Def}
+
+设$p.F(p)$分别处于坐标卡$(U,\phi),(V,\psi)$，考察其切向量：$\dot Q^{i}\dif{}{t}((\psi\circ \circ \phi^{-1})\circ(\phi\circ q))^{i}|_{t=0}=\sum_{j}\pp{Q^{i}}{q^{j}}\dot{q}^{j}(t)|_{t=0}$
+
+\begin{Eg}
+  考察一维流形$\gamma: I\to M$，则$\gamma_{*}(\partial)=(\dif{}{t}(\phi\circ \gamma))^{i}\pp{}{q^{i}}$
+\end{Eg}
+
+\paragraph{黎曼流形}
+\begin{Def}[黎曼流形]
+  $M$为流形。$\forall p\in M$, $T_{p}M$都有度量$\dual{\cdot,\cdot}_{p}:T_{p}M\times T_{p}M\to\R$。$g:p\mapsto \dual{\cdot,\cdot}_{p}$称黎曼度量。
+\end{Def}
+
+即度量是定义在切丛上的。
+
+给定坐标卡$(U,\phi)$，由分量$g_{ij}|_{p}=\dual{\pp{}{q^{i}},\pp{}{q^{j}}}_{p}$便确定了黎曼度量$g|_{U}:p\mapsto g_{ij}|_{p}$
+
+\begin{Eg}
+  $\R^{2}$的欧式度量：$g_{ij}(x,y)\mapsto \mathrm{diag}\{1,1\}$
+
+  极坐标下的度量$g_{ij}(r,\theta)\mapsto \mathrm{diag}\{1,r^{2}\}$
+\end{Eg}
+
+记$g^{ij}\equiv (g^{-1})_{ij}$
+
+\chapter{Lagrange力学}
+\section{最小作用量原理}
+\begin{Def}[拉氏量]
+  设$M$是流形，$M$上含时的Lagrange量$L:TM\times \R_{t}\to \R$，不含时的Lagrange量$L:TM\to\R$
+\end{Def}
+
+设$(U,\phi)$是$M$上的坐标卡，则有其前推$\phi_{*}:TU\to T\R^{n}$。曲线$\gamma:T\to M:(q^{i}(t),\dot q^{i}(t))\in T\R^{n}$。对于不含时的拉氏量$L$，其在局部坐标下的代表$L\circ(\phi^{-1})_{*}=L(q^{i},\dot q^{i})$。类似地，对于含时的拉式量亦有其代表$L(q^{i},\dot q^{i},t)$
+
+为选取流形上的曲线，需选取：
+\begin{Def}[作用量泛函(Action functional)]
+  设$M$是流形，$q(t):I\to M$为其上可微曲线，$q'(t):T\to TM:t\mapsto [q]_{q(t)}$。给定（不含时的）拉式量$L:TM\to\R$，定义其作用量泛函$S[q(t)]=\int_{I}L\circ (q')\dd t$
+\end{Def}
+
+\begin{Thm}[最小作用量原理]
+  给定拉氏系统$(\R_{t}\times M,L)$，考察其所有固定端点的曲线$q(t):T\to M,q(a)=q_{a},q(b)=q_{b}$，则力学系统总是沿着使得$S[q(t)]$取极值的曲线运动。
+\end{Thm}
+
+\begin{Eg}[伽利略时空的单粒子]
+  考虑伽利略（坐标）时空$\R_{t}\times \R^{3}$中的单粒子，$L:\R_{t}\times \R^{3}$。对于伽利略变换$g:\R_{t}\times \R^{3}\to\R_{t}\times\R^{3}$，欲寻求$L$使得$L\circ g_{*}=L$（因为作为仿射空间，伽利略时空中绝对位置没有意义，空间各部分不可区分）。
+
+  取$g_{2}:(\bm x,t)\mapsto (\bm x+\bm a,t+t_{0}), (g_{2})_{*}:(\bm x,t,\bm v,u)\mapsto (\bm x+\bm a, t+t_{0},\bm v,\bm u)$。欲使拉氏量在平移变换下不变，它只能是速度的函数：$L(\bm x,\dot{\bm x})=L(\bm x+\bm a,\dot{\bm x})\Rightarrow L=L(\dot{\bm x})$
+
+  再考虑旋转变换，类似地$L(\dot{\bm x})=L(A\dot{\bm x})\Rightarrow L=L(|\dot{\bm x}|)$
+
+  再考虑匀速运动$g_{1}:(\bm x,t)\mapsto(\bm x+\bm v t,t),(g_{1})_{*}:(\bm x,t,\bm v,u)\mapsto (\bm x+\bm wt,t,\bm v+\bm w,u)$。这导致$L\equiv Const$
+
+  遂放宽限制：我们希望当$S[q(t)]$取极值时，$S[g\circ q(t)]$犹为极值。（而最初要求只是该命题的充分条件。）故今要求$S[g\circ q(t)]=S[q(t)]+C$。欲满足$S[L(|\dot{\bm x}|)]=S[L(\dot{\bm x}+\dot{\bm w})]+C$，只需$L(|\dot{\bm x}|)=\alpha|\dot{\bm x}|^{2}$。这是因为$\int_{a}^{b}\alpha(|\dot{\bm x}+{\bm w}|)^{2}\dd t=\int_{a}^{b}\alpha|\dot{\bm x}|^{2}\dd t+2\alpha(\bm x,\bm w)|_{a}^{b}+\alpha|\bm w|^{2}(b-a)$
+
+  取$\alpha=\frac{1}{2}m$，则$L$为一个自由粒子的动能。
+\end{Eg}
+
+故曰：拉氏量是由对称性决定的。
+
+\begin{Eg}[伽利略时空的多粒子]
+  设今有$N$个粒子，其坐标描述为$\bm x_{1}(t),\cdots,\bm x_{N}(t) $，定义其拉氏量$L=\sum_{i}\frac{1}{2}m_{i}|\dot{\bm x}|^{2}-\sum_{i,j}V_{ij}(|\bm x_{i}-\bm x_{j}|)$。显然它在伽利略变换下不变。事实上，可以将$V$推广为$V(|\bm x_{i}-\bm x_{j}||\bm x_{j}-\bm x_{k}|)$等等。只与两点有关的$V(|\bm x_{i}-\bm x_{j}|)$称为两体式。
+\end{Eg}
+
+\begin{Eg}[自然系统]
+  $(M,g)$是黎曼流形。可以定义能量函数
+  \[T:TM\to\R\quad T(v)=\frac{1}{2}\dual{\bm v,\bm v}_{\pi_{M}(v)}\]
+  这是动能的推广。遂可定义拉氏量：
+  \[L(v)=T(v)-V(\pi_{M}(v))\]
+  $V(\pi_{M}(v))$称势能函数。故最小作用量原理亦表述为：运动使得动能和势能的差最小。
+\end{Eg}
+
+\begin{Eg}[单摆]
+  摆球质量为$m$，轻杆长度为$l$，偏离中心角度为$\theta$，则坐标$x=l\sin\theta,y=-l\cos\theta\Rightarrow \dot x=l\cos\theta\dot\theta,\dot y=l\sin\theta\dot\theta$，故$T=\frac{1}{2}m({\dot{x}}^{2}+\dot{y}^{2})=\frac{1}{2}ml^{2}\dot{\theta}^{2},V=-mgl\cos\theta$
+\end{Eg}
+
+\begin{Eg}
+  设刚性木块质量$m_{2}$，放在倾角为$\phi$质量为$m_{1}$的刚性斜面上，则$x_{1}=x,y_{1}=0,x_{2}=x+s\cos\phi,y_{2}=s\sin\phi$，$\dot x_{1}=\dot x,\dot x_{2}=\dot x+\dot s\cos\phi,\dot y_{2}=\dot s\sin\phi.L=\frac{1}{2}m_{1}\dot x^{2}+\frac{1}{2}m_{2}((\dot x+\dot s\cos\phi)^{2}+\dot s\sin^{2}\phi)-m_{2}gs\sin\phi$
+\end{Eg}
+
+\section{变分法}
+
+既知最小作用量原理，$S[q(t)]=\int_{a}^{b}L(q^{i}(t),\dot q^{i}(t),t)\dd t$，如何求其极值？
+
+考虑（在同一局部坐标下）做微扰$q^{i}(t)\to \tilde q^{i}(t;s)=q^{i}(t)+sx^{i}(t)$。对于固定的$\bm x(t)\st \bm x(a)=\bm x(b)=0$，考虑在函数族$\{\tilde{q}^{i}(s,t)\}$中求极值：$S(s)=S[\tilde q^{i}(s,t)]=\int_{a}^{b}L(\tilde q^{i}(s,t),\partial_{t}\tilde{q}^{i}(s,t),t)\dd t$。$S(s)$取极值$\Leftrightarrow \dif{S}{s}(0)=0$。这一结果与$x$无关，即对任意的形变取极值的条件是完全相同的，故满足该条件的曲线就是极值点。是为变分法。
+
+
+\begin{Def}[变分]
+  设$q(t):I\to\R, S[q(t)]$满足
+  \[S[q(t)+h(t)]-S[q(t)]=F+R\]
+  （有时在shift $S[q(t)]=0$时定义之），其中：
+  \begin{itemize}
+  \item $F[q(t),h(t)]$关于$h$是线性的：$F[q,ah_{1}+bh_{2}]=aF[q,h_{1}]+bF[q.h_{2}]$
+  \item $R[q,h]=O(h^{2})$：$|h|<\varepsilon,|\dot h|<\varepsilon\Rightarrow |R[q,h]|<C\varepsilon^{2}$
+    \end{itemize}则$S[q(t)]$称为可微的，且$F[q,h]$称为$S$的变分，记做$F[q+h]=\frac{\delta F}{\delta q}h$
+\end{Def}
+
+\begin{Thm}
+  $q(t):I\to\R,S[q(t)]=\int_{a}^{b}L(q,\dot q,t)\dd t$，则$S[q(t)]$是可微的，且其变分
+  \[F=\frac{\delta S}{\delta q}h=\int_{a}^{b}(\pp{L}{q}-\dif{}{t}(\pp{L}{\dot q}))h(t)\dd t+(\pp{L}{q}h(t))|_{a}^{b}\]
+\end{Thm}
+
+\begin{proof}
+  设$\tilde q(t)=q(t)+\varepsilon X(t)$，其中$|X(t)|,|\dot X(t)|$在$I$上有界，则
+  \begin{align*}
+    S[q+\varepsilon X]-S[q]=&\varepsilon\dif{}{\varepsilon}\int_{a}^{b}L(q+\varepsilon X,\dot q+\varepsilon \dot{X},t)\dd t+O(\varepsilon^{2})\\
+    =&\varepsilon\int_{a}^{b}(\pp{L}{q}X+\pp{L}{\dot q}\dot X)\dd t+O(\varepsilon^{2})\\
+    =&\int_{a}^{b}(\pp{L}{q}(\varepsilon X)-\dif{}{t}(\pp{L}{\dot q})\varepsilon X)\dd t+(\pp{L}{\dot q}\varepsilon X)|_{a}^{b}+O(\varepsilon^{2})
+    \end{align*}
+  上式对任意$\varepsilon,X$都成立，故取$h=\varepsilon X$即得。
+\end{proof}
+
+\begin{Rmk}
+  $q^{i}:I\to \R^{n}$时，其每一个分量都对应一个变分，而$L$是$(q^{i},\dot q^{i},t)$的函数，故其变分变为
+  \[\delta S[q(t)]=\int_{a}^{b}\sum_{i}(\pp{L}{q^{i}}-\dif{}{t}(\pp{L}{\dot q^{i}}))h^{i}(t)\dd t+\sum_{i}(\pp{L}{q^{i}}h^{i}(t))|_{a_{i}}^{b_{i}}\]
+\end{Rmk}
+
+记号：记$h^{i}=\varepsilon X^{i}=\delta q^{i}(t)$
+
+\begin{Thm}
+  $q:I\to\R,q(a)=x_{0},q(b)=x_{1},q(t)$是$S[q(t)]=\int_{a}^{b}L(q,\dot q,t)\dd t$的极值，当且仅当$q(t)$是微分方程\[\dif{}{t}(\pp{L}{\dot q})-\pp{L}{q}=0\]的满足边界条件$q(a)=x_{0},q(b)=x_{1}$的解
+\end{Thm}
+
+\begin{proof}
+  $\tilde q(t)=q(t)+\varepsilon X(t)\Rightarrow \dif{}{\varepsilon}S[q+\varepsilon]=\int_{a}^{b}(\pp{L}{q}-\dif{}{t}(\pp{L}{\dot q}))X\dd t=0\Leftrightarrow \pp{L}{q}-\dif{}{t}\pp{L}{\dot q}=0\quad \forall t\in I$
+\end{proof}
+
+在$q^{i}:I\to \R^{n}$的情形，微分方程变为微分方程组：
+\[\pp{L}{q^{i}}-\dif{}{t}(\pp{L}{\dot q^{i}})=0\quad i=1,\cdots,n\]
+该方程称为$L$对应的欧拉-拉格朗日方程。
+
+是以极值问题转化为了求解方程组的问题。
+
+\begin{Eg}[欧氏空间中两点之间直线最短]
+  $S[q(t)]=\int_{a}^{b}|\dot q|\dd t=\int_{a}^{b}\sqrt{(\dot x(t))^{2}+(\dot{y}(t))^{2}}\dd t\Rightarrow L(x,y,\dot x,\dot y)=\sqrt{\dot x^{2}+\dot y^{2}}$，对应E-L方程$\dif{}{t}(\pp{L}{\dot x})=0,\dif{}{t}(\pp{L}{\dot y})=0\Rightarrow \frac{\dot{x}}{\sqrt{\dot x^{2}+\dot y^{2}}}=C_{1},\frac{\dot{y}}{\sqrt{\dot x^{2}+\dot y^{2}}}=C_{2}$。下面总假设$(\dot x(t),\dot y(t))\not\equiv (0,0)$，则$\frac{\dot x}{\dot y}=\frac{C_{1}}{C_{2}}=c\Rightarrow x=cy+d$，其中$c,d$由边界条件确定。即$y(t)=f(t),x(t)=cf(t)+d$。
+
+  只要$f'(t)\not\equiv 0$，则其参数化与最终$S$的值无关：$S=\int_{a}^{b}\sqrt{1+c^{2}}\dd f(t)$，即参数变化是不会改变测地线的性质的：设$q(t)$已是测地线，$f:I\to I, f'(t)\neq 0\quad \forall t\in I\Rightarrow q\circ f:I\to \R^{2}$犹为测地线。
+
+  但若我们考虑能量泛函$\tilde S[q(t)]=\frac{1}{2}\int_{a}^{b}(\dot x^{2}+\dot y^{2})\dd t$，其E-L方程为$\dif{}{t}\dot x=0,\dif{}{t}\dot y=0\Rightarrow x=at+b,y=ct+d$。此时仍然得到直线，但选取了固定的特殊的参数化方式。
+
+  上述两个泛函是有关系的：$(S[q])^{2}\leq (b-a) \tilde S[q]$，等号成立当且仅当两边取极值。
+
+  更一般地，考虑黎曼流形$(M,g),q:I\to M$，其有长度泛函与能量泛函：$L=\int_{a}^{b}|q'|\dd t, T=\frac{1}{2}\int_{a}^{b}g(q',q')$，其中$|q'|=\sqrt{g(q',q')}$。求测地线时最小化两者都可行的，但最小化能量泛函常给出更简洁的形式。
+\end{Eg}
+
+%现在我们知道如何在同一坐标卡中取极值，那么如何推广至坐标卡连接处（乃至推广至整个流形$M$上）呢？
+
+\section{流形上的E-L方程}
+设$(M,L)$是拉氏系统，$(U,\phi)$为其坐标卡，$L(q,\dot q, t)=L\circ (\phi^{-1})_{*}:T\phi(U)\to \R$，遂有该坐标系下的E-L方程：
+\[\dif{}{t}\pp{L(q^{i},\dot q^{i},t)}{\dot q^{i}}-\pp{L}{q}=0\]
+
+\begin{Thm}
+  设$(M,L)$是拉氏系统，$q(t):I\to M$是作用量的极值且$q(a)=q_{a},q(b)=q_{b}$，当且仅当任意坐标卡$(U,\phi),U\cap q(I)\neq \varnothing, q^{i}(t)=\phi\circ q(t)$满足$(U,\phi)$上的E-L方程。
+\end{Thm}
+
+也即：在任意坐标卡上都满足E-L方程。
+
+\paragraph{在坐标卡间连接作用量}
+WLOG设曲线恰被两个坐标卡$(U,\phi:q\to q^{i}), (V,\psi:q\to Q^{i})$覆盖，且有任意选定的$q_{c}\in U\cap V$。以在$M$上积分的形式表示作用量：
+\[S[q(t)]=\int_{a}^{b}L(q')\dd t=\int_{a}^{c}L(q')\dd t+\int_{c}^{b}L(q')\dd t=\int_{a}^{c}L(q^{i},\dot q^{i},t)\dd t+\int_{b}^{c}L(Q^{i},\dot Q^{i},t)\dd t\]
+故
+\[0=\delta S=\int_{a}^{c}\sum_{i}(\pp{L}{q^{i}}-\dif{}{t}(\pp{L}{\dot q^{i}}))\delta q^{i}+\sum_{i}\pp{L}{\dot q^{i}}\delta q^{i}|_{a}^{c} +\int_{c}^{a}\sum_{i}(\pp{L}{Q^{i}}-\dif{}{t}(\pp{L}{\dot Q^{i}}))\delta Q^{i}+\sum_{i}\pp{L}{\dot Q^{i}}\delta Q^{i}|_{c}^{b} \]
+
+考察边界项：$a,b$处由边界要求为0，$c$处两项于同一点且符号相反，那么这两项是否是在坐标变换下不变的？
+\[\sum_{i}\pp{L}{\dot q^{i}}\delta q^{i}|_{c}=\sum_{i}\pp{L}{\dot Q^{i}}\delta Q^{i}|_{c}\]
+记$Q^{i}=f^{i}(q^{j})$，其中$f=(\psi\circ\phi^{-1})$。记$M=\pp{(f^{1}\cdots f^{n})}{(q^{1}\cdots q^{n})}$，则$\dot Q^{i}(c)=\sum_{j}M_{j}^{i}\dot q^{i}(c)$，故$\pp{L}{\dot Q^{i}}=\sum_{j}\pp{L}{\dot q^{j}}|_{c}\pp{\dot q^{j}}{\dot Q^{i}}=\sum_{j}\pp{L}{\dot q^{j}}(M^{-1})_{i}^{j}$。即$\pp{L}{q}$是\textbf{逆变量}。
+
+设$\tilde Q^{i}=Q^{i}+\varepsilon Y^{i},\tilde q^{i}=q^{i}+\varepsilon X^{i}$。仍设$Q^{i}=f^{i}(q^{j})$，且要求$\tilde Q^{i}=f^{i}(\tilde q^{j})$（即微扰不是任意的而是映射来的）。故$\tilde Q^{i}=Q^{i}+\sum_{j}M_{j}^{i}\varepsilon X^{j}(c)+O(\varepsilon^{2})\Rightarrow \varepsilon Y^{i}(c)=\sum_{j}M_{j}^{i}\varepsilon X^{j}(c)\Rightarrow \delta Q^{j}|_{c}=\sum_{j}M_{j}^{i}\delta q^{j}|_{c}$。即$\delta{q}$是\textbf{协变量}。
+
+故$RHS=\sum_{j}\pp{L}{\dot q^{i}}M^{-1}M\delta q=LHS$。即：将协变量与逆变量缩并得到不变量。
+
+故$\delta S$中没有边界项的影响，其取极值当且仅当在各坐标卡中满足E-L方程。
+
+（曲线是紧的，故总可以取有限覆盖，即便$M$不能被至多可数坐标卡覆盖）
+
+\begin{Eg}[伽利略时空中的自由粒子]
+  $L=\frac{m}{2}|\dot{\bm x}|^{2}\Rightarrow \dif{}{t}(L)=m\ddot{\bm x}$。可以验证这是在伽利略变换下是不变的且是协变量。
+\end{Eg}
+
+\begin{Eg}[多粒子+两体势]
+  $L=\sum_{i}\frac{1}{2}m_{i}|\dot{\bm{x}}_{i}|^{2}-\frac{1}{2}\sum_{i\neq j}V(|\bm{x}_{ij}|)\Rightarrow m_{i}\ddot{\bm{x}}_{i}+(\dif{V}{r})\frac{\bm x_{ij}}{|\bm x_{ij}|}$
+\end{Eg}
+
+\begin{Eg}[自然系统]
+  $L=\frac{1}{2}\sum g_{ij}(q^{k})\dot q^{i}\dot q^{j}-V(q^{k})$。故$\dif{}{t}(\pp{L}{\dot q^{i}})-\pp{L}{\dot q^{i}}=0\Rightarrow \dif{}{t}(\sum_{j}g_{ij}(q)\dot q^{j})-\frac{1}{2}\sum_{jk}\pp{g_{jk}}{q^{i}}\dot q^{j}\dot q^{k}+\pp{V}{q^{i}}=0$
+\end{Eg}
+
+\begin{Eg}[球极坐标的中心势]
+  $L=\frac{1}{2}m|\dot x|^{2}-V(|x|)$. $|\dot{\bm x}|^{2}=\dot r^{2}=r^{2}(\dot\theta^{2}+\sin^{2}\theta\dot\phi^{2})$
+
+  故$r$方向的E-L方程为
+  \[\dif{}{t}(\pp{L}{\dot r})-\pp{L}{r}=m\ddot r-mr\dot\theta^{2}-mr\sin^{2}\theta\dot\phi^{2}+\dif{V}{r}\]
+  $\phi$方向的E-L方程为（角动量守恒）
+  \[mr^{2}\sin^{2}\theta\dot\phi=Const\]
+  $\theta$方向的E-L方程为
+  \[\dif{}{t}(mr^{2}\ddot \theta)-mr^{2}\sin\theta\cos\theta\dot{\phi}^{2}\]
+\end{Eg}
+
+当坐标不能取消约束$f(q^{i},\dot q^{i})$时，需考虑Lagrange乘子法。设$L^{\lambda}=L+\lambda f$，其满足方程$\pp{L^{\lambda}}{\lambda}=0,\dif{}{t}(\pp{L^{\lambda}}{\dot q^{i}})-\pp{L^{\lambda}}{q^{i}}=0$
+
+\section{守恒量}
+在球极坐标的中心势的例子中，$\dd{}{t}(\pp{L}{\dot\phi})=0\Rightarrow \pp{L}{\dot{\phi}}$是守恒量（角动量守恒）。事实上，能量也是守恒量：$E=\frac{1}{2}(\dot{r}^{2}+r^{2}\dot{\theta}^{2}+r^{2}7sin^{2}\theta{\dot\theta}^{2})+V(r)$：可以视为$r$方向的E-L方程（两边乘$\dot{r}$）的首次积分。
+
+这样考察守恒量是麻烦的。我们希望从拉氏量直接求出守恒量。
+
+\begin{Def}
+  $(M,L)$为拉氏系统，$C:TM\to\R$满足$\forall q:I\to M$为运动方程的解，$\dd{}{t}(C\circ q')=0$，则$C$称为（该拉氏系统的）守恒量。
+\end{Def}
+
+这一节的内容全部在局部坐标下讨论，不依赖局部坐标（而是向量场）的讨论是后面章节的内容。
+
+\paragraph{广义动量守恒}
+\begin{Def}[广义动量]
+  $(M,L)$是拉氏系统。$(q^{1},\cdots,q^{n})$是其局部坐标。共轭于$\dot q^{i}$的广义动量定义为$p_{i}:= \pp{L}{\dot q^{i}}$
+\end{Def}
+
+例如，在中心势的例子中，$p_{r}=m\dot{r}, p_{\theta}=mr^{2}\dot{\theta},p_{\phi}=mr^{2}\sin^{2}(\theta)\dot{\phi}$，沿轴动量与角动量。
+
+\begin{Eg}
+  自由粒子$L=\frac{1}{2}m(\sum\limits_{i=1}^{3}\dot{x}_{i}^{2})\Rightarrow p_{x_{i}}=m\dot{x}_{i}$
+\end{Eg}
+
+用广义动量，E-L方程写为$\dot{p}_{i}=\pp{L}{q^{i}}$。由此，若某坐标下$\pp{L}{q^{i}}$为0，则有守恒量$p_{i}$。
+\begin{Def}
+$q^{i}$称循环坐标/可遗坐标，若$\pp{L}{q^{i}}=0$
+\end{Def}
+
+\begin{Prop}
+  若$q^{i}$为循环坐标，则$p_{i}$是守恒量。
+\end{Prop}
+
+守恒的广义动量依赖坐标卡的选取。坐标变换下，守恒量之守恒性质不变。问题是：如何经坐标变换得守恒量。即设坐标卡$f:(q^{1},\cdots, q^{n})\mapsto (Q^{1},\cdots,Q^{n})$，则$(p_{1},\cdots,p_{n})\mapsto (P_{1},\cdots,P_{n})$的变换关系如何？由其逆变关系，$\sum_{i}P_{i}M_{j}^{i}=p_{j}\Rightarrow \dif{}{t}(\sum_{i}P_{i}M^{i}_{j})=\dif{}{t}p_{j}=0$得一守恒量。
+
+\paragraph{能量守恒}
+设$q:I\to M$是运动方程的解，则$L\circ q':I\to \R\Rightarrow \dd{}{t}(L\circ q')=\sum_{i}\pp{L}{q^{i}}\ddot q^{i}+\sum_{i}\pp{L}{q^{i}}\dot q^{i}+\pp{L}{t}$。又$q$满足E-L方程，替换得$\dd{}{t}(L\circ q')=\sum_{i}\pp{L}{q^{i}}\ddot q^{i}+\sum_{i}\dd{}{t}(\pp{L}{\dot q^{i}})\dot q^{i}+\pp{L}{t}=\sum_{i}\dd{}{t}(\pp{L}{\dot q^{i}}\dot{q}^{i})+\pp{L}{t}$。故$\dd{}{t}(\sum_{i}\pp{L}{\dot q^{i}}\dot q^{i}-L)=-\pp{L}{t}$，即当$\pp{L}{t}=0$时，$E=\sum_{i}\pp{L}{\dot q^{i}}\dot q^{i}-L=\sum_{i}p_{i}\dot{q^{i}}-L$是守恒量。
+
+\begin{Eg}[中心势的能量]
+  $E=p_{r}\dot{r}+p_{\theta}\dot{\theta}+p_{\phi}\dot{\phi}-L=2T-(T-V)=T+V$
+\end{Eg}
+
+\begin{Eg}[自然系统]
+  $L=T-V=\frac{1}{2}\sum_{ij}g_{ij}(\bm{q})\dot q^{i}\dot q^{j}-V, E=T+V$
+\end{Eg}
+
+\begin{Eg}[旋转圆环上的自由球]
+  $L=\frac{1}{2}mr^{2}(\omega^{2}\sin^{2}\theta+\dot\theta^{2})+mgr\cos\theta$，则$p_{\theta}=mr^{2}\dot{\theta},E=\frac{1}{2}mr^{2}\dot\theta^{2}-\frac{1}{2}mr^{2}\omega^{2}\sin^{2}\theta+mgr\cos\theta$
+
+  即：在旋转的坐标系中考察质点，其能量不是一般的动能、势能的和。
+\end{Eg}
+
+在单自由粒子的系统中考虑变换$g:(x,y,z)\mapsto (x+a,y,z)$。$x$是可遗坐标，若$\pp{L}{x}=0\Leftrightarrow L\circ g_{*}=L$。即$L$在沿$x$轴的扰动下是不变的。
+
+Noether定理即考察对称性与守恒量的关系。
+
+\begin{Def}[对称性]
+  $g:M\to M$是微分同胚（可逆，且在任意坐标卡可微）。若$L:TM\to \R$满足$L\circ g_{*}=L$，则称$g$是系统$(M,L)$的一个对称性。
+\end{Def}
+即$g$是对称性若有下面的交换图成立：
+\[
+\begin{tikzcd}
+TM \arrow[r, "g_*", shift right] \arrow[rd, "L"] & TM \arrow[d, "L"] \\
+                                                 & \mathbb{R}       
+\end{tikzcd}
+\]
+
+有时会放宽要求只要求$g$保持极大值性质不变。
+
+\begin{Def}[对称群]
+  称$G$是$(M,L)$的对称群，若$\exists G$在$M$上的左作用$\st\forall g\in G: x\in M\to g\cdot x\in M$是一个对称性。
+\end{Def}
+
+\begin{Eg}
+  考虑单自由粒子的系统，$g_{a}:\R^{3}\to \R^{3}:(x,y,z)\to (x+a,y,z)$。$G=\{g_{a}:a\in\R\}$上自然地有群的结构（同构于$\R$上的加法群）。该群对$M$的左作用定义为$g_{a}\cdot M\equiv \forall x, g_{a}\cdot x=g_{a}(x)$。这称为平移群。
+
+  可以定义一般的平移群：$G=\{g_{\bm a}:\bm{a}\in\R^{3}\}\cong (\R^{3},+)$，则$G$是$(\R^{3},\frac{1}{2}m|\dot{\bm x}|^{2})$的对称群。
+\end{Eg}
+
+当然也有离散的对陈群：$I:(x,y,z)\to (x,y,z), P:(x,y,z)\to (-x,-y,-z)$，则$\{I,P\}\cong\mathbb{Z}_{2}$也是单自由粒子系统的对称群，且它是离散的。
+
+考虑中心势之例的转动群$g_{\varepsilon}:(r,\theta,\phi)\mapsto (r,\theta,\phi+\varepsilon), G=\{g_{\varepsilon}: \varepsilon\in [0,2\pi)\}\cong(S^{1},+)$
+
+\begin{Thm}[Noether]
+  单参数微分同胚群$\{g_{s}\}_{s\in\R}$是拉氏系统$(M,L)$的对称群，则$(M,L)$有对应的守恒量$I:TM\to\R$，在局部坐标下其形如：
+  \[I\equiv \sum_{i}\pp{L}{\dot q^{i}}\pp{g^{i}_{s}(\bm{q})}{s}|_{s=0}\]
+  其中$g^{i}_{s}(\bm q)$是$g$在坐标卡下的代表$(\phi\circ g\circ\phi^{-1})$的第$i$个分量。
+\end{Thm}
+
+\begin{Eg}
+  考察单自由粒子的系统，$\bm{a}\in\R^{3},\{g_{s\bm{a}}\}=\{g_{s\bm a}:\bm{x}\to\bm{x}+s\bm{a}\}$，则$\pp{g_{s}(\bm x)}{s}|_{s=0}=\bm{a}=(a_{x},a_{y},a_{z})^{T}\Rightarrow I_{\bm a}=m\dot x a_{x}+m\dot y a_{y}+m\dot z a_{z}=\bm{p}\cdot\bm{a}$
+
+  即动量在具有平移不变性的方向上的投影是不变量。
+\end{Eg}
+
+\begin{Eg}
+  在中心势的例子中，$\pp{}{\varepsilon}g_{\varepsilon}=(0,0,1)$，故$I_{\varepsilon}=p_{\phi}$，即角动量守恒。
+\end{Eg}
+
+\begin{proof}[Noether定理的证明]
+  总假设$L$不含时。
+
+  定义$q^{i}(s,t)=g_{s}^{i}(q(t))$。按定义$0=\pp{}{s}L(\bm{q}(s,t),\dot{\bm{q}}(s,t))=\sum_{i}((\pp{L}{q^{i}})\pp{q^{i}}{s}+\pp{L}{\dot q^{i}}\pp{}{s}\pp{}{t}q^{i})$。由对称性，因拉氏量在变换下不变，故若$q(t)$是解，则$q(s,t)$也是解。故以运动方程代换上式得
+  \[0=\pp{}{s}L(\bm{q}(s,t),\dot{\bm{q}}(s,t))=\sum_{i}(\dif{}{t}(\pp{L}{\dot q^{i}})\pp{q^{i}}{s}+\pp{L}{\dot q^{i}}\pp{}{s}\pp{}{t}q^{i})\]
+  即$\pp{}{t}(\sum_{i}\pp{L}{\dot q}\pp{}{s}\dot q)|_{s=0}=0$
+
+  可以证明其形式在坐标变换下是不变的。
+\end{proof}
+
+\begin{Eg}[直角坐标系下的中心势]
+  作角度$\varepsilon\ll 1$的转动，其中转轴是过原点的$\bm{a}$所决定的直线。$g_{\varepsilon}(\bm{x})=\bm{x}+(\bm a\times \bm x)\varepsilon+O(\varepsilon^{2})$。$g_{\varepsilon}(\dot{\bm{x}})=\dot{\bm x}+(\bm a\times \bm{\dot x})\varepsilon+O(\varepsilon^{2})$。$\bm{x}\cdot\bm{x}\mapsto |\bm{x}|^{2}+O(\varepsilon)$。故$g_{\varepsilon}$是$L$的对称性。
+
+  $J_{\bm a}=\sum_{i=1}^{3}\pp{L}{\dot x^{i}}\pp{g(\bm{x})}{\varepsilon}|_{\varepsilon=0}=\sum_{i}m\dot x^{i}(\bm a\times \bm x)^{i}=m\dot{\bm{x}}\cdot (\bm a\times \bm x)=\bm{a}\cdot (\bm x\times \bm{p})=\bm{a}\cdot \bm{J}$，即角动量在$\bm{a}$方向上的投影。
+
+  即若系统在$\bm{a}$轴的转动下是不变的，则角动量在$\bm{a}$方向是守恒的。
+\end{Eg}
+
+\section{拉格朗日力学的应用}
+只有少数拉氏系统可以解出。
+
+在解拉氏系统时，守恒律比运动方程更重要。
+
+\paragraph{一维自然系统}
+$\mathrm{dim}M=1, L=\frac{1}{2}a(q)\dot{q}^{2}-V(q)$，其中$a(q)$是黎曼流形上的度量：$a(q)=0\quad\forall q$。局部上可以定义$x\equiv \int\sqrt{\frac{a(q)}{m}}\dd q$，则
+\[L=\frac{1}{2}m\dot{x}^{2}-V(x)\]
+其E-L方程为
+\[m\ddot{x}=-\pp{V}{x}\]
+该系统不含时，故其能量守恒，其中能量$E=\frac{1}{2}m\dot x^{2}+V(x)$（事实上，在运动方程两边同乘$\dot x$再作积分也能得到）。这给出了切空间$TM\cong \R^{2}$中的一条曲线。
+
+可以由其能量守恒作其相图：
+%insert picture
+
+由能量守恒计算运动方程：
+
+取$\dot x>0$的分支，则$\dif{x}{t}=\sqrt{\frac{2(E-V(x))}{m}}$。用分离变量法解得$t=\sqrt{\frac{m}{2}}\int\frac{\dd x}{\sqrt{E-V(x)}}+C$
+
+$E-V(x)$的零点是重要的：每次遇到零点时，粒子将从$\dot x>0$的分支转为$\dot x<0$的分支。是以这些点称为拐点。记$q_{0}$为拐点，即$E-V(q)|_{q_{0}}=0$。
+
+先考虑不是切点的拐点，即$V'(q)|_{q_{0}}\neq 0$，则可以作Taylor展开：$t=\sqrt{\frac m 2}\int_{q_{i}}^{q_{0}}\frac{\dd q}{\sqrt{V'(q_{0})(q-q_{0})+O((q-q_{0})^{2})}}\sim \sqrt{(q_{0}-q_{i})}$。故在两个非切点的拐点（能量所截区间的两端）$q_{0},q_{1}$间运动用时$T(E)=\sqrt{2m}\int_{q_{0}}^{q_{1}}\frac{\dd q}{E-V(q)}$
+
+对于相切的拐点，即$E-V(q)|_{q_{0}}=0, V'(q)|_{q_{0}}=0$，即$V=E+C(q-q_{0})^{\beta}+O((q-q_{0})^{\beta+1})\quad\beta>1$，则$T=\sqrt{\frac m 2}\int_{q_{i}}^{q_{0}}\frac{\dd q}{\sqrt{c(q-q_{0})^{\beta}}}\sim (q-q_{0})^{-\frac{\beta}{2}+1}$，故
+\begin{enumerate}
+\item 若$\beta\in (1,2)$，则粒子可以在有限时间内抵达$q_{0}$
+\item 若$\beta\geq 2$，则不能在有限时间内到达$q_{0}$，即不会作往复运动。
+\end{enumerate}
+
+对于一维简谐振子，$V(q)=\frac{1}{2}kq^{2}$，可以将运动方程解出，且$T(E)=2\pi\sqrt{\frac{m}{k}}$
+
+\paragraph{单摆}
+单摆也是一维系统，其拉氏量为
+\[L=\frac{1}{2}ml^{2}{\dot{\theta}}^{2}+mgl\cos\theta\]
+其相图形如：
+%insert picture
+
+其中间的轨迹可缩，外围的则不能（即：其winding number不同）
+
+$T=4\sqrt{\frac l g}\int_{0}^{\theta}\frac{\dd\theta}{\sqrt{\sin^{2}(\frac{1}{2}\theta_{0})-\sin^{2}\frac{1}{2}\theta}}$。这是第一类完全椭圆积分。在$\theta$较小时，可以考虑其展开
+\[T=2\pi\sqrt{\frac l g}(1+\frac{1}{6}\theta_{0}^{2}+\cdots)\]
+摆钟的周期与重力加速度相关，故不能用于航海（航海只能用发条钟）。
+
+\paragraph{一维系统的反问题}
+对于一般的一维系统，测量时间是容易的而势能是难以确定的。即：Can you hear the shape of a drum? 数学地说，这便是解微分方程的\textbf{反问题}。
+
+为此需要一些假设：设
+\begin{itemize}
+\item   $V$在$[q_{0},q_{1}]$内只有一个极小值$q=0,V(0)=0$。
+\item   $V(q_{1})=V(q_{0})=E_{M}$
+\item   $V(q)$于$[q_{0},0]$严格单减，于$[0,q_{1}]$严格单增，并分别记这两段的反函数为$q_{0}(V),q_{1}(V)$
+\end{itemize}
+则周期可以写为
+\begin{align*}
+  T(E)=&\sqrt{2m}\int_{E}^{0}\frac{\dd q_{0}}{\dd V}\frac{\dd V}{\sqrt{E-V}}+\sqrt{2m}\int_{0}^{E}\frac{\dd q_{1}}{\dd V}\frac{\dd V}{\sqrt{E-V}}\\
+  =&\sqrt{2m}\int_{0}^{E}(\frac{\dd q_{0}}{\dd V}-\frac{\dd q_{1}}{\dd V})\frac{\dd V}{\sqrt{E-V}}
+\end{align*}
+两边同乘$\frac{\dd E}{\sqrt{\alpha-E}}$。因$T(E)$已知，LHS可以直接算出。在RHS交换积分次序：$RHS=\sqrt{2m}\int_{0}^{\alpha}\int_{V}^{\alpha}(\frac{\dd q_{0}}{\dd V}-\frac{\dd q_{1}}{\dd V})\dd V\frac{\dd E}{\sqrt{(\alpha-E)(E-V)}}=(q_{2}(V)-q_{1}(V))\pi$，即
+\[q_{2}(V)-q_{1}(V)=\frac{1}{\pi\sqrt{2m}}\int_{0}^{V}\frac{T(E)\dd E}{\sqrt{V-E}}\]
+故我们至少知道了$V$的宽度。若再假定$V$对称，则可以显式解出$V$。
+
+上述变换称Abel变换（一种广义Fourier变换）。
+
+\paragraph{两体问题}
+\[L=\frac{1}{2}m_{1}|\dot{\bm{x}}_{1}|^{2}+\frac{1}{2}m_{2}|\bm{\dot{x}_{2}}|^{2}-V(|\bm{x}_{1}-\bm{x}_{2}|)\]
+该系统具有平移对称性：在$\bm{x}_{i}\mapsto \bm{x}_{i}+\bm{a}$下不变。遂由Noether定理：
+$\bm{p}=(m_{1}+m_{2})\dif{}{t}(\frac{m_{1}\bm{x_{1}}+m_{2}\bm{x}_{2}}{m_{1}+m_{2}})$守恒。称$\bm{X}=\frac{m_{1}\bm{x_{1}}+m_{2}\bm{x}_{2}}{m_{1}+m_{2}}$为系统的质心，称$m=\frac{m_{1}m_{2}}{m_{1}+m_{2}}$为约化质量。事实上，当$m_{1}\ll m_{2}$时，$m\approx m_{1}$。令$\bm{x}=\bm{x}_{1}-\bm{x}_{2}$，则$(\bm x_{1},\bm x_{2})\mapsto (\bm X,\bm x)$。$L=\frac{m_{1}+m_{2}}{2}|\dot{\bm{X}}|^{2}+\frac{1}{2}m|\dot{\bm{x}}|^{2}-V(|\bm{x}|)=L_{\bm X}+L_{\bm x}$
+
+故两体问题化为两个单体问题，只需研究拉氏量
+\[L_{\bm x}=\frac{1}{2}m\dot{\bm{x}}-V(|\bm{x}|)\]
+在球坐标系中考察：
+\[L=\frac{1}{2}m(\dot r^{2}+r^{2}\dot{\theta}^{2}+r^{2}\sin^{2}\theta\dot{\phi}^{2})-V(r)\]
+
+因其有旋转对称性，其角动量$\bm J=m\dot{\bm x}\times \bm x$守恒。因$\bm x\cdot \bm J=0$，故不妨设角动量所在方向为$z$轴，即$\theta=\frac{\pi}{2}$。则拉氏量化为
+\[L=\frac{1}{2}m(\dot{r}^{2}+r^{2}\dot{\phi}^{2})-V(r)\]
+遂将两体问题化为2维问题。再注意到$\phi$是循环坐标，故其对应广义动量$p_{\phi}=mr^{2}\dot{\phi}=l$。$\dot \phi\neq 0$时，$|l|=|\bm J|$；$\dot\phi=0$时，轨迹为过原点的直线。$r^{2}\dot{\phi}=\frac{l}{m}$是单位时间内原点与质点的连线所扫过的面积，即有Kaplor's 2nd law：太阳和行星的连线在相同时间内扫过相同的面积。
+
+利用角动量守恒，可以作化简：
+\[E=\frac{1}{2}m\dot{r}^{2}+\frac{l^{2}}{2mr^{2}}+V(r)\]
+设$V_{eff}=\frac{l^{2}}{2mr^{2}}+V(r)$，则上式事实上是一维系统的拉氏量。遂有解$t=\sqrt{\frac m 2}\int\frac{\dd r}{\sqrt{E-V(r)-\frac{l^{2}}{2mr^{2}}}}$。从中形式地得到$r=r(t)\Rightarrow \theta=\frac{l}{m}\int\frac{\dd t}{r^{2}(t)}$
+
+但是我们要解的是质点的轨迹，设为$r=r(\theta)$。则$l=mr^{2}\dif{\theta}{r}\dot r=mr^{2}\dif{\theta}{r}\sqrt{2(E-V_{eff})/m}\Rightarrow \theta=\frac{l}{\sqrt{2m}}\int\frac{\dd r}{r^{2}}\frac{1}{\sqrt{E-V_{eff}(r)}}$。注意就物理模型而言，该表达式是有穷的。
+
+其相图形如：
+% insert picture
+
+注意：这是一个高维系统，$r$作往复不意味着往复运动，可能产生如水星进动的不闭合轨迹。
+
+设$r_{min}\leq r\leq r_{max}$，则轨道封闭当且仅当$\Delta\theta=\frac{1}{2m}\int \frac{\dd r}{r^{2}}\frac{1}{\sqrt{E-V_{eff}(r)}}\in 2\pi\mathbb{Q}$，否则轨道在$r_{max}$框出的圈内是稠密的。
+
+\begin{Thm}[伯特兰定理]
+  在中心势、两体问题中，唯有$V(r)=-\frac{k}{r}$或$V(r)=\frac{1}{2}kr^{2}$两种情况下，任意的有限运动都是闭合的。
+\end{Thm}
+
+事实上，若$V(r)$有一个极小值点，则有等势线构成的圆轨道为闭合轨道，但不一定有所有轨迹都闭合。
+
+今对$V_{eff}(r)=\frac{l^{2}}{mr^{2}}-\frac{k}{r}$具体计算轨道的形状。作变量替换：$u=\frac{1}{r}, \theta=\theta_{0}-\int\frac{\dd u}{\sqrt{(2m/l^{2}(E+ku))-u^{2}}}=\cdots$%=\frac{1}{\sqrt{-\gamma}}\cos^{-1}(-\frac{\beta-2\gamma x}{\sqrt{\beta^{2}-4\alpha\gamma}})
+，得到轨道方程为
+\[\frac{1}{r}=C(1+e\cos(\theta-\theta_{0}))\]
+这是一个一个焦点在原点的圆锥曲线。其中$e=\sqrt{1+\frac{2El^{2}}{mk^{2}}}$是轨道的离心率。$e=0,0<e<1,e=1,e>1$分别对应园、椭圆、抛物线、双曲线
+
+由此发现，轨道的半径可以任意小。特别地，考察椭圆轨道的半长轴，则$a=-\frac{k}{2E}\Rightarrow T=2\pi\sqrt{\frac{m}{k}}a^{3/2}$，是为开普勒第三定律。
+
+\paragraph{线性系统}
+线性系统，指运动方程是线性的的系统。例如谐振子：
+\[L=\frac{1}{2}m\dot{q}^{2}-\frac{1}{2}kq^{2}\]
+其运动方程为
+\[m\ddot{q}+kq=0\]
+设$w=\sqrt{\frac k m}$：
+\[\ddot{q}+w^{2}q=0\]
+解得$q=c_{1}\cos(\omega t)+c_{2}\sin(\omega t)=a\cos(\omega t+\phi)$。称$\omega$角频率，$a$为振幅，$\omega t+\phi$为相位，$\phi$为初相位。$T=\frac{2\pi}{\omega}$为周期。
+
+圆周运动在任意轴的投影都是简谐运动。又可以（形式地）将圆周运动视为复平面上的运动，故$q=Re(Ae^{i\omega t}), A=ae^{i\phi}$
+
+当$k>0$时，$q=A\cos(\omega t+\theta)$，称平衡的；当$k=0$时，解为$q=at+b$，称平衡的；$k<0$时，$q=ae^{\alpha t}+be^{-\alpha t}$，称不稳定的。
+
+考虑自然系统$L=T-V, T=\frac{1}{2}\sum_{i,j}g_{ij}\dot{q}^{i}\dot{q}^{j}$，其中$g_{ij}(q)$并非常量。尽管$V(\bm{q})$可能有非常复杂的形式，在极值点附近可以将其近似为一个二次型：$V\approx \frac{1}{2}\sum_{i,j}\frac{\partial^{2}V}{\partial q^{i}\partial q^{j}}|_{q_{0}}(q^{i}-q_{0}^{i})(q^{j}-q_{0}^{j})$
+
+若$\dot q^{i}=0$，$\pp{V}{q^{i}}=0$，则$q^{i}=q_{0}^{i}$是运动方程的一个解（即静止不动），称为平衡态。考虑对平衡态作偏离：$q'=(q_{0}^{i}+\delta q^{i}, \delta\dot{q}^{i})$，其中$|\delta q|<\varepsilon, |\delta \dot q|<\varepsilon$，则
+\[L=\frac{1}{2}\sum_{i,j}g_{ij}(q_{0})\delta \dot{q}^{i}\delta \dot{q}^{j}-\frac{1}{2}\frac{\partial^{2}V}{\partial q^{i}\partial q^{j}}|_{q_{0}}\delta q^{i}\delta q^{j}\]
+即在极值点附近，自然系统可近似为线性系统。
+
+遂定义：
+\begin{Def}
+  $(M,L)$为自然系统，$L(q,\dot q)=T-V=\frac{1}{2}\sum_{i,j}g(\bm q)\dot q^{i}\dot{q^{j}}-V(\bm q)$，$(q_{0},\dot{q_{0}})\in TM, \dot{q}_{0}=0, \pp{V}{\bm q}|_{q_{0}}=0$，则称$(q_{0},\dot(q_{0}))$是$(M,L)$的平衡点。
+\end{Def}
+事实上，设$q(t):I\to M; t\mapsto q_{0}$满足E-L方程。即停在平衡点的质点将一直停在平衡点。但稳定性需要考虑扰动才能确定。
+
+\begin{Prop}
+  $(M,L)$是自然系统，$(q,0)$是平衡点。在$(q_{0},0)$的一个足够小的邻域内，$L$可以近似写为
+  \[L=\frac{1}{2}\sum_{i,j}a_{ij}\delta \dot{q}^{i}\delta\dot{q}^{j}-\frac{1}{2}\sum_{i,j}b_{ij}\delta q^{i}\delta q^{j}+O(\delta q^{3})\]
+  其中$\delta q^{i}(t)=q^{i}(t)-q_{0}^{i}, a_{ij}=g_{ij}(q_{0}),b_{ij}=\frac{\partial^{2}V}{\partial q^{i}\partial q^{j}}|_{q_{0}}$
+\end{Prop}
+
+\begin{proof}
+  $L=\frac{1}{2}\sum_{i,j}g_{ij}(q_{0}+\delta q)\delta \dot{q^{i}}\delta \dot{q^{j}}-(V(q_{0}+\delta q)-V(q_{0}))$（注意拉氏量无关其常数）。作Taylor展开至二阶即得。
+\end{proof}
+
+是以在平衡点的小邻域内，系统满足E-L方程：（即平衡点附近一阶近似总是线性的）
+\[\sum_{j=1}^{N}(a_{ij}\delta \ddot{q}^{j}+b_{ij}\delta q^{j})=0\quad i=1,2,\cdots,N\]
+$\delta \bm{q}=(\delta q^{1},\cdots,\delta q^{N})^{T}, A=(a_{ij}), B=(b_{ij})$。当$A,B$都是对角阵时，方程是容易解的。又与$g$是Riemann度量，$A$是实对称正定的，$B$是对称的。故可作对角化：$A=Q^{T}\mathrm{diag}\{m_{1},\cdots, m_{N}\}Q\quad m_{i}>0$。设$\tilde{B}=QBQ^{T}$，则原方程化为
+\[\mathrm{diag}\{m_{1}^{\frac 1 2},\cdots, m_{N}^{\frac 1 2}\}Q\delta\bm{q}+\mathrm{diag}\{m_{1}^{-\frac 1 2},\cdots, m_{N}^{-\frac 1 2}\}\tilde B\mathrm{diag}\{m_{1}^{-\frac 1 2},\cdots, m_{N}^{-\frac 1 2}\}\mathrm{diag}\{m_{1}^{\frac 1 2},\cdots, m_{N}^{\frac 1 2}\}(Q\delta\bm{q})\]
+记$\bm{x}=\mathrm{diag}\{m^{\frac 1 2}_{1},\cdots, m_{N}^{\frac 1 2}\}Q\delta\bm{q}$，则系统在新的坐标下实现了对角化。再对角化得：
+
+\begin{Prop}
+  平衡点附近的方程可以对教化为
+  \[\ddot{\bm{Q}}+\mathrm{diag}\{\lambda_{1},\cdots,\lambda_{n}\}\bm{Q}\]
+  其中$\lambda_{i}$是$\det(B-\lambda A)=0$的根。
+\end{Prop}
+
+\begin{Eg}[单摆]
+  \[L=\frac{1}{2}ml^{2}\dot{\theta}^{2}+mgl\cos\theta\]
+
+  $\theta=0$为系统的平衡点，在其附近（$\theta\ll 1$）的线性近似为
+  \[L=\frac{1}{2}ml^{2}\dot{\theta}^{2}-\frac{1}{2}mgl\theta^{2}\]
+解得$\theta(t)=\mathrm{Re}\theta_{0}e^{i\sqrt{g/l}t+\phi}$
+
+$\theta=\pi$为系统的（不稳定）平衡点，解得运动方程$\delta\theta(t)=ae^{\sqrt{g/l}t}+be^{-\sqrt{g/l}t}$。以其指数增长，近似快速失真。
+\end{Eg}
+
+\begin{Eg}[双摆]
+  设两杆长均为$l$，两球质量均为$m$，$\theta_{1}=\theta_{2}$为平衡点。考虑$\theta_{1}=\theta_{2}=0$附近的展开，则$A=
+  \begin{bmatrix}
+    2ml^{2}&ml^{2}\\ml^{2}&ml^{2}
+  \end{bmatrix}
+  ,B=ml^{2}\mathrm{diag}\{2g/l,g/l\}$。则$\det(A\lambda-B)=0\Rightarrow 2(\lambda-\frac{g}{l})^{2}-\lambda^{2}=0\Rightarrow \lambda_{1}=(2+\sqrt{2})g/l,\lambda_{2}=(2-\sqrt{2})g/l$。设$\omega_{1}=\sqrt{(2+\sqrt{2})(g/l)},\omega_{2}=\sqrt{(2-\sqrt{2})g/l}$。设$\bm{\theta}(t)=\bm{a}_{1}e^{i\omega_{1}t+\phi_{0}}$，其中$(A\lambda_{1}-B)\bm{a}_{1}=0$，解得$\bm{\theta}_{1}(t)=Re(1,\sqrt{2})^{T}c_{1}e^{i\omega_{2}t}, \bm{\theta}_{2}=Re(1,-\sqrt{2})^{T}c_{2}e^{i\omega_{1}t}$
+
+    具体地，$\theta^{1}(t)=\theta_{0}\cos(\Delta\omega t)\cos(\omega t)$，其中$\omega=\frac{\omega_{1}+\omega_{2}}{2},\Delta \omega=\frac{\omega_{1}-\omega_{2}}{2}$，这可以看作是振幅余弦变化的简谐运动，即“拍(beat)”
+\end{Eg}
+\chapter{哈密顿力学}
+运动方程是二阶ODE，而可以通过换元将二阶ODE化为一阶ODE组，但方程数量多一倍。 将E-L方程转化为Halmilton方程是这样的变换之一，且这样会引入额外的对称性。为此我们考察具有更好性质的余切丛。将其量子化是非常自然的。
+
+设流形$M$，其有切丛$TM$。我们考虑映射：$f:M\to TM \quad p\mapsto v_p$ 且满足$\pi \circ f:M\to M=Id_M$，则称$f$为$M$上的切向量场(tangent field)。
+
+设$M$有坐标卡$(U,\phi)$，$T_pM=\left\{ \frac{\partial }{\partial q^{i}}|_p \right\} \quad p\in U$。$(\phi_{*}f)|_U: U\to T\R^n, p\mapsto \sum\limits_{i}^{}f^i(\phi(p))\frac{\partial }{\partial q^{i}}$，其中$f^i$是$\R^n$上的函数。设$f^i$在$U$上是$C^r$的，则$f$在$U$上是$C^r$的，且由链式法则这种光滑性在坐标卡间传递。遂可定义
+\begin{Def}
+  $f$在$M$上是$C^r$的，若$f$在$M$的任意坐标卡上是$C^r$的。
+\end{Def}
+\begin{Eg}
+  $f:\R^3\to\R$，则$\nabla f:\R^3\to T\R^{3}, \bm{x}\mapsto (\bm{x}, \nabla f(\bm{x}))$。
+\end{Eg}
+可以定义切向量场在函数上的作用：$f:M\to\R, v:M\to TM. \forall p, v(p)\in T_pM, v(p)\cdot f=\frac{\mathrm{d}}{\mathrm{d}t}(f\cdot q)|_{t=0}\Rightarrow v\cdot f:M\to\R, p\mapsto (v(p)\cdot f)|_p$。设$w,v$是切向量场，则定义切向量的复合为$(wv)\cdot f=w\cdot (v\cdot f)$
+
+$f,g:M\to \R, (fv)$犹为向量场：$(\phi_{*}\circ fv)|_u=\sum\limits_{i}^{}f(\bm{q})v^i(\bm{q})\frac{\partial }{\partial q^{i}}$，且向量场关于$(+,\cdot)$构成环。
+
+这种关系下向量场间有Leibnitz法则
+\begin{equation*}
+v\cdot(fg)=(v\cdot f)g+f(v\cdot g)
+\end{equation*}
+
+\section{余切空间与余切丛}
+\begin{Def}
+  $p$处的余切空间定义为其切空间的对偶空间：
+  \begin{equation*}
+  T_p^{*}M=\left\{ L:T_pM\to\R| L \text{ 线性 } \right\}=(T_pM)^{*}
+  \end{equation*}
+\end{Def}
+
+$\forall\alpha\in T_{p}^{*}M,\alpha:T_pM\to \R, v\mapsto\alpha(v)=\alpha\cdot v=\left\langle \alpha,v \right\rangle$
+
+\begin{Def}
+  $T^{*}M=\bigcup_{p\in M}^{}T^{*}_pM$
+\end{Def}
+事实上，$T^{*}M$是$2n$维的流形。
+
+\begin{Eg}
+  $f:\R^3\to \R$光滑，$\mathrm{d}f|_{\bm{x}}=\sum\limits_{i=1}^{3}\frac{\partial f(\bm{x})}{\partial x_{i}} \mathrm{d}x_{i}$，这是余切空间中的元素。
+
+  更一般的，$f:M\to\R, \mathrm{d}f|_p: T_pM\to \R, v\mapsto v\cdot f$。设其在坐标卡$(U,\phi)$中，则$v\cdot f=\sum\limits_{i}^{}v^i \frac{\partial f}{\partial q^{i}}$
+\end{Eg}
+
+
+考虑特例：$(U,\phi)$是$M$上的坐标卡，$\phi:U\to \R^n, q^i:= (\phi(\bm{q}))^i: U\to\R, q\mapsto q^i, \mathrm{d}q^i|_{p\in U}:T_pM\to \R, \mathrm{d}q^i\cdot \frac{\partial }{\partial q^{j}}=\frac{\partial q^{i}}{\partial q^{j}}$。故$\left\{ \mathrm{d}q^i \right\}$是$T_{p^{*}}M$上的一组基。
+\[\begin{tikzcd}
+TM \arrow[d, "\pi_M"] \arrow[r, "F_*"] & TN \arrow[d, "\pi_N"]                  \\
+M \arrow[r, "F"]                       & N                                      \\
+T^*M \arrow[u, "\pi"]                  & T^*N \arrow[u, "\pi"] \arrow[l, "F^*"]
+\end{tikzcd}\]
+
+\begin{Def}
+  $F^{*}:T^{*}N\to T^{*}M\st \forall \alpha\in T_{F(p)}^{*}N, F^{*}_{F(p)}(\alpha)\cdot v:= \alpha \cdot F_{*}(v)$
+\end{Def}
+
+\begin{Eg}
+  $F:M\to N, g:N\to\R, p\in M,F(p)\in M. \mathrm{d}g|_{F(p)}\in T^{*}_{F(p)}N, F^{*}(\mathrm{d}g|_{F(g)})\cdot v= \mathrm{d}_g|_{F(g)}\cdot F_{*}v=(F_{*}v)\cdot g=v\cdot (g\circ F)= \left\langle \mathrm{d}(g\circ F),v \right\rangle$。故$F^{*}( \mathrm{d}g|_{F(p)})= \mathrm{d}(g\circ F)|_{p}$
+\end{Eg}
+
+出于几何学发展的历史原因，“余切向量场”被称为“1-形式”。
+
+\begin{Def}[1-形式]
+  $\alpha:M\to T^{*}M, \pi\circ \alpha=\mathbf{1} \mathrm{d}_M$。且在坐标卡$(U,\phi)$下，$\alpha|_U=\sum_i\alpha_i(\mathbf{q}) \mathrm{d}q^i$，其中$\alpha_i$是光滑的。
+\end{Def}
+
+$\alpha$是1-形式，$X$是向量场。$\forall p\in M$，都可以定义$\alpha|_p\cdot X|_p$。由此可以定义$\alpha\cdot X: M\to\R: p\mapsto \left\langle \alpha|_p,X|_p \right\rangle$
+
+\begin{Eg}
+  $f,g:\R^3\to\R, \nabla g:\R^3\to T\R^3, \mathrm{d}f: \R^3\to T^{*}\R^{3}$，则$\mathrm{d}f\cdot \nabla g=(\nabla f)\cdot (\nabla g)$
+\end{Eg}
+
+\section{Hamilton力学}
+在Lagrange力学中，广义动量$p_i=\frac{\partial L(q,\dot{q},t)}{\partial \dot{q}^{i}}$具有下指标，故自然地它在余切空间中：$\sum\limits_i^{}p_i \mathrm{d}q^i \in T^{*}_qM$。
+
+Legendre变换实现切空间向量到余切空间映射的变换。
+
+\begin{Def}[Legendre变换]
+  $\mathbb{F}L:TM\to T^{*}N, v\mapsto \mathbb{F}L(v)\st$
+  \begin{equation*}
+\mathbb{F}L(v)\cdot w= \frac{\mathrm{d}}{\mathrm{d}s}L(v+sw)|_{s=0} \quad v,w\in T_{\pi(v)}M
+  \end{equation*} 
+\end{Def}
+上述导数限制在同一纤维（$T_{p}M$）中，故上述导数也称“纤维导数”。
+
+\begin{Prop}
+  设拉氏系统$(M,L)$有坐标卡$(U,\phi)$。$v\in TU, v=\sum\limits_i^{} v^i \frac{\partial }{\partial q^{i}}|_q; \alpha\in T_q^{*} U, \alpha=\sum\limits_i^{}\alpha_i \,\mathrm{d} q^i$，则
+  \[\mathbb{F}L|_{TU}: (q^i, v^i) \mapsto (q^i, \alpha_i= \frac{\partial L}{\partial q^{i}})(q^i,v^i)\]
+\end{Prop}
+
+事实上变换所得就是广义动量，即广义动量可以作为余切空间中的坐标。
+
+\begin{proof}
+  $v,w\in T_qM, v:(q^i,v^i); w: (q^i, w^i)$，则
+  \[\mathbb{F}L(v)\cdot w =\frac{\mathrm{d}}{\mathrm{d}s}L(\bm{q}, \bm{v}+s\bm{w})|_{s=0}=\sum\limits_i^{}\frac{\partial L}{\partial \dot{q}^{i}}\frac{\partial (sw^{i})}{\partial s}|_{s=0}=\sum\limits_i^{} \frac{\partial L}{\partial \dot{q}^{i}}(\bm{q},\bm{v})w^i=(\sum\limits_j^{}\frac{\partial L}{\partial \dot{q}^{j}}\,\mathrm{d}q^j|_q)(\sum\limits_{i}^{}w^i \frac{\partial }{\partial q^{i}}|_{q})\]
+  故得。
+\end{proof}
+
+记号：$p_i=\frac{\partial L}{\partial \dot{q}}(\bm{q}, \bm{\dot{q}})= p_{i,L}$
+
+%$设在局部坐标系下，$\mathbb{F}L: v=(q^i,v^i \frac{\partial }{\partial q^{i}})\mapsto (q^i, \frac{\partial L(q^{i}, v^i)}{\partial \dot{q}^i} \mathrm{d}\dot{q}^i)$
+
+称$M$为位型空间，$T^{*}M$为相空间。
+
+\begin{Def}
+  考虑拉氏系统$(M,L)$及其上坐标卡$U$，定义$H_L=\left\{ \frac{\partial^2 L(q,\dot{q}) }{\partial \dot{q}^i\partial \dot{q}^j} \right\}$。若$\det(H_L)\neq 0$，则称$L$为非退化的。
+\end{Def}
+若$L$非退化，则由隐函数定理，$\mathbb{F}L$在局部上是可逆的：$\mathbb{F}L^{-1}: T^{*}U\to TM, (q^i,p^i)\mapsto (q^i, \dot{q}^i=\dot{q}^i_L (\bm{q},\bm{p}))$。
+\begin{Prop}
+  若$L$非退化$\Leftrightarrow \mathbb{F}L$是局部微分同胚。
+\end{Prop}
+
+但是$\mathbb{F}L$不总生成$TM, T^{*}M$间的微分同胚。
+
+\begin{Rmk}
+  若$\mathbb{F}L:TM\to T^{*}M$是微分同胚，则称这样的$L$为 \textit{超正规的}(hyperregular)
+\end{Rmk}
+
+
+\begin{Eg}
+  $L=\frac{1}{2} m \dot{x}^2-\frac{1}{2}kx^2, M\cong  \mathbb{R}, TM\cong \mathbb{R}^2, T^{*}M\cong \mathbb{R}^2$。$\mathbb{F}L:(x,\dot{x})\mapsto (x, p=m\dot{x})$
+\end{Eg}
+
+\begin{Eg}
+  对于一般的自然系统，$L=\frac{1}{2}\sum\limits_{ij}^{}g_{ij}(\bm{q})\dot{q}^i \dot{q}^j -V(\bm{q}), \mathbb{F}L:(q^i, \dot{q}^i)\mapsto (q^i, p_i= \sum_i g_{ij}(\bm{q}) \dot{q}^j)$
+\end{Eg}
+
+\begin{Eg}
+  $L(x,y, \dot{x},\dot{y})=\frac{1}{2}\frac{\dot{x}^2+ \dot{y}^2 + 2(x \dot{y})-y\dot{x}}{x^2+y^2}, \mathbb{F}L(x,y,\dot{x},\dot{y})\mapsto (x,y, \frac{\dot{x}-y}{x^2+y^2}, \frac{\dot{y}+x}{x^2+y^2})$
+\end{Eg}
+
+考虑$H: T^{*}M\to \mathbb{R}$，能否定义$\mathbb{F}H: T^{*}M\to TM$？
+
+$v\in V, \alpha\in V^{*}, \tilde{v}\in V^{**}, \alpha(v)= \left\langle \alpha,v \right\rangle, \tilde{v}(\alpha)= \alpha(v)=\left\langle \alpha,v \right\rangle$，故$V\hookrightarrow V^{**}$有自然的嵌入，且在有限维的情形下这总是同构。
+
+\begin{Def}
+  $\mathbb{F}H: \alpha, \beta\in T^{*}_qM, \mathbb{F} H(\alpha)\in T_qM, \mathbb{F}H \cdot \beta= \frac{\mathrm{d}}{\mathrm{d}s}H(\alpha+s\beta)|_{s=0}$
+\end{Def}
+
+在局部坐标中，$\mathbb{F}H:(q^i, p_i)\mapsto (q^i, \dot{q}^i=\frac{\partial H}{\partial p_{i}}(q-p))$
+
+注意到$\mathbb{F}H, \mathbb{F}L^{-1}$都是$T^{*}M\to TM$的映射。那么Legendre变换的逆是否还是Legendre变换？
+
+
+\[
+  \begin{tikzcd}
+TM \arrow[r, "\mathbb{F}L", shift left=2] & T^*M \arrow[r, "\mathbb{F}H", shift left=2] & T^{**}M \arrow[ll, "\cong", shift left=3]
+\end{tikzcd}\]
+
+\begin{Prop}
+  设$(M,L)$是超正规的，则$\mathbb{F}H:T^{*}M\to TM$恰是$\mathbb{F}L$的逆$\Leftrightarrow H$满足（至多相差常数意义下）
+  \begin{equation*}
+(H\circ \mathbb{F}L)(v)=\mathbb{F}L(v)\cdot v- L(v) \quad \forall v\in TM
+  \end{equation*}
+\end{Prop}
+在局部坐标下，$\mathrm{RHS}=\sum\limits_{i}^{}\frac{\partial L(\bm{q}, \bm{\dot{q}})}{\partial \dot{q}^{i}}\dot{q}^i-L=E(\bm{q},\bm{\dot{q}})$，即$H(\bm{q}, \bm{p})= E(\bm{q}, \bm{\dot{q}})\circ \mathbb{F}L^{-1}=\sum\limits_i^{}p_i \dot{q}^i_L(\bm{q}, \bm{p})-L(\bm{q}, \bm{\dot{q}}(\bm{q},\bm{p}))$。是为Hamilton量。
+
+\begin{proof}
+  在局部坐标中证明命题。
+
+  $H(\bm{q}, \bm{p})= \sum\limits_i^{}p_i\bm{q}^{i}_L(\bm{q}m\bm{p})- L(\bm{q}, \bm{\dot{q}}_L(\bm{q}, \bm{p}))$
+
+  $\mathbb{F}H:(q^i,p_i)\mapsto (q^i, \frac{\partial H}{\partial p_{i}})$，其中$\frac{\partial H}{\partial p_i}= \dot{q}^i_L(\bm{q},\bm{p})+\sum\limits_i^{}p_i \frac{\partial \dot{q}^{i}_L}{\partial p_i}-\sum\limits_i^{}\frac{\partial L}{\partial \dot{q}^{i}}\frac{\partial \dot{q}^{i}_L}{\partial p_i}= \dot{q}^i_L(\bm{q},\bm{p})=\mathbb{F}L^{-1}$，故得。
+\end{proof}
+
+\begin{Eg}
+  $L= \frac{1}{2}\frac{\dot{x}^2+\dot{y}^2+2(x\dot{y}-y\dot{x})}{x^2+y^2}, p_x=\frac{\dot{x}-y}{x^2+y^2}, p_y=\frac{\dot{y}+x}{x^2+y^2}, \dot{x}=(x^2+y^2)p_x+y, \dot{y}=(x^2+y^2)p_y-x$
+\end{Eg}
+
+\section{Hamilton量}
+\begin{Def}[Hamilton量]
+  $(M,L)$超正规，$H:T^{*}M\to \mathbb{R}$
+  \begin{equation*}
+H(w):=(w\cdot \mathbb{F}L^{-1}(w)-(L\circ \mathbb{F}L^{-1}(w))) \quad \forall w\in T^{*}M
+  \end{equation*}
+\end{Def}
+其实际计算方法为：
+\begin{equation*}
+H(\bm{q},\bm{p})=E(\bm{q}, \dot{\bm{q}}(\bm{q},\bm{p}))=\sum_i p_i\dot{q}^i(q,p)-L(q,p)
+\end{equation*}
+
+
+\begin{Eg}[一维系统]
+$L=\frac{1}{2}m \dot{q}^2-V(q)$. $\mathbb{F}L: (q, \dot{q})\mapsto (q, p=m \dot{q})\Rightarrow \mathbb{F}L^{-1}:(q,p)\mapsto (q, \frac{p}{m}), E=\frac{1}{2}m \dot{q}^2+V(q)=\frac{p^2}{2m}+V(q)$
+\end{Eg}
+
+形式地，$\frac{\partial H}{\partial \dot{q}^{i}}=p_i-\frac{\partial L}{\partial q^{i}}=0$，故$H$与$\dot{q}^i$无关。
+
+
+注意到$\frac{\partial L}{\partial q^{i}}=-\frac{\partial H}{\partial q^{i}}$（事实上还有$\frac{\partial H}{\partial q}=\frac{\mathrm{d}V}{\mathrm{d}q}=-\frac{\partial L}{\partial q}$），则E-L方程化为
+\begin{equation*}
+\dot{p}_i=-\frac{\partial H}{\partial q^{i}} \quad \dot{q}^i=\frac{\partial H}{\partial p_{i}}
+\end{equation*}
+即
+\begin{equation*}
+\frac{\mathrm{d}}{\mathrm{d}t}
+\begin{bmatrix}
+  \bm{q}\\ \bm{p}
+\end{bmatrix}=
+\begin{bmatrix}
+  0& I\\ -I& 0
+\end{bmatrix}
+\nabla H
+\end{equation*}
+
+循环坐标推出广义动量守恒是上述方程的直接结论。
+
+这一方程称 \textbf{Hamilton正则方程}
+\[
+\begin{tikzcd}
+{(q^i(t),\dot{q}^i(t))} \arrow[r, maps to] & {(q^i(t), p_i(t))} \\
+TM \arrow[d] \arrow[r, "\mathbb{F}L"]      & T^*M \arrow[d]     \\
+\mathbb{R}                                 & \mathbb{R}        
+\end{tikzcd}
+\]
+
+\begin{Eg}[单摆]
+  $L=\frac{1}{2}ml^2\dot{\theta}^2+mgl\cos\theta, p_{\theta}=ml^2\dot{\theta}, H=p_{\theta}\dot{\theta}-L=\frac{p_\theta^2}{2ml^2}-mgl\cos\theta$
+\end{Eg}
+
+\begin{Eg}[线性系统]
+  $L=\frac{1}{2}=\dot{q}^TA \dot{q}-\frac{1}{2}q^TBq, p=A\dot{q}, H=\frac{1}{2}=p^TA^{-1}p+\frac{1}{2}q^TBq$
+\end{Eg}
+
+\section{Hamilton方程}
+Hamilton方程也称正则方程。
+
+\begin{Thm}
+  设$(M,L)$超正规，$q:I\to M$是一条曲线，$q':I\to TM: t\mapsto (q^i(t), \dot{q}^i(t))$自然地也是曲线。$q'$是E-L方程的解$\Leftrightarrow \mathbb{F}L \circ q': I\to T^{*}M$是Hamilton方程的解：
+  $\mathbb{F}L \circ q': (q^i(t), p_i(t)=p_{i,L}(\bm{q}(t), \bm{\dot{q}}))$满足
+  \begin{equation*}
+\frac{\mathrm{d}}{\mathrm{d}t}q^i(t)= \frac{\partial H}{\partial p_{i}}
+  \end{equation*}
+\begin{equation*}
+\frac{\mathrm{d}}{\mathrm{d}t}p_i(t)= -\frac{\partial H}{\partial q^{i}}
+\end{equation*}
+\end{Thm}
+
+
+\begin{proof}
+  \textbf{必要性：} 既知其满足E-L方程（$\frac{\mathrm{d}}{\mathrm{d}t}p_i- \frac{\partial L(\bm{q},\bm{ \dot{q}})}{\partial q^i}$），只需证明$\frac{\partial H}{\partial q^{i}}= \frac{\partial L}{\partial q^{i}}$。$\frac{\partial H}{\partial q^{i}}=\sum\limits_j^{} p_j \frac{\partial \dot{q}^{j}}{\partial q^i}-\frac{\partial L}{\partial q^{i}}-\sum\limits_i^{}\frac{\partial L}{\partial \dot{q}^{j}}\frac{\partial \dot{q}^{j}}{\partial q^i}$，得证。
+
+  第一个方程实际上就是$H$使得$\mathbb{F}H=\mathbb{F}L^{-1}$的定义。
+
+  \textbf{充分性：} 既知其满足Halmilton 方程，$\frac{\mathrm{d}}{\mathrm{d}t}p_i(t)-\frac{\partial H}{\partial q^{i}}= \frac{\mathrm{d}}{\mathrm{d}t}p_i(t)-\frac{\partial L}{\partial q^{i}}=0$，下只需证明$p_i(t)=\frac{\partial L}{\partial \dot{q}^{i}}$
+\end{proof}
+
+若$L$不显含时间，则能量函数守恒，故Hamilton量也守恒。
+
+\begin{Eg}
+  一维系统$L=\frac{1}{2}m \dot{q}^2-V(q), H= \frac{p^2}{2m}+V(q)$，其对应方程
+  \begin{equation*}
+\dot{q}=\frac{\partial H}{\partial p}=\frac{p}{m}
+\end{equation*}
+\begin{equation*}
+\dot{p}=-\frac{\partial H}{\partial q}=-\frac{\partial V}{\partial q}
+\end{equation*}
+
+在解方程的意义上，这并没有什么不同。但这是将E-L方程化为常微分方程组的一般方法，可以用一阶ODE的分析方法，如平衡点。平衡点附近便可以分析稳定性，作线性展开等。
+\end{Eg}
+
+\begin{Eg}
+  $L=\frac{1}{2}m(\dot{r}^2 +r^2 \dot{\theta}^2)-V(r), H= \frac{p_r^2}{2m}+\frac{p_{\theta}^2}{2mr^2}+V(r)$，对应正则方程
+  \begin{equation*}
+\dot{r}=\frac{p_r}{m}
+\end{equation*}
+\begin{equation*}
+\dot{\theta}=\frac{p_{\theta}}{mr^2}
+\end{equation*}
+\begin{equation*}
+\dot{p}_r=-\frac{\partial V}{\partial r}
+\end{equation*}
+\begin{equation*}
+\dot{p}_{\theta}=0
+\end{equation*}
+
+
+\end{Eg}
+
+E-L方程是最小作用量原理得来的，那么余切空间上也有最小作用量原理吗？
+
+$H=\sum\limits_i^{}p_i\dot{q}^i-L \Rightarrow L=\sum\limits_i^{} p_i\dot{q}^i -H$，故将作用量写为
+\begin{equation*}
+S=\int_{}^{} \left( \sum\limits_i^{}p_i\dot{q}^i-H \right) \,\mathrm{d}t
+\end{equation*}
+
+遂可以在余切丛中定义作用量泛函：
+\begin{equation*}
+S[\bm{q}(t), \bm{p}(t)]=\int_{}^{} (\sum\limits_{i}^{}p_i \dot{q}^i_H(\bm{q},\bm{p})-H(\bm{q},\bm{p})) \,\mathrm{d}
+\end{equation*}
+
+$\delta S= \int_{}^{} \left( \sum\limits_i^{} \delta p_i \dot{q}^i+ p_i \delta \dot{q}^i- \frac{\partial H}{\partial q^{i}}\delta q^i -\frac{\partial H}{\partial p_{i}}\delta p_i \right) \,\mathrm{d}t= \int_{}^{} \sum\limits_i^{}\delta p_i(\dot{q}^i-\frac{\partial H}{\partial p_{i}})-\sum\limits_i^{} \dot{p}_i\delta q^i-\sum\limits_i^{} \frac{\partial H}{\partial q^{i}}\delta q^i \,\mathrm{d}t+ p_i \delta q^i|_{t_1}^{t_2}= \int_{}^{} \sum\limits_i^{}\left( \delta p_i (\dot{q}^i-\frac{\partial H}{\partial p_{i}})- \delta q^i (\dot{p}_i+\frac{\partial H}{\partial q^{i}}) \right) \,\mathrm{d}t + p_i\delta q_i|_{t_1}^{t_2}$
+注意这里并没有在边界项用到$\dot{p}_i$而得到了Hamilton正则方程。
+
+\begin{Cor}
+  $S=\int_{}^{} \left( \sum\limits_i^{} p_iq^i-H(\bm{q},\bm{p}) \right) \,\mathrm{d}t$。若$H$不显含时，则由能量守恒，正则方程的解$\gamma(t)= (q^i(t),p_i(t))\subset H(\bm{q},\bm{p})=E$且$S'= \int_{}^{} \sum\limits_i^{} p_i  \,\mathrm{d}q^i$取极值。这称为“简化作用量”。
+\end{Cor}
+
+
+\begin{Cor}[Maupertuis]
+  设$(M,L)$是不含时的拉氏系统，$q:I\to M$满足$q(t_0)=q_0, q(t_1)=q_1$是运动方程的解，当且仅当$\int_{q(t)}^{} \sum\limits_i^{}\frac{\partial L}{\partial \dot{q}^{i}} \,\mathrm{d}q^i$在$E\equiv E_0$情况下的极值。
+\end{Cor}
+
+\paragraph{由正则方程得到线性系统}
+设$(q_0^i, p_0^i)$满足$\frac{\partial H}{\partial p_{i}}|(\bm{q}_0, \bm{p}_0)= \frac{\partial H}{\partial q^{i}}|_{\bm{q}_0, \bm{p}_0}=0$，则$q^i(t)=q_0^i, p_i(t)=p_0^i$是正则方程的（稳定）解。今对其作扰动$q^i= q_0^i+\delta q^i, p_i= p_{0,i}+\delta p_i$，代入方程得
+\begin{equation*}
+\delta \dot{q}^i= \frac{1}{2}\sum\limits_j^{} \frac{\partial^2 H }{\partial p_i \partial p_j}|_{q_0 p_0}\delta p_j +\frac{1}{2} \sum\limits_j^{} \frac{\partial^2 H }{\partial p_i \partial q^j}|_{q_0,p_0}\delta q^{j}
+\end{equation*}
+\begin{equation*}
+\delta \dot{p}_i= -\frac{1}{2}\sum\limits_j^{} \frac{\partial^2 H }{\partial q^i \partial p_j}|_{q_0 p_0}\delta p_j -\frac{1}{2} \sum\limits_j^{} \frac{\partial^2 H }{\partial q^i \partial q^j}|_{q_0,p_0}\delta q^{j}
+\end{equation*}
+
+写成矩阵的形式：
+\begin{equation*}
+\frac{\mathrm{d}}{\mathrm{d}t}
+\begin{bmatrix}
+  \delta \bm{q}\\ \delta \bm{p}
+\end{bmatrix}=
+\begin{bmatrix}
+  0& I\\ -I & 0
+\end{bmatrix}
+\begin{bmatrix}
+  \delta \bm{q}\\ \delta \bm{p}
+\end{bmatrix}
+\end{equation*}
+
+\begin{Eg}[单摆]
+  $H=\frac{1}{2}\frac{p_{\theta}^2}{ml^2}-mgl \cos\theta$，则
+  \begin{equation*}
+\frac{\mathrm{d}}{\mathrm{d}t}(\theta, p_{\theta})^T=
+\begin{bmatrix}
+  0&I\\ -I& 0
+\end{bmatrix}(\theta, p_{\theta})
+  \end{equation*}
+\end{Eg}
+
+
+
+
+
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

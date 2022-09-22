@@ -1,0 +1,415 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[UTF8]{ctex}%Use Xelatex to compile
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bm}
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+
+ 
+\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\newenvironment{solution}{%
+  \begin{proof}[Solution]$ $\par\nobreak\ignorespaces
+}{%
+  \end{proof}
+}
+\usepackage{enumitem}
+\def \H{\mathcal H}
+\def \E{\mathcal E}
+\def \z{\boldsymbol{z}}
+\def \w{\boldsymbol{w}}
+\def \x{\boldsymbol{x}}
+\def \hint{\textbf{Hint: }}
+\DeclareMathOperator*{\sign}{sign}
+\DeclareMathOperator*{\WM}{Weighted Majority}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\dd}{\,\mathrm{d}}
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+%% Homework info.
+\newcommand{\posted}{\text{Feb 25, 2022}}       			%%% FILL IN POST DATE HERE
+\newcommand{\due}{\text{Mar 14 23:59, 2022}} 			%%% FILL IN Due DATE HERE
+\newcommand{\hwno}{\text{1}} 		           			%%% FILL IN LECTURE NUMBER HERE
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Put your information here %%
+%%%%%%%%%%%%%%%%%%%
+\newcommand{\name}{\text{董浚哲}}  	          			%%% FILL IN YOUR NAME HERE
+\newcommand{\id}{\text{2019011985}}		       			%%% FILL IN YOUR ID HERE
+%%%%%%%%%%%%%%%%%%%%
+%% End of the student's info %%
+%%%%%%%%%%%%%%%%%%%
+
+
+\lhead{
+	\textbf{\name}
+}
+\rhead{
+	\textbf{\id}
+}
+\chead{\textbf{
+		Homework \hwno
+}}
+
+
+\begin{document}
+\vspace*{-4\baselineskip}
+\thispagestyle{empty}
+
+
+\begin{center}
+{\bf\large Mathematical Foundations of Machine Learning}\\
+{Spring 2022}\\
+Tsinghua University
+\end{center}
+\rule{\textwidth}{2pt}
+\noindent
+Lecturer: Yuan Zhou   			 %%% FILL IN LECTURER HERE
+\hfill
+\textbf{Homework \hwno}             			
+\\
+Posted: \posted
+\hfill
+Due: \due
+\\
+Name: \name             			
+\hfill
+ID: \id					
+\hfill
+\rule{\textwidth}{2pt}
+
+\medskip
+%\begin{center}
+{ \it There are 6 problems in this homework. The total amount of available points is 100. Throughout this exercise, we use $\log$ to denote the natural logarithm (i.e., the $\ln$ function). }
+%\end{center}
+
+
+\begin{enumerate}
+\item {{[10 pts.]}}
+{\bf VC-dimension of axis aligned rectangles in $\mathbb{R}^{d}$.} Let $\mathcal{H}_{\mathrm{rec}}^{d}$ be the class of axis aligned rectangles in $\mathbb{R}^{d}$. In Lecture 2, we have seen that $\operatorname{VCdim}\left(\mathcal{H}_{\mathrm{rec }}^{2}\right)=4$. Prove that for general $d \in \mathbb{N}_+$, we have that $\mathrm{VCdim}\left(\mathcal{H}_{\mathrm{rec}}^{d}\right)=2 d$.
+\begin{solution}
+%Please put your solution here.
+  On one hand, $\H_{rec}^{d}$ shatters the set $\{\pm e_{1},\pm e_{2},,\cdots, \pm e_{n}\}$, where $e_{i}=(0,\cdots,0,1,0,\cdots, 0)$ with the only ``1'' at the $i$-th place. Denote the rectangle as $[a_{1},b_{1}]\times\cdots\times[a_{n},b_{n}]$, where $a_{i}=-\frac{1}{2}-h(-e_{i}),b_{i}=\frac{1}{2}+h(e_{i})$
+
+  On the other hand, consider the set of points $\x_{1},\cdots,\x_{2n+1}$. Now we contruct a scheme where at least one point labeled $0$ is inevitably covered by the box. $\forall i\in [1,n]$, consider $\x_{i_{floor}},\x_{i_{ceil}}\st x_{i_{floor}}^{i}=\min\{x_{k}^{i}:1\leq k\leq 2n+1\}, x_{i_{ceil}}^{i}=\max\{x_{k}^{i}:1\leq k\leq 2n+1\}$. Label both points with ``1''. If a point is not labled after this process, lable it with ``0''. In this way, at most $2n$ points are labled ``1'' while at least 1 point is labled with ``0''. Meanwhile, to predict the selected $2n$ points right, all points are covered by the rectangle since $a_{i}\leq x_{i_{floor}},b_{i}\geq x_{i_{ceil}}$, which results in predicting the point labeled ``0'' wrong. So $\H^{d}_{rec}$ cannot shatter any set of $2n+1$ points.
+
+\end{solution}
+
+\item {[10 pts.]}
+{\bf VC-dimension of a vector space of real functions.} Let $F$ be a finite-dimensional vector space of real functions on $\mathbb{R}^{n}, \operatorname{dim}(F)=r<\infty$. Let $\mathcal{H}$ be the set of hypotheses:
+\[
+\mathcal{H}=\{\{x: f(x) \geq 0\}: f \in F\} .
+\]
+Show that $d$, the VC-dimension of $\mathcal{H}$, is finite and that $d \leq r$.
+(\textbf{Hint:} select an arbitrary set of $m=r+1$ points and consider $\left\{(f\left(x_{1}\right), \ldots, f\left(x_{m}\right)):f\in F\right\}$)
+
+\begin{proof}[Solution]
+  Suppose the contrary is true s.t. for $m=r+1$, $\forall C\subset \mathbb{R}^{n}, |C|=m$, $\H$ shatters $C=\{\x_{1},\x_{2},\cdots,\x_{m}\}$. Select a basis of $F$: $\mathbb{B}=\{f_{1},f_{2},\cdots,f_{r}\}$. Give points in $C$ an arbitrary lable. Since $\H$ shatters $C$, $\exists f(x)=\sum_{i=1}^{r}\alpha_{i}f_{i}(x)$ and a partition $I\cup J=\{1,2,\cdots,n\}, f(x_{i})\geq 0\quad\forall i\in I, f(x_{j})< 0\quad \forall j\in J$. This results in the equation:
+  \[
+    \begin{bmatrix}
+      f_{1}(x_{1})&\cdots&f_{r}(x_{1})\\\vdots&\ddots&\vdots\\f_{1}(x_{m})&\cdots&f_{r}(x_{m})
+    \end{bmatrix}
+    \begin{bmatrix}
+      \alpha_{1}\\\vdots\\\alpha_{r}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      \beta_{1}\\ \vdots\\\beta_{m}
+    \end{bmatrix}
+  \]
+  where $\forall i\in I,\beta_{i}\geq 0;\forall j\in J, \beta_{j}<0$.
+
+  This is an overdetermined equation, so unless rows of the matrix are linear related there's no solution (WLOG assume the last row can be linearly represented by others), but in this case $\beta_{m}$ is no longer free to be positive or negative, which is a contradiction.
+\end{proof}
+
+
+
+
+
+\item {[20 pts.]} {\bf The weighted majority learner.}
+    Recall the ``The Halving Learner'' in Lecture 1. We reached the conclusion that the halving learner makes at most  $\log_2 |\H|$ mistakes under the assumption that there exists one hypothesis $h \in \H$ which consistently provides the correct label. In this exercise, we will explore the case when such an assumption does not hold, and we will design a learner trying to match up with the best hypothesis in $\H$ (i.e., the one that proves the least number of wrong labels).
+    
+    Now, let us assume that there exists one hypothesis $h \in \H$ that makes at most $M$ mistakes. The goal of our learner is to upper bound the number of mistakes by a function of $M$.
+    
+    %However, we can't require the decisions made by the  expert are always correct in reality. Thus here we relax the assumption and allow the expert makes at most $M$ mistakes, i.e. we assume there exists one expert in $\H$ who makes at most $M$ mistakes. 
+
+%We consider how we design a efficient algorithm and analyze its mistake bound correspondingly under the relaxed assumption in this problem.
+\begin{enumerate}[label=(\alph*)]
+    \item {\bf The simple method.} We run the halving learner until every hypothesis in $\H$ makes at least one mistake (so that all hypotheses are eliminated). We call such a process an \emph{epoch}. In our simple method, we repeatedly run the epochs -- whenever an epoch ends, we start a new one with all the (eliminated) hypotheses ``alive''. Please upper bound the number of epochs and the number of mistakes the simple method would make.
+    
+    %Intuitively we can first run the halving learner for $M$ epochs to let every $h\in\H$ make $M$ mistakes and  then at the $(M+1)$-th epoch we can identify the expert. Please design a algorithm based on the above intuition and calculate the mistake bound.
+    \item{\bf The weighted majority approach.} Let us assign non-negative weights $w_h$ to each hypothesis $h \in \H$. Instead of elimination (which can be viewed as a hard penalty), we impose a soft penalty to a hypothesis function $h$ whenever it makes a mistake -- we reduce the weight $w_h$ by a pre-determined factor $C \in [0, 1)$. Note that the elimination (hard penalty) is equivalent to set $C = 0$ so that the weight of the hypothesis function $h$ is set to $0$.
+    
+    In Algorithm~\ref{alg1} we describe the details of the weighted majority approach. The name ``weighted majority'' comes from the prediction rule that is based on the weighted majority of the hypotheses, where in contrast, the halving learner admits either $0$ or $1$ weight and predicts based on the majority of the weight-$1$ hypotheses.
+    
+    To analyze the weighted majority learner, let us consider the potential function (at time $t$) that is defined as  $w^{(t)}=\sum_{h\in\H}w_h^{(t)}$. Please determine the constant $C$ in Algorithm~\ref{alg1} and prove that $w^{(t+1)}\leq\frac{3}{4}w^{(t)}$ if the learner makes a  mistake at time $t$.
+\begin{algorithm}[h]
+\caption{The Weighted Majority Learner}
+\label{alg1}
+\begin{algorithmic}[1]
+    \State \textbf{Initialization:} Set the initial weight for each $h\in\H$ as $w_h^{(1)}=1$
+    \For{$t = 1,2,\dots$}
+      \State Get $x_t$
+
+       \State Predict $\hat y_t=\WM\{h(x_t): h\in\H\}$ i.e. $\hat y_t=\sign(\sum_{h\in\H}w_h^{(t)}h(x_t))$
+       \State Get $y_t$ and update weights as follows -- 
+       \If{$y_t=\hat y_t$}
+       \State Let $w_h^{(t+1)}=w_h^{(t)}$ for all $h\in\H$
+      % \ElsIf
+       \Else
+       \State  For all $h\in\H $ such that $h(x_t)=\hat y_t$, let $w_h^{t+1}=C w_h^t$
+       \State For all $h \in \H$ such that $h(x_t)\neq \hat y_t$,  let $w_h^{(t+1)}=w_h^{(t)}$ 
+       \EndIf
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+    \item Under the assumption that there exists one hypothesis in $\H$ that makes at most $M$ mistakes, prove a lower bound of the potential function at any time $t$.
+\item Derive the mistake bound for Algorithm~\ref{alg1} by combining the above conclusions.
+\end{enumerate}
+
+\begin{solution}
+
+\begin{enumerate}[label=(\alph*)]
+\item Denote the wise hypothesis who makes at most $M$ mistakes as $\hat h$. In the worst case, exactly one (different) mistake is made in the first $M$ epoch, and in the $M+1$ th epoch, $\hat h$ never makes an mistake. In each epoch, at most $\log_2|H|$ mistakes are made so in total no more than $(M+1)\log_2|\H|-1$ mistakes are made.
+
+\item In the worst case, every prediction reaches a tie: $\hat y_t=0$ and is regarded as a mistake. Here we propose $C=\frac{1}{2}$. Whenever a tie is made, hypothesises that amounts to exactly half the total weight (e.g. $\sum\limits_{h \text{ wrong }}w_h^{(t)}=\frac{1}{2}w^{(t)}$), and their weight are reduced to half of it, so
+\[w^{(t+1)}\leq\frac{1}{2}\sum_{h\text{ wrong }} w_h^{(t)}+\sum_{h\text{ correct }} w_h^{(t)}=\frac{1}{2}\cdot\frac{1}{2}w^{(t)}+\frac{1}{2}w^{(t)}=\frac{3}{4}w^{(t)}\] 
+%To be discussed
+\item In the worst case, every hypothesis apart from $\hat h$ makes an mistake in every test, and $\hat h$ makes an mistake in the first $M$ tests. So (observe that no more mistakes can be made after $2^{-M}\geq (\frac{1}{2})^{-t}(|\H|-1)$ in the worst case, which means $t\leq M+\log(|\H-1|)$)
+\[w^{(t)}\geq\begin{cases}
+(\frac{1}{2})^{-t}|\H|& t\leq M\\
+2^{-M}+(\frac{1}{2})^{-t}(|\H|-1) & M<t\leq M+\log_2(|\H|-1)
+\end{cases}
+\]
+\item Above we've proved that $t\leq M+\log_2(|\H|-1)$, which is an lower bound. Combine (b) and we see that the upper bound is given by $2^{-M}\geq \frac{1}{2}(\frac{3}{4})^{t}|H|$, which results in $t\leq (2-\log_2 3)^{-1}(M-1+\log_2(|\H|))$.
+\end{enumerate}
+\end{solution}
+
+\item {[10 pts.]}
+{\bf Learning concentric circles.} Let $\mathcal{X}=\mathbb{R}^{2}$ and consider the set of concepts of the form $c=\left\{(x, y): x^{2}+y^{2} \leq r^{2}\right\}$ for some real number $r .$ Show that this class can be $(\epsilon, \delta)$-PAC-learned from training data of size $m \geq(1 / \epsilon) \log (1 / \delta)$.
+
+(\textbf{Hint:} The proof of Lemma 6.1 in the textbook \textit{Understanding Machine Learning} might serve as a reference.)
+\begin{solution}
+  Denote the (concentric) circle with radius $r$ to be $C_{r}=\{(x,y):x^{2}+y^{2}\leq r^{2}\}$. Suppose $r^{*}$ is the radius $\st L_{D}(C_{r^{*}})=0$. Let $D_{x}$ be the marginal dsitribution over the domain $\mathbb{X}$ and denote $r_{1}<r^{*}<r_{2}$ the radii $\st$
+  \[P_{\x\sim D_{x}}(\x\in C_{r^{*}}\backslash C_{r_{1}})=P_{\x\sim D_{x}}(\x\in C_{r_{2}}\backslash C_{r^{*}})=\varepsilon\]
+
+  Given a training data set, denote $b_{1}=\max\{|\x|:\x\in C_{r^{*}}\}, b_{2}=\min\{|\x|:\x\not\in C_{r^{*}}\}$, and denote $C_{r_{S}}$ the corresponding ERM hypothesis. By definition $b_{1}<r_{S}<b_{2}$, so
+\begin{align*}
+  &P_{\x\sim D^{m}}(L_{D}(C_{r_{S}})>\varepsilon)\\
+  \leq& P_{\x\sim D^{m}}(r_{2}<b_{2}\lor r_{1}>b_{1})\\
+  \leq& P_{\x\sim D^{m}}(r_{2}<b_{2})+P_{\x\sim D^{m}}(r_{1}>b_{1})\\
+  =&(1-\varepsilon)^{m}+(1-\varepsilon)^{m}\leq 2e^{-\varepsilon m}
+\end{align*}
+Take the estimate of $m$ into the inequality above and we get the desired statement.
+\end{solution}
+
+
+
+\item {[20 pts.]} {\bf The robust ellipsoid learner in adversarial setting.} 
+In this problem we consider a special adversarial setting of the online learning game. Specifically, when we wish to predict the label with the parameter $\boldsymbol{w}_t$ given the instance $\x_t$, the adversary will perturb the model parameter to  $\tilde{\boldsymbol{w}}_t$ (see Line~\ref{line:alg2-7} in Algorithm~\ref{alg2}).  Assuming  $\|\tilde{\boldsymbol{w}}_t-\boldsymbol{w}_t\| \leq \epsilon_t \leq \sqrt{\lambda_{\min}(A_t)}/(10d^3)$ where $\lambda_{\min}(A_t)$ is the smallest eigenvalue of $A_t$, we aim to prove that, if we slightly adjust the update process of $A_t$ (see the red constant in Line~\ref{line:alg2-10} in Algorithm~\ref{alg2}), our ellipsoid learner will still work with a similar mistake bound.
+
+Fix any time $t$, let us write $A_t$ in the form of $A_t=UD^2U^\top$ where $U$ is  orthonormal and $D$ is diagonal with non-negative entries.
+
+
+\begin{algorithm}[h]
+\caption{The Robust Ellipsoid Learner.}
+\label{alg2}
+\begin{algorithmic}[1]
+    \State \textbf{Initialization:}  $\boldsymbol{w}_{1}=\mathbf{0}, \boldsymbol{A}_{1}=I$
+    \For{$t = 1,2,\dots$}
+      \State Get $\x_t$
+ \If{$\left|\mathcal{E}_{t} \cap G^{d}\right|=1$}
+       \State Choose the only element in $\mathcal{E}_{t} \cap G^{d}$ and predict $\hat{y}_{t}=\sign\left(\boldsymbol{w}_{t}^{\top} \boldsymbol{x}_{t}\right)$
+\Else
+\State Predict $\hat{y}_{t}=\sign\left(\tilde{\boldsymbol{w}}_{t}^{\top} \boldsymbol{x}_{t}\right)$, where $\tilde{\boldsymbol{w}}_{t}$ is the perturbed parameter selected by the adversary such that $\|\tilde{\boldsymbol{w}}_{t}- \boldsymbol{w}_{t}\|\leq \epsilon_t$ \label{line:alg2-7}
+\EndIf
+       \If{$y_t=\hat y_t$}
+       \State Update: \label{line:alg2-10}
+\[
+\begin{aligned}
+&\boldsymbol{w}_{t+1}=\boldsymbol{w}_{t}+\frac{y_{t}}{d+1} \frac{A_{t} \x_{t}}{\sqrt{\x_{t}^{\top} A_{t} x_{t}}}=\boldsymbol{w}_{t}+\boldsymbol{u}_{t} \\
+&A_{t+1}=\frac{d^{2}}{d^{2}-1}\left(A_{t}-\frac{2}{d+1} \frac{A_{t} \x_{t} \x_{t}^{\top} A_{t}}{\x_{t}^{\top} A_{t} \x_{t}}\right)=\textcolor{red}{\left(1+\frac{1}{2d^2}\right)}\frac{d^{2}}{d^{2}-1}\left(A_{t}-2(d+1) \boldsymbol{u}_{t} \boldsymbol{u}_{t}^{\top}\right)
+\end{aligned}
+\]
+       \Else 
+       \State  $\boldsymbol{w}_{t+1}=\boldsymbol{w}_{t}$ and $A_{t+1}=A_{t}$
+       \EndIf
+
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Show that if  $y_{t}\left\langle UD \z+\w_{t}, \x_{t}\right\rangle>0$  and  $y_{t}\left\langle\tilde{\w}_{t}, \x_{t}\right\rangle<0$, we have $y_{t}\left\langle UD \z, \x_{t}\right\rangle>-\epsilon\|\x_t\|$.
+    \item Show that if  $y_{t}\left\langle UD \z, \x_{t}\right\rangle>-\epsilon\|\x_t\|$, we have $\left\langle \z, y_{t}DU^\top \x_{t}\right\rangle/\|DU^\top \x_t\|>-1/(10d^3)$.
+    \item Prove the Enclosing Ellipsoid Lemma: when $\hat{y}_{t} \neq y_{t}$, we have that \\$\mathcal{E}_{t}  \cap\left\{\boldsymbol{w}: y_{t}\left\langle\boldsymbol{w}, \boldsymbol{x}_{t}\right\rangle>0\right\} \subseteq \mathcal{E}_{t+1}$. 
+    \item Prove the Volume Reduction Lemma: $\operatorname{Vol}(\mathcal{E}_{t+1})\leq \operatorname{Vol}(\mathcal{E}_t)e^{-1/(4d+4)}$ and also prove the mistake bound for the robust learner under the presence of the adversary.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*)]
+\item $y_t\dual{UD\bm z+\bm w_t,x_t}=y_t\dual{UDz,\bm x_t}+y_t\dual{\bm w_t-\tilde{\bm w}_t,\bm x_t}+y_t\dual{\tilde{\bm w}_t,\bm x_t}$, so
+\[y_t\dual{UD\bm z,\bm x_t}=y_t\dual{UD\bm z+\bm w_t}-y_t\dual{\tilde{\bm w}_t,\bm x_t}-y_t\dual{\bm w_t-\tilde{\bm w_t}}> 0+0-\nm{\tilde \w_t-\w_t}\nm{\x_t}\geq -\epsilon\nm{\x_t}\]
+
+\item Observe that $y_t\dual{UD\z,\x_t}=\dual{\z,y_tDU^T\x_t}$, so $LHS\geq -\frac{\sqrt{\lambda_{\min}(A_t)}}{(10d^3)}\frac{\nm{\x_t}}{\nm{DU^T\x_t}}$. Take it into the inequality and simplify, and we see that it's equivalent to prove:
+\[\sqrt{\lambda_{\min}(A_t)}\nm{\x_t}=\sqrt{\lambda_{\min}(A_t)}\nm{U^T\x_t}\leq \nm{DU^T\x_t}\]
+which is trivialty by the definition of SVD. The equality holds when $U^T\x_t$ is a right singular vector of the smallest singular value $\sigma_n=\sqrt{\lambda_{\min}(A_t)}$
+\item When $\hat y_t\neq y_t$,then $y_t=-\mathrm{sign}(\tilde{\w}_t^T\x_t)\Rightarrow y_t\dual{\tilde{\w}_t,\x_t}=-|\dual{\tilde{\w}_t,\x_t}|<0$
+
+The goal is:
+ \[\forall \w\st y_t\dual{\w,\x_t}>0\land (\w-\w_t)^TUD^{-2}U^T(\w-\w_t)\leq 1\Rightarrow \w\in \E_{t+1}\]
+ Denote $\z=D^{-1}U^T(\w-\w_t)$, then the goal is equivalent to:
+\[\forall z\st y_t\dual{UD\z+\w_t,x_t}>0\land \z^T\z\leq 1\Rightarrow UD\z\in \E(A^{\frac 1 2}_{t+1},\u_t)\]
+In this case, by (a) we have $y_t\dual{UD\z,\x_t}\geq-\epsilon\nm{\x_t}$. So it suffices to prove that:
+%$y_t\dual{UD\z+\w_t,\x_t}>0$, so by (a)(b) we have $\dual{\z,y_tDU^T\x_t}/\nm{DU^T\x_t}>-\frac{1}{(10d^3)}$. 
+\[\forall \z\st \dual{\z,y_tDU^T\x_t}\geq -\epsilon\nm{\x_t}\land \z^T\z\leq 1\Rightarrow UD\z\in \E(A_t^{\frac 1 2},u_t)\]
+Denote $V$ as the Householder matrix (which is symmetric and orthogonal, so we do not bother distinguishing $V$ and $V^T$) $\st Vy_tDU^T\x_t=\nm{DU^T\x_t}e_1$, and denote $\tilde \z=Vz$, then the new goal is equivalent to (denote the first dimension of $\tilde\z$ as $\tilde\z_1$):
+\[\forall \tilde\z\st \nm{DU^T\x_t}\tilde\z_1\geq-\epsilon\nm{\x_t}\land \tilde\z^T\tilde\z\leq 1\Rightarrow UD^TV\tilde\z\in \E(A_{t+1}^{\frac 1 2},u_t)\]
+by (b), it suffices to prove that:
+\[\forall \tilde\z\st \tilde\z_1\geq-\frac{1}{10d^3}\land \tilde\z^T\tilde\z\leq 1\Rightarrow UD^TV\tilde\z\in \E(A_{t+1}^{\frac 1 2},u_t)\]
+
+\textbf{Claim:} $\forall \tilde\z\st \tilde\z_1>-\frac{1}{10d^3}, \tilde\z^T\tilde\z\leq 1\Rightarrow \tilde{\z}\in\E(A^\frac{1}{2},\tilde u)$, where
+\[\tilde u=(\frac{1}{d+1},0,\cdots,0)^T\quad A=(1+\frac{1}{2d^2})\frac{d^2}{d^2-1}(\mathrm{diag}(\frac{d-1}{d+1},1,\cdots,1))\]
+\begin{proof}[proof of the claim]
+Denote $a=\tilde\z_1\in[-\frac{1}{10d^3}], b=\sqrt{\sum_{i=2}^n\tilde\z_i^2}\leq \sqrt{1-a^2}$.
+
+It suffices to prove that $(\tilde\z-\tilde u)^TA^{-1}(\tilde\z-\tilde u)\leq 1$:
+\begin{align*}
+&(\tilde\z-\tilde u)^TA^{-1}(\tilde\z-\tilde u)\\
+=&(1+\frac{1}{2d^2})^{-1}\frac{d^2-1}{d^2}[\frac{d+1}{d-1}(a-\frac{1}{d+1})^2+b^2]\\
+\leq &(1+\frac{1}{2d^2})^{-1}\frac{d^2-1}{d^2}[\frac{d+1}{d-1}(a-\frac{1}{d+1})^2+(1-a^2)]\\
+=&(1+a(a-1)\frac{2(d+1)}{d^2})(1+\frac{1}{2d^2})^{-1}
+\end{align*} 
+So (after simplification) it suffices to prove that
+\[a(a-1)\leq\frac{1}{4d^2(d+1)}\]
+LHS takes its maximum at $a=-\frac{1}{10d^3}$, so it suffices to prove that 
+\[\frac{1}{10d^3}(1+\frac{1}{10d^3})\leq \frac{1}{4d^2(d+1)}\]
+which is true for (calculated by Wolfram Alpha) $d>0.92809$. Thus the claim is proved.
+\end{proof}
+$\forall \widetilde{z}: \widetilde{z}^{\top} \widetilde{z} \leq 1$ and $\tilde{z}_{1}>0$, we have $U D V^{\top} \widetilde{z} \in \mathcal{E}\left(U D V^{\top} A^{1 / 2}, U D V^{\top} \widetilde{\boldsymbol{u}}\right)$
+By defn.: $V^{\top}=\left[\frac{y_{t} D U^{\top} \boldsymbol{x}_{t}}{\left\|D U^{\top} \boldsymbol{x}_{t}\right\|} \quad \cdots \quad \cdots\right] .$ 
+Therefore, $U D V^{\top} \widetilde{\boldsymbol{u}}=\frac{y_{t} U D^{2} U^{\top} \boldsymbol{x}_{t}}{(d+1)\left\|D U^{\top} \boldsymbol{x}_{t}\right\|}=\frac{y_{t}}{d+1} \frac{A_{t} \boldsymbol{x}_{t}}{\sqrt{\boldsymbol{x}_{t}^{\top} A_{t} \boldsymbol{x}_{t}}}=\boldsymbol{u}_{t}$
+ $\E\left(U D V^{\top} A^{1 / 2}, U D V^{\top} \widetilde{\boldsymbol{u}}\right)=\E\left(\left(U D V^{\top} A V D U^{\top}\right)^{1 / 2}, \boldsymbol{u}_{t}\right)=\E\left(A_{t+1}^{1 / 2}, \boldsymbol{u}_{t}\right)$
+$$
+\begin{aligned}
+&V^{\top} A V
+=(1+\frac{1}{2d^2})\frac{d^{2}}{d^{2}-1} V^{\top}\left(I-\operatorname{diag}\left(\frac{2}{d+1}, 0,0, \ldots, 0\right)\right) V\\
+&=(1+\frac{1}{2d^2})\frac{d^{2}}{d^{2}-1}\left(I-\frac{2}{d+1} \frac{D U^{\top} x_{t} x_{t}^{\top} U D}{\left\|D U^{\top} x_{t}\right\|^{2}}\right) \\
+&U D V^{\top} A V D U^{\top}
+=(1+\frac{1}{2d^2})\frac{d^{2}}{d^{2}-1}\left(U D^{2} U^{\top}-\frac{2}{d+1} \frac{U D^{2} U^{\top} x_{t} x_{t}^{\top} U D^{2} U^{\top}}{\left\|D U^{\top} x_{t}\right\|^{2}}\right)\\
+&=(1+\frac{1}{2d^2})\frac{d^{2}}{d^{2}-1}\left(A_{t}-\frac{2}{d+1} \frac{A_{t} x_{t} x_{t}^{\top} A_{t}}{\left\|D U^{\top} x_{t}\right\|^{2}}\right)=A_{t+1}
+\end{aligned}
+$$
+\item Repeat what's written on lecture notes word by word, and we see that 
+$$
+\begin{aligned}
+&(\frac{Vol(\E_{t+1})}{Vol(\E_t)})^2\\
+&=\frac{\operatorname{det}\left(A_{t+1}\right)}{\operatorname{det}\left(A_{t}\right)}=\left(1+\frac{1}{d^2})^d(\frac{d^{2}}{d^{2}-1}\right)^{d}\left(1-\frac{2}{d+1}\right) \\
+&=(1+\frac{1}{2d^2})^d\left(1+\frac{1}{d^{2}-1}\right)^{d-1}\left(\frac{d-1}{d+1} \cdot \frac{d^{2}}{d^{2}-1}\right)
+=(1+\frac{1}{2d^2})^d\left(1+\frac{1}{d^{2}-1}\right)^{d-1}\left(1-\frac{1}{d+1}\right)^{2} \\
+&\leq \exp(\frac{d}{2d^2})\exp \left(\frac{d-1}{d^{2}-1}\right) \cdot \exp \left(-\frac{2}{d+1}\right)\leq\exp \left(-\frac{1}{2(d+1)}\right)
+\end{aligned}
+$$
+The lower bound of the volume remains unchanged, so the mistake bound is doubled: $d(4d+4)\log(2n)$ mistakes. 
+\end{enumerate}
+\end{solution}
+
+
+% \item  {[20 pts.]} {\bf Simple Sample Complexity Lower Bounds.} Prove that any algorithm for learning a hypothesis class $C$ with $|C| \geq 3$ must use $\Omega\footnote{$f(x)=\Omega(g(x))$ is equivalent with $g(x)=O(f(x)).$}\left(\frac{1}{\epsilon} \log \frac{1}{\delta}\right)$ examples in the worst case to learn with error parameter $\epsilon$ and confidence parameter $\delta$.
+
+% (\hint as a first step, show there must exist two examples $x_{1}, x_{2}$ and two functions $c_{1}, c_{2} \in C$ such that $c_{1}\left(x_{1}\right)=c_{2}\left(x_{1}\right)$ but $c_{1}\left(x_{2}\right) \neq c_{2}\left(x_{2}\right)$ Then prove that the distribution $D$ that places $1-2 \epsilon$ probability on $x_{1}$ and $2 \epsilon$ probability on $x_{2}$ has the property that any algorithm seeing $o\left(\frac{1}{\epsilon} \log \frac{1}{\delta}\right)$ examples would have probability at least $\delta$ of having error at least $\epsilon$ for at least one of the two target functions $c_{1}, c_{2}$.)
+
+\item {[30 pts.]}
+{\bf Learning in the presence of noises.}  We consider a
+finite hypothesis set $\H$, assume that the target concept is in $\H$, and adopt the
+following noise model: the label of a training point received by the learner is randomly changed with probability $\eta \in\left(0, \frac{1}{2}\right)$. The exact value of the noise rate $\eta$ is not known to the learner but an upper bound $\eta^{\prime}$ is revealed to him with $\eta \leq \eta^{\prime}<1 / 2$.
+\begin{enumerate}[label=(\alph*)]
+
+\item For any $h \in \mathcal{H}$, let $d(h)$ denote the probability that the label of a training point received by the learner disagrees with the one given by $h$. Let $h^{*}$ be the target hypothesis, show that $d\left(h^{*}\right)=\eta$.
+ \item  More generally, show that for any $h \in \mathcal{H}, d(h)=\eta+(1-2 \eta) L_{\mathcal D}(h)$, where $L_{\mathcal D}(h)$ denotes the generalization error of $h$.
+\item Fix $\epsilon>0$ for this and all the following questions. Use the previous questions to show that if $L_{\mathcal D}(h)>\epsilon$, then $d(h)-d\left(h^{*}\right) \geq \epsilon^{\prime}$, where $\epsilon^{\prime}=\epsilon\left(1-2 \eta^{\prime}\right)$.
+\item For any hypothesis $h \in \mathcal{H}$ and sample $S$ of size $m$, let $\widehat{d}(h)$ denote the fraction of the points in $S$ whose labels disagree with  $h$. We will consider the algorithm $L$ that, after receiving $S$, returns the hypothesis $h_{S}$ with the smallest number of disagreements (thus $\widehat{d}\left(h_{S}\right)$ is minimized. To show the PAC-learning guarantee for $L$, we will show that for any $h$, if $L_{\mathcal D}(h)>\epsilon$, then with high probability $\widehat{d}(h) \geq \widehat{d}\left(h^{*}\right)$. First, show that for any $\delta>0$, with probability at least $1-\delta / 2$, for $m \geq \frac{2}{\epsilon^{\prime 2}} \log \frac{2}{\delta}$, the following holds:
+\[
+\widehat{d}\left(h^{*}\right)-d\left(h^{*}\right) \leq \epsilon^{\prime} / 2.
+\]
+\item Second, show that for any $\delta>0$, with probability at least $1-\delta / 2$, for $m \geq \frac{2}{\epsilon^{\prime 2}}\left(\log |\mathcal{H}|+\log \frac{2}{\delta}\right)$, the following holds for all $h \in \mathcal{H}$:
+\[
+d(h)-\widehat{d}(h) \leq \epsilon^{\prime} / 2 .
+\]
+\item Finally, show that for any $\delta>0$, with probability at least $1-\delta$, for $m \geq$ $\frac{2}{\epsilon^{2}\left(1-2 \eta^{\prime}\right)^{2}}\left(\log |\mathcal{H}|+\log \frac{2}{\delta}\right)$, the following holds for all $h \in \mathcal{H}$ with $L_{\mathcal D}(h)>\epsilon$:
+\[
+\widehat{d}(h)-\widehat{d}\left(h^{*}\right) \geq 0 .
+\]
+(\textbf{Hint:} use $\widehat{d}(h)-\widehat{d}\left(h^{*}\right)=[\widehat{d}(h)-d(h)]+\left[d(h)-d\left(h^{*}\right)\right]+\left[d\left(h^{*}\right)-\widehat{d}\left(h^{*}\right)\right]$ and use previous questions to lower bound each of these three terms.)
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*)]
+\item   By definition, $d(h^{*})$ is the probability that the label received by the learner is different from that predicted by $h^{*}$. Since $h^{*}$ always makes correct predictions, it $d(h^{*})$ is the probability that the received label is different from the original one. So by the definition of $\eta$, $d(h^{*})=\eta$.
+\item By definition, $L_{D}(h)=P_{x\sim D}\{h(x)\neq h^{*}(x)\}$. Denote the lable given to the learner as $\tilde y$. Then
+\begin{itemize}
+\item With probability $1-\eta, h^{*}(x)=\tilde y$. In this case, $h(x)$ has to be different from $h^{*}(x)$ to be wrong.
+\item With probability $\eta, h^{*}(x)\neq\tilde y$. In this case, $h(x)$ has to be the same with $h^{*}(x)$ to be wrong.
+\end{itemize}
+So $d(h)=(1-\eta)L_{D}(h)+\eta(1-L_{d}(h))=\eta+(1-2\eta)L_{D}(h)$.
+\item Since $d(h^{*})\equiv \eta$, so $d(h)-d(h^{*})=(1-2\eta)L_{D}> (1-2\eta')L_{D}>(1-2\eta')\varepsilon=\varepsilon'$
+\item Now that $d(h^{*})=\eta$, it's equivalent to show that $\hat d(h^{*})$ holds for the given conditions. Since $h^{*}$ always gives the correct prediction, $\hat d(h^{*})$ is the fraction of points whose lables have been changed. Given $m$, the number of the changed points $X\sim B(m,\eta)$. So
+  \[P(\hat d(h^{*})<\eta+\frac{\varepsilon'}{2})=P(X<m\cdot(\eta+\frac{\varepsilon'}{2}))\]
+  By central limit theorem,
+  \[P(\hat d(h^{*})<\frac{\varepsilon'}{2}+\eta)\geq \Phi(\frac{\varepsilon'}{2}\sqrt{\frac{m}{\eta(1-\eta)}})>\Phi(\varepsilon'\sqrt{m})\geq\Phi(\sqrt{2\log(\frac{2}{\delta})})\]
+  Meanwhile, as long as $\delta<2e^{-\frac{1}{2}}\approx 1.21>1$ (which is always satisfied since $\delta<1$), we have
+  \[1-\Phi(\sqrt{2\log(\frac{2}{\delta})})<\int_{\sqrt{2\log(\frac{\delta}{2})}}^{\infty}te^{-t^{2}}\dd t=\frac{\delta}{2}\]
+  so $P(\hat d(h^{*})-d(h^{*})<\frac{\varepsilon'}{2})>1-\frac{\delta}{2}$
+\item %$d(h)$ is the chance of predicting a lable different from the given one, while $\hat d(h)$ is the fraction of the points whoses lables are predicted different from the given one.
+  %It's equivalent to prove that under the given conditions,
+  %\[P(\hat d(h)<d(h)-\frac{\varepsilon'}{2})<\frac{\delta}{2}\]
+  With similar approach as above, we see that for a fixed $h\in\H$, $P((d(h)-\hat d(h))> \frac{\varepsilon'}{2})\leq\Phi(-\varepsilon'\sqrt{m})>\frac{1}{2}e^{-\varepsilon'^{2}m}\geq \frac{\delta}{H}$. Now that there're $|H|$ hypothesis, we add these errors and get: $\forall h\in \H$
+  \[P(d(h)-\hat d(h)\leq\frac{\varepsilon'}{2})\geq 1-\frac{\delta}{2}\]
+\item Observe that
+  \[\hat d(h)-\hat d(h*)=[\hat d(h)-d(h)]+[d(h)-d(h^{*})]+[d(h^{*})-\hat d(h^{*})]\]
+  By previous arguments:
+  \begin{itemize}
+  \item $\hat d(h)-d(h)\geq -\varepsilon'/2$
+  \item $d(h)-d(h^{*})\geq \varepsilon'$
+  \item $d(h^{*})-\hat d(h^{*})\geq -\varepsilon'/2$
+  \end{itemize}
+  Sum these terms and we reach the desired argument.
+\end{enumerate}
+\end{solution}
+
+
+\end{enumerate}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

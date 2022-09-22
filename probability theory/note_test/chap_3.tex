@@ -1,0 +1,376 @@
+\ifx\allfiles\undefined
+\documentclass{ctexart}
+\usepackage{mathrsfs,amsmath,amssymb,amsthm,bm,ulem,comment,hyperref}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+\begin{document}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+\newcommand{\alsu}{\text{ a.s. }}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\G}{\mathscr{G}}
+\newcommand{\Bor}{\mathscr{B}}
+\newcommand{\pw}{\text{ p.w. }}
+\newcommand{\inof}{\text{ i.o. }}
+\newcommand{\X}{\bm{X}}
+\newcommand{\iid}{\mathrm{i.i.d.}~}
+\newcommand{\C}{\mathbb{C}}
+
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\else
+\chapter{大数定律}
+\fi
+\begin{Thm}[大数定律]
+$\{X_{i}\}_{i=1}^{n}\in L^{1}(\Omega)$是 i.i.d.的r.v.，且$E[X_{1}]=m$，则
+\[\frac{\sum_{i=1}^{n}X_{i}}{n}(w)\to m\alsu\]
+\end{Thm}
+\section{初级版本}
+\begin{Eg}[Chebyshev WLLN，依概率收敛]
+  $\{X_{i}\}_{i=1}^{n}\in L^{2}(\Omega)$是两两不相关的同分布的r.v.，则
+  \[\frac{S_{n}}{n}\to m\cvin P,\cvin L^{2}\]
+\end{Eg}
+
+\begin{proof}
+  $E[|\frac{S_{n}}{n}-m|^{2}]=\frac{1}{n^{2}}\sum_{i=1}^{n}Var[X_{1}]=\frac{1}{n}Var[X_{1}]=O(\frac{1}{n})\to 0$
+\end{proof}
+
+\begin{Rmk}
+  对于i.i.d.的$\{X_{i}\}\in L^{2}$，只要$\sum_{i=1}^{n}Var[X_{i}]=o(n^{2})$便有$L^{2}$收敛
+\end{Rmk}
+
+$\frac{S_{n}}{n}-m\to 0\alsu\Leftrightarrow \forall\varepsilon>0, P\{|\frac{S_{n}}{n}-m|>\varepsilon\quad i.o.\}=0$。由Borel-Cantelli第一引理，只需$\sum_{n=1}^{\infty}P\{|\frac{S_{n}}{n}-m|>\varepsilon\}<\infty$。再由Chebyshev，$P\{|\frac{S_{n}}{n}-m|>\varepsilon\}\leq\varepsilon^{-p}E[|\frac{S_{n}}{n}-m|^{p}]$
+
+\begin{Eg}[Markov SLLN]
+  $\{X_{n}\}_{n\in\N}\subset L^{4}(\Omega)$ i.i.d.，则
+  \[\frac{S_{n}}{n}\to m\alsu\]
+\end{Eg}
+
+\begin{proof}
+\begin{align*}
+  &E[(\frac{1}{n}\sum_{i=1}^{n}(X_{i}-m_{i}))^{4}]\\
+  =&\frac{1}{n^{4}}\sum_{i,j,k,l}E[(X_{i}-m_{i})(X_{j}-m_{j})(X_{k}-m_{k})(X_{l}-m_{l})]\\
+  =&\frac{1}{n^{4}}[nE[(X_{i}-m_{1})^{4}]+\binom{4}{2}\binom{n}{2}(E[(X_{1}-m_{1})^{2}]^{2})]\\
+  \sim& O(\frac{1}{n^{2}})
+\end{align*}
+  再用Borel-Cantelli即得。
+\end{proof}
+
+\begin{Thm}[Khinchin WLLN]
+  设$\{X_{n}\}\subset L^{1}$ i.i.d.，则
+  \[\frac{S_{n}}{n}\to m=E[X_{1}]\cvin P\]
+\end{Thm}
+为此使用截断法（method of truncation）
+
+\begin{Def}
+  称独立的随机变量$\{X_{n}\},\{Y_{n}\}$等价，若$P\{X_{n}\neq Y_n\quad i.o.\}=0$。
+\end{Def}
+若$\{X_{n}\},\{Y_{n}\}$等价，则$\exists \tilde{\Omega}\st \forall w\in \tilde\Omega, X_{n}(w)\neq Y_{n}(w) \quad f.o\Rightarrow \sum_{n=1}^{\infty}|X_{n}-Y_{n}|(w)$收敛$\Rightarrow \frac{1}{n}\sum_{k=1}^{n}|X_{k}-Y_{k}|(w)\to 0$。
+
+不难证明：若$\frac{1}{n}\sum_{k=1}^{n}Y_{k}\to Z\alsu$，则$\frac{1}{n}\sum_{k=1}^{n}X_{k}\to Z\alsu$；若$\frac{1}{n}\sum_{k=1}^{n}Y_{k}\to Z\cvin P$，则$\frac{1}{n}\sum_{k=1}^{n}X_{k}\to Z\cvin P$
+
+\begin{proof}
+  \textbf{Step 1: } 取截断$Y_{k}=X_{k}1_{\{|X_{k}|\leq k\}}$。$\{X_{n}\}_{n\in\N}$独立，则$\{Y_{n}\}_{n\in N}$亦独立。$\{X_{k}\neq Y_{k}\}=\{|X_{k}|>k\}\Rightarrow $
+  \[\sum_{k=1}^{\infty}P\{X_{k}\neq Y_{k}\}=\sum_{k=1}^{\infty}P\{|X_{k}|>k\}=\sum_{k=1}^{\infty}P\{|X_{1}|>k\}\leq E[|X_{1}|]<\infty\]
+
+  \textbf{Step 2: } 设$T_{n}=\sum_{k=1}^{n}Y_{k}$。断言：$\frac{1}{n}[T_{n}-E[T_{n}]]\to 0\alsu$。由等价性，$\frac{T_{n}}{n}\to m\cvin P$。由定义：
+  \[E[\frac{T_{n}}{n}]=\frac{1}{n}\sum_{k=1}^{n}E[X_{k}1_{\{|X_{k}|\leq k\}}]=\frac{1}{n}\sum_{k=1}^{n}E[X_{1}1_{\{|X_{1}|\leq k\}}]\]
+  记$\alpha_{k}:=E[X_{1}1_{\{|X_{1}|\leq k\}}]$，则由DCT，$\alpha_{k}\to m$。又因为Ces\'aro收敛弱于一般的数列收敛，故$\frac{E[T_{n}]}{n}\to m$.
+
+  $\forall\varepsilon>0. P[|\frac{1}{n}(T_{n}-E[T_{n}])|>\varepsilon]\leq\frac{1}{\varepsilon^{2}}E[(\frac{1}{n}\sum_{k=1}^{n}(Y_{k}-E[Y_{k}]))^{2}]=\frac{1}{\varepsilon^{2}n^{2}}\sum_{k=1}^{n}Var[Y_{k}]$。$\sum_{k=1}^{n}Var[Y_{k}]\leq \sum_{k=1}^{n}E[Y_{k}^{2}]=\sum_{k=1}^{n}E[|X_{1}|^{2}1_{\{|X_{1}|\leq k\}}]=I$。只要$I=o(n^{2})$命题便可得证。下面对I进行估计：
+  \begin{enumerate}
+  \item[Trial 1] $I\leq \sum_{k=1}^{n}kE[|X_{1}|]=O(n^{2})$，失败
+  \item[Trial 2] $\frac{I}{n^{2}}\leq\frac{1}{n^{2}}\sum_{k=1}^{n}E[|X_{1}|^{2}1_{\{|X_{1}|\leq n\}}]=E[\frac{1}{n}|X_{1}|^{2}1_{\{|X_{1}|\leq n\}}]$。注意到$\frac{1}{n}|X_{1}|^{2}1_{\{|X_{1}|\leq n\}}\to 0\alsu$，故当$n$充分大时：\[\frac{1}{n}|X_{1}|^{2}1_{\{|X_{1}|\leq n\}}\leq |X_{1}|\in L^{1}\]
+    故由DCT，$\lim_{n\to\infty}\frac{I}{n^{2}}=0$，得证。
+  \item[Trial 3] 取$a_{n}\to\infty$。$\sum_{k=1}^{n}=\sum_{k=1}^{a_{n}}+\sum_{a_{n}}^{k}\Rightarrow$
+    \begin{align*}
+      \frac{I}{n^{2}}&\leq \frac{1}{n^{2}}\sum_{k=1}^{n}a_{n}E[|X_{1}|1_{\{|X_{1}|\leq a_{n}\}}]+\frac{1}{n^{2}}\sum_{k=1}^{a_{n}}E[|X_{1}|^{2}1_{\{|X_{1}|>a_{n}\}}]\\
+      &=\frac{a_{n}}{n}E[|X_{1}|1_{\{|X_{1}|\leq a_{n}\}}]+E[|X_{1}|1_{\{|X_{1}|>a_{n}\}}]
+    \end{align*}
+    取$a_{n}\st \frac{a_{n}}{n}\to 0$，则由DCT，$\frac{I}{n^{2}}\to 0$，得证。 
+  \end{enumerate}
+\end{proof}
+
+\begin{Rmk}
+  只要估计足够精细，截断法可以克服可积性的困难。e.g. $P(X_{1}=n)=P(X_{1}=-n)=\frac{c}{n^{2}\log n}$。此时$X_{1}\not\in L^{1}$，但精细的截断法可以证明$\frac{S_{n}}{n}\to 0\cvin P$
+\end{Rmk}
+
+\section{SLLN的证明}
+\begin{Thm}[Kolmogorov 三级数收敛定理/法则]
+  $\{X_{n}\}_{n\in\N}\subset L^{1}(\Omega)$独立，则以下命题等价：
+  \begin{enumerate}
+  \item $\sum_{k=1}^{\infty}X_{k}\alsu$收敛
+  \item $\exists C>0\st$
+    \[\sum_{k\in\N}P\{|X_{k}|>C\}<\infty\]
+    \[\sum_{k\in N}E[X_{k}1_{\{|X_{k}|\leq C\}}]<\infty\]
+    \[\sum_{k\in\N}Var[X_{k}1_{\{|X_{k}|\leq C\}}]<\infty\]
+  \item $\forall C>0$，上述三级数收敛。
+  \end{enumerate}
+\end{Thm}
+
+\begin{Lemma}\label{Lem-1}
+  $\{X_{n}\}_{n\in N}\subset L^{1}$独立，则$\sum_{k=1}^{\infty}X_{k}\quad a.s.$收敛（即$S_{n}=\sum_{k=1}^{n}X_{k}\alsu$收敛）当且仅当$\forall\varepsilon>0,\lim\limits_{n\to\infty}P\{W_{n}\geq \varepsilon\}=0$，其中$W_{n}=\sup\limits_{k\geq n}|T(n,k)|, T(n,k)=\sum_{j=k}^{n}X_{j}$
+\end{Lemma}  
+
+\begin{proof}
+  由Cauchy收敛准则，$\forall w\in \Omega, \sum_{k\in\N}X_{k}(w)$收敛$\Leftrightarrow \lim\limits_{n\to\infty}W_{n}(w)=0$。故$\sum_{k=1}^{\infty}X_{k}\alsu$收敛$\Leftrightarrow P\{\lim\limits_{n\to\infty}W_{n}(w)=0\}=1\Leftrightarrow \forall\varepsilon>0, P\{(\lim\limits_{n\to\infty} W_{n}(w))\geq\varepsilon\}=0$
+
+  注意到由集合的下连续性：$\lim\limits_{n\to\infty}P\{W_{n}\geq\varepsilon\}=P\{\bigcap_{n\in\N}\{W_{n}\geq\varepsilon\}\}=P\{\lim\limits_{n\to\infty} W_{n}(w)\geq\varepsilon\}$，故上式中极限可以交换，得证。
+\end{proof}
+
+\begin{Lemma}\label{Lem-2}
+  $\{X_{n}\}$独立，$\{X_{n}\}_{n\in\N}\subset L^{2}(\Omega)$，且$E[X_{n}]=0\quad\forall n\in\N$。记$\sigma^{2}_{k}=Var[X_{k}]=E[X_{k}^{2}]$，则
+  \begin{enumerate}
+  \item $P\{\max\limits_{1\leq j\leq n}|S_{j}|>\varepsilon\}\leq \frac{1}{\varepsilon^{2}}Var[S_{n}]=\frac{1}{\varepsilon^{2}}\sum_{j=1}^{n}\sigma_{j}^{2}$
+  \item 设$\sum_{j=1}^{n}\sigma_{j}^{2}>0$（即不全为0）且$\exists C>0\st \forall j\in\N, |X_{j}|\leq C\alsu$，则
+    \[P\{\max\limits_{1\leq j\leq n}|S_{j}|<\varepsilon\}\leq \frac{(C+\varepsilon)^{2}}{\sum_{j=1}^{n}\sigma_{j}^{2}}\]
+  \end{enumerate}
+\end{Lemma}
+
+\begin{proof}
+  设$\Lambda=\{\max\limits_{1\leq j\leq n}|S_{j}|\geq\varepsilon\},\Lambda_{k}=\{\max\limits_{1\leq j\leq k-1}|S_{j}|<\varepsilon, |S_{k}|\geq \varepsilon\}$。则$\Lambda=\bigcup_{k=1}^{n}\Lambda_{k}$是无交并。
+
+  计算$E[S_{n}^{2}1_{\Lambda}]=\sum_{k=1}^{n}E[S_{n}^{2}1_{\Lambda_{k}}]$. $E[S_{n}^{2}1_{\Lambda_{k}}]=E[(S_{n}-S_{k}+S_{k})^{2}1_{\Lambda_{k}}]=E[((S_{n}-S_{k})^{2}+S_{k}^{2}+2S_{k}(S_{n}-S_{k}))1_{\Lambda_{k}}]$。$S_{n}-S_{k},S_{k}$分别在$\sigma(X_{1},\cdots X_{k}),\sigma(X_{k+1},\cdots,X_{n})$中可测，故其独立：$E[S_{n}^{2}1_{\Lambda_{k}}]=E[(S_{n}-S_{k})^{2}1_{\Lambda_{k}}]+E[S_{k}^{2}1_{\Lambda_{k}}]=(\sum_{j=k+1}^{n}\sigma_{j}^{2})P[\Lambda_{k}]+E[S^{2}_{k}1_{\Lambda_{k}}]$。
+  \begin{itemize}
+  \item 一方面，\[E[S_{n}^{2}]\geq E[S_{n}^{2}1_{\Lambda}]\geq \sum_{k=1}^{n}E[S_{k}^{2}1_{\Lambda_{k}}]\geq \sum_{k=1}^{n}\varepsilon^{2}E[1_{\Lambda_{k}}]=\varepsilon^{2}P[\Lambda]\]
+  故$P[\Lambda]\leq\frac{1}{\varepsilon^{2}}E[S_{n}^{2}]$，(i)得证。
+\item 另一方面，仍考虑$E[S^{n}1_{\Lambda}]$的分解：
+  \begin{align*}
+    E[S_{n}^{2}1_{\Lambda}]=&\sum_{k=1}^{n}(E[S_{k}^{2}1_{\Lambda_{k}}]+P[\Lambda_{k}]\sum_{j=k+1}^{n}\sigma_{j}^{2})\\
+    \leq &\sum_{k=1}^{n}((C+\varepsilon)^{2}+\sum_{j=1}^{n}\sigma_{j}^{2})P[\Lambda_{k}]\\
+    =&P[\Lambda]((C+\varepsilon)^{2}+\sum_{j=1}^{n}\sigma_{j}^{2})
+  \end{align*}
+  故$E[S_{n}^{2}]=E[S_{n}^{2}1_{\Lambda}]+E[S_{n}^{2}1_{\Lambda^{c}}]\leq ((C+\varepsilon)^{2}+\sum\sigma_{j}^{2})P[\Lambda]+\varepsilon^{2}P[\Lambda^{c}]$。又$(\sum_{j=1}^{\infty}\sigma_{j}^{2})P[\Lambda]\leq (C+\varepsilon^{2})$，对$P[\Lambda]$整理，(ii)得证。
+  \end{itemize}
+\end{proof}
+
+\begin{Lemma}\label{Lem-3}
+  $\{X_{n}\}_{n\in\N}\subset L^{2}$独立。若$\sum_{n\in\N}Var[X_{n}]<\infty$，则$\sum_{n\in\N}(X_{n}-E[X_{n}])\alsu$收敛。
+\end{Lemma}
+\begin{proof}
+ 简记$Y_{n}:=X_{n}-E[X_{n}]\Rightarrow E[Y_{n}]=0,\sum_{n\in\N}Var[Y_{n}]<\infty$。
+
+  由\ref{Lem-2}(i)，$\forall n<k<l\in\N, P\{\max\limits_{n\leq k\leq l}|\tilde S(n,k)|>\varepsilon\}\leq \frac{1}{\varepsilon^{2}}\sum_{j=n}^{l}Var[Y_{j}]$。令$l\to\infty$，则由概率的连续性，$P\{\max\limits_{k\geq n}|\tilde{S}(n,k)|\}\leq\frac{1}{\varepsilon^{2}}\sum_{j=n}^{\infty}Var[Y_{n}]$。令$n\to\infty, \lim\limits_{n\to\infty}P\{\sup\limits_{k\geq n}|\tilde{S}(n,k)|>\varepsilon\}\leq 0$，再由\ref{Lem-1}即得。
+  
+  （其中$\tilde S(n,k)=\sum_{j=n}^{k}Y_{j}$）
+\end{proof}
+有了上述三条引理，便可以正式开始证明三级数定理了。
+\begin{proof}
+以$(ii)\to(i)\to (iii)\to (ii)$的顺序证明：
+  \begin{itemize}
+  \item[$(ii)\to (i)$] 取截断$Y_{n}=X_{n}1_{\{|X_{n}|\leq C\}}$。注意到第一个级数收敛（即$\sum P\{|X_{n}|>C\}<\infty$），故由Borel-Cantelli第一引理，$\{X_{n}\}\sim \{Y_{n}\}$，故只需证明$\sum_{n=1}^{\infty}Y_{n}\alsu$收敛。
+
+    注意到第三个级数收敛（即$\sum Var[Y_{n}]<\infty$），故由\ref{Lem-3}，$\sum_{n\in\N}(Y_{n}-E[Y_{n}])$收敛。又$\sum_{n\in\N}E[Y_{n}]<\infty$，故$\sum_{n\in\N} Y_{n}$收敛，得证。
+
+  \item[$(i)\to (iii)$] 既知$\sum_{n=1}^{\infty} X_{n}\alsu$收敛，$|X(w)|\to 0\alsu$。故由Borel-Cantelli 第二引理，$\forall C>0,\sum_{n\in\N} P\{|X_{n}|>C\}<\infty$，即第一个级数收敛。
+
+    仍作截断$Y_{n}=X_{n}1_{\{|X_{n}|\leq C\}}$，则$\{Y_{n}\}\sim\{X_{n}\},\sum_{n}Y_{n}\alsu$收敛，取期望即得第二个级数收敛。
+
+    断言：$\sum_{n\in\N} Var[Y_{n}]<\infty$。反设$\sum_{n\in\N}Var[Y_{n}]=\infty$。一方面，因$\sum_{n\in\N} Y_{n}$收敛，由\ref{Lem-1}，$\lim\limits_{n\to\infty}P\{\sup\limits_{k\geq n}|\tilde{S}(n,k)|>1\}=0$。另一方面，由\ref{Lem-2}(ii)，$P\{\max\limits_{n\leq k\leq l}|\tilde{S}(n,k)|\leq\frac{1}{2}\}\leq\frac{(C+1)^{2}}{\sum_{j=n}^{l}Var[Y_{j}]}$。令$l\to\infty$，$P\{\sup\limits_{k\geq n}|\tilde S(n,k)|\leq \frac{1}{2}\}=0\Rightarrow P\{\sup\limits_{k\geq n}|\tilde{S}(n,k)|>\frac{1}{2}\}=1$，矛盾！断言得证。
+
+    又$E[Y_{n}]=-(Y_{n}-E[Y_{n}])+Y_{n}\Rightarrow \sum_{n\in\N} E[Y_{n}]<\infty$，即第三个级数收敛。
+  \item[$(iii)\to (ii)$] Trivial.
+  \end{itemize}
+  \end{proof}
+
+\begin{Eg}
+  $\{X_{n}\}_{n\in\N}$ i.i.d. 且$P\{X_{1}=1\}=P\{X_{1}=-1\}=\frac{1}{2}$，则$\sum_{n\in\N}\frac{X_{n}}{n}(w)\alsu$收敛：$P\{|X_{n}|>1\}=0, E[X_{n}]=0,Var[\frac{X_{n}}{n}]=\frac{1}{n^{2}}$，故由三级数定理即得。
+
+  $\sum_{n\in\N}\frac{X_{n}}{n^{p}}$在$p>1$时收敛，$p<1$时发散。e.g. ,$\sum_{n\in\N} Var[\frac{X_{n}}{\sqrt{n}}]=\infty$，故由三级数定理，$P\{\sum_{n\in\N}\frac{X_{n}}{\sqrt{n}}\text{发散}\}>0$
+\end{Eg}
+
+\begin{Def}
+  $\{X_{n}\}_{n\in\N}$独立，$\forall n\in N$，记$\F_{n}=\sigma(X_{1},\cdots, X_{n})=\sigma\{X_{i}^{-1}(B):1\leq i\leq n, B\in\Bor(\R)\}$, $\mathscr{G}_{n}=\sigma(X_{n+1},X_{n+2},\cdots)=\sigma\{X_{i}^{-1}B: i\geq n+1, B\in \Bor(\R)\}$。$\mathscr{G}_{\infty}:=\bigcap_{n\in\N}G_{n}$称为\textbf{尾$\sigma$-代数}。称$A\in \G_{\infty}$为一个\textbf{尾事件}。
+\end{Def}
+
+\begin{Thm}[Kolmogorov 0-1律]
+  $\forall A\in \mathscr{G}_{\infty}, P[A]\in\{0,1\}$
+\end{Thm}
+尾事件不会受有限个随机变量的改变而改变。
+\begin{Eg}
+  $A\in G_{\infty},\{\sum_{n\in\N}X_{n}\text{收敛}\}\in \mathscr{G}_{\infty},\{\limsup\limits_{n\to\infty}\frac{S_{n}}{n}\geq p\}\in G_{\infty}, \{\limsup\limits_{n\to\infty}S_{n}\geq p\}\not\in G_{\infty}$。
+\end{Eg}
+
+\begin{proof}[0-1律的证明]
+  由定义，$\forall n\in N, \G_{\infty}$与$\F_{n}$独立，故$\E=\bigcup_{n\in\N}\F_{n}$与$\G_{\infty}$独立。又$\E$是一个$\pi$-系，故$\G_{\infty}$与$\sigma(\E)$独立。又$\sigma(E)=\sigma(X_{1},X_{2},\cdots)\supset G_{\infty}$。故$G_{\infty}$与其自身独立。$\forall A\in G_{\infty}, P[A]=P[A\cap A]=P[A]^{2}\Rightarrow P[A]\in \{0,1\}$ 
+\end{proof}
+
+\begin{Lemma}[Kronecker]
+  设$\{x_{n}\}_{n\in\N}\subset\R,\{a_{n}\}_{n\in\N}\subset (0,\infty), a_{n}\nearrow \infty$
+
+  若$\sum_{k\in\N}\frac{x_{k}}{a_{k}}$收敛，则$\lim\limits_{n\to\infty}\frac{1}{a_{n}}\sum_{k=1}^{n}x_{k}=0$
+\end{Lemma}
+\begin{proof}
+  记$b_{n}=\sum_{k=1}^{n}\frac{x_{k}}{a_{k}}$。对目标级数的部分和施Abel变换，则
+\begin{align*}
+  \frac{1}{a_{n}}\sum_{k=1}^{n}a_{k}(\frac{x_{k}}{a_{k}})=&\frac{1}{a_{n}}(\sum_{k=1}^{n}a_{k}b_{k}-\sum_{k=0}^{n-1}a_{k+1}b_{k})\\
+  =&b_{n}+\frac{1}{a_{n}}\sum_{k=0}^{n-1}(a_{k}-a_{k+1})b_{k}\\
+  =&b_{n}-\sum\frac{a_{k+1}-a_{k}}{a_{n}}b_{k}
+\end{align*}
+  剩余证明与Ces\'aro和收敛的证明是相同的。
+\end{proof}
+
+
+有了这些准备，我们终于可以证明强大数定律了。
+
+\begin{Thm}[Kolmogorov SLLN]
+  $\{X_{n}\}_{n\in\N}$ i.i.d，则
+  \begin{enumerate}
+  \item $E[|X_{1}|]<\infty$，则$\lim\limits_{n\to\infty}\frac{S_{n}}{n}=m=E[X_{1}] \alsu$
+  \item $E[|X_{1}|]=\infty$，则$\limsup\limits_{n\to\infty}\frac{|S_{n}|}{n}=\infty \alsu$
+  \end{enumerate}
+\end{Thm}
+\begin{proof}
+  \begin{enumerate}
+  \item 取截断$Y_{n}=X_{n}1_{\{|X_{n}|\leq n\}}$。$X_{1}\in L^{1}\Rightarrow \sum_{n\in\N}P\{|X_{1}|<n\}\leq E[X_{1}]<\infty$。故由Borel-Cantelli第一引理，$\{X_{n}\}\sim \{Y_{n}\}$。
+
+    %记$T_{n}=\sum_{k=1}^{n}Y_{k}$。
+
+    断言：$\sum_{n\in\N} Var[\frac{Y_{n}}{n}]<\infty$。方其得证，由\ref{Lem-3}，$\sum_{n\in\N}(\frac{Y_{n}}{n}-E[\frac{Y_{n}}{n}])$收敛。
+    
+    利用作业中的结论，
+    \begin{align*}
+      \sum_{n\in\N}Var[\frac{Y_{n}}{n}]\leq&\sum_{n\in\N}\frac{1}{n^{2}}E[|Y_{n}|^{2}]=\sum_{n\in\N}\frac{1}{n^{2}}E[|X_{1}|^{2}1_{\{|X_{1}|\leq n\}}]\\
+      =&\sum_{n\in \N}\frac{1}{n^{2}}(\sum_{k=1}^{n}E[|X_{1}|^{2}1_{\{k-1\leq |X_{1}|\leq k\}}])\\
+      =&\sum_{k=1}^{\infty}E[|X_{1}|^{2}1_{\{k-1<|X_{1}|\leq k\}}]\sum_{n=k}^{\infty}\frac{1}{n^{2}}\\
+      \leq& C\sum_{k=1}^{\infty}\frac{1}{k}E[|X_{1}|^{2}1_{\{k-1<|X_{1}|\leq k\}}]\\
+      \leq& C\sum_{k=1}^{\infty}E[|X_{1}|1_{\{k-1<|X_{1}|\leq k\}}]=CE[|X_{1}|]<\infty
+\end{align*}
+    再由Kronecker引理，$\frac{1}{n}\sum_{k=1}^{n}(Y_{k}-E[Y_{k}])\to 0\alsu$，故$\frac{1}{n}\sum_{k=1}^{n}Y_{k}\to m\alsu\Rightarrow \frac{S_{n}}{n}\to m\alsu$
+
+  \item $E[|X_{1}|]=\infty\Rightarrow\sum_{n\in\N}P\{|X_{j}|>n\}>E[|X_{1}|]-1=\infty$，故$P\{|X_{1}|>n\quad i.o.\}=1$。故$\forall M\in\N, P\{|X_{1}|>nM\quad i.o.\}=1$（即$\forall M\in\N,\exists \tilde\Omega_{M},P(\tilde\Omega_{M})=1\st$在$\tilde{\Omega}_{M}$上，$|X_{n}(w)|>nM\quad i.o.$）。记$\tilde\Omega=\bigcap_{M\in\N}\tilde{\Omega}_{M}$，则$P[\tilde{\Omega}]=1$，且$\forall w\in\tilde{\Omega}, |X_{n}(w)|>nM\quad i.o.\quad \forall M\in\N$。
+
+    今欲证$P\{\limsup\limits_{n\to\infty}\frac{|S_{n}|}{n}=\infty\}=1$，即证$\forall M\in\N, P\{|S_{n}|\geq nM\quad i.o.\}=1$。$\forall w\in\tilde\Omega, |X_{n}|(w)\geq 2nM\quad i.o.$。又$|X_{n}|=|S_{n}-S_{n-1}|$，故$|S_{n}|(w)>nM$或$|S_{n-1}|(w)>nM\Rightarrow |S_{n}|>nM$或$|S_{n-1}|>(n-1)M$。故$\exists n_{k}\nearrow \infty, |X_{n_{k}}(w)|>2n_{k}M$。$m_{k}=
+    \begin{cases}
+      n_{k}& |S_{n_{k}}|>n_{k}M\\ n_{k}-1 & |S_{n_{k}-1}|>(n_{k}-1)M
+    \end{cases}
+  $，
+  则$m_{k}\nearrow \infty, |S_{m_{k}}|(w)>2m_{k}M$，得证。
+
+
+  \end{enumerate}
+  \end{proof}
+
+\begin{Eg}[WLLN]
+  $\{X_{n}\}$ i.i.d., $P\{X_{1}=n\}=P\{X_{1}=-n\}=\frac{c}{n^{2}\log n}\quad(n\geq 3)$。显然$E[|X_{1}|]=\infty$。由WLLN，$\frac{S_{n}}{n}\to 0\cvin P$；由SLLN，$\limsup\limits_{n\to\infty}\frac{|S_{n}|}{n}=\infty\quad \cvin P,\alsu$
+
+  事实上，$\limsup \frac{S_{n}}{n}, \liminf \frac{S_{n}}{n}=-\infty$同时发生（由对称性）且概率为1（由0-1律，且不能同时不发生）。
+\end{Eg}
+
+\begin{comment}
+\begin{Prop}
+  $\{X_{j}\}_{1\leq j\leq n}\subset L^{2}$独立，$|X_{j}|\leq C\quad\forall j$，则
+  \[P\{\max_{1\leq j\leq n}|S_{j}|\leq \varepsilon\}\leq \frac{(C+2\varepsilon)^{2}}{\sum_{j=1}^{n}\sigma^{2}_{j}}\]
+\end{Prop}
+
+\begin{proof}
+  定义stopping time: $T(w)=\min\{1\leq j\leq n: |S_{j}(w)|>\varepsilon\}$，则$\{T=k\}=\{\max\limits_{1\leq j\leq k-1}|S_{j}|\leq\varepsilon, |S_{k}|>\varepsilon\}\in\F_{k}=\sigma(X_{1},\cdots, X_{k}), \{T>k\}=\{\max\limits_{1\leq j\leq k}|S_{j}|\leq\varepsilon\}\in\F_{k}$。
+
+  计算$a_{k}:=E[S_{k}1_{\{T>k\}}]=P\{T>k\}$。若$P\{T>n\}=0$，则得证，故WLOG$P\{T>n\}>0\Rightarrow P\{T>k\}>0$。则$E[(S_{k}-a_{k})1_{\{T>k\}}]=0$。由定义，$a_{k}\leq \varepsilon$。$E[(S_{k+1}-a_{k+1})^{2}1_{\{T>k+1\}}]=E[(S_{k+1}-a_{k+1})^{2}1_{\{T>k\}}]-E[(S_{k+1}-a_{k+1})^{2}1_{\{T=k+1\}}]=E[(S_{k}-a_{k}+X_{k+1}-(a_{k+1}-a+k))^{2}1_{T>k}]-E[(S_{k+1}-a_{k+1})^{2}1_{\{T=k+1\}}]=E[((S_{k}-a_{k})^{2}+[X_{k+1}-(a_{k+1}-a_{k})]^{2})1_{T>k}]+E[2(S_{k}-a_{k})1_{\{T>k\}}[X_{k+1}-(a_{k+1}-a_{k})]]-E[(S_{k+1}-a_{k+1})^{2}1_{\{T=k+1\}}]=E[(S_{k}-a_{k})^{2}1_{\{T>k\}}]+E[(X_{k+1}-c_{k+1})^{2}]P\{T>k\}+E[(S_{k+1}-a_{k+1})^{2}1_{\{T=k+1\}}]\geq E[(S_{k}-a_{k})^{2}1_{\{T>k\}}]+Var[X_{k+1}]P\{T>n\}+E[(S_{k+1}-a_{k+1})^{2}1_{\{T=k+1\}}]-(C+2\varepsilon^{2})P\{T=k+1\}$。求和$\sum_{k=1}^{n-1}$，便得到$E[(S_{n}-a_{n})^{2}1_{\{T>n\}}]-E[(S_{1}-a_{1})^{2}1_{T>1}]\geq (\sum_{j=2}^{n}\sigma_{j}^{2})P\{T>n\}-(C+2\varepsilon)^{2}P\{2\leq T\leq n\}\Rightarrow (\sum_{j=1}^{n} \sigma_{j}^{2})P\{T>n\}\leq (C+2\varepsilon)^{2}P\{2\leq T\leq n\}+2\varepsilon^{2}P\{T>n\}+\sigma_{1}^{2}P\{T>n\}\leq (C+2\varepsilon)^{2}$
+\end{proof}
+
+\begin{Rmk}
+  用上述命题证明：$Y_{n}=X_{n}1_{\{|X_{n}|\leq C\}}$，$\sum Y_{n}$收敛，则$\sum_{j=1}^{\infty}Var[Y_{j}]<\infty$.
+
+  Trick：取$\{\tilde Y_{n}\}$独立且$\tilde Y_{n}=Y_{n}\cvin d$，且$Y_{n},\tilde Y_{n}$独立。$Z_{n}=Y_{n}-\tilde Y_{n}$，则$E[Z_{n}]=0,\sum_{n\in\N}Var[Z_{n}]=2\sum Var[Y_{n}]$，且$\sum Y_{n}\alsu$收敛$\Rightarrow \sum \tilde Y_{n}$收敛$\Rightarrow \sum_{n}Z_{n}$收敛。
+\end{Rmk}
+
+\begin{Rmk}[Durett]
+  $\frac{\sum_{j=1}^{n}(Y_{j}-E[Y_{j}])}{\sqrt{\sum_{j=1}^{n}Var[Y_{j}]}}\Rightarrow N(0,1)\cvin d$。
+
+  设$\sum Var[Y_{j}]=\infty$，则$\frac{\sum_{j=1}^{n}Y_{j}}{\sqrt{\sum_{j=1}^{n}Var[Y_{j}]}}\to 0\alsu\Rightarrow -\frac{E[Y_{j}]}{\sqrt{\sum_{j=1}^{n}Var[Y_{j}]}}\to N(0,1)$，但这是不可能的。
+\end{Rmk}
+\end{comment}
+
+\section{收敛率}
+\begin{Prop}
+  $\{X_{n}\}_{n\in\N}\subset L^{2}$, i.i.d.，$E[X_{1}]=0$，$E[|X_{1}|^{2}]=\sigma^{2}<\infty$，则
+  \[\frac{S_{n}}{\sqrt{n(\log n)^{1+\delta}}}\to 0\alsu\quad \delta>0\]
+\end{Prop}
+
+\begin{Rmk}
+  这是一个收敛率：$|\frac{S_{n}}{n}-m|=o(n^{-\frac 1 2}(\log n)^{\frac{1+\delta}{2}})$
+\end{Rmk}
+
+\begin{Rmk}
+  上述收敛率几乎是Optimal的：
+  \[\limsup_{n\to\infty}\frac{S_{n}}{\sqrt{2n\log\log n}}=\sigma \alsu\]
+\end{Rmk}
+
+\begin{proof}
+  断言：$\{X_{n}\}\subset L^{2}$，独立，$E[X_{n}]=0$，则$\sum_{k\in \N}\frac{E[|X_{k}|^{2}]}{a_{k}^{2}}<\infty\Rightarrow \frac{S_{n}}{a_{n}}\to 0\alsu$。方其成立，取$a_{n}=\sqrt{n(\log n)^{1+\delta}}$即得。
+
+  由\ref{Lem-3}，因$\sum Var[\frac{X_{k}}{a_{k}}]<\infty\Rightarrow \sum_{k\in\N}\frac{X_{k}}{a_{k}}$收敛，再由Kronecker $\frac{1}{a_{n}}\sum_{k=1}^{n}X_{k}\to 0\alsu$，洛必达即得。
+\end{proof}
+
+\begin{Prop}
+  i.i.d. $\{X_{n}\}\subset L^{p}\quad 1<p<2$，则
+  \[\frac{S_{n}-E[S_{n}]}{n^{\frac 1 p}}\to 0\alsu\]
+\end{Prop}
+
+\begin{Rmk}
+  $|\frac{S_{n}}{n}-E[X_{1}]|=o(\frac{1}{n^{1-\frac{1}{p}}})$
+\end{Rmk}
+
+\begin{proof}
+  $\forall n\in\N$，取截断$Y_{n}=X_{n}1_{\{|X_{n}|\leq n^{\frac 1 p}\}}$。则$\{Y_{n}\neq X_{n}\}=\{|X_{n}|^{p}>n\}\Rightarrow \sum_{n\in\N} P\{Y_{n}\neq X_{n}\}=\sum_{n\in\N} P\{|X_{n}|^{p}>n\}=\sum_{n\in\N} P\{|X_{1}|^{p}>n\}\leq E[|X_{1}|^{p}]<\infty$。故由Borel-Cantelli第一引理，$\{Y_{n}\}$独立，$\{Y_{n}\}\sim \{X_{n}\}$。
+
+  令$T_{n}=\sum_{j=1}^{n}Y_{j}$。考察$\sum_{j=1}^{\infty}\frac{Y_{j}-E[Y_{j}]}{j^{\frac 1 p}}$的收敛性：
+  \begin{align*}
+    &\sum_{n=1}^{\infty}Var[\frac{Y_{n}}{n^{\frac 1 p}}]\leq \sum_{n=1}^{\infty}\frac{E[Y_{n}^{2}]}{n^{\frac 2 p}}\\
+    =&\sum_{n=1}^{\infty}\frac{E[|X_{1}|^{2}1_{\{|X_{1}|^{p}>n\}}]}{n^{\frac 2 p}}\\
+    =&\sum_{n=1}^{\infty}\frac{1}{n^{\frac 2 p}}(\sum_{k=1}^{n}E[|X_{1}|^{2}1_{\{k-1<|X_{1}|^{p}\leq k\}}])\\
+    =&\sum_{k=1}^{\infty}E[|X_{1}|^{2}1_{\{k-1>|X_{1}|^{p}\leq k\}}](\sum_{n=k}^{\infty}\frac{1}{n^{\frac 2 p}})\\
+    \leq& C\sum_{k=1}^{\infty}k^{1-\frac{2}{p}}E[|X_{1}|^{p}|X_{1}|^{p\frac{2-p}{p}}1_{\{k-1<|X_{1}|^{p}\leq k\}}]\\
+    \leq& C\sum_{k=1}^{\infty}E[|X_{1}|^{p}1_{\{k-1<|X_{1}|^p\leq k\}}]=CE[|X_{1}|^{p}]<\infty
+  \end{align*}
+
+  下面只需验证$\lim\limits_{n\to\infty}\frac{E[T_{n}]}{n^{\frac 1 p}}= 0$。
+  \[n^{-\frac 1 p}|E[T_{n}]-E[S_{n}]|=n^{-\frac 1 p}\sum_{k=1}^{n}E[|X_{1}|1_{\{|X_{1}|^{p}>k\}}]\leq n^{-\frac 1 p}\sum_{k=1}^{n}E[|X_{1}|^{p}1_{\{|X_{1}|^{p}>k\}}]k^{\frac{1}{p}-1}\]
+
+  故$\forall m<n\in\N, $
+  \begin{align*}
+    &n^{-\frac 1 p}|E[T_{n}]-E[S_{n}]|\\
+    \leq& n^{-\frac 1 p}\sum_{k=1}^{m-1}k^{\frac{1}{p}-1}E[|X_{1}|^{p}1_{\{|X_{1}|^{p}>k\}}]+n^{-\frac 1 p}\sum_{k=m}^{n}k^{\frac{1}{p}-1}E[|X_{1}|^{p}1_{\{|X_{1}|^{p}>m\}}]\\
+    \leq& \frac{m}{n^{\frac{1}{p}}}E[|X_{1}|^{p}]+CE[|X_{1}|^{p}1_{\{|X_{1}|^{p}>m\}}]
+  \end{align*}
+  令$n\to\infty$，则$\limsup\limits_{n\to\infty} n^{-\frac 1 p}|E[T_{n}]-E[S_{n}]|\leq CE[|X_{1}|^{p}1_{\{|X_{1}|^{p}>m\}}]\to 0$（由DCT）。
+\end{proof}
+
+\section{应用}
+\paragraph{用经验分布逼近统计分布}
+$X\sim\mu, F(x)=\mu(-\infty,x]$。$X,\{X_{n}\}i.i.d.$，我们可以测量$X_{n}(w)$，则我们可以构建经验分布$F_{n}(x;w)=\frac{1}{n}\sum_{j=1}^{n}1_{\{X_{j}\leq x\}}(w)$，则由SLLN，$F_{n}(x,w)\to E[1_{\{X_{1}\leq x\}}]=
+F(x)\alsu$。
+
+\begin{Prop}[Glivenko-Cantelli]
+  $\sup_{x}|F_{n}(x,w)-F(x)|\to 0\quad (n\to\infty)$
+\end{Prop}
+
+\paragraph{Random sign problem}
+i.i.d.$\{X_{j}\}_{j\in\N}$，$P\{X_{1}=1\}=P\{X_{1}=-1\}=\frac{1}{2}$。给定$\{c_{n}\}_{n\in\N}$，试确定$\sum_{n\in\N}c_{n}X_{n}$收敛的充要条件。
+
+由三级数定理(3)，其充分条件为$\sum c_{n}^{2}<\infty$；必要性由引理2(2).
+\ifx\allfiles\undefined
+\end{document}
+\fi
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

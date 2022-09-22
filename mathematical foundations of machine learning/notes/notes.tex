@@ -1,0 +1,1465 @@
+\documentclass{book}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,comment}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+\title{Notes for Mathematical Foundations of Machine Learning}
+\author{M91\and Junzhe Dong}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+\newcommand{\rv}{r.v.}
+\renewcommand{\H}{\mathcal{H}}
+\newcommand{\D}{\mathcal{D}}
+
+\newtheorem{Thm}{Theorem}[section]
+\newtheorem{Lemma}[Thm]{Lemma}
+\newtheorem{Prop}[Thm]{Proposition}
+\newtheorem{Cor}[Thm]{Corollary}
+\newtheorem{Def}{Definition}[section]
+\newtheorem{Rmk}{Remark}[section]
+\newtheorem{Eg}{Example}[section]
+\newenvironment{Solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\begin{document}
+\maketitle
+
+\chapter{Online Learning}
+
+\section{The online learning framework}
+\begin{Def}
+Domain set $X$:set of objects we may
+wish to label
+
+Label set $Y$: set of possible labels
+
+
+prediction rule $h:X\to Y$: used to
+label future examples. Usually called a
+predictor, a hypothesis, or a classifier
+\end{Def}
+
+\textbf{The Online Game: } For $t=1,2,3,\cdots$, the environment gives $x_{t}$, learner gives $\hat y_{t}$, environment enveils $y_{t}$, learner pays 1 if $\hat y_{t}\neq y_{t}$
+
+However, if $|X|=\infty$, the learner cannot learn the new commer's label and may always be wrong. (If $|X|<\infty$, the learner can remember everything, which is not the learning we're seeking.)
+
+So the learner needs prior knowledge: the environment produces labels by applying a target $f\in H\subset Y^{X}$. $H$: the hypopthesis class, a pre-defined set of classifiers. The learner knows $H$, but he doesn't know $f$ in advance.
+
+This does not always help: Let $X=\mathbb{R}$ and $H=\{h_{\theta}:\theta\in \mathbb{R}\}$, where $h_{\theta}(x)=H(x-\theta)-H(\theta-x)$.
+\begin{Thm}
+For every learner, $\exists$ a sequence of examples that the learner will always ERROR. 
+\end{Thm}
+
+\begin{proof}
+  The environment will follow the bosection method. Since $|H|=\infty$, this process never stops, and a sequence as such is possible. 
+\end{proof}
+
+\section{Learning finite hypothesis classes}
+
+Assume that $H$ is finite.
+\begin{Eg}
+$H$ is the set of fuctions that can be implenmented via a python programme of length at most $b$
+\end{Eg}
+
+\begin{Eg}
+  $H$ is the set of thresholds over a grid $\{0,\frac{1}{n},\cdots,1-\frac{1}{n},1\}$
+\end{Eg}
+
+\textbf{Consistent learner} Intiate $V_{1}=H$. For $t=1,2,3\cdots$ pick some $h\in V_{t}$ and predict $\hat y_{t}=h(x_{t})$. Then get $y_{t}$ and update $V_{t+1}=\{h\in V_{t}: h(x_{t})=y_{t}\}$.
+\begin{Thm}
+The consistent learner makes at most $|H|-1$ mistakes.
+\end{Thm}
+
+\textbf{Halving learner} The same as consistent learner, but predict $\hat y_{t}=Majority\{h(x_{t}):h\in V_{t}\}$.
+\begin{Thm}
+  The halving learner makes at most $\log_{2}(|H|)$ mistakes.
+\end{Thm}
+
+\begin{proof}
+  More than half of the functions are no longer included after each false is made.
+\end{proof}
+Nevertheless, the runtime grows to $|H|$. 
+
+\small{What if the environment is not consistent with any of the $f\in H$? We'll come back later.}
+
+\section{Structure over the Hypothesis Class}
+
+\textbf{Half space:} $H=\{\bm{x}\to sign(<\bm{w},\bm{x}>+b)\}$. $\bm{w}$: weight vector, $b$: bias.
+
+When $d=1$, $H$ is the space of thresholds.
+
+(WLOG, assume $w_{d}=1\st$ we treat $w_{d}$ as the bias and forget $b$ from now on)
+
+\paragraph{Using Halving to Learn Halfspaces on a Grid}Assume $\bm{w}$ comes from a grid $G=\{-1,-1+\frac 1 n,\cdots,-\frac{1}{n}+1,1\}, \bm{w}\in G^{d}, \nm{w}\leq 1$, then $|H|\leq |G|^{d}=(2n+1)^{d}$, so the mistake bound is at most $d\log(2n+1)$ 
+
+\subsection{The Ellipsoid Learner}
+ Recall that halving maintains a ``Version Space'' $V_{t}$, We now maintain an ellipsoid $E_{t}$ that contains $V_{t}$, each time shrinks by a factor of $e^{-\frac{1}{2n+2}}$ and cannot be made too small.
+\begin{Def}
+ Given a matrix $M$ and vector $\bm{v}$, $E(M,\bm{v})=\{M\bm{w}+\bm{v}:\nm{\bm{w}}\leq 1 \}$
+\end{Def}
+
+Now we implicitly maintain $E_{t}=E(A^{\frac 1 2}_{t},w_{t})$:
+
+Starting with $w_{1}=0, A_{1}=I$. If $|E_{t}\cap G^{d}|=1$, then it contains the only solution$\to \bm{w}$ and predict $\hat y_{t}=sign(\bm{w}_{t}^{T}\bm{x})$. Otherwise predict $\hat y_{t}=sign(\bm w_{t}^{T}\bm x_{t})$. If the prediction is wrong, then we update:
+\[w_{t+1}=w_{t}+\frac{y_{t}}{d+1}\frac{A_{t}x_{t}}{\sqrt{x_{t}^{T}A_{t}x_{t}}}=w_{t}+u_{t}\]
+\[A_{t+1}=\frac{d^{2}}{d^{2}-1}(A_{t}-\frac{2}{d+1}\frac{A_{t}x_{t}x_{t}^{T}A_{t}}{x^{T}_{t}A_{t}x_{t}})=\frac{d^{2}}{d^{2}-1}[A_{t}-2(d+1)u_{t}u_{t}^{T}]\]
+
+\begin{Lemma}[Truth Never Eliminated]
+  Suppose $w^{*}$ is the weight vector selected by the environment, then $w^{*}\in E_{t}$
+\end{Lemma}
+ Proof: Apply induction, and it suffices to prove the following:
+\begin{Lemma}[Enclosing Ellipsoid]
+  $E_{t}\cap \{\bm w:y_{t}\dual{\bm w,\bm x_{t}}>0\}\subset E_{t+1}$
+\end{Lemma}
+
+\begin{proof}
+  Recall: $E(M,\bm v)=\{M\bm w+\bm v:\nm{w}^{2}\leq 1\}$, which remains unchanged when $\bm w$ is rotated.
+  
+  WLOG assume $M$ is non-degenerate $\st$ $M=UDV^{T}$, then $E(M,\bm v)=E(UD,\bm v)=E(UDU^{T}, v)=E((MM^{T})^{\frac 1 2}),v$, so we may always suppose $M$ is symmetric: $M=UDU$. In this case,
+  \[E(M,\bm v)=\{\bm w:\nm{UD^{-1}U^{T}(\bm w-\bm v)}^{2}\leq 1\}=\{\bm w:\nm{(\bm w-\bm v)^{T}M^{-2}(\bm w-\bm v)}^{2}\leq 1\}\]
+
+  Now WLOG  assume $E_{t}=E(A^{1/2}_{t},w_{t})=E(UDU^{T},w_{t})$.
+  
+  \textbf{Goal:} $\forall \bm w\st (\bm w-\bm w_{t})^{T}UD^{-2}U^{T}(\bm w-\bm w_{t})\leq 1, y_{t}\dual{w,x_{t}}\Rightarrow w\in E_{t+1}$.
+
+  Denote $z=D^{-1}U^{T}(w-w_{t})\st w=UDz+w_{t} $, then
+
+  \textbf{Goal:}$\forall \bm z^{T}\bm z\leq 1, y_{t}\dual{UD\bm z+\bm w_{t},\bm x_{t}}>0\Rightarrow UD\bm z\in E(A^{1/2}_{t+1},u_{t})$.
+
+  Moreover, $\hat y_{t}\neq y_{t}\Rightarrow y_{t}\dual{\bm{w_{t}},\bm x_{t}}<0$:
+
+  \textbf{Goal:}$\forall \bm z^{T}\bm z\leq 1, y_{t}\dual{\bm z,y_{t}DU^{T}\bm x_{t}}>0\Rightarrow UD\bm z\in E(A^{1/2}_{t+1},u_{t})$.
+
+  
+  Let $V$ be the Householder matrix $\st$ $Vy_{t}DU^{T}x_{t}=\alpha e_{1}$ and denote $\tilde z=Vz$, then
+
+  \textbf{Goal:} $\forall \tilde {\bm z}: \nm{\tilde{\bm{z}}}\leq 1$ and $\tilde z_{1}>0$, we have $UDV^{T}\tilde z\in E(A^{\frac 1 2}_{t+1},\bm u_{t})$
+
+  (Finally, after all these hard work, we concentrated the goal onto the unit ball.)
+  \begin{Lemma}
+    $\forall \tilde{\bm{z}}:\nm{\tilde{\bm z}}\leq 1, \tilde z_{1}>0$, we have $\tilde z\in E(A^{\frac{1}{2}},\tilde u)$ where
+    \[A=\frac{d^{2}}{d^{2}-1}diag(\frac{d-1}{d-1},1,\cdots,1)\quad\tilde{\bm u}=(\frac{1}{d+1},0,\cdots,0)\]
+  \end{Lemma}
+  \begin{proof}
+    Denote $a=\tilde z_{1},b=\sqrt{\sum_{i=2}^{n}\tilde z_{i}^{2}}\leq \sqrt{1-a^{2}}$. What's left is mere calculation:
+    \begin{align*}
+      &(\tilde z-\tilde u)^{T}A^{-1}(\tilde z-\tilde u)\\
+      =&\frac{(d+1)^{2}}{d^{2}}(a-\frac{1}{d+1})^{2}+\frac{d^{2}-1}{d^{2}}b^{2}\leq \frac{(d+1)^{2}}{d^{2}}(a-\frac{1}{d+1})^{2}+\frac{d^{2}-1}{d^{2}}(1-a^{2})\\
+      =&1+\frac{2(a^{2}-a)(d+1)}{d^{2}}\leq 1\quad \forall a\in (0,1]
+    \end{align*}
+  \end{proof}
+  Fact: if $x\in E(M,v)$, then $M'x\in E(M'M,M'v)$, therefore $UDV^{T}\tilde{\bm z}\in E(^{\frac 1 2},UDV^{T}\tilde{\bm u})$. By definition, $v_{1}=\frac{y_{t}DU^{T}x_{t}}{\nm{DU^{T}x_{t}}}$, thus
+  \[UDV^{T}\tilde{\bm{u}}=u_{t}\]
+  and similarly $UDV^{T}AVDU^{T}=A_{t}$%To be calculated
+\end{proof}
+
+\begin{Thm}
+  The Ellipsoid learner makes at most $d(2d+2)\log(2n))$ mistakes.
+\end{Thm}
+\begin{proof}
+\begin{Lemma}[Volume Reduction]
+  Whenever we make a mistake, $Vol(E_{t+1})\leq Vol(E_{t})e^{-\frac{1}{2d+2}}$
+\end{Lemma}
+\begin{proof}
+  Recall that
+  \[\begin{aligned}
+      A_{t+1}&=\frac{d^{2}}{d^{2}-1}(A_{t}-\frac{2}{d+1}\frac{A_{t}x_{t}x_{t}^{T}A_{t}}{x^{T}_{t}A_{t}x_{t}})\quad A_{t}=UD^{2}U^{T}\\
+      &=\frac{d^{2}}{d^{2-1}}UD(I-\frac{2}{d+1}\frac{DU^{T}x_{t}x_{t}^{T}UD}{x_{t}^{T}UD^{2}U^{T}x_{t}})DU^{T}\quad \tilde x_{t}=DU^{T}x_{t}\\
+      &=\frac{d^{2}}{d^{2}-1}UD(I-\frac{2}{d+1}\frac{\tilde x_{t}\tilde x_{t}^{T}}{\tilde x^{T}_{t}\tilde x_{t}})DU^{T}
+      \end{aligned}
+    \]
+    Observe that $\det(I-\bm u\bm u^{T})=1-\bm u^{T}\bm u$, so
+    \[\begin{aligned}
+        (\frac{Vol(E_{t+1})}{E_{t}})^{2}&=\frac{\det(A_{t+1})}{\det(A_{t})}=(\frac{d^{2}}{d^{2}-1})^{d}(1-\frac{2}{d+1})\\
+        &=(1+\frac{1}{d^{2}-1})^{d-1}(1-\frac{1}{d+1})^{2}\leq \exp(\frac{d-1}{d^{2}-1})\cdot \exp(-\frac{2}{d+1})=\exp(-\frac{1}{d})
+      \end{aligned}\]
+    Here we've used the observation that $1+x\leq e^{x}$
+\end{proof}
+ Therefore, after $M$ mistakes, $Vol(E_{t})\leq Vol(B)e^{-\frac{M}{2d+2}}$
+\begin{Lemma}[Volume Lower Bound]
+  $\forall t$, $|E_{t}\cap G^{d}|>1\Rightarrow Vol(E_{t})\geq \frac{Vol(B)}{(2n)^{d}}$
+\end{Lemma}
+
+\begin{proof}
+  Suppose $E_{t}\cap G^{d}$ contains two different vectors $\bm w,\bm w'\Rightarrow \nm{\bm w-\bm w'}\geq \frac{1}{n}$. Thus $E_{t}$ contains a ball using $\bm w-\bm w'$ as diameter, whose volume is $Vol(B)(\frac{\nm{\bm w-\bm w'}}{2})^{d}\geq Vol(B)/(2n)^{d}$. Thus we reach a contradiction.
+\end{proof}
+
+Thus for $M>d(2d+2)\log(2n),Vol(E_{t})<\frac{Vol(B)}{(2n)^{d}}\Rightarrow |E_{t}\cap G^{d}|\leq 1$. Since truth is never eliminated, what's left contains $w^{*}$, so we'll make no more mistakes.
+\end{proof}
+
+
+%————————————————————————————————————————
+
+
+\chapter{PAC learning}
+PAC: probably approximate correct.
+
+\section{PAC learning framework}
+\paragraph{Batch Learning }input: training data, $S=((x_{1},y_{1}),\cdots,(x_{n},y_{n}))\in (X\times Y)^{m}$;output: a prediction rule, $h$. $h$ should be correct on future examples.
+
+$f$: the correct classifier, and we should find $h\approx f$
+
+Define the error of $h$ w.r.t. $f$ (the loss, the risk)
+\[L_{{D,f}}(h)=Pr_{x\sim D}[h(x)\neq f(x)]\]
+where $D$ is some (unknown) probability measure on $X$
+
+More formally, $D$ is a distribution over $X$ (for given $A\subset X, D(A)$ is the probability to see some $x\in A$), then
+\[L_{D,f}(h):=Pr_{x\sim D}[h(x)\neq f(x)]:=D(\{x\in X:h(x)\neq f(x)\})\]
+
+\paragraph{data generation model}
+\begin{itemize}
+\item (iid) $x_{i}$ are sampled iid from $D$
+\item $\forall i\in[m],y_{i}=f(x_{i})$
+\end{itemize}
+
+\paragraph{Approximately Correct }
+Claim: we cannot hope to find $h\st L_{D,f}(h)=0$
+\begin{proof}
+  $\forall\varepsilon\in (0,1),X=\{x_{1},x_{2}\}, D(\{x_{1}\})=1-\varepsilon, D(\{x_{2}\})=\varepsilon$. Chance of not seeing $x_{2}$ at all (within $m$ iid examples) : $(1-\varepsilon)^{m}\approx e^{-\varepsilon m}$. Especially when $\varepsilon\ll\frac{1}{m}$, and we do not know the lable.
+\end{proof}
+
+relaxation: $L_{D,f}(h)\leq \varepsilon$, where $\epsilon$ is user-specified.
+
+\paragraph{Probably Correct}
+There's a small chance to see the same example again (since the input is randomly generated).
+
+Claim: No algorithm can guarantee $L_{D,f}(h)\leq\varepsilon$ for sure.
+\begin{proof}
+$D(\{x_{1}\})=1-3\varepsilon,D(\{x_{2}\})=3\varepsilon\Rightarrow$ chance of not seeing $\{x_{2}\}=(1-3\varepsilon)^{m}$. In case we really fail to see $x_{2}$, $L_{D,f}(h)\geq \frac{1}{2}3\varepsilon>\varepsilon$
+\end{proof}
+
+relaxation: all the algorithm to fail with probability $\delta\in(0,1)$. This probability is over the random choice of training examples.
+
+PAC learning: learner does not know D,f; receives the accuracy parameter and confidence parameter $\varepsilon,\delta$; ask for traing data $S, |S|=m=m(\varepsilon,\delta)$. $S: (x_{1},\cdots, x_{m})\sim D^{m}, y_{i}=f(x_{i}), S=((x_{1},y_{1}),\cdots, (x_{m},y_{m}))$.
+
+Output: a hypothesis $h \st$ that's probably approximately correct:
+\[Pr_{S}[L_{D,f}(h)\leq \varepsilon]\geq 1-\delta\]
+
+\section{No free lunch and Prior knowledge}
+
+\paragraph{No free lunch} Suppose $|X|=\infty$. For finite $C\subset X$, take $D$ to be the uniform distribution over C ($\mathbb{I}_{C}$). If $m<\frac{|C|}{2}$, the learner has no knowledge about at least half of the elements in $C$. Formalizing the above, it can be shown that:
+\begin{Thm}[No free lunch]
+  Fix $\delta\in (0,1), \varepsilon<\frac{1}{2}$. $\forall$ learner $A$ and training set size $m$, then $\exists D,f\st$ with probability at least $\delta\st L_{D,f}(h)>\varepsilon$
+\end{Thm}
+Take $\varepsilon=\frac{1}{2}$ and we see:
+\begin{Rmk}$L_{D,f}(\text{random guess})=\frac{1}{2}$, you cannot even beat random guess without prior knowledge.
+\end{Rmk}
+
+\paragraph{Prior Knowledge} Suppose the target comes from some hypothesis class $H\subset X^{Y}$ (the case $H=X^{Y}$ is the no free lunch case as above). The learner knows $H$.
+
+\section{PAC Learning of Finite Hypothesis Class}
+Assume $H$ is a finite hyppothesis class.
+
+The consistent learning rule: input $H,S$, iterate and output any $h\in H\st y_{i}=h(x_{i})\forall i$
+
+This is called the \textbf{Empirical Risk Minimization}(ERM).
+\begin{Def}[ERM]
+  $ERM_{H}(S):$
+  \begin{itemize}
+  \item Input: training set $S=((x_{1},y_{1}),\cdots, (x_{m},y_{m}))$
+  \item The empirical risk: $L_{S}(h)=\frac{1}{m}|\{i:h(x_{i})\neq y_{i}\}|$
+  \item Output: any $h$ that minimizes $L_{S}(h)$
+  \end{itemize}
+\end{Def}
+
+%sample average approximation: Input $S$, define empirical risk $L_{S}(h)=\frac{1}{m}|\{i:h(x_{i})\neq y_{i}\}|$, output $h$ that minimizes $L_{S}(h)$
+
+\begin{Thm}
+  If $m\geq \frac{\log(|H|/\delta)}{\varepsilon}$, then $\forall D,f$
+  \[Pr_{S\sim D^{m}}[L_{D,f}(ERM_{H}(S))\leq\varepsilon]\geq 1-\delta\]
+\end{Thm}
+
+\begin{proof}
+  
+  % \paragraph{Intuitive approach}
+  \textbf{Intuitive Approach: }$h=ERM_{H}(S),L_{S}(h)=0$, $Pr_{S\sim D^{m},f}[L_{D,f}(h)\leq \varepsilon]\geq 1-\delta$
+
+  $\forall g\in H, Pr_{S}[L_{s}(g)=0\Rightarrow L_{D,f}(g)\leq\varepsilon]=1-Pr_{S}[\exists g\in H:L_{S}(g)=0\land L_{D,f}(g)>\varepsilon]\leq 1-\sum_{g:g\in H, L_{D,f}(g)>\varepsilon}\geq 1-|H|(1-\varepsilon)^{m}$
+
+$\forall g, L_{D,f}(g)>\varepsilon, Pr[L_{S}(g)=0]=(1-L_{D,f}(g))^{m}\leq (1-\varepsilon)^{m}$
+
+($L_{S}(g)>0\Leftrightarrow \exists i\in [m],g(x_{i})\neq f(x_{i})$)
+
+  \textbf{Formal Approach: }Let $S|_{x}=(x_{1},\cdots,x_{m})$ be the instances of the training set.
+
+ Our goal is:
+ \[D^{m}(\{S|_{x}:L_{D,f}(ERM_{H}(S))>\varepsilon\})\leq \delta\]
+   
+ Bad hypothesis: $H_{B}=\{h\in H:L_{D,f}(h)>\varepsilon\}$
+
+ Misleading samples: $M=\{S|_{x}:\exists h\in H_{B},L_{S}(h)=0\}=\bigcup\limits_{h\in H_{B}}\{S|_{x}:L_{S}(h)=0\}\supset \{S|_{x}:L_{D,f}(ERM_{H}(S))>\varepsilon\}$
+
+ By union bound,
+ \begin{align*}
+   &D^{m}(\{S|_{x}:L_{D,f}(ERM_{H}(S))>\varepsilon\})\\
+   \leq&\sum_{h\in H_{B}}D^{m}(\{S|_{x}:L_{S}(h)=0\})\\
+   \leq& |H_{B}|\max_{h\in H_{B}}D^{m}(\{S|_{x}:L_{S}(h)=0\})\\
+   \leq&|H|(1-L_{D.f}(h))^{m}\leq |H|e^{-\varepsilon m}
+   \end{align*}
+  To make it smaller than $\delta$, it suffices to set $m\geq \frac{\log(|H|/\delta)}{\varepsilon}$
+\end{proof}
+
+\begin{Def}[PAC learning]
+  A hypothesis class is PAC learnable if $\exists m_{H}:(0,1)^{2}\to\mathbb{N}$ and a learning algorithm $A\st$
+  \begin{itemize}
+  \item $\forall (\varepsilon,\delta)\in (0,1)^{2}$
+  \item $\forall$ distribution $D$ over $X$
+  \item $\forall$ labeling function $f:X\to \{0,1\}$
+  \end{itemize}
+  when running $A$ on  at least $m_{H}$ iid samples generated by $D$, $A$ returns a hypothesis $h \st Pr[L_{D,f}(h)\leq \varepsilon]\geq 1-\delta$.
+\end{Def}
+
+$m_{H}$ is called the \textbf{sample complexity} of learning $H$.
+\begin{Cor}
+  Let $H$ be a finite hypothesis class, then $H$ is always PAC learnable with sample complexity $m_{H}(\varepsilon,\delta)\leq\frac{\log(|H|/\delta)}{\varepsilon}$, which can be obtained by using the $ERM_{H}$ learning rule.
+\end{Cor}
+%What about infinite hypothesis classes? What is the sample complexity of a given class?
+
+\section{The Fundamental Theory of Learning Theory}
+
+The sample complexity is characterized by VC dimension, and ERM learning is near optimal in this sense.
+
+Let $C=\{x_{1},\cdots,x_{m}\}\subset X$. Let $H_{C}$ be the restriction of $H$ on $C$: $H=\{h_{C}\}, h_{C}:C\to \{0,1\}$ is such that $h_{C}(x_{i})=h(x_{i})\quad \forall x_{i}\in C$. Observe: we can represent each $h_{C}$ as the vector $(h(x_{1}),\cdots,h(x_{m}))\in \{0,1\}^{m}$, therefore $|H_{C}|\leq 2^{m}$. We say $H$ \textbf{shatters} $C$ if $|H_{C}|=2^{m}$
+
+\begin{Def}
+  $VCDim(H):=\sup\{|C|:C\subset H, H\text{ shatters }C\}$
+\end{Def}
+
+To show $VCDim(H)=d$, we need to show that
+\begin{itemize}
+\item $\exists C\st |C|=d$ which is shattereg by $|H|$
+\item Every set $C$ of size $d+1$ is not shattered by $|H|$
+\end{itemize}
+
+\begin{Eg}[Thresholds]
+   $X=\R, H=\{x\mapsto sign(x-\theta):\theta\in\R\}, VCDim(H)=1$: $\{0\}$ is shattered, but every set of 2 points is not shattered by $H$.  
+\end{Eg}
+
+\begin{Eg}[Intervals]
+  $X=\R, H=\{h_{a,b}:a<b\in\R\}, h_{a,b}=1$ iff $x\in [a,b]$. $\{0,1\}$ is shattered, but every set with 3 points is not shattered.
+  \end{Eg}
+
+  \begin{Eg}[Axis aligned rectangles]
+    $X=\R^{2},H=\{h_{a,b,c,d}: a<b,c<d\},h_{a,b,c,d}=1$ iff $x\in [a,b], y\in [c,d]$, $VCDim(H)=4$
+  \end{Eg}
+For a finite class, the VC dimension of a finite $|H|$ is at most $\log_{2}(|H|)$, yet there can be an arbitrarily large gap between $VCDim(H)$ and $\log_{2}(|H|)$. E.g. threshold functions on grids within a line has VC dimension 1.
+
+\begin{Eg}[VC dimension of halfspaces]
+  $X=\R^{d},H=\{x\mapsto sign(w^{T}x):w\in \in\R^{d}\}$ has VC dimension $d$.
+
+  The set $C$ of size $d$ that's shattered by $H$: $C=\{e_{1},\cdots,e_{d}\}, w_{i}=f(e_{i})$.
+
+  Every set $C=\{x_{1},\cdots,x_{d+1}\}$ is not shattered by $H$: $\sum_{i=1}^{d+1}\alpha_{i}x_{i}=0$. $I=\{i:\alpha_{i}>0\}, J=\{j:\alpha_{j}<0\}$. WLOG $I\neq \varnothing$. $\sum_{i\in I} \alpha_{i}x_{i}=\sum_{j\in J}\alpha_{j}x_{j}$. Take $h_{C}(x_{i}=1)\quad \forall i\in I, h(x_{j})=-1\quad \forall j\in J$, then $\sum_{i\in I}\alpha_{i}=\sum_{j\in J}\alpha_{j}$, a contradiction!
+\end{Eg}
+  \begin{Thm}[The Fundamental Theorem of Statistical Learning]
+    Let $H$ be a hypothesis of binary classifiers and $d=VCDim(H)$, then $\exists C_{1},C_{2}\st$ the sample complexity of PAC learning $H$ is
+    \[C_{1}\frac{d+\log(1/\delta)}{\varepsilon}\leq m_{H}(\varepsilon,\delta)\leq C_{2}\frac{d\log(1/\varepsilon)+\log(1/\delta)}{\varepsilon}\]
+  \end{Thm}
+
+\begin{Cor}
+  $H$ is PAC learnable if and only if it has finite VC dimension.
+\end{Cor}
+
+\begin{comment}
+\begin{proof}
+  \textbf{lower bound}
+
+  \textbf{upper bound:}
+  \begin{enumerate}
+  \item \textbf{step 1: the two samples trick}
+
+    Claim: $P_{s\sim D^{m}}[\exists h\in H_{B}:L_{S}=0]\leq 2P_{S,T\sim D^{m}}[\exists h\in H:L_{S}(h)=0, L_{T}(h)\geq\frac{\varepsilon}{2}]$
+  \item 
+  \end{enumerate}
+\end{proof}
+\end{comment}
+
+\section{Solving ERM for halfsapces}
+Given $S=\{(\bm x_{i},y_{i})\}$, find $\bm w\st sign(\bm w^{T}\bm x_{i})y_{i}=1$.
+
+Here we recast it into a linear program (as is usually done in linear optimization):
+
+\[\text{Find}\bm w\quad\st \forall i\in[m],y_{i}\bm{w}^{T}\bm{x}_{i}>0\]
+
+This can be solved efficiently using standaed methods. Nevertheless, we wish to find a more efficient algorithm, which is:
+
+\textbf{Perceptron}: Initialize $\bm w=\bm 0$. While $\exists i\in [m],y_{i}\bm w^{T}\bm x_{i}\leq 0$, do $\bm w=\bm w+y_{i}\bm x_{i}$ 
+
+(perception: an artificial network which is intended to copy the brain's ability to recognize things and see the difference between things.)
+
+\begin{Thm}
+  Let $\{(\bm x_{i},y_{i})\}_{i=1}^{m}$ be the examples $\st\exists \bm w^{*}\in\R^{d}$
+  \[\forall i\in [m],y_{i}\bm{x}_{i}^{T}\bm w^{*}\geq 1\]
+  then the perceptron makes at most $\nm{\bm w^{*}}\max_{i}\nm{\bm x_{i}}^{2}$ updates before it returns the ERM halfspace.
+\end{Thm}
+
+In practice, $\nm{\bm{w}^{*}}$ wouldn't get too large, so it's an efficient algorithm.
+
+\begin{proof}
+Observe that $\frac{y_{i}\bm w^{*T}\bm x_{i}}{\bm w^{*}}\geq \frac{1}{\bm{w}}$, denote it as the margin. 
+
+  At iteration $t$, $(x_{i_{t}},y_{i_{t}})$ updates it to $\bm w^{}{(t)},R=\max_{i}\nm{x_{i}}$, then
+  \begin{enumerate}
+  \item $\dual{\bm w^{*},\bm w^{(t+1)}}\geq t$.
+
+    This is because $\dual{\bm{w}^{*},\bm w^{(t+1)}}$ increases by at least 1 at each update:
+    \[\left\langle\boldsymbol{w}^{*}, \boldsymbol{w}^{(t+1)}\right\rangle=\left\langle\boldsymbol{w}^{*}, \boldsymbol{w}^{(t)}+y_{i_{t}} \boldsymbol{x}_{i_{t}}\right\rangle=\left\langle\boldsymbol{w}^{*}, \boldsymbol{w}^{(t)}\right\rangle+\left\langle\boldsymbol{w}^{*}, y_{i_{t}} \boldsymbol{x}_{i_{t}}\right\rangle \geq\left\langle\boldsymbol{w}^{*}, \boldsymbol{w}^{(t)}\right\rangle+1\]
+\item $\nm{w^{(t+1)}}^{2}\leq R^{2}t$
+
+  This is because $\nm{\bm w^{(t+1)}}^{2}$ increases by at most $R^{2}$ at each iteration:
+
+  \[\begin{aligned}
+\left\|\boldsymbol{w}^{(t+1)}\right\|^{2}=\left\|\boldsymbol{w}^{(t)}+y_{i_{t}} \boldsymbol{x}_{i_{t}}\right\|^{2} &=\left\|\boldsymbol{w}^{(t)}\right\|^{2}+\left\|\boldsymbol{x}_{i_{t}}\right\|^{2}+2 y_{i_{t}}\left\langle\boldsymbol{w}^{(t)}, \boldsymbol{x}_{i_{t}}\right\rangle \\
+& \leq \| \boldsymbol{w}^{(t) \|^{2}}+R^{2}
+\end{aligned}\]
+  \end{enumerate}
+  Solve $t\leq\nm{\bm w^{*}}\nm{\bm w^{(t+1)}}\leq\nm{\bm w^{*}}R\sqrt{t}$ and we get the desired bound.
+\end{proof}
+
+\chapter{Concentration Inequalities}
+Mean estimation: from i.d. $\{x_{i}\}\sim D$, how to estimate $\mu=E(D)$? Naturally, $\hat\mu=\frac{1}{n}\sum x_{i}$. Then how's the confidence interval?
+
+In case $D$ is Gaussian ($E[X]=\mu, Var(X)=1$),
+\[P[\hat\mu>\mu+\varepsilon]\leq \exp(-\Omega(\varepsilon^{2}n))\]
+
+Concerning central limit theorem, can we attain a similar bound for general distribution supported on $[-1,1]$?
+
+\section{Berry-Esseen Theorem and naive tail bounds}
+
+\begin{Thm}[Berry-Esseen, quantitative CLT]
+  $\{X_{i}\}$ are i.i.d \rv. $E[X_{i}]=0,E[X_{i}^{2}]=\sigma^{2},E[|X_{i}|^{3}]<\rho, Y=\frac{1}{n}\sum X_{i}, F_{n}$ the c.d.f. of $\frac{Y_{n}\sqrt{n}}{\sigma}$, then
+  \[|F_{n}(x)-\Phi(x)|\leq\frac{C\rho}{\sigma^{3}\sqrt{n}}\]
+\end{Thm}
+
+Compared to the bound of Gaussian, this is a really weak tail bound, esbecially at places far away from the mean.
+
+\begin{Thm}[Markov Inequality]
+  $\forall t\geq 1$\[P[X\geq t\cdot E[X]]\leq \frac{1}{t}\]
+\end{Thm}
+\begin{proof}
+  \[E[X]=P(X\geq a)E[X|X\geq a]+P(X\leq a)E[X|X\leq a]\geq P[X>a]E[X|X\geq a]\]
+  Take $a=E[X]t$
+\end{proof}
+
+\begin{Thm}[Chebyshev]
+  $E[X]=\mu,Var[X]=\sigma^{2}\Rightarrow$ (only assume pair-wise independent)
+  \[P[|X-\mu|\geq t\cdot\sigma]\leq \frac{1}{t^{2}}\]
+\end{Thm}
+\begin{proof}
+  Apply Markov inequality to $Y=(X-\mu)^{2}$
+\end{proof}
+
+Now that we've tried 1st, 2nd moment, what about 4-th moment ?
+
+$E[\hat\mu^{4}]=\frac{1}{n^{4}}E(\sum x_{i})^{4}=\frac{1}{n^{4}}(n+3n(n-1))\leq \frac{3}{n^{2}}$, then $P[|\hat\mu|^{4}\geq \varepsilon^{4}]\leq \frac{E[\hat \mu^{4}]}{\varepsilon^{4}}$
+
+We do wish to use higher moment, but that's too complicated. So instead we use Chernoff method (Exponential Moment)
+
+\section{Chernoff method}
+Idea: use $E[\exp(\lambda\hat\mu)]\Rightarrow P[\hat \mu\geq \epsilon]\leq \frac{E[\exp(\lambda\hat\mu)]}{\exp{\lambda\epsilon}}$, then optimize $\lambda$
+
+By optimizing $\lambda$, we optimize the weight in
+\[\exp(\lambda\hat u)=\sum_{i=0}^{\infty}{\frac{\lambda^{i}}{i!}\mu^{i}}\]
+
+With complete i.i.d. assumption, $E(\exp(\lambda\hat\mu))=\prod_{i}E[\exp(\frac{\lambda}{n}x_{i})]$.
+%In the toy example, $E[\exp(\frac{\lambda}{n}x_{i})]\leq \exp(\frac{\lambda^{2}}{2n^{2}})\Rightarrow P(\hat\mu\geq\epsilon)\leq \exp(\lambda^{2}/2n-\lambda\varepsilon)$
+
+\begin{Thm}[Chernoff bound]
+  Let $\{X_{i}\}$ be i.d. Bernoulli r.v. ,$E[X_{i}]=p_{i},X=\sum_{i}X_{i}, \mu=E[X]$, then $\forall \delta>0$
+  \[P[X\geq (1+\delta)\mu]\leq [\frac{e^{\delta}}{(1+\delta)^{1+\delta}}]^{\mu}\]
+  \[P[X\geq (1-\delta)\mu]\leq [\frac{e^{-\delta}}{(1-\delta)^{1-\delta}}]^{\mu}\]
+\end{Thm}
+
+\begin{proof}
+  Here we prove upper tail.
+  
+  $P[X\geq(1+\delta)\mu]\leq \frac{E[\exp(\lambda X)]}{\exp(\lambda(1+\delta)\mu)}$. $E[\exp(\lambda X_{i})]=1+p_{i}(e^{\lambda}-1)\leq\exp(p_{i}(e^{\lambda}-1))\Rightarrow E[\exp(\lambda X)]\leq \exp(\mu(e^{\lambda}-1))$
+
+  Set $\lambda=\log(1+\delta)$ and we get the desired estimation.
+
+  The proof of lower tail is similar. 
+\end{proof}
+
+\begin{Cor}
+  When $\delta\leq 1$, $P(X\geq (1+\delta)\mu)\leq \exp(-\frac{delta^{2}\mu}{3})$, $P(X\leq (1-\delta)\mu)\leq \exp(-\frac{\delta^{2}\mu}{2})$
+
+  When $\delta>1, P(X\geq (1+\delta)\mu)\leq \exp(-\frac{\delta^{2}\mu}{2+\delta})$.
+\end{Cor}
+
+\begin{Thm}
+  For i.d. r.v. for $X_{i}\in[0,1]$, $E[X_{i}]=p_{i}, X=\sum_{i=1}^{n} X_{i},\mu=E[X]$, then
+  \[P[X\geq (1+\delta)\mu]\leq [\frac{e^{\delta}}{(1+\delta)^{(1+\delta)}}]^{\mu}\]
+  \[P[X\leq (1-\delta)\mu]\leq[\frac{e^{-\delta}}{(1-\delta)^{1-\delta}}]^{\mu}\]
+\end{Thm}
+
+The simpler case is a worst case since it maximizes the variance.
+
+\begin{proof}
+  It suffices to show  that $E[\exp(\lambda X_{i})]\leq 1+p_{i}(e^{\lambda}-1)$ and repeat the proof for the simpler case. Observe the convexity of $\exp(\lambda X_{i})$, we have $\exp(\lambda X_{i})\leq 1+[\exp(\lambda)-1]X_{i}$. Take expectations on both sides and we're done.
+\end{proof}
+
+\section{sub-Gaussian variables and Hoeffding's inequality}
+%We only need to upper bound $E[\exp(\lambda X_{i})]$.
+\begin{Def}
+  r.v. $X$ is said to be sub-Gaussian with variance proxy $\sigma^{2}$ if $E[X]=0$, $E[\exp(\lambda X)]\leq \exp(\frac{\sigma^{2}\lambda^{2}}{2})\quad \forall\lambda\in\R$
+\end{Def}
+
+\begin{Lemma}
+  Gaussian r.v. are sub-Gaussian.
+\end{Lemma}
+
+\begin{Lemma}
+  If $X$ is almost bounded by $[a,b]$, then $X-E[X]$ is sub-Gaussian with variance proxy $\frac{(b-a)^{2}}{4}$
+\end{Lemma}
+
+As long as the tail is not too large, a \rv is likely to be sub-Gaussian.
+
+Exponential variables are not sub-Gaussion, howerver. They corresbond to sub-exponential.
+
+\begin{Lemma}
+  $X,Y$ are sub-Gaussian with variance proxy$\sigma_{1}^{2},\sigma_{2}^{2}\Rightarrow X+Y$ is sub-Gaussian with variance proxy$\sigma_{1}^{2}+\sigma_{2}^{2}$
+\end{Lemma}
+
+\begin{Lemma}
+  $X$ is \rv with proxy $\sigma^{2}\Rightarrow\forall\varepsilon>0,$
+  \[P(X\geq \epsilon)\leq\exp(-\frac{\varepsilon^{2}}{2\sigma^{2}})\]
+\end{Lemma}
+\begin{proof}
+  For $\lambda,\varepsilon>0$, by Chebyshev inequality:
+  \[P[X\geq\varepsilon]\leq\frac{E[\exp(\lambda X)]}{\exp(\lambda\varepsilon)}\leq\exp(\frac{\lambda^{2}\varepsilon^{2}}{2}-\lambda\varepsilon)\]
+\end{proof}
+
+
+
+\begin{Thm}[Hoeffding]
+  $\{X_{i}\}$ are i.d. \rv with $X_{i}$ bounded by $[a_{i},b_{i}]$, then
+  \[P(X-E[X]\geq t )\leq \exp(-\frac{2t^{2}}{\sum_{i}(b_{i}-a_{i})^{2}})\]
+\end{Thm}
+
+\begin{proof}
+  $\forall i, (X_{i}-E[X_{i}])$ is sub-Gaussian with variance proxy $\frac{(b_{i}-a_{i})^{2}}{4}$, so $(X-E[X])$ is sub-Gaussian with variance proxy $\sum_{i}\frac{(b_{i}-a_{i})^{2}}{4}$. So by previous lemma $P[X-E[X]\geq t]\leq\exp(-\frac{t^{2}}{2\sum_{i}(b_{i}-a_{i})^{2}/4})$
+\end{proof}
+
+
+
+
+In case of Berboulli distributionn $X_{i}\sim B(1,p)$, Hoeffding bound gives $P(\bar X\geq E\bar X+\varepsilon)\leq \exp(-2n\varepsilon^{2})$, while Chernoff bound ($\delta=\frac{\varepsilon}{p}<1$) gives $P(\bar X\geq E\bar X+\varepsilon)\leq \exp(-\frac{n\varepsilon^{2}}{3p})$. The latter is better considering $p\sim\varepsilon$.
+
+Meanwhile, in case $\delta>1$, Chernoff bound gives $P(\bar X\geq E\bar X+\varepsilon)\leq \exp(-\frac{n\varepsilon^{2}}{2p+\varepsilon})\leq (-\frac{n\varepsilon}{3})$, which is similar to previous estimation. (Nevertheless, stronger Chernoff bounds shows connection with $\log p$)
+
+\section{Bernstein inequality}
+\begin{Thm}[Bernstein inequality]
+  $\{X_{i}\}$ are i.d. \rv with 0 means. Suppose $|X_{i}|\leq M$, then $\forall t>0$
+  \[P[\sum_{i}X\geq t]\leq \exp(-\frac{t^{2}/2}{\sum_{i}EX_{i}^{2}+Mt/3})\]
+\end{Thm}
+
+Still in the Bernoulli distribution case, we have the estimation with Bernoulli inequality $P(\bar X\geq E\bar X+\varepsilon)\leq\exp(-\frac{n\varepsilon^{2}}{2[p(1-p)+\varepsilon]})$. Still, Chernoff is a better bound.
+
+\chapter{General Learning Model and Bias Complexity Tradeoff}
+
+\section{The general PAC model}
+The assumption that there's a $f\in H$ that generates all the lables is too strong.
+
+Define $D$ to be a distribution over $X\times Y$
+
+Loss:= $L_{D}(h):=P_{(x,y)\sim D}[h(x)\neq y]:=D(\{(x,y):h(x)\neq y\})$
+
+Goal: to be approximately correct, $L_{D}(A(S))\leq \min_{h\in H}\{L_{D}(h)\}+\varepsilon$
+
+Thus we get \textbf{Agnostic PAC Learning}.
+
+Now we strech the scope of learning problems: $|Y|>2$ (multiclass categorization), even $Y=\R$(regression)
+
+\paragraph{Loss function}
+$Z=X\times Y. l:H\times Z\to \R_{+}$. E.g. $l(h,(x,y))=|h(x)-y|, l(h,(x,y))=1_{\{h(x)=y\}}$
+
+Given $h\in H, (x,y)\in Z$, a loss function is used for estimating how good is $h$ on $(x,y)$.
+
+So we wish to (probably approximately) solve:
+\[\min_{h\in H}L_{D}(h)\quad L_{D}(h):=E_{(x,y)\sim D}[l(h,(x,y))]\]
+
+\begin{Def}[Agnostic PAC learnable]
+  A hypothesis class is \textbf{agnostic PAC learnable} w.r.t. $Z=X\times Y$ and a loss function $l:H\times Z\to \R_{+}$, if $\exists m_{H}(0,1)^{2}\to\mathbb{N}$ and a learning algorithm $A\st \forall \varepsilon,\delta>0,\forall m\geq m_{H}(\varepsilon,\delta)$ and distribution $D$ over $Z$, we have
+  \[P_{S\sim D^{m}}[L_{D}(A(S))\leq\min_{h\in H}L_{D}(h)+\varepsilon]\geq 1-\delta\]
+\end{Def}
+
+\section{Learning via uniform convergence}
+\begin{Def}[$\varepsilon$-representative sample]
+  A training set $S$ is $\epsilon$-representative if
+  \[\forall h\in H,|L_{S}(h)-L_{D}(h)|\leq \varepsilon\]
+\end{Def}
+
+This is the converse of misleading sample.
+
+\begin{Lemma}
+  Assume $S$ is $\varepsilon/2$ representative, then $h_{S}=ERM_{H}(S)=\mathrm{argmin}_{h\in H}L_{S}(h)$
+  \[L_{D}(h_{S})\leq \min_{h\in H}\{L_{D}(h)\}+\varepsilon\]
+\end{Lemma}
+
+\begin{proof}
+  $\forall h\in H$
+  \[L_{\mathcal{D}}\left(h_{S}\right) \leq L_{S}\left(h_{S}\right)+\frac{\epsilon}{2} \leq L_{S}(h)+\frac{\epsilon}{2} \leq L_{\mathcal{D}}(h)+\frac{\epsilon}{2}+\frac{\epsilon}{2}=L_{\mathcal{D}}(h)+\epsilon\]
+\end{proof}
+
+\begin{Def}[Uniform Convergence]
+  $H$ has uniform convergence property of $\exists m_{H}^{UC}:(0,1)\to\mathbb{N}\st\forall \varepsilon,\delta\in(0,1)$ and every distribution $D$, it holds that 
+  \[P_{S\sim D^{m}}[S is \varepsilon-representative]\geq 1-\delta\]
+\end{Def}
+
+\begin{Cor}
+  If $H$ has the uniform convergence property with $m_{H}^{UC}$, then $H$ is agnostically PAC learnable with sample complexity $m_{H}(\varepsilon,\delta)\leq m_{H}^{UC}(\frac{\varepsilon}{2},\delta)$. In that case, $ERM_{H}(S)$ paradigm is successful agnostic PAC learner for $H$.
+\end{Cor}
+
+%\paragraph{finite class are agnostiv learnable}
+\begin{Thm}[finite classes are agnostic learnable]
+  For finite $H$ and loss function in $(0,1)$, then $H$ is PAC learnable with sample commplexity
+  \[m_{H}\leq [2\log(2|H|/\delta)/\varepsilon^{2}]\]
+\end{Thm}
+
+Recall, in PAC learning the bound$\sim\frac{1}{varepsilon}$
+
+\begin{Thm}[infinite classes with finite VC dimension are agnostic learnable]
+  Assume $VCDim(H)\leq d$ (0-1 loss), then
+  \[m_{H}^{UC}\leq C_{3}\frac{d\log(1/\epsilon\delta)}{(\epsilon\delta)^{2}}\]
+\end{Thm}
+
+Furthermore, the bound can be improved to $C_{3}'\frac{d\log(1/\varepsilon)+\log(1/\delta)}{\varepsilon^{2}}$
+
+% Lower bound
+
+\section{Linear regression and least squre}
+Consider $X=\R^{d},Y=\R, H=\{x\mapsto \dual{w,x}\}$. Use square loss: $l(h(x,y))=(h(x)-y)^{2}$. So the ERM problem turns to:
+\[ \min\frac{1}{m}\sum_{i=1}^{m} (\dual{w,x_{i}}-y_{i})^{2}\]
+Written in matrix form:
+
+\[\min_{w\in\R^{d}}\nm{X^{T}w-y}\]
+
+$x$ minimizes $f(x)$ if $\nabla f(x)=0$
+
+Jacobian: $J_{x}(f): j_{ij}=\pp{f_{i}}{x_{j}}$. $m=1\Rightarrow J_{x}(f)=\nabla f(x)^{T}$
+
+So $g(w)=X^{T}w-y,f(v)=\frac{1}{2}\nm{v}^{2}$, we need to solve $\min f(g(w))$. $J_{w}(f\circ g)=(X^{T}w-y)^{T}X^{T}=0\Rightarrow w=(XX^{T})^{-1}Xy$. (in case not invertable, we use pseudo inverse.)
+
+$C=\{X^{T}w\}$ is a linear subspace, forming the range of $X^{T}$, so $\hat y=X^{T}w^{*}$ is the projection of $y$ on $C$, which means $(X^{T}w)^{T}(X^{T}w-y)=0$
+
+(In practice, there would be some normalization and non-linearaity beforehand)
+
+\paragraph{polynomial fitting}
+With one feature only, we want something non-linear.
+
+Goal: given data set $S$, find ERM w.r.t. $P_{n}$, the class of polynomials. Define $\psi(x)=(1,x,\cdots x^{n}), p(x)=\dual{a,\psi(x)}$, thus we solve least square w.r.t $(\psi(x_{i}),y_{i})$
+
+Increasing the number of features would greatly increase computation complexity, which can be solved by support vector machine.
+
+\section{Bias Complexity tradeoff}
+$h_{s}=ERM_{H}(S)$, then $L_{D}(h_{s})=\varepsilon_{app}+\varepsilon_{est}. \varepsilon_{app}=\min_{h\in H}L_{D}(h)$
+
+%relationship between H and \varepsilon
+
+How do we choose $H$?
+
+To estimiate newly learned $h$, take fresh iid examples $V=\{(x_{i}',y_{i}')\}$. With this, output $L_{v}(h)$ as an estimator of $L_{D}(h)$. Using Hoeffding's inequality, if the range is in $[0,1]$, then
+\[P[|L_{V}(h)-L_{D}(h)|\leq\sqrt{\frac{\log(2/\delta)}{2m_{V}}}]\geq 1-\delta\]
+which means: be probability $1-\delta$, when selecting the best of $r$ models, the best $h^{*}$
+\[ L_{D}(h^{*})\leq \min L_{D}(h)+\sqrt{\frac{\log(2/\delta)}{2m_{V}}}\]
+
+The reason that we need fresh samples is that $L_{V}(h_{s})=\frac{1}{m}\sum_{i=1}^{m}(h(x_{i})-y_{i})^{2}$. Denote $h_{S}=(h_{S}(x_{i})-y_{i})^{2}$. In case of non-fresh samples, $E_{(x_{i},y_{i})\sim S}(h_{S}(x_{i})-y_{i})^{2}\neq E_{(x_{i},y_{i})\sim D}(h_{S}(x_{i})-y_{i})^{2}$: it's correlated (especially in case of over-fitting). 
+
+In practice we split the set into 3 parts: training set, validation set, test set.
+
+In case of scarce data, we use $k$-fold cross validation for model selection:
+
+\chapter{Boosting}
+\begin{Def}[weak learnable]
+  (do not assume agnostic) $H$ is $(\epsilon,\delta)$ weak-learnable if $\exists $ algorithm $A$,training set size $m\st\forall D,f\in H$, for some $\varepsilon,\delta$
+  \[P_{S\sim D^{m}}[L_{D,f}(A(S))\leq \varepsilon]\geq 1-\delta\]
+\end{Def}
+
+Every class is $(1/2,0)$-learnable with random guess.
+
+\begin{Eg}
+  $h_{\theta_{1},\theta_{2}}=1-2\cdot \bm{1}_{[\theta_{1},\theta_{2}]}$. Let $B=\{x\mapsto sign(x-\theta)\cdot b:\theta\in\R, b\in\{\pm 1\}\}$ be thr class of decision stumps, then $ERM_{N}$ is $(\frac{2}{5},\frac{1}{2})$weak learnable
+\end{Eg}
+\begin{proof}
+  There's always a decision stump with $L_{D,f}(h)\leq \frac{1}{3}$. Apply its VC bound.
+\end{proof}
+
+\section{Boosting the confidence}
+Suppose $A$ is $(\varepsilon_{0},\delta_{0})$ weak learnable that requires $m_{0}$ samples. $\forall\delta,\varepsilon:$
+\begin{enumerate}
+\item Apply $A$ on $k=[\frac{\log(2/\delta)}{\log(1/\delta_{0})}]$ iid sets of $m_{0}$ examples to obtain $h_{1},\cdots,h_{k}$
+\item Take additional validation samples of size $|V|\geq \frac{2\log(4k/\delta)}{\varepsilon^{2}}$ and output $\hat h\in\mathrm{argmin}_{h_{i}}L_{V}(h_{i})$
+\end{enumerate}
+\textbf{Claim:} with probability $\geq 1-\delta$, we have $L_{D}(\hat h)\leq \varepsilon_{0}+\varepsilon$
+\begin{proof}
+  The validation procedure guarantees that $P[L_{D}(\hat h)<\min_{i}L_{D}(h_{i})+{\varepsilon}]\leq\frac{\delta}{2}$, $P[\min_{i}L_{D}(h_{i})>\varepsilon_{0}]=\prod P[L_{D}(h_{i})>\varepsilon_{0}]\leq \delta_{0}^{k}\leq\frac{\delta}{2}$
+\end{proof}
+
+\begin{Eg}[Boosting a learner that suceeds on expectation]
+  Suppose $A$ is a learner $\st E_{s\sim D^{m}}[L_{D}(A(S))]\leq \min_{h\in H}+\varepsilon$. Denote $\theta=L_{D}(A(S))-\min_{h\in H} L_{D}(h)\geq 0$, then $E_{s\sim D^{m}}[\theta]\leq \varepsilon$. So by Markov's inequality, $P[\theta\geq 2\varepsilon]\leq \frac{1}{2}$, which means $A$ is an $(2\varepsilon,\frac{1}{2})$ learner.
+\end{Eg}
+
+\section{Boosting the accuracy}
+
+\paragraph{Adaptive Boosting}
+Ada boost calls the weak learner on various distributions on S.
+
+Input: $S=\{(x_{i},y_{i})\}_{i=1}^{m}$, learner WL, number of rounds $T$.
+\begin{enumerate}
+\item Initialize $D^{(1)}=(\frac{1}{m},\cdots,\frac{1}{m})$
+\item For $t=1,2,\cdots,T$
+  \begin{enumerate}
+  \item $h_{t}=WL(D^{(t)},S)$
+  \item Compute $\varepsilon_{t}=\sum D_{i}^{(t)}\bm{1}_{y_{i}\neq h_{t}(x_{i})}<\frac{1}{2}$
+  \item $w_{t}=\frac{1}{2}\log(\frac{1}{\varepsilon_{t}}-1)\st \varepsilon_{t}\to \sqrt{\varepsilon_{t}(1-\varepsilon_{t})},1-\varepsilon_{t}\to \sqrt{(1-\varepsilon_{t})\varepsilon_{t}}$
+  \item $D_{i}^{(t+1)}=D_{i}^{(t)}\frac{\exp(-w_{t}y_{i}h_{t}(x_{i}))}{Z_{t}}$, where $Z_{t}=\sum D_{i}^{(t)}\exp(-w_{t}y_{i}h_{t}(x_{i}))=2\sqrt{\varepsilon_{t}(1-\varepsilon_{t})}<1$
+  \end{enumerate}
+  
+\item Output $h_{S}(x)=\mathrm{sign}(\sum_{t=1}^{T}w_{t}h_{t}(x))$
+\end{enumerate}
+
+The new hypothesis is not in the original hypothesis class.
+
+\begin{Thm}
+  Let $\gamma_{t}=\frac{1}{2}-\varepsilon_{t}>0$, then after $T$ iterations
+  \[L_{S}(h_{S})=\frac{1}{m}\sum_{i=1}^{m}1[h_{S}(x_{i})\neq y_{i}]\leq \exp(-2\sum_{t=1}^{T}\gamma_{t}^{2})\]
+\end{Thm}
+
+\begin{proof}
+  |mis-classified examples|$\leq \frac{1}{\frac{1}{n}\exp(2-\gamma^{2}T)}$
+\end{proof}
+
+\begin{Cor}
+  If WL is $(\frac 1 2-\gamma,\delta)$ weak learner, then with probability $1-\delta T$
+  \[L_{S}(h_{S})\leq \exp(-2\gamma^{2}T)\]
+\end{Cor}
+
+\paragraph{Connection with Chernoff/Hoeffding}
+$X_{i}$ are Bernoulli r.v. with $E[X_{i}]=\frac 1 2+\gamma$. Chernoff gives $P(\sum X_{i}\leq \frac n 2)\leq \exp(-2n\gamma^{2})$
+
+$X=\{\pm 1\}^{n},D_{x}^{(1)}=\prod_{i=1}^{n}[(\frac{1}{2}+\gamma)^{\frac{1+x_{i}}{2}}(\frac 1 2-\gamma)^{1-x_{i}/2}]$. The true label is $y(x)=+1$. Regard it as a $(\frac{1}{2}-\gamma,0)$ weak learner (since you see everything, it never fails).
+
+Claim: $\varepsilon_{t}=\sum_{x\in X}D_{x}^{(t)}\bm{1}_{h_{t}(x)\neq +1}=\frac{1}{2}-\gamma$. Therefore, $w_{t}\equiv \frac{1}{2}\log(\frac{1/2+\gamma}{1/2-\gamma})$ (not related to $t$) $\Rightarrow h_{S}(x)=\mathrm{sign}(\sum x_{i})\Rightarrow P(\sum X_{i}\leq\frac{n}{2})=P_{x\sim D^{(1)}}[h_{S}(x)\neq 1]\leq \exp(-2\gamma^{2}\cdot n)$
+
+\section{Adaboost on halfspaces}
+Denote $B$ the set of all hypothesis the WL may return, their composition forms a hypothesis class
+\[L(B,T)=\{x\mapsto \mathrm{sign}(\sum_{t=1}^{T}w_{t}h_{t}(x)):\bm{w}\in\R^{t},h_{t}\in B\}\]
+
+WLOG $B=\{g_{1},\cdots, g_{d}\}\quad d\leq 2^{m}$. Denote $\psi(x)=(g_{1}(x),\cdots,g_{d}(x))$, then
+\[L(B,T)=\{x\mapsto \mathrm{sign}(\dual{u,\psi(x)}):u\in\R^{d}, \nm{u}_{0}\leq T \}\]
+where $\nm{u}_{0}=|\{i: u_{i}\neq 0\}|$
+
+\section{Adaboost and the bias--complexity tradeoff}
+Since $L(B,T)$ grows with $T$, approximation error decreases with $T$ while estimation error grows with $T$.
+
+Claim: $VCDim(L(B,T))\leq \tilde{O}(T\cdot VCDim(B))$. $\tilde{O}:$ up to poly-log factor.
+
+\begin{proof}
+  $d=VCDim(B), C=\{x_{1},\cdots,x_{q}\}$ can be shattered by $L(B,T)$. Now we should upper-bound $q$. The bound comes from $2^{q}\leq q^{(d+1)T}$.
+
+  Since $C$ is shattered, $2^{q}=|\{h(x_{1}),\cdots,h(x_{q}):h\in L(B,T)\}|=|\{(\phi(h_{1}(x_{1}),\cdots,\phi(h_{T}(x_{1})),\cdots,\phi(h_{1}(x_{q}),\cdots,h_{T}(x_{q}))))\}|$, where $h=\mathrm{sign}(\sum_{t=1}^{T}w_{t}h_{t}(x))=\phi(h_{1}(x),\cdots, h_{T}(x)),\phi\in\Phi=\{\phi(\bm{y})=\mathrm{sign}(\bm{w}^{T}\bm{y})\}$. By Sauer's lemma, there're at most $(eq/d)^{d}$ kind of values of the first,second ... last row. Now that there're $q$ data points and a $T$ dimensional halfspace has VC dimension $T$, by Sauer's lemma again, $2^{q}\leq(eq/T)^{T}\prod_{i=1}^{q}(eq/d)^{d}$. Solve the inequality and we get the estimate.
+\end{proof}
+
+There're examples where the bound is tight while there're examples where the bound is very loose.
+
+\begin{Cor}
+  When $T=\frac{\log m}{2\gamma^{2}}$  and $m\geq \tilde{\Omega}(\frac{VCDim(B)\log(1/\delta)}{\gamma^{2}\varepsilon})$, then with probability at least $1-\delta$, the error (in the realizable case) satisfies:
+  \[L_{D,f}(h_{S})\leq \varepsilon\]
+\end{Cor}
+
+
+\chapter{Non-uniform learning}
+
+\section{Minimum Description Length}
+Let $\H$ be a countable hypothesis class , $w:\H\rightarrow \R_+\st \sum_{h\in \H}w(h)\leq 1$, then $w$ reflects prior knowledge on how important $h$ is. With this, we try to find the minimum description length.
+
+\begin{Eg}
+  $\H$ is the class of all python programs. WLOG it's prefix free. $|h|=d(h)$, its length, then $w=2^{-|h|}$ is a desired weight.
+\end{Eg}
+
+\begin{Thm}
+  Let $w:\H\to\R_+$ be a weight. Then with probability at least $1-\delta$, over $S\sim D^{m}$, we have
+  \[\forall h\in \H, L_{\D}(h)\leq L_{S}(h)+\sqrt{\frac{-\log(w(h))+\log(2/\delta)}{2m}}\]
+\end{Thm}
+
+This looks quite similar to the VC bound:
+\begin{equation}
+\forall h\in \H, L_{\D} \left( h \right)\leq L_s \left( h \right)+C \sqrt{\frac{VCDim \left( H \right)+\log \left( w/\delta \right)}{2m}}
+\end{equation}
+However, this is a non-uniform bound.
+
+\begin{proof}
+  $\forall h\in \H,\delta\in\R$, define $\delta_{h}=w(h)\cdot \delta$. By Hoeffding's inequality, \[P_{S\sim \D^m}[L_{\D}(h)>L_{S}(h)+\sqrt{\frac{\log(2/\delta_{h})}{2m}}]<\delta_{h}\]
+  Apply union bound:
+\begin{align*}
+  &P_{S\sim \D^{m}}\left[ \exists h\in H, L_{\D} \left( h \right)> L_S \left( h \right)+\sqrt{\frac{\log \left( 2/\delta_h \right)}{2m}} \right]\\
+  \leq &\sum_{h\in\H}P \left[ L_D \left( h \right)> L_S \left( h \right)+\sqrt{\frac{\log 2/\delta_h}{2m}} \right]\\
+  \leq &\sum_{h\in\H}\delta_h\leq \delta
+\end{align*}
+\end{proof}
+
+Minimizing MDL bound leads to the MDL rule:
+\[MDL(S)\in \mathrm{argmin}\{L_{S}(h)+\sqrt{\frac{-\log(w(h))+\log(2/\delta)}{2m}}\}\]
+
+\begin{Thm}
+  $\forall h^{*}\in H$ (especially the optimal one), with probability greater than $1-\delta$ over $S\sim \D^m$
+  \[L_{\D}(MDL(S))\leq L_{\D}(h^{*})+2\sqrt{\frac{-\log(w(h^{*}))+\log(2/\delta)}{2m}}\]
+\end{Thm}
+
+\begin{proof}
+  Firstly, by MDL rule, we have
+  \[L_{S}(MDL(S))+\sqrt{\frac{-\log(w(MDL(S))))+\log(2/\delta)}{2m}}\leq L_{S}(h^{*})+\frac{-\log(w(h*))+\log(2/\delta)}{2m}\]
+  Secondly, by MDL bound, with probability $\geq 1-\delta$
+  \[L_{D}(MDL(S))\leq L_{S}(MDL(S))+\sqrt{\frac{-\log(w(MDL(S))))+\log(2/\delta)}{2m}}\]
+\begin{equation}
+L_S(h^{*})\leq L_{\D}(h^{*})+\sqrt{\frac{-\log \left( w(h^{*}) \right)+\log( 2/\delta)}{2m}}
+\end{equation}
+Combining the inequalities above and we get the desired estimation.
+\end{proof}
+
+Assume $L_{D}(h^{*})=0$, then $\exists m\st P_{S\sim D^{m}}[L_{D}(MDL(S))\leq\varepsilon]\geq 1-\delta$ (by solving $\varepsilon=\sqrt{\frac{-\log(w(h))+\log(2/\delta)}{2m}}$)
+
+This means MDL is a universal learner. Although $|H|$ may not be PAC learnable, it's MDL learnable: $\forall h,\exists m\st \forall \D\dots$. The answer is known before the learning. 
+
+Selecting $w$ itself is a prior knowledge.
+
+\section{Non-uniform Learnability}
+\begin{Def}[Non-uniform learnable]
+  $\H$ is non-uniformly learnable if $\exists A, m_{\H}^{NUL}:(0,1)^{2}\times \H\to \mathbf{N}\st \forall \varepsilon,\delta\in (0,1), \forall h\in\H$, as long as $m\geq m_{\H}^{NUL}(\varepsilon,\delta,h)$, then $\forall \D$
+  
+\begin{equation}
+P_{S\sim \D^m} \left[ L_{\D} \left( A \left( S \right) \right)\leq L_{\D}(h)+\varepsilon \right]\geq 1-\delta
+\end{equation}
+\end{Def}
+
+Notice that the sample complexity depends on $\varepsilon,\delta,h$ simultaneously.
+
+\begin{Cor}
+  Let $\H$ be the class of all computable functions, then $H$ is not PAC learnable, yet non-uniformly learnable with sample complexity  
+\begin{equation}
+m_{\H}^{NUL} \left( \varepsilon,\delta,h \right)\leq 2 \frac{-\log(w(h))+\log(2/\delta)}{\varepsilon^2}
+\end{equation}
+\end{Cor}
+
+Non-uniform learnability is characterized as follows:
+\begin{Thm}
+  A class $\H\subset \{X\mapsto \{0,1\}\}$ is non-uniformly learnable iff its a union of countable PAC learnable hypothesis class.
+\end{Thm}
+
+\begin{proof}
+  $\mathbf{\Rightarrow}:$ Assume that $\H$ is non-uniformly learnable using $A$ with sample complexity $m_{\H}^{NUL}$. $\forall n\in\N, \H_n=\left\{ h\in\H: m_{\H}^{NUL}\left( 10^{-2},10^{-2},h \right)\leq n \right\}\Rightarrow\H=\cup_{n\in\N}\H_n$. By definition, $\forall \D\st \exists h\in \H_n \wedge L_{\D}(h)=0$, we have 
+\begin{equation}
+P_{S\sim \D^m}\left[L_{\D}(A(S))\leq 10^{-2}  \right]\geq 1-10^{-2}
+\end{equation}
+I.e., the PAC learning sample complexity $m_{\H} \left( 10^{-2},10^{-2} \right)\leq n$. By the Fundamental Theorem of Statistical Learning, $\mathrm{VCDim}(\H_n)(10^{-2},10^{-2})<\infty$
+
+$\mathbf{\Leftarrow}$ Assume $\H=\cup_{n\in\N}\H_n, \mathrm{VCDim}(\H_n)=d_n<\infty$. Choose $w:\N\rightarrow \left[ 0,1 \right]\st \sum_nw(n)\leq 1, \delta_n=\delta\cdot w(n). \varepsilon_n=\sqrt{C \frac{d_n+\log(1/\delta_n}{m}}$ for large enough $C$.Therefore $\forall n, P_{S\sim \D^m}\left[ \exists h\in\H_n,L_{\D}(h)> L_S(h)+\varepsilon_n \right]<\delta_n$. Apply union bound, and we have $P_{S\sim \D^m}\left[ \exists n\in\N, h\in\H, L_{\D}(h)>L_S(h)+\varepsilon_n\right]\leq \delta$, which completes the proof by definition.
+\end{proof}
+
+\section{Structural Risk Minimization}
+\begin{Def}
+  $\mathrm{SRM(S)}\in \mathrm{arg}\min_{h\in\H}\left\{ L_S(h)+\min_{n:h\in\H_n}\sqrt{C \frac{d_n-\log(w(n))+\log(2/\delta)}{m}} \right\}$
+\end{Def}
+  Denote $n(h)=\mathrm{arg}\min_{h\in\H}\left\{ d_n-\log(w(n)) \right\}$, then wee shown:
+\begin{equation}
+P_{S\sim \D^m} \left[ \forall h\in\H, L_{\D}(h)\leq L_{S}(h)+\sqrt{C \frac{d_{n(h)}-\log(w(n(h)))+\log(2/\delta)}{m}} \right]\geq 1-\frac{\delta}{2}
+\end{equation}
+Thus with probability $1-\frac{\delta}{2}$ over $S\sim \D^m$, we have 
+\begin{align*}
+  L_{\D}(\mathrm{SRM}(S))&\leq L_{S}(\mathrm{SRM}(S))+\sqrt{C \frac{d_{n(SRM(S))}-\log(w(n(\mathrm{SRM}(S))))+\log(1/\delta)}{m}}\\
+  &\leq L_{S}(h)+\min_{n:h\in \H_n} \sqrt{C \frac{d_n-\log(w(n))+\log(1/\delta)}{m}}\quad\forall h\in \H
+\end{align*}
+
+Furthermore, $\forall h\in\H$, with probability $\geq 1- \frac{\delta}{2}, L_S(h)\leq L_{\D}(h)+\sqrt{C\log(1/\delta)/m}$, so by union bound: 
+\begin{Thm}
+\begin{equation}
+P_{S\sim \D^m}\left[ L_D(\mathrm{SRM}(S))\leq L_{\D}(h)+2 \sqrt{C \frac{d_{n(h)}-\log(w(n(h)))+\log(2/\delta)}{m}} \right]\geq 1-\delta
+\end{equation}
+\end{Thm}
+
+Therefore, SRM is a generic non-uniform learner with sample complexity 
+\begin{equation}
+m_{\H}^{NUL}\left( \varepsilon,\delta,h \right)\leq \min_{n:h\in \H_n}C' \frac{d_n-\log(w(n))+\log(1/\delta)}{\varepsilon^2}
+\end{equation}
+
+\section{Decision tree}
+Ask a problem at each node and present the result in its children (especially, leaves).
+
+\begin{Thm}
+  The class of decision trees over $X$ with $k$ leaves has VC dimension $k$.
+\end{Thm}
+\begin{proof}
+  By pigeon-hole.
+\end{proof}
+
+
+\begin{Eg}
+  $X=\{0,1\}^{d}$ with splitting rule $1_{[x_{i}=1]}$, then its decision tree is full so it has VCDim $2^{d}$. Now we bias to ``small trees'': a decision tree with $n$ nodes has $n+1$ blocks, each one having $\log_{2}(d+3)$ bits. Thus we minimize its size with MDL.
+\end{Eg}
+
+Nevertheless this is an NP-hard problem. Usually we use greedy algorithm like ID3: for training sets $S$ and feature subset $A\subset [d]$, define boundary conditions, and let $j=\mathrm{arg}\max_{i\in A}Gain (S,i)$. Return the left children $ID3(\{x_{j}=0\},A-\{j\})$, and right children $ID3(\{x_{j}=1\},A-\{j\})$
+
+Gain is defined emperically: define a cost function $C$, then the gain is defined by the difference between splitting and not splitting:
+\[Gain(S,i)=C(P_{S}[y=1])-\{P_{S}[x_{i}=1]C(P_{S}[y=1|x_{i}=1])+P_{S}[x_{i}=0]C(P_{S}[y=1|x_{i}=0])\}\]
+(By greedy we mean we do not consider further splitting subtree when considering the gain.)
+
+Still ID3 may return a big tree which results in an algorithm with high true error, and often we need to prune to a smaller tree. Pre-pruning limit the number of iterations while post pruning decide which node to prun according to MDL error.
+
+\paragraph{Random Forests}
+%Now that we've generated many small decision trees. 
+
+\section{Nearest Neighbor}
+Simple memorize the training set $S=\left( (x_1,y_1),\dots, (x_m,y_m) \right)$. Given new $x$, find the $k$ closest points in $S$ and return majority vote among their lables.
+
+\subsection{1-NN}
+$\mathcal{X}=\left[ 0,1 \right]^d, \mathcal{Y}=\left\{ 0,1 \right\}$. Denote $\D$ as a distribution over $\mathcal{X}\times \mathcal{Y},\eta:\R^d\to \R, \mathbf{x}\mapsto P\left[ y=1|\mathbf{x} \right]$
+
+By Bayes optimal rule, the hypothesis that minimizes $L_{\D}(h)$ over all functions is 
+\begin{equation}
+h^{*}(\mathbf{x})=\mathbf{1}\left[ \eta(\mathbf{x})> \frac{1}{2} \right]
+\end{equation}
+As prior knowledge, we know $\eta$ is $c$-Lip.
+\begin{Thm}
+  Let $h_S$ be the 1-NN rule, then 
+\begin{equation}
+E_{S\sim \D^m}\left[ L_{\D}(h_S)\right] \leq 2L_{\D}(h^{*})+2c \sqrt{d}m^{-1/(d+1)} 
+\end{equation}
+\end{Thm}
+
+\begin{Lemma}
+Denote $\pi_1(\mathbf{x})$ as the closest data point in $\left( \mathbf{x}_1,\dots, \mathbf{x}_m \right)$ to $\mathbf{x}$, then 
+\begin{equation}
+E_{S\sim \D^m}\left[ L_{\D}(h_S) \right]\leq 2L_{\D}(h^{*})+c E_{\substack{\mathbf{x}\sim \D_{\mathbf{x}}\\ \left( \mathbf{x}_1,\dots,\mathbf{x}_m \right)\sim D^m_{\mathbf{x}}}}\nm{\mathbf{x}-\pi_1(\mathbf{x})}
+\end{equation}
+\end{Lemma}
+
+\begin{Lemma}
+\begin{equation}
+E_{\substack{\mathbf{x}\sim \D_{\mathbf{x}}\\ \left( \mathbf{x}_1,\dots,\mathbf{x}_m \right)\sim D^m_{\mathbf{x}}}}\nm{\mathbf{x}-\pi_1(\mathbf{x})}\leq 2 \sqrt{d}m^{-1/(d+1)}
+\end{equation}
+\end{Lemma}
+
+
+
+\subsection{k-NN}
+\begin{Thm}
+  $E_{S\sim\D^m}\left[ L_{\D}(h_S) \right]\leq \left( 1+ \sqrt{\frac{8}{k}} \right)L_{\D}(h^{*})+\left( 6c \sqrt{d}+k \right)m^{-1/(d+1)}$
+\end{Thm}
+Even if $L_{\D}(h^{*})=0, m\geq \Omega \left( \frac{c \sqrt{d}}{\varepsilon} \right)^{d+1}$, which grows wxponentially with the dimension. This is the curse of dimensianality, which is not an artifact of the analysis:
+\begin{Thm}
+$\forall c>1,\exists \D\st \eta(\mathbf{x})$ is $c$-Lip and the Bayes error of the distribution is 0, yet for samples of size $m\leq \frac{(c+1)^d}{2}$, the true error $> \frac{1}{4}$
+\end{Thm}
+
+The sample complexity of nearest neighbor depend on $\varepsilon,\delta,h,\D$ simultaneously (in other words, it only satisfies consistency), so it may not even be non-uniform learnable.
+
+\chapter{Convexity,Optimization,Surrogates}
+
+\section{Convexity}
+\begin{Def}[convex set]
+  $C$ is convex $\Leftrightarrow\forall \mathbf{u},\mathbf{v}\in C,\alpha\in [0,1]$
+\begin{equation}
+\mathbf{\alpha}\mathbf{u}+(1-\alpha)\mathbf{v}\in C
+\end{equation}
+\end{Def}
+
+\begin{Def}[convex function]
+  \[f(\alpha\bm{u}+(1-\alpha\bm{v}))\leq \alpha f(\bm u)+(1-\alpha)f(\bm v)\]
+\end{Def}
+
+epigraph$(f)$=$\{(\bm{x},\beta): f(\bm x)\leq \beta\}$. $f$ is convex iff its epigraph is.
+\begin{Def}
+$f(\mathbf{u})$ is a local minimum at $\mathbf{u}$ if $\exists r>0\st\forall \mathbf{v}\in B(\mathbf{u},r),  f(v)\geq f(u)$
+\end{Def}
+
+\begin{Prop}[Local Minima are Global]
+  The local minimum of a convex function is its global minimum.
+\end{Prop}
+
+\begin{proof}
+  $\forall \mathbf{v},\exists \alpha\st \mathbf{u}+\alpha (\mathbf{v}-\mathbf{u})\in\partial B(\mathbf{u},r)$, so $f(\mathbf{u})\leq f(\mathbf{u}+(1-\alpha (\mathbf{v}-\mathbf{u})))\leq (1-\alpha)f(\mathbf{u})+\alpha f(\mathbf{v})\Rightarrow f(\mathbf{u})\leq f(\mathbf{v})$
+\end{proof}
+
+\begin{Prop}[Tangents Lie Below $f$]
+  If $f$ is convex and differentiable, then $\forall \mathbf{u}$
+  \[f(\mathbf{u})\geq f(\mathbf{w})+\dual{\nabla f(\mathbf{w}),\mathbf{u}-\mathbf{w}}\]
+\end{Prop}
+
+$\mathbf{v}$ is a sub-gradient of $f$ at $\mathbf{w}$ if $\forall \mathbf{u}, f(\mathbf{u})\geq f(\mathbf{w})+\dual{\mathbf{v},\mathbf{u}-\mathbf{w}}$. Denote $\partial f(\mathbf{w})$ as the set of sub-gradients of $f$ at $w$.
+\begin{Lemma}
+  $f$ is convex  $\leftrightarrow\partial f(w)\neq \varnothing$.
+\end{Lemma}
+
+$0$ is a sub-gradient ($f$ is locally flat around $w$ ) iff $w$ is a global minimizer.
+
+\begin{Lemma}
+  convex $f$ is $\rho$-Lip $\Leftrightarrow$ the norm of all its sub-gradients are lower than $\rho$.
+\end{Lemma}
+
+
+\section{Convex Optimization}
+We wish to solve for convex $C,f$
+\[\mathrm{argmin}_{\mathbf{w}\in C}f(\mathbf{w})\]
+
+Special cases: 
+\begin{enumerate}
+\item feasibility problem (tell if the solution exists): $f$ is constant
+\item unconstrained minimization :$C=\R^{d}$.
+\end{enumerate}  Both problems can reduce to one another: with feasibility we use binary search, by adding $I_{C}(w)$ we can eliminate the constraint. 
+
+Consider a feasibility problem: Find $\mathbf{w} \in C$, where $B(\bm{w^{*}},r)\subset B(\mathbf{0},R)$. Given $\mathbf{w}$,a special orcle tells is it is in $C$ or not.  If $w\not \in C$, then the oracle finds $v\st \forall w'\in C, \dual{w,v}<\dual{w',v}$ (i.e. contruct an hyper-subspace to tell the direction where $C$ is in.) With such an oracle, we can solve the optimization problem with Ellipsoid algorithm within $O(d(2d+2)\log(\frac{R}{r}))$
+
+But the problem is: how to construct such an oracle?
+
+\paragraph{Implementing the oracle using sub-gradients}
+$C=\bigcap_{i=1}^{n}\{\mathbf{w}:f_{i}(\mathbf{w})\leq 0\}$ with $f_{i}$ convex. Given $\mathbf{w}$, we can easily check if $f_{i}(\mathbf{w})\quad\forall i$. If $f_{i}(\mathbf{w})>0$ for some $i$, then consider $\mathbf{v}\in\partial f_{i}(\mathbf{w})$, then for every $\mathbf{w}'\in C$
+\[0\geq f_{i}(\mathbf{w}')\geq f_{i}(\mathbf{w})+\dual{\mathbf{w}'-\mathbf{w},\mathbf{v}}>\dual{\mathbf{w}'-\mathbf{w},\mathbf{v}}\]
+Thus we've constructed an oracle which returns $-v$ in times of failing.
+
+Now consider an Unconstrained optimization. Take $C=\{\mathbf{w}:f(\mathbf{w})-f(\mathbf{w}^{*})-\varepsilon\leq 0\}$. By letting $v_{t}\in \partial f(w_{t})$, we apply Ellipsoid algorithm to find the answer. 
+
+Nevertheless, the ellipsoid would usually get too thin in practice, so we usually use:
+
+\paragraph{Gradient Descent}
+At iteration $t$, we update $\mathbf{w}^{(t+1)}\leftarrow \mathbf{w}^{(t)}-\eta\nabla f(\mathbf{w}^{(t)})$, thus
+\[\mathbf{w}^{(t+1)}=\mathrm{arg}\min_{w}\{\frac{1}{2}\nm{\mathbf{w}-\mathbf{w}^{(t)}}+\eta(f(\mathbf{w}^{(t)})+\dual{\mathbf{w}-\mathbf{w}^{(t)},\nabla f(\mathbf{w}^{{(t)}})})\}\]
+At last, output $\bar{\mathbf{w}}=\sum_{i=1}^{T}\mathbf{w}^{(t)}$
+
+Here we may as well replace $\nabla f(\mathbf{w}^{(t)})$ with $\mathbf{v}\in\partial f(\mathbf{w}^{(t)})$ to get Sub-gradient Descent.
+
+\begin{Lemma}
+  \[\sum_{t=1}^{T}(f(\mathbf{w}^{(t)})-f(\mathbf{w}^{*}))\leq \sum_{t=1}^{T}\dual{\mathbf{w}^{(t)}-\mathbf{w}^{*},\mathbf{v}_{t}}=\frac{\eta}{2}\sum_{t=1}^{T}\nm{\mathbf{v}_{t}}+\frac{1}{2\eta}[\nm{\mathbf{w}^{(1)}-\mathbf{w}^{*}}^{2}-\nm{\mathbf{w}^{(t+1)}-\mathbf{w}^{*}}^{2}]\]
+\end{Lemma}
+
+\begin{proof}
+  The inequality is due to the definition of sub-gradients.
+
+  As for the equality: 
+\begin{align*}
+  &\nm{\mathbf{w}^{\left(t\right)}-\mathbf{w}^{*}}^2-\nm{\mathbf{w}^{(t+1)}-\mathbf{w}^{*}}^2\\ 
+  =&\left\langle \mathbf{w}^{(t)}-\mathbf{w}^{*}+\mathbf{w}^{\left( t+1 \right)}-\mathbf{w}^{*},\mathbf{w}^{\left( t \right)}-\mathbf{w}^{\left( t+1 \right)} \right\rangle\\
+  =&\left\langle 2\mathbf{w}^{\left( t \right)}-\eta \mathbf{v}_{t}-2\mathbf{w}^{*},\eta \mathbf{v}_{t} \right\rangle\\
+  =&2\eta \left\langle \mathbf{w}^{\left( t \right)}-\mathbf{w}^{*},\mathbf{v}_{t} \right\rangle-\eta^2\nm{\mathbf{v}_t}^2
+\end{align*}
+Summing over $t=1,\dots,T$ and we get the desired equality.
+\end{proof}
+
+Observe that we don't require that $f$ stays the same. We just need $f_{t}$ to produce $v_{t}$. Furthermore, assume $\rho$-Lip, we have $\frac{1}{T}\sum_{t=1}^{T}f(w^{(t)})-f(w^{*})\leq \frac{\nm{w^{*}}^{2}}{2\eta T}+\frac{\eta}{2}\rho^{2}\leq \frac{\nm{w^{*}}\rho}{\sqrt{T}}\quad\eta=\frac{\nm{\mathbf{w}}^{*}}{\rho \sqrt{T}}$. So for $T\geq \frac{\nm{w^{*}}^{2}\rho^{2}}{\varepsilon^{2}}$, by Jensen's inequality, %$f(\bar w)\leq f(w^{*})+\varepsilon$
+\begin{equation}
+f(\bar{\mathbf{w}})=f \left( \frac{1}{T}\sum_{i=1}^T\mathbf{w}^{(t)} \right)\leq \frac{1}{T}\sum_{t=1}^Tf(\mathbf{w}^{\left( t \right)})\leq f \left( \mathbf{w}^{\left( t \right)} \right)+\varepsilon
+\end{equation}
+
+\begin{Eg}[Separating a hyperplane]
+  Finding an separating $\mathbf{w}\st y_{i}\dual{\mathbf{w},\mathbf{x}_{i}}>0 \quad\forall i$. Denote $\gamma=\min_{i}|\dual{\mathbf{w}^{*},\mathbf{x}_{i}}|$ with $\nm{\mathbf{w}^{*}}=1$. Thus $\gamma$ is the minimal gap.
+
+  For Ellipsoid algorithm, the oracle returns $y_{i}x_{i}$, and the algorithm stops after at most $d \left( 2d+2 \right)\log \left( \frac{1}{\gamma} \right)$ iterations.
+
+  For gradient descent, we minimize $f(w)$:
+  \[f(\mathbf{w})=\max_{i}\{-y_{i}\dual{\mathbf{w},\mathbf{x}_{i}}\}\]
+
+  Observe that $f$ is convex (indeed, its epigraph is some convex polytope). At $\mathbf{w}$, a sub-gradient of $f$ is $-y_{i}\mathbf{x}_{i}\quad i\in\mathrm{argmax}\{-y_{i}\dual{\mathbf{w},\mathbf{x}_{i}}\}$. $f$ is 1-Lip. $f(\mathbf{w}^{*})=-\gamma,$ so after $\gamma^{-2}$ iterations we have $f(\mathbf{w}^{(t)}<f(\mathbf{w}^{*}))+\gamma=0$, thus wee found the desired separation.
+
+  Perceptron also takes $O(\gamma^{-2})$ iterations. The only difference between these methods is that the constant step length $\eta$, which has no serious effect.
+
+  However, the complexity $O(\varepsilon^{-2})$ can't be referred to as a polynomial algorithm. In this sense, the ellipsoid algorithm is far faster. 
+\end{Eg}
+
+\section{Convex Learning Problems}
+\begin{Def}
+  A learning problem $(\H,Z,l)$ is convex iff $\H$ is a convex set and $\forall z\in Z, l(\cdot,z)$ is convex. ($l(\mathbf{w},z)=f(\mathbf{w}): H\to \R$).
+\end{Def}.
+  The $ERM_{\H}$ problem w.r.t. a convex learning problem is a convex optimization problem: $\min_{\mathbf{w}\in\H}\left\{ \frac{1}{m}\sum_{i=1}^ml \left( \mathbf{w},z_i \right) \right\}$
+\begin{Eg}
+  In least squre problem, $l(\mathbf{w},\mathbf{x},y)=(\dual{\mathbf{w},\mathbf{x}}-y)^{2}$.
+\end{Eg}
+
+Convexity is a good property, but this doesn't guarantee good PAC learnabilities. 
+\begin{Eg}
+  $H=\R,Z=\R\times \R,l(w,(x,y))=(wx-y)^{2}$.
+
+  Consider any deterministic learning algorithm $A\st\forall\varepsilon,\delta,\forall m>m(\varepsilon,\delta)$
+  \[L_{D}(A(S))\leq \min_{w}L_{D}(w)+\varepsilon\]
+  Choose $\varepsilon=10^{-2},\delta=10^{-1}, \mu=\frac{1}{2m}\log(100/99)$. Consiser $D_{1}=  \begin{cases} (1,0)& w.p. \mu\\ (\mu,-1)&w.p. 1-\mu \end{cases}, D_{2}=
+  \begin{cases}
+    (1,0)& w.p. 0\\ (\mu,-1) w.p. 1
+  \end{cases}
+  $
+  $P(S=S_{0}=$all examples are $(\mu,-1)$ (in both cases)$)\geq 0.99$. Denote $A \left( S_{0} \right)\hat{w}$, so $P_{S\sim D_1^m}[A \left( S \right)=\hat{w}]\geq 0.99, P_{S\sim D_2^m}[A \left( S \right)=\hat{w}]=1>0.99$.
+  
+\textbf{Claim}: either of the cases may fail.
+
+Observe that $L_{\mathcal{D}}\leq L_{\D_1} \left( 0 \right)= \left( 1-\mu \right), \min L_{\D_2}(w)=L_{\D_2} \left( -\frac{1}{\mu} \right)=0$. To satisfy $L_{\D_2} \left( \hat{w} \right)\leq \varepsilon\Leftrightarrow \left( \hat{w}\mu+1 \right)^2\leq \varepsilon^2\Rightarrow \hat{w}\in \left[ -\frac{1}{\mu}\pm \frac{\sqrt{\varepsilon}}{\mu} \right]$. However, in this case, $L_{\D_1} \left( \hat{w} \right)\geq \mu \hat{w}^{2}\geq \frac{(1-\sqrt{\varepsilon}^2}{\mu}>1.5$, a contradiction!
+
+  The critical failure is that the loss is unbounded. In some critical cases, even boundedness doesn't suffice.
+\end{Eg}
+
+Thus we assume
+\begin{itemize}
+\item $\forall w\in H,\nm{w}\leq B$
+\item $\forall z\in Z, l(\cdot,z)$ is convex and $\rho$-Lip.
+\end{itemize}
+
+A function is $\beta$-smooth iff it has $\beta$-Lip gradient.
+
+\begin{Def}[Convex-Lipschitz-Bounded Learning problem]
+  A learning problem $(\H,Z,l)$ is CLB with parameters$ \rho,B$ if
+  \begin{enumerate}
+  \item $H$ is convex and $\forall w\in \H,\nm{w}\leq B$
+  \item $\forall z\in Z, l(\cdot,z)$ is non-negative, convex and $\rho$-Lip.
+  \end{enumerate}
+
+\end{Def}
+
+
+\begin{Def}[Convex-Smooth-Bounded Learning Problem]
+  A learning problem $(\H,Z,l)$ is CSB with parameters$ \beta,B$ if
+  \begin{enumerate}
+  \item $H$ is convex and $\forall w\in \H,\nm{w}\leq B$
+  \item $\forall z\in Z, l(\cdot,z)$ is non-negative, convex and $\beta$-smooth.
+  \end{enumerate}
+\end{Def}
+
+\section{Surrogates Loss Functions}
+Howerver, many commomly used loss functions (like 0-1 loss) are not convex, which is bad. Instead, we use (a greater) hinge loss $l=\max\{0,1-y\dual{\mathbf{w},\mathbf{x}}\}$. Then
+\[L_{\D}^{0-1}(A(S))\leq \min_{\mathbf{w}\in \H}L_{\D}^{0-1}(\mathbf{w})+(\min_{\mathbf{w}\in \H}L_{\D}^{hinge}(\mathbf{w})-\min_{\mathbf{w}\in \H}L_{D}^{0-1}(\mathbf{w}))+\varepsilon\]
+
+In this sense, the error is decomposed into approximation error, optimization error and estimation error. The optimization error is a result of our inability to minimize the training loss w.r.t. the original loss.
+
+\chapter{Stochastic Gradient Descent and Regularized Loss Minimization}
+
+\section{Learning Using Stochastic Gradient Descent}
+stochastic: involving or containing a random variable or variables.
+
+Consider a CLB learning problem. 
+\begin{equation}
+\min_{\mathbf{w}\in\H}L_{\D}\left( \mathbf{w}\right) \quad L_{\D}\left( \mathbf{w}\right)= \mathbb{E}_{\left(\mathbf{x},y\right)\sim \D}\left[ l(\mathbf{w},(\mathbf{x}),y)\right]
+\end{equation}
+ Now we wish to minimize $L_{\D}\left( \mathbf{w}\right)$ directly.
+
+ In gradient descent, we need $\nabla L_{\D}\left( \mathbf{w}\right)=\mathbb{E}_{(\mathbf{x},y)\sim\D}\left[\nabla l(\mathbf{w},(\mathbf{x},y))\right]$. Sadly we can't calculate it since we don't know $\D$. Nevertheless, $\forall \left(\mathbf{x},y\right)\sim\D$, we can calculate $\nabla l \left(\mathbf{w},\left(\mathbf{x},y\right)\right)$. So if we move a steo in the direction of $v=\nabla l \left(\mathbf{w},\left(\mathbf{x},y\right)\right)$, we're moving in the right direction in expectation. In other words, $v$ is an unbiased estimate of the gradient, and it's good enough.
+
+ The Stochastic Gradient Descent reads:
+
+ 
+\begin{itemize}
+\item Initialize $\mathbf{w}^{(1)}=\mathbf{0}$
+\item At iteration $t$, choose $z_t= \left(\mathbf{x}_{t},y_{t}\right)\sim \D, \mathbf{v}_t=\nabla l \left( \mathbf{w}^{(t)},(\mathbf{x})_t,y_t \right)$, and update 
+\begin{equation}
+\mathbf{w}^{(t+1)}\leftarrow \mathbf{w}^{(t)}-\eta \mathbf{v}_t
+\end{equation}
+\item Output $\bar{w}=\frac{1}{T}\sum_{t=1}^T \mathbf{w}^{(t)}$
+\end{itemize}
+
+Recall that we only need uniform $\eta$-Lip to prove: 
+\begin{equation}
+\sum\limits_{t=1}^{T}\left\langle \mathbf{w}^{(t)}-\mathbf{w}^{*}, \mathbf{v}_t \right\rangle =\frac{\left\| \mathbf{w}^{(1)}-\mathbf{w}^{*} \right\|^{2}-\left\|\mathbf{w}^{(T+1)}-\mathbf{w}^{*} \right\|^{2}}{2\eta}+\frac{\eta}{2}\sum\limits_{t=1}^{T}\left\| \mathbf{v}_t \right\|^2
+\end{equation}
+By assuming $\left\| \mathbf{v}_t \right\|<\rho ,\left\| w* \right\|\leq B$, we have 
+\begin{equation}
+\sum\limits_{t=1}^{T}\left\langle \mathbf{w}^{(t)}-\mathbf{w}^{*}, \mathbf{v}_t \right\rangle\leq \frac{B^2}{2\eta}+\frac{\eta\rho^2T}{2}\leq B\rho \sqrt{T} \quad \eta=\sqrt{\frac{B^2}{\rho^2 T}}
+\end{equation}
+Observe that the bound is uniform, so taking expectations on LHS:
+\begin{equation}
+\mathbb{E}_{Z_{1},\dots, Z_T}\left[ \sum_{t=1}^T \left\langle \mathbf{w}^{(t)}-\mathbf{w}^{*}, \mathbf{v}_t \right\rangle \right] \leq B\rho \sqrt{T}
+\end{equation}
+So by the linearity of expectations:
+\[
+\begin{aligned}
+\underset{z_{t}}{\mathbb{E}}\left[\left\langle\boldsymbol{w}^{(t)}-\boldsymbol{w}^{*}, \boldsymbol{v}_{t}\right\rangle \mid z_{1}, \ldots, z_{t-1}\right] &=\left\langle\boldsymbol{w}^{(t)}-\boldsymbol{w}^{*}, \underset{z_{t}}{\mathbb{E}}\left[\boldsymbol{v}_{t} \mid z_{1}, \ldots, z_{t-1}\right]\right\rangle \\
+&=\left\langle\boldsymbol{w}^{(t)}-\boldsymbol{w}^{*}, \underset{z_{t}}{\mathbb{E}}\left[\nabla \ell\left(\boldsymbol{w}^{(t)}, z_{t}\right)\right]\right\rangle \\
+&=\left\langle\boldsymbol{w}^{(t)}-\boldsymbol{w}^{*}, \nabla L_{\mathcal{D}}\left(\boldsymbol{w}^{(t)}\right)\right\rangle
+\end{aligned}
+\]
+Thus 
+\begin{equation}
+\mathbb{E}_{Z_1,\dots,Z_T}\left[ \sum_{t=1}^T \left\langle \mathbf{w}^{(t)}-w^{*},\nabla L_{\D}\left( \mathbf{w}^{(t)}\right) \right\rangle\right]\leq B\rho \sqrt{T} 
+\end{equation}
+Apply convexity and devide by $T$ on both sides, we get 
+\begin{equation}
+\mathbb{E}_{Z_{1},\dots, Z_{T}}\left[ L_{\D}\left( \frac{1}{T}\sum\limits_{t=1}^{T}\mathbf{w}^{(t)}\right)\right]\leq \mathbb{E}_{Z_1,\dots, Z_T}\left[ \frac{1}{T}\sum_{t=1}^T \left( L_{\D}\left( \mathbf{w}^{(t)}\right) \right)\right]\leq L_{\D}\left( \mathbf{w}^{*}\right)+\frac{B\rho}{\sqrt{T}}  
+\end{equation}
+
+\begin{Cor}
+  Consider CLB problem with parameters $\rho, B$, then $\forall\varepsilon>0,$ run the SGD with parameters $\eta=\sqrt{\frac{B^2}{\rho^{2}T}}, T\geq \frac{B^2\rho^2}{\varepsilon^2}$, then the output $\bar{w}$ satisfies 
+\begin{equation}
+\mathbb{E}\left[ L_{\D}\left( \mathbf{\bar{w}}\right)\right]\leq\min_{\mathbf{w}\in\H}L_{\D}\left( \mathbf{w}\right)+\varepsilon 
+\end{equation}
+\end{Cor}
+
+For CSB problem, the parameters are $\eta=\frac{1}{\beta(1+3/\varepsilon)}, T\geq \frac{12B^2\beta}{\varepsilon^2}$.
+
+Observe that the update step may lead to $\mathbf{w}$ stepping out of $\H$, so we add a projection step: 
+\begin{itemize}
+\item $\mathbf{w}^{(t+1/2)}\leftarrow \mathbf{w}^{(t)}-\eta \mathbf{v}_t$
+\item $\mathbf{w}^{(t+1)}\leftarrow \mathrm{arg}\min_{\mathbf{w}\in\H}\left\|  \mathbf{w}-\mathbf{w}^{(t+1.2)}\right\| $
+\end{itemize}
+
+\begin{Lemma}[Projection Lemma]
+Let $\H$ be a closed convex set and $\mathbf{u}$ be the projection of $\mathbf{w}$ onto $\H$. Then $\forall \mathbf{h}\in \H$ 
+\begin{equation}
+\left\| \mathbf{w}-\mathbf{h} \right\|\geq \left\|  \mathbf{u}-\mathbf{h}\right\|
+\end{equation}  
+\end{Lemma}
+
+This means that the projection shortens the distance.
+
+In the analysis of SGD, we have 
+\begin{align}
+  &\left\| \mathbf{w}^{(t)}-\mathbf{w}^{*} \right\|^2-\left\| \mathbf{w}^{(t+1)}-\mathbf{w}^{*} \right\|\\
+  \geq &\left\| \mathbf{w}^{(t)}-\mathbf{w}^{*} \right\|^2-\left\| \mathbf{w}^{(t+1/2)}-\mathbf{w}^{*} \right\| \\
+  =2\eta \left\langle \mathbf{w}^{(t)}-\mathbf{w}^{*},\mathbf{v}_t \right\rangle- \eta^2 \left\| \mathbf{v}_{t} \right\|^{2}
+\end{align}
+So we can still apply the previous analysis.
+
+\section{Learning using regularized loss minimization}
+Given a regulization function $R: \R^{d}\to\R$, the RLM rule writes 
+\begin{equation}
+A(S)= \mathrm{arg}\min_{\mathbf{w}}(L_{S}\left( \mathbf{w}\right)+R(\mathbf{w}))
+\end{equation}
+
+Here we especially focus on Tikhonov regulation: 
+\begin{equation}
+A(S)=\mathrm{arg}\min_{\mathbf{w}}(L_{S}\left( \mathbf{w}\right)+\lambda \left\| \mathbf{w}^{2} \right\|)
+\end{equation}
+
+This regulization function serves as a describer of prior belief and stabilizer. But firstly we need to characterize stability. Given $S=\left(z_{1},\dots,z_{m}\right)$, perturb it into $S^{(i)}=\left(z_{1},\dots,z_{i-1}, z', z_{i+1},\dots, z_m\right)$, then
+\begin{Def}[on-average-replace-one-stable]
+  Let $\epsilon:\N\to\R$ be monotonically decreasing. A learning alogrithm $A$ is \textbf{on-average-replace-one-stable} with rate $\epsilon(m)$ if $\forall\D$  
+\begin{equation}
+\underset{(S,z')\sim\D^{m+1}, i\sim \mathrm{Unif}\left[ m \right]}{\mathbb{E}}\left[ l(A(S^{(i)}),z_i)-l(A(S),z_i)\right]\leq \epsilon(m) 
+\end{equation}
+\end{Def}
+
+\begin{Thm}
+  If $A$ is on-average-replace-one-stable with rate $\epsilon(m)$, then 
+\begin{equation}
+\underset{S\sim \D^{m}}{\mathbb{E}}\left[ L_{\D}\left( A(S))\right)-L_{S}\left( A(S))\right)\right]\leq \epsilon(m) 
+\end{equation}
+\end{Thm}
+
+\begin{Thm}
+  Assume that the loss function is convex an $\rho$-Lip, then the RLM rule with regularizer $\lambda \left\| \mathbf{w} \right\|^2 $ is on-average-replace-one-stable with rate $\frac{2\rho^2}{\lambda m}$
+\end{Thm}
+
+For CSB problems, the rate is $\frac{48\beta C}{\lambda m}$, where $C$ is an upper bound of $\max_Z l(\mathbf{0},z)$
+
+To prove this, we need the notation of:
+
+\begin{Def}[Strongly convex functions]
+  $C$ is a convex set. $f:C\to\R$ is $\lambda$-\textbf{strongly convex} if $\forall \mathbf{u},\mathbf{v}\in C, \alpha\in[0,1]$ 
+\begin{equation}
+f(\alpha \mathbf{u}+(1-\alpha)\mathbf{v})\leq \alpha f(\mathbf{u})+(1-\alpha)f(\mathbf{v})-\frac{\lambda}{2}\alpha(1-\alpha)\left\| \mathbf{u}-\mathbf{v} \right\|^{2} 
+\end{equation}
+\end{Def}
+\begin{Eg}
+  $f(\mathbf{w})=\lambda \left\| \mathbf{w} \right\|^{2}$ is $2\lambda$-strongly convex.
+\end{Eg}
+\begin{Prop}
+  If both $f,g$ are $\lambda$-strongly convex, so is $f+g$.
+\end{Prop}
+\begin{Prop}
+  For open $C$, $f$ is $\lambda$-strongly convex and $\mathbf{u}$ is a minimizer of $f$, then $\forall \bm{w}\in C$ 
+\begin{equation*}
+f(\bm{w})-f(\bm{u})\geq \frac{\lambda}{2}\left\| \bm{u}-\bm{w} \right\|^2
+\end{equation*}
+
+\paragraph{The fitting-stability tradeoff}
+\begin{equation*}
+\underset{S\sim \D^{m}}{\mathbb{E}}\left[ L_{\D}\left( A(S)\right)\right]=\underset{S\sim \D^{m}}{\mathbb{E}}\left[ L_{S}\left( A(S)\right)\right]+\underset{S\sim \D^{m}}{\mathbb{E}}\left[ L_{\D}\left( A(S)\right)-L_{\S}\left( A(S)\right)\right]
+\end{equation*}
+The first term states how good $A$ fits the training set while the second term is the overfitting, which is bounded by the stability of $A$. $\lambda$ controls the tradeoff between the two terms.  
+\end{Prop}
+
+\chapter{Support Vector Machines and Kernel Methods}
+\section{Support Vector Machines}
+\subsection{Margin}
+There're many ways to separate a hyperplane, but there're better ones intuitively: those who tolerent more loss.
+
+$L=\left\{ \bm{v}: \left\langle \bm{w}, \bm{v} \right\rangle +b\right\}, d(\mathbf{x}, L)= \min \left\{ \left\|\mathbf{x}- \mathbf{v}\right\| : \mathbf{v} \in L \right\} $
+
+The margin is the distance of the closest example of it. The example is called \textbf{Support vectors}
+
+\subsection{Hard-SVM}
+We seak for the separating hyperplane with largest margin:
+\begin{equation*}
+\mathrm{arg}\max_{\left\|\mathbf{w}\right\|=1}\min_{i\in [m]}|\left\langle \mathbf{w}, \mathbf{x}_i +b \right\rangle| \quad \text{ s.t. } \forall i, y_i(\left\langle \mathbf{w},\mathbf{x}_i +b \right\rangle)>0
+\end{equation*}
+Or equivalently (with scaling)
+\begin{equation*}
+(\mathbf{w}_0, b_0)= \mathrm{arg}\min_{(\mathbf{w},b)}\left\|\mathbf{w}\right\|^2 \text{ s.t. } \forall i, y_i \left( \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle +b\right)\geq 1
+\end{equation*}
+
+Observations: 
+\begin{enumerate}
+\item Margin is scale-sensitive:
+\item Margin of distribution: $\D$ is separable with $(\gamma,\rho)$ margin if $\exists (\mathbf{w}^{*}, b^{*}) \text{ s.t. } \left\|\mathbf{w}^{*}\right\|=1$ and that
+  \begin{equation*}
+\mathbb{P}_{(x,y)\sim \D}\left[ \left\|\mathbf{x}\right\| \leq \rho \land  y(\left\langle \mathbf{w}^{*}, \mathbf{x} \right\rangle +b^{*})\geq \gamma\right]=1
+  \end{equation*}
+\item Generalization bound for hard-SVM: For $\D$ separable with $(\gamma, \rho)$ margin, the sample complexity is: 
+  \begin{equation*}
+m(\varepsilon, \delta)\leq O(\frac{1}{\varepsilon^2})\times ((\frac{\rho}{\gamma})^2+ \log(\frac{1}{\delta}))
+\end{equation*}
+(That is, replacing VCDim with $\frac{\rho}{\gamma}$)
+\end{enumerate}
+\subsection{Soft-SVM}
+Hard SVM assumes that the data is separable, which is not always true. Thus we relax the constraint (adding a slack) and yield soft SVM
+\begin{equation*}
+\mathrm{arg}\min_{\mathbf{w}, b, \mathbf{\xi}}\left( \left\|\mathbf{w}^2+ \lambda^{-1}\frac{1}{m}\sum\limits_{i=1}^m \xi_i\right\| \right) \text{ s.t. } \forall i, y_i \left( \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle +b\right)\geq 1-\xi_i \quad \xi_i>0
+\end{equation*}
+This can be written as:
+\begin{equation*}
+\mathrm{arg}\min_{\mathbf{w},b}\left( \lambda \left\|\mathbf{w}\right\|^2+L_{S}^{hinge}((w,b))\right)
+\end{equation*}
+
+WLOG we reduce it into a homogeneous problem: $b=0$.
+
+\paragraph{Sample Complexity}
+Observe that the 0-1 loss is always smaller than corresbonding hinge loss and that we have the estimation for hinge loss:
+\begin{equation*}
+\underset{S\sim \D^{m}}{\mathbb{E}}\left[ L_{\D}^{hinge}\left( (A(S))\right)\right]\leq L_{\D}^{hinge}\left( \mathbf{u}\right)+\lambda \left\|\mathbf{u}\right\|^2 +\frac{2\rho^2}{\lambda m}
+\end{equation*}
+So $\forall B>0$, set $\lambda=\frac{\sqrt{2}\rho}{B \sqrt{m}}$ and we get the estimate:
+
+\begin{equation*}
+\underset{S\sim \D^m}{\mathbb{E}}\left[ L_{\D}^{0-1}(A(S))\right]\leq \min_{\mathbf{w}:\left\|\mathbf{w}\right\|\leq B}L_{\D}^{hinge}(\mathbf{w})+\frac{2 \sqrt{2} \rho B}{\sqrt{m}} 
+\end{equation*}
+Nevertheless, hinge loss can be very far from 0-1 loss
+
+\subsection{Solving SVMs using SGD}
+In SGD, we update
+\begin{equation*}
+\mathbf{w}^{(t+1)}\leftarrow \mathbf{w}^{(t)}-\frac{1}{\lambda t}\mathbf{v}_t
+\end{equation*}
+When solving SVM, we have
+\begin{equation*}
+\mathbf{v}_t=
+\begin{cases}
+  0 &y \left\langle \mathbf{w}, \mathbf{x} \right\rangle\geq 1\\ -y \mathbf{x} & \text{otherwise}
+\end{cases}
+\end{equation*}
+and we update (in case of error)
+\begin{equation*}
+\mathbf{w}^{(t+1)}\leftarrow \mathbf{w}^{(t)}-\frac{1}{\lambda t}(\lambda \mathbf{w}^{(t)} +\mathbf{v}_t)=-\frac{1}{\lambda t}\sum\limits_{j=1}^t \mathbf{v}_t.
+\end{equation*}
+
+Denote (for mere simplicity) $\mathbf{\Theta}^{(t)}= -\sum\limits_{j=1}^{t-1}\Rightarrow \mathbf{w}^{(t)}= \frac{1}{\lambda t}\mathbf{\Theta}^{(t)}$. Thus we update $\mathbf{\Theta}^{(t+1)}\leftarrow \mathbf{\Theta}^{(t)}+y_i \mathbf{x}_i, \mathbf{w}^{(t)}\leftarrow \frac{1}{\lambda t} \mathbf{\Theta}^{(t)}$ in each case of error.
+
+\section{Kernels}
+\subsection{Embeddings into Feature Spaces}
+In many cases, the data points are not linear separable, but are separable after some mapping. Thus we define a lifting function $\psi: \mathcal{X}\to \mathcal{F}$ mapping into the feature space (subset of a Hilbert space), and train $\left\{ \psi(\mathbf{x}_i), y_i \right\}$.
+
+In this way, we're faced with the dimension catastrophy, thus we need kernel and margin.
+
+\subsection{The Kernel Trick}
+
+\paragraph{Choosing a mapping}
+This requires prior knowlegde, but we usually use polynomial mappings and exponential mappings. $\psi(x)_{J_i}= \prod_{i=1}^r x_{J_i}$, this has high dimension! 
+
+Observe that we only need inner products, thus we define the kernel:
+\begin{equation*}
+K(\mathbf{x},\mathbf{x}')= \left\langle \psi(\mathbf{x}), \psi(\mathbf{x}') \right\rangle
+\end{equation*}
+
+Sometimes we can efficiently calculate kernels.
+
+
+\begin{Thm}
+  \begin{equation*}
+\mathbf{w}^{*}= \mathrm{arg}\min_{\mathbf{w}}\left\{ f(\left\langle \mathbf{w}, \psi(\mathbf{x}_i) \right\rangle)+ \lambda \left\|\mathbf{w}\right\|^{2}\right\}
+\end{equation*}
+Then $\exists \mathbf{\alpha}\in \mathbb{R}^m \text{ s.t. }$
+\begin{equation*}
+\mathbf{w}^{*}=\sum\limits_{i=1}^m\alpha_i \psi(\mathbf{x}_i)
+\end{equation*}
+\end{Thm}
+ Thus it suffices to compute $\mathbf{\alpha}$ only: prediction= $\mathrm{sgn}\left[ \mathbf{w}^{*T}\psi(\mathbf{x}) \right]}= \mathrm{sgn} \left[ \sum_{i=1}^{m} \alpha_i K(\mathbf{x}_i, \mathbf{x}) \right]$
+
+ Denote the Gram matrix: $G_{ij}= \left\langle \psi(\mathbf{x}_i), \psi(\mathbf{x})_{j} \right\rangle$, then $\left\langle \mathbf{w}, \psi(\mathbf{x}_{j}) \right\rangle= (G\mathbf{\alpha})_j, \left\|\mathbf{w}\right\|^2= \alpha^T G \alpha$. So the minimization reduces to an optimization of $\alpha$ : 
+
+ \begin{equation*}
+\mathrm{arg}\min_{\alpha}\left\{ f(G\alpha)+\lambda\alpha^T G\alpha \right\}
+ \end{equation*}
+ For soft SVM, the problem reduces to
+
+ \begin{equation*}
+   \min_{\alpha\in \mathbb{R}^m}\left\{ \lambda\alpha^T G\alpha +\frac{1}{m}\sum\limits_{i=1}^m \max \left\{ 0,1-y_i(G\alpha)_i \right\} \right\}
+\end{equation*}
+
+\paragraph{Polynomial Kernels}
+The $k$ degree polynomial kernel is defined to be
+\begin{equation*}
+K(\mathbf{x}, \mathbf{x}')=(1+\left\langle \mathbf{x}, \mathbf{x}' \right\rangle)^k
+\end{equation*}
+
+Then $K(\mathbf{x}, \mathbf{x}')=\left\langle \psi(\mathbf{x}), \psi(\mathbf{x}') \right\rangle$ up to a constant of each term.
+
+While the dimension of $\psi(x)$ is at order $n^k$, calculating $K$ takes only $O(n)$ time.
+
+\paragraph{Gaussian Kernel(Radio Basis Function)}
+$\psi(\mathbf{x})^i= \frac{1}{\sqrt{i!}}e^{-x^2/2} x^i, \left\langle \psi(x), \psi(y) \right\rangle= e^{-\frac{(x-y)^2}{2}}$
+
+Generally speaking, $K(\mathbf{x}, \mathbf{y})=\exp(-\frac{\left\|\mathbf{x}-\mathbf{y}\right\|}{2\sigma})$
+
+\begin{Lemma}[Mercer's conditions]
+  $K: \mathcal{X}\times \mathcal{X}\to \mathbb{R}$ implements an inner product $\Leftrightarrow K$ is positive semidefinite.
+\end{Lemma}
+
+With kernels, the implementation of SGD modifies into:
+\begin{itemize}
+\item $\alpha^{(t)}=\frac{1}{\lambda t}\beta^{(t)}$
+\item In case of $y_i(G\alpha^{(t)})_i<1$, update $\beta^{(t+1)}\leftarrow \beta^{(t)}+y_i e_{i}$
+\end{itemize}
+
+\subsection{Examples of Kernels}
+\subsection{SGD with Kernels}
+\subsection{Duality}
+Construct a dual problem: for hard-SVM, rewrite the problem (when it's feasible) into
+\begin{equation*}
+\min_{\mathbf{w}}\max_{\alpha\in \mathbb{R}^m: \alpha\geq 0}\left\{ \frac{1}{2}\left\|\mathbf{w}\right\|^2 \sum\limits_{i=1}^m +\alpha_i (1- y_i \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle) \right\}
+\end{equation*}
+minmax is always greater than maxmin, so the weak duality inequality always holds (primo is always greater than dual)
+\begin{equation*}
+\min_{\mathbf{w}}\max_{\alpha\in \mathbb{R}^m: \alpha\geq 0}\left\{ \frac{1}{2}\left\|\mathbf{w}\right\|^2 \sum\limits_{i=1}^m +\alpha_i (1- y_i \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle) \right\}\geq \max_{\alpha\in \mathbb{R}^m: \alpha\geq 0}\min_{\mathbf{w}}\left\{ \frac{1}{2}\left\|\mathbf{w}\right\|^2 \sum\limits_{i=1}^m +\alpha_i (1- y_i \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle) \right\}
+\end{equation*}
+
+In linear optimization, the equality holds (the strong duality holds). In most convex programming, the strong duality holds.
+
+\begin{Thm}[Slater's condition]
+  If primal is strictly feasible ($\exists \tilde{x} \text{ s.t. } f_i(\tilde{x})<0 \quad \forall i$), then $p^{*}=d^{*}$.
+\end{Thm}
+In other words, it suffices to be non-degenerate.
+
+With strong duality, we have:
+
+\begin{itemize}
+\item[Stationary condition] $\mathbf{x}^{*}$ minimizes $\mathcal{L}(\cdot, \mathbf{\mu}^{*})$. In case of being differentiable: 
+\item[complementary slackness condition] $ \mu_i^{*} f_i(\mathbf{x}^{*})=0 \forall i\in [m]$
+\end{itemize}
+
+So consider the KKT condition on a primal pair $(\mathbf{x}^{*}, \mathbf{\mu}^{*})$:
+
+Then KKT condition $\Leftrightarrow (\mathbf{x}^{*}, \mathbf{\mu}^{*})$ optimal and strong duality.
+
+Again consider the hard SVM, then by complementary slackness, $\alpha_i(1-y_i \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle)\Rightarrow y_i \left\langle \mathbf{w}, \mathbf{x}_i \right\rangle=1$, which are the support vectors.
+
+Consider the soft SVM, 
+
+
+
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

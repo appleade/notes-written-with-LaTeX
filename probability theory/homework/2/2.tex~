@@ -1,0 +1,237 @@
+\documentclass{ctexart}
+\usepackage{bm,amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+\usepackage[xetex]{preview}
+\begin{document}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\st}{\text{ s.t. }}
+
+\paragraph{(B1)}
+\subparagraph{(i)}
+\begin{proof}
+  取$m=\inf\{a|P(X\leq a)\geq \frac{1}{2}\}$。断言：$m$即为中位数。
+  \begin{itemize}
+  \item 一方面，$\forall b<m, P(X\leq b)<\frac{1}{2}$。故$P(X< m)=\lim_{b\to m^{-}}P(X\leq b)\leq \frac{1}{2}\Rightarrow P(X\geq m)=1-P(X<m)\geq \frac{1}{2}$
+  \item 另一方面，$\forall a>m, P(X\leq a)\geq\frac{1}{2}$，故$P(X\leq m)=\lim_{a\to m^{+}}P(X\leq a)\geq\frac{1}{2}$
+  \end{itemize}
+\end{proof}
+
+\subparagraph{(ii)}
+WLOG，设中位数$m=0$，否则取$\tilde X=X-m$。
+
+考察$c\geq 0$的情形，$c\leq 0$的情形是类似的。注意到
+\[|X-c|-|X|=
+  \begin{cases}
+    c &X\leq 0\\
+    -c &X>c\\
+    c-2X\geq -c & 0<X\leq c
+  \end{cases}
+\]
+
+故
+\[(|X-c|-|X|)\bm{1}_{X\leq 0}=c\bm{1}_{X\leq 0}\]
+\[(|X-c|-|X|)\bm{1}_{X\geq 0}\geq -c\bm{1}_{X> 0}\]
+上述两式求和再取期望得
+\[E[|X-c|]-E[|X|]\geq c(2P(X\leq 0)-1)\]
+
+充分性：若$E[|X|]=\min E[|X-c|]$，则$c(2P(X\leq 0)-1)\geq 0\Rightarrow P(X\leq 0)\geq \frac{1}{2}$。同理可证$P(X\geq 0)\geq \frac{1}{2}$，故0是中位数。
+
+必要性：若$0$是中位数，则$\forall c\neq 0,E[|X-c|]-E[|X|]\geq 0$，故$E[|X|]=\min E[|X-c|]$
+
+\subparagraph{(iii)}
+$f(c)=E[|X-c|^{2}]=c^{2}-2cE[X]+E[X^{2}]$，由二次函数之性质得$f(c)$于$c=E[X]$处取最小值。
+
+\subparagraph{(iv)}
+\begin{proof}
+  由Jensen不等式，由于$\phi(x)=x^{2}$是凸函数，故$E[X]^{2}\leq E[X^{2}]$，将其代入LHS得$LHS\leq E[|X-m|^{2}]$。再由(ii)，$\forall c,LHS\leq E[|X-c|]^{2}$。又由(iii)，$RHS=\min E[|X-c|^{2}]$，故在$LHS\leq E[|X-c|^{2}]$中取右侧的最小值即得。
+\end{proof}
+
+\paragraph{(B2)}
+WLOG，设$X$是恒正的随机变量（毕竟题设中只考察了$|X|$）。
+\begin{align*}
+  a=E[X]=&\int_{\Omega}X\bm{1}_{\{X\leq \lambda a\}}\dd P+\int_{\Omega}X\bm{1}_{\{X>\lambda a\}}\\
+  \leq &\lambda a+(\int_{\{X\geq\lambda a\}}X^{2}\dd P)^{\frac 1 2}(\int_{\{X\geq\lambda a\}}\bm{1}\dd P)^{\frac 1 2}\\ 
+  \leq &\lambda a+1\cdot P(X\geq\lambda a)^{\frac 1 2}
+\end{align*}
+  整理即得。
+
+
+\paragraph{(B3)}
+
+\subparagraph{(i)}
+固知$\sum_{i=1}^{\infty}2^{-i}=1$，故
+
+$P(X_{1}=2n)=P(X_{1}=2n+1)=2^{-(n+1)}\quad n\in\mathbb{N}$ 对应$N=2$
+
+$P(X_{2}=3n)=P(X_{2}=3n+1)=P(X_{2}=3n+2)=\frac{2^{-n}}{3}\quad n\in\mathbb{N}$ 对应$N=3$
+
+\subparagraph{(ii)}
+$m=0$时，$E[e^{2\pi i mX/N}]=E[1]=1$
+
+$m\neq 0$时，$E[e^{2\pi imX/N}]=\sum_{n=0}^{N-1}P(X\equiv n\pmod{N})e^{2\pi i mn/N}=\frac{1}{N}\sum_{n=0}^{N-1}e^{2\pi i mn/N}\frac{1}{N}=\frac{1}{N}\frac{e^{2\pi i m}-1}{e^{2\pi im }-1}=0$
+
+\paragraph{(B4)}
+（推广至$n$个示性函数函数的和需要用Lagrange乘子法求极值，但方程解不出来，故下面是伪证：）
+
+显然当$X$取极限值时才能得出该集合的值的极限。
+
+$X=a1_{\Omega}$时，$E[X]=a,E[1/X]=\frac{1}{a}\Rightarrow E[X]E[1/X]=1$
+
+$X=a1_{A}+b1_{A^{c}}$，其中$P(A)=x$，则$E[X]E[1/X]=(\frac{a}{b}+\frac{b}{a}-2)x(1-x)+1\leq \frac{1}{2}+\frac{1}{4}(\frac{a}{b}+\frac{b}{a})$
+
+故该集合取值范围为$[1,\frac{1}{2}(1+\frac{a}{b}+\frac{b}{a})]$
+
+\paragraph{(B5)}
+\subparagraph{(i)}
+$E[X^{0}]=\int_{\R}f(x)=1$
+
+$\forall n\in\mathbb{N}_{+},E[X^{2n-1}]=\int_{\R}x^{2n-2}f(x)\dd\frac{x^{2}}{2}=\frac{1}{2\sqrt{2\pi}}\int_{0}^{\infty}y^{n-1}e^{-y/2}=\frac{2^{n-1}}{\sqrt{2\pi}}\int_{0}^{\infty}s^{n-1}e^{-s}\dd s=\frac{1}{\sqrt{2\pi}}2^{n-1}(n-1)!$
+
+\subparagraph{(ii)}
+$f'(x)=(\frac{e^{-x^{2}/2}}{\sqrt{2\pi}})'=-x\frac{e^{-x^{2}/2}}{\sqrt{2\pi}}=-xf(x)$
+
+\subparagraph{(iii)}
+注意到$\forall n\in\mathbb{N}, \lim\limits_{x\to\pm\infty}x^{n}f(x)=0$，故
+\begin{align*}
+  E[X^{2n-2}]=&\int_{\R}x^{2n-2}f(x)\dd x\\
+  =&\frac{1}{2n-1}\int_{\R}f(x)\dd x^{2n-1}\\
+  =&\frac{1}{2n-1}[x^{2n-1}f(x)|_{-\infty}^{\infty}-\int_{R}x^{2n-1}f'(x)\dd x]\\
+  =&\frac{1}{2n-1}\int_{\R}x^{2n}f(x)\dd x=\frac{1}{2n-1}E[X^{2n}]
+\end{align*}
+整理即得。
+
+\subparagraph{(iv)}
+$p\equiv 1\pmod{2}$时，$E[X^{p}]=\frac{1}{\sqrt{2\pi}}2^{\frac{p-1}{2}}(\frac{p-1}{2})!$；$p\equiv 0\mod 2$时，$E[X^{p}]=(p-1)!!$
+
+\paragraph{(B6)}
+\subparagraph{(i)}
+先考察其c.d.f.：$F_{1/X}(x)=P(\frac{1}{X}\leq x)=P(X\geq \frac{1}{x})=1-F_{X}(\frac{1}{x})$
+
+$f_{\frac{1}{X}}(x)=(1-F_{X}(\frac{1}{x}))'=\frac{1}{x^{2}}f(\frac{1}{x})$
+
+\subparagraph{(ii)}
+易见$\forall y\leq 0, f_{Y}(y)=0$。
+
+设$y>0$，则先考察其c.d.f.$F_{Y}(y)=P(|X|\leq y)=P(-y\leq X\leq y)=F_{X}(y)-F_{X}(-y)$，故$f_{Y}(y)=f(y)+f(-y)$
+
+故
+\[f_{Y}(y)=
+  \begin{cases}
+    0& y\leq 0\\
+    f(y)+f(-y)& y>0
+  \end{cases}
+\]
+\subparagraph{(iii)}
+$F_{Y}(y)=P(\tan X\leq y)=P(X\leq \arctan(y))=F_{X}(\arctan(y))$，故$f_{Y}(y)=\frac{f(\arctan(y))}{1+y^{2}}$
+
+\renewcommand{\L}{\mathcal{L}}
+
+\paragraph{(C1)}
+\subparagraph{(i)}
+$\forall X,Y\in \L_{0}, c\in\R$, $P(\{cX=\infty\})=P(\{X=\infty\}=0, P(\{X+Y=\infty\})\leq P(\{X=0\})+P(\{Y=0\})=0$，故$\L_{0}$是线性空间。
+\subparagraph{(ii)}
+\begin{proof}
+  因$1+|X-Y|>1$，故$Z(X,Y)=\frac{|X-Y|}{1+|X-Y|}$仍是$\L_{0}$中的随机变量，且$0\leq Z\leq 1\Rightarrow \rho(X,Y)=E[Z]\in [0,1]$，故它是良定的。
+\end{proof}
+
+\subparagraph{(iii)}
+\begin{proof}
+  \begin{itemize}
+  \item 正定性：因$\frac{|X-Y|}{1+|X-Y|}\geq 0$，故$\rho(X,Y)=E[\frac{|X-Y|}{1+|X-Y|}]\geq 0$
+  \item 对称性：$\rho(X,Y)=E[\frac{|X-Y|}{1+|X-Y|}]=E[\frac{|Y-X|}{1+|Y-X|}]=\rho(Y,X)$
+  \item 三角不等式：$\rho(X,Y)+\rho(Y,Z)=E[\frac{|X-Y|+|Y-Z|+2|X-Y||Y-Z|}{1+|X-Y|+|Y-Z|+|X-Y||Y-Z|}]\geq E[\frac{|X-Y|+|Y-Z|}{1+|X-Y|+|Y-Z|}]\geq \frac{|X-Z|}{1+|X-Z|}=\rho(X,Z)$
+  \end{itemize}
+\end{proof}
+
+\subparagraph{(iv)}
+简记$|X_{n}-X_{m}|=\Delta X$。固定任意的$\delta,\varepsilon$。
+
+$P(\Delta X\geq \delta)=P(\frac{\Delta X}{1+\Delta X}\geq \frac{\delta}{1+\delta})\leq \rho(X_{n},X_{m})(1+\frac{1}{\delta})$。故若$\{X_{n}\}$是$\rho$意义下的Cauchy列，则$\exists N\in\mathbb{N}\st \forall m,n>N, \rho(X_{n},X_{m})\leq \frac{\varepsilon\delta}{\delta+1}\Rightarrow P(|X_{n}-X_{m}|\geq \delta)<\varepsilon$，故$\{X_{n}\}$依概率Cauchy。
+
+\[\rho(X_{m},X_{n})\leq E[\Delta X]=\lim_{\delta\to 0}P(\Delta X>\delta)\]
+若$\{X_{n}\}$依概率Cauchy，则对于固定的$\varepsilon,\forall \delta>0,\exists N\in\mathbb{N}\st \forall m,n>N, P(\Delta X>\delta)<\varepsilon$。代入上式得$\lim_{\min\{m,n\}}\rho(X_{m},X_{n})=0$，故$\{X_{n}\}$在$\rho$意义下收敛。
+
+\subparagraph{(v)}
+\begin{proof}
+  取$\L_{0}$中的Cauchy列，由(iv)知它是依概率Cauchy的，故由练习，$\exists X\st \lim_{n\to\infty}X_{n}\to X\quad \text{ in } P$。注意到$\phi(X_{n},X)\leq E[|X_{n}-X|]\leq \lim\limits_{\delta\to 0}P(|X_{n}-X|>\delta)=0$，故$\{X_{n}\}$在$\rho$的意义下收敛于$X$。
+\end{proof}
+
+\paragraph{(C2)}
+\subparagraph{(i)}
+设$A_{N,\delta}=\{x: \sup_{n\geq N}|X_{n}(w)-X(x)|>\delta\}$，则若$X_{n}(w)\to X(w)$，则$w\not \in A_{N,\delta}$。故由a.s. 收敛及集合的下连续性（注意到$P(\Omega=1)$），$\mu(\bigcap\limits_{N\in\mathbb{N}}A_{N,\delta})=0$。故$\forall\varepsilon>0, \delta=\frac{1}{k},\exists N_{k}\in\mathbb{N}\st \mu(A_{N_{k},\frac{1}{k}})<\frac{\varepsilon}{2^{k}}$。取$E=\bigcup\limits_{k\in\mathbb{N}}A_{N_{k},\frac{1}{k}}$，则$\mu(A)\leq\sum\limits_{k\in\mathbb{N}}\mu(A_{N_{k},\frac{1}{k}})=\varepsilon$，且$\forall w\in E^{c}, k\in\mathbb{N}$，都有$\forall n>N_{k}, |X_{n}(w)-X(w)|<\frac{1}{k}\Rightarrow \lim\limits_{n\to\infty}\sup_{w\in E^{c}}|X_{n}(w)-X(w)|=0$
+
+\subparagraph{(ii)}
+\begin{proof}
+  易见$|X|\leq Y$ a.s. 。反设$\mu(A_{N,\delta})=\infty$，则$\lim\limits_{n\to\infty}\int_{\Omega}|X_{n}-X|\dd P\geq \delta\mu(A_{N,\delta})=\infty$。但$\lim\limits_{n\to\infty}\int_{\Omega}|X_{n}-X|\dd P\leq 2\int_{\Omega}|Y|\dd P<\infty$，矛盾！故仍有集合的下连续性，其余证明重复(i)即得。
+\end{proof}
+
+\paragraph{(C3)}
+\subparagraph{(i)}
+$w\in \{|X(w)-X_{n}(w)|>\varepsilon\quad i.o.\}\Leftrightarrow w\in\limsup\limits_{n\to\infty}\{|X(w)-X_{n}(w)|>\varepsilon\}\Leftrightarrow w\in\bigcap\limits_{n\in\mathbb{N}}\bigcup_{i=n}^{\infty}\{|X(w)-X_{n}(w)|>\varepsilon\}$。记$\{|X_{n}(w)-X(w)|>\varepsilon\}=A_{n,\varepsilon}$
+
+若$X_{n}\to X\quad a.s.$，则$\exists E\st P(E)=1, \forall w\in E, \lim\limits_{n\to\infty}|X_{n}(w)-X(w)|=0\Rightarrow\forall w\in E, \varepsilon>0,\exists N_{\varepsilon,w}\in\mathbb{N}\st \forall n>N_{\varepsilon,w}, |X_{n}(w)-X(w)|<\varepsilon\Rightarrow w\not\in \bigcup_{i=N_{\epsilon, w}}^{\infty}A_{i,\varepsilon}\Rightarrow E\subset (\bigcup\limits_{n\in\mathbb{N}}\bigcap_{i=n}^{\infty}A_{i,\varepsilon})\Rightarrow P[\{|X-X_{n}|>\varepsilon\}]=0$
+
+记$A=\{|X-X_{n}|>\varepsilon\quad i.o.\}$。$\forall w\not\in A, \forall k\in\mathbb{N}, w\in\bigcup_{n\in\mathbb{N}}\bigcap_{i=n}^{\infty}\{|X_{i}-X|<\frac{1}{k}\}\Rightarrow w\in \bigcap_{k\in\mathbb{N}}\bigcup_{n\in\mathbb{N}}\bigcap_{i=n}^{\infty}\{|X_{i}-X|<\frac{1}{k}\}\Leftrightarrow X_{n}(w)\to X$。又$P(A)=0$，故$X_{n}\to X\quad a.s.$
+
+\subparagraph{(ii)}
+\begin{proof}
+  由Borel-Cantelli第一引理，$P(\limsup\limits_{n\to\infty}A_{n,\varepsilon})=0$，故由(i)开头的等价关系，这等价于(i)的条件，故由(i)$X_{n}\to X\quad a.s.$
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+  由Markov不等式，对任意固定的$\varepsilon>0$，$\sum_{n\in\mathbb{N}}P[\{|X_{n}-X|>\varepsilon\}]\leq \frac{1}{\varepsilon^{p}}\sum_{n\in\mathbb{N}}E[|X_{n}-X|^{p}]<\infty$，故由(ii)知$X_{n}\to X\quad a.s.$。又概率空间之测度有限，故$X_{n}\to X\quad a.s.\Rightarrow X_{n}\to X\quad\text{in } P$。
+
+  反设$L^{p}$收敛不成立，则$\exists \varepsilon_{0}>0\st \forall n\in\mathbb{N}, E[|X_{n}-X|^{p}]^{\frac 1 p}\geq\varepsilon_{0}\Rightarrow \sum_{n\in\mathbb{N}}E[|X_{n}-X|^{p}]\geq \varepsilon_{0}^{p}\cdot \infty=\infty$，矛盾！
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

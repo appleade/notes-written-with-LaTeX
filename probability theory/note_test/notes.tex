@@ -1,0 +1,71 @@
+\documentclass{ctexbook}
+
+
+\usepackage{mathrsfs,amsmath,amssymb,amsthm,bm,ulem,comment,hyperref}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+
+\title{概率论笔记}
+\author{数91\and 董浚哲}
+\def\allfiles{}
+
+\includeonly{chap_1,chap_2,chap_3,chap_4}
+
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+\newcommand{\alsu}{\text{ a.s. }}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\G}{\mathscr{G}}
+\newcommand{\Bor}{\mathscr{B}}
+\newcommand{\pw}{\text{ p.w. }}
+\newcommand{\inof}{\text{ i.o. }}
+\newcommand{\X}{\bm{X}}
+\newcommand{\iid}{\mathrm{i.i.d.}~}
+\newcommand{\C}{\mathbb{C}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+概率论是刻画不确定事件的数学分支，概率是对不确定事件的估计。
+
+概率论的理论基础确立于17世纪，发源于赌场事件。有好事者问Pascal曰：
+\begin{Eg}
+  丢24次一对色子，（至少）出一对6则胜利，此赌注公平否？
+\end{Eg}
+\begin{proof}[解]
+  算其互斥事件：一次都不出现的概率为$(\frac{35}{36})^{24}=0.508596\cdots$，不公平但很接近公平。
+\end{proof}
+
+此时Pascal,Fermat等人发展了类似的古典概型：$P(A)=\frac{\#(A)}{\#\{\cdots\}}$。
+
+18世纪，Laplace等人将概率应用于物理等学科，统计学也同时发展起来。
+
+1930s，概率摆脱了古典概型与几何概型的限制，Kolmogorov建立了公理化概率论，概率论由此迎来大发展。
+
+\include{chap_1}
+\include{chap_2}
+\include{chap_3}
+\include{chap_4}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

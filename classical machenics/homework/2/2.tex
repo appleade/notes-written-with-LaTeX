@@ -1,0 +1,60 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,hyperref}
+\begin{document}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\paragraph{(vi)}
+\begin{proof}
+  $J(u)=\frac{m}{l^{2}}u^{-2}V'(u^{-1})$。记$f=V'$。在此记号下，
+  \begin{equation}\label{eq_6}
+    \beta^{2}-1=-\dif{}{u}J(u)|_{u=u_{0}}=\frac{1}{r^{2}}\dif{}{r^{2}}(-\frac{m}{l^{2}}[-r^{2}f(r)])|_{r=u_{0}^{-1}}=\frac{m}{l^{2}[f(r)+r^{2}f'(r)]|_{r=u_{0}^{-1}}}
+  \end{equation}
+
+  记$r_{0}=u_{0}^{-1}$。注意到$J(u_{0})=u_{0}$，故$r_{0}^{-1}=\frac{m}{l^{2}}r_{0}^{2}f(r)$。代入\ref{eq_6}，则化简得
+  \[\frac{f'(r_{0})}{f(r_{0})}=\frac{\beta^{2}-3}{r_{0}}\]
+  由$r_{0}$之任意性（即对于任意$r_{0}$上述方程都成立），上述ODE对任意$r$成立，故解之得$f(r)=Cr^{\beta^{2}-3}\Rightarrow V(r)=kr^{-(2-\beta^{2})}$，得证。
+\end{proof}
+
+\paragraph{(vii)}
+\begin{proof}
+  用Wolfram Alpha 算得……
+  \[\begin{aligned}
+      (\eta(\theta))^{2}=&(h_{0}^{2}+\frac{1}{2}h_{1}^{2}+\frac{1}{2}h_{2}^{2}+\frac{1}{2}h_{3}^{2})\\
+      +&(2h_{1}h_{0}+h_{1}h_{2}+h_{2}h_{3})\cos(\beta\theta)\\
+      +&(2h_{0}h_{2}+\frac{1}{2}h_{1}^{2}+h_{1}h_{3})\cos(2\beta\theta)\\
+      +&(2h_{3}h_{0}+h_{1}h_{2})\cos(3\beta\theta)+\cdots
+    \end{aligned}
+  \]
+  \[\begin{aligned}
+      (\eta(\theta))^{3}=& h_0^3 + \frac{3}{2} h_1^2 h_0 + \frac{3}{2} h_2^2 h_0 + \frac{3}{2} h_3^2 h_0 + \frac{3}{4} h_1^2 h_2 + \frac{3}{2} h_1 h_2 h_3\\
+      +&(3h_{1}h_{0}^{2}+3h_{1}h_{2}h_{0}+3h_{2}h_{3}h_{0}+\frac{3}{4}h_{1}^{3}+\frac{3}{2}h_{1}h_{2}^{2}+\frac{3}{2}h_{1}h_{3}^{2}+\frac{3}{4}h_{1}^{2}h_{3}+\frac{3}{4}h_{2}^{2}h_{3})\cos(\beta\theta)\\
+      +&(3h_{2}h_{0}^{2}+\frac{3}{2}h_{1}^{2}h_{0}+3h_{1}h_{3}h_{0}+\frac{3}{4}h_{2}^{3}+\frac{3}{2}h_{2}h_{3}^{2}+\frac{3}{2}h_{1}^{2}h_{2}+\frac{3}{2}h_{1}h_{2}h_{3})\cos(2\beta\theta)\\
+      +&(3h_{3}h_{0}^{2}+3h_{1}h_{2}h_{0}+\frac{1}{4}h_{1}^{3}+\frac{3}{4}h_{3}^{3}+\frac{3}{4}h_{1}h_{2}^{2}+\frac{3}{2}h_{1}^{2}h_{3}+\frac{3}{2}h_{2}^{2}h_{3})\cos(3\beta\theta)
+    \end{aligned}
+  \]
+  注意到$h_{2}=o(h_{0}),h_{0}=o(h_{1}),h_{0}=o(h_{3})$，故省略各低阶项再比较等式两端得到（……确实不知道是怎么做的）
+  \[h_{0}=\frac{1}{\beta^{2}}J''(u_{0})h_{1}^{2}\]
+  \[0=\frac{1}{24\beta^{2}}h_{1}^{3}(5(J''(u_{0}))^{2}+3\lambda^{2}J'''(u_{0}))\]
+  \[h_{2}=-\frac{1}{12\beta^{2}}J''(u_{0})h_{1}^{2}\]
+  \[h_{3}=-\frac{1}{8\beta^{2}}[\frac{1}{2}J''(u_{0})h_{1}h_{2}+\frac{1}{24}h_{1}^{3}J'''(u_{0})]\]
+  考察第二个方程即得。
+\end{proof}
+
+\paragraph{(vii)}
+\begin{proof}
+  直接计算得$J'(u_{0})=(1-\beta^{2})(\beta^{2}-2)\frac{m}{l^{2}}ku^{-\beta^{2}}=1-\beta^{2}\Rightarrow u_{0}^{\beta^{2}}=\frac{mk}{l^{2}}(\beta^{2}-2)$。故$J''(u_{0})=\frac{(\beta^{2}-1)\beta^{2}}{u_{0}}, J'''(u_{0})=-\frac{(1+\beta^{2})\beta^{2}(\beta^{2}-1)}{u_{0}^{2}}$。代入(vi)中所证等式化简得：
+  \[5\beta^{4}(1-\beta^{2})^{2}-3\beta^{4}(1+\beta^{2})(\beta^{2}-1)=2\beta^{2}(1-\beta^{2})(4-\beta^{2})=0\]
+  得证。
+\end{proof}
+\end{document}
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

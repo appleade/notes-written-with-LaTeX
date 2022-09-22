@@ -1,0 +1,49 @@
+\message{ !name(2.tex)}\documentclass{ctexart}
+\usepackage{bm,amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+\usepackage[xetex]{preview}
+\begin{document}
+
+\message{ !name(2.tex) !offset(3) }
+\subparagraph{(i)}
+\begin{proof}
+  取$m=\inf\{a|P(X\leq a)\geq \frac{1}{2}\}$。断言：$m$即为中位数。
+  \begin{itemize}
+  \item 一方面，$\forall b<m, P(X\leq b)<\frac{1}{2}$。故$P(X< m)=\lim_{b\to m^{-}}P(X\leq b)\leq \frac{1}{2}\Rightarrow P(X\geq m)=1-P(X<m)\geq \frac{1}{2}$
+  \item 另一方面，$\forall a>m, P(X\leq a)\geq\frac{1}{2}$，故$P(X\leq m)=\lim_{a\to m^{+}}P(X\leq a)\geq\frac{1}{2}$
+  \end{itemize}
+\end{proof}
+
+\message{ !name(2.tex) !offset(188) }
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

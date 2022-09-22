@@ -1,0 +1,388 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[UTF8]{ctex}%Use Xelatex to compile
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{pythonhighlight}
+\usepackage{sectsty}
+
+\sectionfont{\fontsize{12}{15}\selectfont}
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+
+ 
+\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+\newenvironment{solution}{%
+  \begin{proof}[Solution]$ $\par\nobreak\ignorespaces
+}{%
+  \end{proof}
+}
+\usepackage{enumitem}
+\def \H{\mathcal H}
+\def \z{\boldsymbol{z}}
+\def \w{\boldsymbol{w}}
+\def \x{\boldsymbol{x}}
+\def \hint{\textbf{Hint: }}
+\DeclareMathOperator*{\sign}{sign}
+\DeclareMathOperator*{\WM}{Weighted Majority}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+
+
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+%% Homework info.
+\newcommand{\posted}{\text{Apr 2, 2022}}       			%%% FILL IN POST DATE HERE
+\newcommand{\due}{\text{Apr 18 23:59, 2022}} 			%%% FILL IN Due DATE HERE
+\newcommand{\hwno}{\text{3}} 		           			%%% FILL IN LECTURE NUMBER HERE
+
+
+%%%%%%%%%%%%%%%%%%%%
+%% Put your information here %%
+%%%%%%%%%%%%%%%%%%%
+\newcommand{\name}{\text{}}  	          			%%% FILL IN YOUR NAME HERE
+\newcommand{\id}{\text{}}		       			%%% FILL IN YOUR ID HERE
+%%%%%%%%%%%%%%%%%%%%
+%% End of the student's info %%
+%%%%%%%%%%%%%%%%%%%
+
+
+\lhead{
+	\textbf{\name}
+}
+\rhead{
+	\textbf{\id}
+}
+\chead{\textbf{
+		Homework \hwno
+}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\begin{document}
+\vspace*{-4\baselineskip}
+\thispagestyle{empty}
+
+
+\begin{center}
+{\bf\large Mathematical Foundations of Machine Learning}\\
+{Spring 2022}\\
+Tsinghua University
+\end{center}
+\rule{\textwidth}{2pt}
+\noindent
+Lecturer: Yuan Zhou   			 %%% FILL IN LECTURER HERE
+\hfill
+\textbf{Homework \hwno}             			
+\\
+Posted: \posted
+\hfill
+Due: \due
+\\
+Name: \name             			
+\hfill
+ID: \id					
+\hfill
+\rule{\textwidth}{2pt}
+
+\medskip
+%\begin{center}
+{ \it There are $10$ problems in this homework. The total amount of available points is 100. You may start to work on Problems 1--6 immediately. Problems 7--8 will be ready for you to work on after we finish Lecture 04. Problems 9--10 will be ready after we finish Lecture 05.
+
+Throughout this exercise, we use $\log$ to denote the natural logarithm (i.e., the $\ln$ function).
+}
+%\end{center}
+
+
+\section{Tightness of the VC-dimension upper bound of $L(B, T)$ [10 pts.]}
+\vspace{-2ex}
+
+
+Prove the following exercise task in Lecture 05: for any large enough $d$, there exists a base hypothesis class $B$, such that $\mathrm{VCDim}(B)=d$ and $\mathrm{VCDim}(L(B, T)) \geq \Omega(T \cdot \mathrm{VCDim}(B))$.
+
+
+\section{No-free-lunch for non-uniform learnability [10 pts.]} 
+\vspace{-2ex}
+
+
+Prove that for any infinite domain set $\mathcal{X}$, the class $\mathcal{H}=\{\mathcal{X} \mapsto\{0,1\}\}$ is not a countable union of classes of finite VC dimension.
+
+\begin{proof}
+  $\mathcal{H}$ has cardinality $2^{\aleph_0}=\aleph_{1}$. Meanwhile, classes of finite VC dimension has at most countable cardinality, and their countable union still has cardinality $\aleph_0< \aleph_1$, which proves the statement.
+\end{proof}
+
+
+\section{Analysis for the {\bf $k$-NN} rule [30 pts.]}\vspace{-2ex}
+
+ Please prove the following theorem.
+\begin{theorem}
+Let $\mathcal{X}=[0,1]^{d}, \mathcal{Y}=\{0,1\}$, and $\mathcal{D}$ be a distribution over $\mathcal{X} \times \mathcal{Y}$ for which the conditional probability function, $\eta$, is a c-Lipschitz function. Let $h_{S}$ denote the result of applying the {\bf $k$-NN} rule to a sample $S \sim \mathcal{D}^{m}$, where $k \geq 10$. Let $h^{\star}$ be the Bayes optimal hypothesis. Then,
+$$
+\underset{S}{\mathbb{E}}\left[L_{\mathcal{D}}\left(h_{S}\right)\right] \leq\left(1+\sqrt{\frac{8}{k}}\right) L_{\mathcal{D}}\left(h^{\star}\right)+(6 c \sqrt{d}+k) m^{-1 /(d+1)} .
+$$
+\end{theorem}
+\begin{enumerate}[label=(\alph*)]
+    \item  Prove the following Lemma.
+    \begin{lemma}\label{lem1}
+    Let $C_{1}, \ldots, C_{r}$ be a collection of subsets of some domain set, $\mathcal{X}$. Let $S$ be a sequence of $m$ points sampled i.i.d. according to some probability distribution, $\mathcal{D}$ over $\mathcal{X}$. Then, for every $k \geq 2$,
+$$
+\underset{S \sim D^{m}}{\mathbb{E}}\left[\sum_{i:\left|C_{i} \cap S\right|<k} \mathbb{P}\left[C_{i}\right]\right] \leq \frac{2 r k}{m} .
+$$
+    \end{lemma}
+    \underline{Hints:}
+    \begin{itemize}
+        \item Show that
+$$
+\mathbb{E}_{S}\left[\sum_{i:\left|C_{i} \cap S\right|<k} \mathbb{P}\left[C_{i}\right]\right]=\sum_{i=1}^{r} \mathbb{P}\left[C_{i}\right] \mathbb{P}_{S}\left[\left|C_{i} \cap S\right|<k\right] .
+$$
+        \item Fix some $i$ and suppose that $k<\mathbb{P}\left[C_{i}\right] m / 2$. Use Chernoff's bound to show that
+$$
+\mathbb{P}_{S}\left[\left|C_{i} \cap S\right|<k\right] \leq \mathbb{P}_{S}\left[\left|C_{i} \cap S\right|<\mathbb{P}\left[C_{i}\right] m / 2\right] \leq e^{-\mathbb{P}\left[C_{i}\right] m / 8} .
+$$
+        \item Use the inequality $\max _{a} a e^{-m a} \leq \frac{1}{m e}$ to show that for such $i$ we have
+$$
+\mathbb{P}\left[C_{i}\right] \mathbb{P}_{S}\left[\left|C_{i} \cap S\right|<k\right] \leq \mathbb{P}\left[C_{i}\right] e^{-\mathbb{P}\left[C_{i}\right] m / 8} \leq \frac{8}{m e} .
+$$
+\item  Conclude the proof by using the fact that for the case $k \geq \mathbb{P}\left[C_{i}\right] m / 2$ we clearly have:
+$$
+\mathbb{P}\left[C_{i}\right] \mathbb{P}_{S}\left[\left|C_{i} \cap S\right|<k\right] \leq \mathbb{P}\left[C_{i}\right] \leq \frac{2 k}{m} .
+$$
+    \end{itemize}
+
+    \item  We use the notation $y \sim p$ as a shorthand for ``$y$ is a Bernoulli random variable with expected value $p$.'' Prove the following lemma:
+    \begin{lemma}\label{lem2}
+    Let $k \geq 10$ and let $Z_{1}, \ldots, Z_{k}$ be independent Bernoulli random variables with $\mathbb{P}\left[Z_{i}=1\right]=p_{i} .$ Denote $p=\frac{1}{k} \sum_{i} p_{i}$ and $p^{\prime}=\frac{1}{k} \sum_{i=1}^{k} Z_{i}$. Show that
+$$
+\underset{Z_{1}, \ldots, Z_{k}}{\mathbb{E}} \underset{y \sim p}{\mathbb{P}}\left[y \neq \mathrm I_{\left[p^{\prime}>1 / 2\right]}\right] \leq\left(1+\sqrt{\frac{8}{k}}\right) \underset{y \sim p}{\mathbb{P}}\left[y \neq \mathrm{I}_{[p>1 / 2]}\right] .
+$$
+    \end{lemma}
+    \underline{Hints:}
+W.l.o.g.~assume that $p \leq 1 / 2$. Then, $\mathbb{P}_{y \sim p}\left[y \neq \mathrm{I}_{[p>1 / 2]}\right]=p$. Let $y^{\prime}=\mathrm{I}_{\left[p^{\prime}>1 / 2\right]}$.
+\begin{itemize}
+    \item Show that
+$$
+\underset{Z_{1}, \ldots, Z_{k}}{\mathbb{E}} \underset{y \sim p}{\mathbb{P}}\left[y \neq y^{\prime}\right]-p=\underset{Z_{1}, \ldots, Z_{k}}{\mathbb{P}}\left[p^{\prime}>1 / 2\right](1-2 p) .
+$$
+    
+    \item Use Chernoff's bound to show that
+$$
+\mathbb{P}\left[p^{\prime}>1 / 2\right] \leq e^{-k p h\left(\frac{1}{2 p}-1\right)}
+$$
+where
+$$
+h(a)=(1+a) \log (1+a)-a .
+$$
+       \item To conclude the proof of the lemma, you can rely on the following inequality (without proving it): For every $p \in[0,1 / 2]$ and $k \geq 10$ :
+$$
+(1-2 p) e^{-k p+\frac{k}{2}(\log (2 p)+1)} \leq \sqrt{\frac{8}{k}} p .
+$$
+
+\end{itemize}
+
+\item  Fix some $p, p^{\prime} \in[0,1]$ and $y^{\prime} \in\{0,1\}$. Show that
+$$
+\underset{y \sim p}{\mathbb{P}}\left[y \neq y^{\prime}\right] \leq \underset{y \sim p^{\prime}}{\mathbb{P}}\left[y \neq y^{\prime}\right]+\left|p-p^{\prime}\right| .
+$$
+
+\item Conclude the proof of the theorem according to the following steps:
+\begin{itemize}
+\item Fix some $\epsilon>0$ and let $C_{1}, \ldots, C_{r}$ be the cover of the set $\mathcal{X}$ using boxes of length $\epsilon$. For each $\bm{x}, \bm{x}^{\prime}$ in the same box we have $\left\|\bm{x}-\bm{x}^{\prime}\right\| \leq \sqrt{d} \epsilon$. Otherwise, $\left\|\bm{x}-\bm{x}^{\prime}\right\| \leq 2 \sqrt{d}$. Show that
+\begin{align}
+&\underset{S}{\mathbb{E}}\left[L_{\mathcal{D}}\left(h_{S}\right)\right] \leq \underset{S}{\mathbb{E}}\left[\sum_{i:\left|C_{i} \cap S\right|<k} \mathbb{P}\left[C_{i}\right]\right] \nonumber \\
+&\quad+\max _{i} \underset{S,(\bm{x}, y)}{\mathbb{P}}\left[h_{S}(\bm{x}) \neq y \mid \forall j \in[k],\left\|\bm{x}-\bm{x}_{\pi_{j}(\bm{x})}\right\| \leq \epsilon \sqrt{d}\right] .\label{eq0}
+\end{align}
+
+    \item Bound the first summand using Lemma~\ref{lem1}.
+    \item To bound the second summand, let us fix $\left.S\right|_{x}$ and $x$ such that all the $k$ neighbors of $\bm{x}$ in $\left.S\right|_{x}$ are at distance of at most $\epsilon \sqrt{d}$ from $\bm{x}$. W.l.o.g assume that the {\bf $k$-NN} are $\bm{x}_{1}, \ldots, \bm{x}_{k}$. Denote $p_{i}=\eta\left(\bm{x}_{i}\right)$ and let $p=$ $\frac{1}{k} \sum_{i} p_{i}$. Use Exercise (c) to show that
+$$
+\underset{y_{1}, \ldots, y_{j}}{\mathbb{E}} \underset{y \sim \eta(\bm{x})}{\mathbb{P}}\left[h_{S}(\bm{x}) \neq y\right] \leq \underset{y_{1}, \ldots, y_{j}}{\mathbb{E}} \underset{y \sim p}{\mathbb{P}}\left[h_{S}(\bm{x}) \neq y\right]+|p-\eta(\bm{x})| .
+$$
+W.l.o.g. assume that $p \leq 1 / 2$. Now use Lemma~\ref{lem2} to show that
+$$
+\underset{y_{1}, \ldots, y_{j}}{\mathbb{P}} \underset{y \sim p}{\mathbb{P}}\left[h_{S}(\bm{x}) \neq y\right] \leq\left(1+\sqrt{\frac{8}{k}}\right) \underset{y \sim p}{\mathbb{P}}\left[\mathrm{I}_{[p>1 / 2]} \neq y\right] .
+$$
+
+    \item Show that
+$$
+\underset{y \sim p}{\mathbb{P}}\left[\mathrm{I}_{[p>1 / 2]} \neq y\right]=p=\min \{p, 1-p \} \leq \min \{\eta(\bm{x}), 1-\eta(\bm{x})\}+|p-\eta(\bm{x})|.
+$$
+    \item Combine all the preceding to obtain that the second summand in Equation~(\ref{eq0}) is bounded by
+$$
+\left(1+\sqrt{\frac{8}{k}}\right) L_{\mathcal{D}}\left(h^{\star}\right)+3 c \epsilon \sqrt{d} .
+$$
+        \item Use $r=(2 / \epsilon)^{d}$ to obtain that:
+$$
+\underset{S}{\mathbb{E}}\left[L_{\mathcal{D}}\left(h_{S}\right)\right] \leq\left(1+\sqrt{\frac{8}{k}}\right) L_{\mathcal{D}}\left(h^{\star}\right)+3 c \epsilon \sqrt{d}+\frac{2(2 / \epsilon)^{d} k}{m} .
+$$
+Set $\epsilon=2 m^{-1 /(d+1)}$ and use
+$$
+6 c m^{-1 /(d+1)} \sqrt{d}+\frac{2 k}{e} m^{-1 /(d+1)} \leq(6 c \sqrt{d}+k) m^{-1 /(d+1)}
+$$
+to conclude the proof.
+
+\end{itemize}
+\end{enumerate}
+
+
+
+\section{Property of the logistic loss function and the hinge loss function. [10 pts]}
+\vspace{-2ex}
+
+\begin{enumerate}[label=(\alph*)]
+\item  Consider the learning problem of logistic regression: Let $\mathcal{H}=\mathcal{X}=\{\bm{x} \in$ $\mathbb{R}^{d}:\|\bm{x}\| \leq B\}$, for some scalar $B>0$, let $\mathcal{Y}=\{\pm 1\}$, and let the loss function $\ell$ be defined as $\ell(\bm{w},(\bm{x}, y))=\log (1+\exp (-y\langle\bm{w}, \bm{x}\rangle))$. Show that the resulting learning problem is both convex-Lipschitz-bounded and convex-smooth-bounded. Specify the parameters of Lipschitzness and smoothness.
+
+    \item Consider the problem of learning halfspaces with the hinge loss. We limit our domain to the Euclidean ball with radius $R$. That is, $\mathcal{X}=\left\{\bm{x}:\|\bm{x}\|_{2} \leq R\right\}$. The label set is $\mathcal{Y}=\{\pm 1\}$ and the loss function $\ell$ is defined by $\ell(\bm{w},(\bm{x}, y))=$ $\max \{0,1-y\langle\bm{w}, \bm{x}\rangle\}$. We already know that the loss function is convex. Show that it is $R$-Lipschitz.
+
+\end{enumerate}
+
+
+  \begin{proof}
+\begin{enumerate}
+\item Obviously $\mathcal{H}$ is convex, and limited to this bounded set, $l$ is bounded. So it suffices to prove convexity, Lipschitzness and smoothness of $l$.
+
+  $\nabla l(\bm{w}, (\bm{x}, y))=-\frac{y \exp(-y \left\langle \bm{w}, \bm{x} \right\rangle)}{1+ \exp(-y \left\langle \bm{w},\bm{x} \right\rangle)}\bm{x},
+  \nabla\nabla l(\bm{w},(\bm{x},y))=(x_ix_jy^2\frac{\exp(-y \left\langle \bm{w},\bm{x} \right\rangle)}{1+\exp(-y \left\langle \bm{w},\bm{x} \right\rangle)})_{ij}$.
+
+  $\nabla\nabla l$ is semidefinite, so $l$ is convex.
+
+  $\left\|\nabla l\right\|\leq B |1- \frac{1}{1+\exp(-y \left\langle \bm{w},\bm{x} \right\rangle)}|\leq B \frac{\exp(B^2)}{1+\exp(B^2)}$. The equality holds when $\bm{w},\bm{x}$ are paralell and $\left\|\bm{x}\right\|=B$, which indeed can be reached, so $\rho=B \frac{e^{B^2}}{1+e^{B^2}}$
+
+  With the same condition to reach equality, $\left\|\nabla\nabla l\right\|\leq B^2 \frac{e^{B^{2}}}{1+e^{B^2}}= \beta$
+
+\item For fixed $\bm{x},y$, denote $C= \left\{\bm{w}: y \left\langle \bm{w},\bm{x} \right\rangle >1 \right\}$. $\forall \bm{w}\in C^{\circ}, \nabla l \equiv 0$; $\forall \bm{w}\in C^c, \nabla l= -y \bm{x}\Rightarrow \left\|\nabla l\right\|\leq B$; $\forall \bm{w}\in \partial C, \partial l=\left\{ t(-y \bm{x}): t\in [0,1] \right\}\Rightarrow \left\|l\right\|\leq R$. Above all, $l$ is $R$-Lipschitz.
+\end{enumerate}
+    
+  \end{proof}
+
+
+
+
+\section{Faster convergence rate of the sub-gradient descent algorithm for strongly convex functions [10 pts.]} 
+\vspace{-2ex}
+
+We say a function $f$ is \emph{$\lambda$-strongly convex} if for all $\bm{u}$, $\bm{w}$, and $\alpha \in (0, 1)$, it holds that 
+\[
+f(\alpha \bm{u} + (1-\alpha) \bm{w}) \leq \alpha f(\bm{u}) + (1-\alpha) f(\bm{w}) - \frac{\lambda}{2} \alpha (1-\alpha) \|\bm{u} - \bm{w}\|^2 .
+\]
+Note that any convex function is a $0$-strongly convex function. In this problem, we will slightly modify the sub-gradient descent algorithm in Lecture 07 and show a faster convergence rate of the new algorithm for strongly convex functions.
+\begin{itemize}
+\item Show that if $f$ is $\lambda$-strongly convex then for every $\bm{w}$, $\bm{u}$, and sub-gradient $\bm{v} \in \partial f(\bm{w})$, it holds that
+\[
+\langle \bm{w} - \bm{u}, \bm{v} \rangle \geq f(\bm{w}) - f(\bm{u}) + \frac{\lambda}{2} \|\bm{u} - \bm{w}\|^2 .
+\]
+
+\item Now let us consider the following sub-gradient descent algorithm with time-varying learning rate. To find the minimizer of the objective function $f$, we start with $\bm{w}^{(1)} = \bm{0}$. At each iteration $t = 1, 2, 3, \dots, T$, we update 
+\[
+\bm{w}^{(t+1)} \leftarrow \bm{w}^{(t)} - \eta_t \bm{v}_t,
+\]
+where $\bm{v}_t\in \partial f(\bm{w}^{(t)})$ is a sub-gradient of $f$ at $\bm{w}^{(t)}$. The algorithm finally returns $\overline{\bm{w}} = \frac1T \sum_{t=1}^{T} \bm{w}^{(t)}$. Note that the only difference we make here is that the learning rate $\eta_t$ may vary during the optimization process.
+
+Assume that $f$ is $\rho$-Lipschitz and $\lambda$-strongly convex. Let $\bm{w}^*$ be the global minimizer of $f$. Show that
+\begin{align*}
+& \sum_{t=1}^{T} (f(\bm{w}^{(t)}) - f(\bm{w}^*)) \\
+& \qquad\qquad  \leq \frac12 \sum_{t=1}^{T}\left[ \frac{\|\bm{w}^{(t)} - \bm{w}^{*}\|^2 - \|\bm{w}^{(t+1)} - \bm{w}^{*}\|^2}{\eta_t} - \lambda \|\bm{w}^{(t)} - \bm{w}^{*}\|^2 + \eta_t \|\bm{v}_t\|^2\right] .
+\end{align*}
+
+
+\item Appropriately set $\eta_t$ (which might be a function of $t$, $T$, $\lambda$, and $\rho$), and prove that 
+\[
+f(\overline{\bm{w}}) \leq f(\bm{w}^*)  + O\left(\frac{\rho^2 \log T}{\lambda T} \right),
+\]
+where only a universal constant is hidden in the $O(\cdot)$ notation. Note that for ordinary convex functions, we only proved a $T^{-1/2}$-type convergence rate. 
+\end{itemize}
+\begin{proof}
+  
+\end{proof}
+
+
+
+
+
+
+
+
+
+\section{Python implementation of the Boosting algorithm [40 pts.]}
+\vspace{-2ex}
+
+In this problem, we will implement the Viola-Jones ensemble classification method described in 
+Viola, Paul, and Michael Jones. \textit{Rapid object detection using a boosted cascade of simple features}.
+\textbf{You should summit the code file and the figure.pdf in a zip package.}
+ 
+ \begin{enumerate}[label=(\alph*)]
+    \item Make the following preparations.
+    \begin{itemize}
+        \item Install package Numpy and Sklearn in Pycharm.
+        \item Read the paper \textit{Rapid object detection using a boosted cascade of simple features} carefully, especially Table 1: The boosting algorithm for learning a query online.
+        \item Read the short summary lecture note of this paper. 
+        \item Read the existing code carefully and make the function of each part clear.
+    \end{itemize}
+    \item Complete the kernel part in the train function according to the algorithms in the paper which can be summarized in the following step
+    \begin{itemize}
+        \item Set the value of $\beta$.
+\item Update the weights.
+\item Set the value of $\alpha$.
+
+        
+    \end{itemize}
+    Put your code here.
+    \begin{python}
+        for t in range(self.T):
+            weights = weights / np.linalg.norm(weights)
+            weak_classifiers = self.train_weak(X, y, features, weights)
+            clf, error, accuracy = self.select_best(weak_classifiers, weights, training_data)
+            ###Step1: Get the value of $\beta$ based on error.
+            beta =
+            ### Step2: Update the weights.
+            
+            ###Step3: Get the value of $\alpha$ based on $\beta$.
+            alpha = 
+            
+            self.alphas.append(alpha)
+            self.clfs.append(clf)
+            print("Chose classifier: %s with accuracy: %f and alpha: %f" % (str(clf), len(accuracy) - sum(accuracy), alpha))
+    \end{python}
+    \item Set the Tset in main.py (such as Tset=[10,...,200] at least 10 elements) to observe how training accuracy and test accuracy change when $T$ is getting large, and give a result analysis why this phenomenon happen.
+    \begin{python}
+         def main():
+             Tset=[]
+    \end{python}
+
+    \end{enumerate}
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

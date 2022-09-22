@@ -1,0 +1,311 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,hyperref,comment}
+\usepackage[margin=1 in]{geometry}
+\title{概率论第4次作业}
+\author{2019011986\and 数91\and 董浚哲}
+\date{\today}
+\begin{document}
+\maketitle
+\section{A}
+
+\subsection{(A1)}
+\paragraph{(i)}
+  正确。对$a$验证，$b$的情形是类似的。$\mu(a,b)=F(b-)-F(a-)=\mu[a,b)$
+
+\paragraph{(ii)}
+  正确，是(i)的直接推论。
+
+\paragraph{(iii)}
+正确。因$X_n,X$是随机变量，$\mu_{X_n},\mu_X\subset \mathrm{PM}$，再由讲义推论3.12即得。
+
+\paragraph{(iv)}
+正确。由定理3.8，只需证明$\forall f\in C_c,\exists f_n\in C_c^{\infty}\text{ s.t. } \lim\limits_{n\to\infty}\underset{}{\mathbb{E}}\left[ f_n(X)\right]=\underset{}{\mathbb{E}}\left[ f(X)\right]$。因$f$可测，故$\exists \hat{f}_n\in \mathrm{SP}\cap C_c \text{ s.t. } f=\sup \hat{f}_n$。用无穷光滑的函数连接$\hat{f}_n$的间断点即得$f_n$且$f=\sup f_n$仍然成立，故得。
+
+\paragraph{(v)}
+错误。设$X_n$服从$(0,\frac{1}{n})$上的均匀分布，即$F_{X_n}(w)=nw \quad w\in [0,\frac{1}{n}]$，而$X$服从$0$处的Dirac测度，则$X_n\Rightarrow X$，但显然$X$不是绝对连续的。
+
+\paragraph{(vi)}
+错误。反例同上，$G=(0,+\infty)$
+
+\paragraph{(vii)}
+错误。取$X_n,X,Y$为$[0,1]$上的均匀分布，$Y_n$为$[2,3]$上的均匀分布，则$F_{X+Y}(1)=\frac{1}{2}, F_{X_n+Y_n}(1)=1$，故命题不成立。
+
+\paragraph{(viii)}
+
+错误。在上例中对换$X_n,Y_n$即是反例。
+\paragraph{(ix)}
+错误。反例同上。
+
+\paragraph{(x)}
+正确。由卷积公式：
+\begin{align*}
+  &\lim\limits_{n\to\infty}F_{X_n+Y_n}(a)\\
+  =&\lim\limits_{n\to\infty}\int_{\mathbb{R}}^{} p_{X_n}(a-s)p_{Y_n}(s) \,\mathrm{d}s\\
+  =&\int_{\mathbb{R}}^{} p_X(a-s)p_Y(s) \,\mathrm{d}s\\
+  =&F_{X+Y}(a)
+\end{align*}
+再由(iii)即得。
+
+\paragraph{(xi)}
+正确。由Borel-Cantelli第一引理，$\mathbb{P}[\left\{ |X_n|>\varepsilon \quad \mathrm{i.o.}\right\} ]=\mathbb{P}\left[\varlimsup\limits_{n\to\infty} \left\{ |X_{n}|>\varepsilon \right\} \right]=\lim\limits_{n\to\infty}\mathbb{P}\left[\{ \sup\limits_{m\geq n}|X_n| \geq \varepsilon\}\right]=0$，由命题2.14即得。
+
+\paragraph{(xii)}
+正确。由三级数定理$\sum\limits_{n}^{}X_n \text{ a.s. }\Leftrightarrow\forall C>0, \sum\limits_{n}^{}\mathbb{P}\left[ |X_n|>C\right]<\infty, \underset{}{\mathbb{E}}\left[ X_{n}\mathbf{1}_{|X_n|<C}\right]<\infty, \sum \mathrm{Var}(X_{n}\mathbf{1}_{|X_n|\leq C})<\infty $。由条件，在上述三级数中将$X_n$替换为$Y_n$级数的收敛性不变，故得。
+
+\paragraph{(xiii)}
+正确。反设该级数不收敛，则由独立性与Borel-Cantelli第二引理，$\mathbb{P}\left[ |X_n| \geq n \quad \mathrm{i.o.}\right]=1$，即$\mathbb{P}\left[ \varlimsup\limits_{n\to\infty}\frac{|X_n|}{n}\geq 1 \right]=1$。结合题设，这唯有$\varlimsup\limits_{n\to\infty}\frac{|X_{n}|}{n}=1 \quad \text{ a.s. }$，故$\sum\limits_{n}^{}\mathbb{P}\left[ |X_{n}|\geq n \right]\leq e^{-n}E[|\exp(X_{n})|]\leq C\sum e^{-n+2}<\infty$，矛盾！故该级数收敛。
+
+\subsection{(A2)}
+\paragraph{(i)}
+\begin{proof}
+  由(A1)(ii), $x$是原子当且仅当它是$F_{\mu}$的间断点。但$F_{\mu}$是单增函数其间端点之多可数，故得。
+\end{proof}
+\paragraph{(ii)}
+\begin{proof}
+  必要性由定义显然，下证充分性：
+  
+  $\forall a<b\in \mathcal{C}_X$，因$D$离散，故因有界数列必有收敛子列知其中只有$D$中有限多个元素$p_1,\dots,p_k$。则$\mu_X[a,b]=\sum\limits_{i=1}^{k}\mathbb{P}\left[ X=p_i \right]=\lim\limits_{n\to\infty}\sum\limits_{i=1}^{k}\mathbb{P}\left[ X_n=p_{i} \right]=\lim\limits_{n\to\infty}\mu_{X_n}[a,b]$，得证。
+\end{proof}
+
+\paragraph{(iii)}
+\begin{proof}
+由$L^p$空间的包含关系，$Y\in L^{\infty}\subset L^2$。
+  
+  由独立性，$\forall i\neq j, \underset{}{\mathbb{E}}\left[ X_iX_j\right]=\underset{}{\mathbb{E}}\left[ X_i\right]\underset{}{\mathbb{E}}\left[ X_j\right]=0   $，故$\left\{ X_n \right\}$是规范正交集。故由Bessel不等式：
+  \begin{equation*}
+\sum\limits_{n\in \mathbb{N}}^{}\underset{}{\mathbb{E}}\left[ X_nY\right]^2\leq \underset{}{\mathbb{E}}\left[ Y^2\right]<\infty
+\end{equation*}
+故$\lim\limits_{n\to\infty}\underset{}{\mathbb{E}}\left[ X_nY\right]^2=0 \Rightarrow \lim\limits_{n\to\infty}\underset{}{\mathbb{E}}\left[ X_nY\right]=0 $
+\end{proof}
+
+\paragraph{(iv)}
+对随机变量$X_n$构造序列$a_{nk},b_{nk}$再取对角线$a_n=a_{nn}, b_n=b_{nn}$即得。下面是对任意的随机变量$X$的相应序列$a_k,b_k$的构造过程，对所有随机变量的构造是类似的。
+
+分$X$为正部、负部：$X=X^+-X^{-} \quad X^{\pm}\geq 0$。$\exists \phi_n^+, \phi_n^- \subset \mathrm{SP}\cap \mathcal{L}^+\text{ s.t. } \phi^{\pm}\leq X^{\pm}, \sup\limits_n \phi^{\pm}=X^{\pm} $。
+取$b_n=0, a_n=n\max \left\{ \max|\phi_n^+|,\max|\phi^-_n| \right\}$即得
+\paragraph{(v)}
+\begin{proof}
+  注意到$\varliminf\limits_{n\to\infty}=\sup\limits_n \inf\limits_{m\geq n}$。故
+\begin{align*}
+  \underset{}{\mathbb{E}}\left[ |X|\right]=& \sup\limits_{\underset{}{\mathbb{E}}\left[ |Y|\right]=1 }|\underset{}{\mathbb{E}}\left[XY \right]| \\
+  =&\sup\limits_{\underset{}{\mathbb{E}}\left[ |Y|\right]=1 }\left| \lim\limits_{n\to\infty}\underset{}{\mathbb{E}}\left[ X_nY\right]  \right|\\
+  =&\sup\limits_{\underset{}{\mathbb{E}}\left[ |Y|\right]=1 }\left| \lim\limits_{n\to\infty}\inf\limits_{m\geq n}\underset{}{\mathbb{E}}\left[ X_mY\right]  \right|\\
+  \leq &\sup\limits_{\underset{}{\mathbb{E}}\left[ |Y|\right]=1 }\left| \sup\limits_n \inf\limits_{m\geq n}\underset{}{\mathbb{E}}\left[ X_mY\right]  \right|\\
+  =&\varliminf\limits_{n\to\infty}\underset{}{\mathbb{E}}\left[ X_n\right] 
+\end{align*}
+得证。
+\end{proof}
+\paragraph{(vi)}
+\begin{proof}
+  在三级数定理中取$C=0$即得该命题（其余两级数自然地为$0<\infty$）
+\end{proof}
+
+\subsection{(A3)}
+\paragraph{(i)}
+$N_t=n$，即$S_n$是$\left\{ S_k \right\}$中不大于$t$的最大者。一方面，$S_n\leq t$；另一方面，最大性说明$S_{n+1}>t$，综上$\left\{ N_t=n \right\}=\left\{ S_n\leq t<S_{n+1} \right\}$
+
+$\left\{ N_t<n \right\}=\bigcup\limits_{k<n}\left\{ N_t=k \right\}=\bigcup\limits_{k<n}\left\{ S_{k-1}\leq t<S_k \right\}=\left\{ S_n>t \right\}$
+\paragraph{(ii)}
+只需证明对于任意有限值$n<\infty$，$\mathbb{P}\left[ \lim\limits_{t\to\infty}N_t<n \right]=0$。
+\[\mathbb{P}\left[ \lim\limits_{n\to \infty}N_t<n \right]=\mathbb{P}\left[ \lim\limits_{t\to \infty}S_n>t \right]\leq \lim\limits_{t\to \infty}\frac{\sum\limits_{k=1}^n \underset{}{\mathbb{E}}\left[ X_k\right] }{t}=0\]
+得证。
+\paragraph{(iii)}
+因$X_n>0, \underset{}{\mathbb{E}}\left[ X_n\right]<\infty $，故$X_n\in L^1$。故由SLLN，$\lim\limits_{n\to\infty}\frac{S_n}{n}=m \text{ a.s. }$。
+
+对于固定的$t$，由(i)知$S_{N_t}\leq t< S_{N_t+1}$，故
+\begin{equation*}
+\frac{S_{N_t}}{N_t}\leq \frac{t}{N_t}\leq \frac{S_{N_t+1}}{N_t+1}\frac{N_t+1}{N_t}
+\end{equation*}
+由SLLN，$\exists \tilde{\Omega}\subset \Omega \text{ s.t. } \mathbb{P}\left[ \tilde{\Omega} \right]=1, \forall \omega\in \tilde{\Omega}, \lim\limits_{n\to\infty}\frac{S_n}{n}\to m$。故由夹逼定理，$\forall \omega\in \tilde{\Omega}, \lim\limits_{t\to \infty}\frac{N_t}{t}=\frac{1}{m}$
+\paragraph{(iv)}
+既知$\text{ a.s. }$收敛，为证明$L^1$收敛，只需证明$\left\{ \frac{N_t}{t}| t\in \mathbb{R}_+ \right\}$一致可积。
+
+因$X_1>0 \text{ a.s. }$，故$\exists \delta>0 \text{ s.t. } \mathbb{P}\left[ X_1\geq \delta \right]=p>0$。设$X'_{n}=\delta \mathbf{1}_{\left\{ X_n\geq \delta \right\}}$，则$X'_n\leq X_n, \left\{ X'_n \right\} $i.i.d.，且服从分布伯努利分布$\mathbb{P}\left[ X_1= \delta \right]= p, \mathbb{P}\left[ X_1=0 \right]=1-p$。对于$X'_n$定义相应的$S'_n\leq S_n,N'_t\geq N_t$
+
+断言：$\underset{}{\mathbb{E}}\left[ (\frac{N'_t}{t})^2\right] $关于$t$一致有界。
+\begin{proof}[断言的证明]
+  注意到
+  \begin{equation*}
+\mathbb{P}\left[ N'_t \geq n\right]=
+\begin{cases}
+  1& t\geq n\\ \mathbb{P}\left[ S_n\leq t \right]=\sum\limits_{j=0}^{\lfloor t \rfloor}\binom{n}{j}p^j(1-p)^{n-j}
+\end{cases}
+  \end{equation*}
+
+  故有估计：  
+\begin{align*}
+  \underset{}{\mathbb{E}}\left[ N_t^{'2}\right]=& \sum\limits_{n\in \mathbb{N}}^{}n^2 \mathbb{P}\left[ N_t'=n \right]\\
+  =& \sum\limits_{n\geq 1}^{} n^2 \mathbb{P}\left[ N_t\geq n \right]- \sum\limits_{n\geq 1}^{}n^2 \mathbb{P}\left[ N_t\geq n+1 \right]\\
+  =& \sum\limits_{n\geq 1}^{} (2n-1)\mathbb{P}\left[ N_t\geq n \right]\\
+  =& O(t^2) +\sum\limits_{n\geq t}^{}(2n-1)\sum\limits_{j=0}^{\lfloor t \rfloor} \binom{n}{j}p^j(1-p)^{n-j}=O(t^2)
+\end{align*}
+得证。
+\end{proof}
+
+既知断言之成立，$\underset{}{\mathbb{E}}\left[ (\frac{N_t}{t})^2\right]\leq \underset{}{\mathbb{E}}\left[ (\frac{N'_t}{t})^2\right]  $也关于$t$一致有界。再由$L^p$空间的包含关系得知$\frac{N_t}{t}$在$L^1$中一致有界。又已知$\frac{N_t}{t} \text{ a.s. }$收敛，故知其$L^1$收敛。
+
+
+\subsection{(A4)}
+\begin{proof}
+  
+\end{proof}
+\section{B}
+
+\subsection{(B1)}
+是均匀分布。$\forall a\in [0,1]$，取其二进制表示$a=\sum\limits_{n=1}^{\infty}\frac{a_n}{2^n}$，则$F_{X_n}(a)= \sum\limits_{k=1}^n \frac{a_k}{2^k}\to a \quad (n\to \infty)$。故$F_X(a)=a \quad \forall a\in [0,1]$，即$X$服从均匀分布。
+\subsection{(B2)}
+0处的Dirac 分布。
+
+由对称性只需考虑$X_n>0$的部分，断言：$\forall [a,b]\subset \mathbb{R}_+, \mu_X \left( [a,b] \right)=0$。$\mu_{X_n} \left( [a,b] \right)=\int_{a}^{b} \frac{1}{\sqrt{2\pi}\sigma_n}\exp(-\frac{x^2}{2}) \,\mathrm{d}x\leq \frac{b-a}{\sqrt{2\pi}\sigma}\exp(-\frac{a^2}{2})\to 0 \quad(n\to \infty)$，断言得证。
+
+故$\mu_X \left( [a,b] \right)=
+\begin{cases}
+  1& 0\in [a,b]\\ 0 &\text{otherwise}
+\end{cases}
+$
+，即$X\sim \delta_0$
+\subsection{(B3)}
+\begin{proof}
+  在三级数收敛定理中取$C=0$，则只需验证$\underset{}{\mathbb{E}}\left[ \sum\limits_{n\in \mathbb{N}}^{}X_{n}X_{n+1}\right]<\infty$. 因$\sum\limits _{k=1}^n X_kX_{k+1}$单调增，故由MCT，上式中极限可以交换：$\underset{}{\mathbb{E}}\left[ \sum\limits_{n=1}^{\infty}X_nX_{n+1}\right]=\sum\limits_{n=1}^{\infty}\underset{}{\mathbb{E}}\left[ X_nX_{n+1}\right]=\sum\limits_{n=1}^{\infty}p_np_{n+1}<\infty  $，故得。
+\end{proof}
+
+\subsection{(B4)}
+\paragraph{(i)}
+WLOG 设$p\in \mathbb{N}$，其余情况由$L^p$ 空间的包含关系得到。
+
+之前作业已经算得对于$X\sim \mathcal{N}(0,\sigma^2)$，$\underset{}{\mathbb{E}}\left[ X^{2k}\right]=(2k-1)!!\sigma^2\leq (2k)^k\sigma^{2k} $，故
+\begin{align*}
+  \underset{}{\mathbb{E}}\left[ X_n^{2k}\right]=& \leq \underset{}{\mathbb{E}}\left[ (2(X^2+\mu_n^2))^{k}\right] \\
+  =& 2^k \sum\limits_{j=0}^{k}\binom{k}{j}\mu_n^{2(k-j)} \underset{}{\mathbb{E}}\left[ X^{2j}\right]\\
+     \leq & 2^k \sum\limits_{j=1}^{n}\binom{k}{j}\mu_n^{2(k-j)}(2j)^j\sigma^{2j}\\
+  \leq& 2^k \sum\limits_{j=0}^{k} \binom{k}{j} \mu_{n}^{2(k-j)}(2k)^j\sigma^{2j}\\
+  =&(4k)^k(\sigma^2+\mu_n^2)^k=(4k)^k E[X^2]^{k}
+  \end{align*}
+
+\begin{align*}
+  \underset{}{\mathbb{E}}\left[ \sum\limits_{j=1}^{N}X_j^2\right]^p=& \sum\limits_{|\alpha|=p}^{}\binom{p}{\alpha} \prod_{i=1}^{N} \underset{}{\mathbb{E}}\left[ X_i^{2\alpha_i}\right]\\
+  \leq & \sum_{|\alpha|=p}=C_{\alpha}\prod_{i=1}^{N} (4\alpha_i)^{\alpha_i}\underset{}{\mathbb{E}}\left[ X_i^2\right]^{\alpha_i} \\
+  \leq & \sum_{|\alpha|=p}=C_{\alpha}\prod_{i=1}^{N} (4p)^{\alpha_i}\underset{}{\mathbb{E}}\left[ X_i^2\right]^{\alpha_i} =(4p)^p \left( \underset{}{\mathbb{E}}\left[ \sum_{j=1}^N X_j^2\right]  \right)^2\\
+\end{align*}
+因$\sum_{n\in \mathbb{N}}X_n^2 L^1$收敛，故上式在$n\to\infty$时$<\infty$，故由DCT$\sum\limits_{n\in Nat}^{}X_n^2 L^p$收敛。
+
+\paragraph{(ii)}
+\begin{proof}
+  $\underset{}{\mathbb{E}}\left[ \exp(-\sum\limits_{n\in \mathbb{N}}^{}X_n^2)\right]\leq \prod_{n\in \mathbb{N}}^{}\underset{}{\mathbb{E}}\left[ (1+X_n^2)^{-1}\right]= \prod_{n\in \mathbb{N}}^{}(1+\sigma_n^2)^{-1}$。因$\sum\limits_{n\in \mathbb{N}}^{}\sigma^2=\infty$，故上述无穷乘积发散至0。而这唯有$\sum\limits_{n\in \mathbb{N}}^{} X_n=\infty \text{ a.s. }$才有可能。
+\end{proof}
+
+\subsection{(B5)}
+注意到Poisson分布具有性质$X_1\sim P(\lambda_1), X_2\sim P(\lambda_2)\Rightarrow X_1+X_2\sim P(\lambda_1+\lambda_2)$。故WLOG 设$\forall n\in \mathbb{N}, \lambda_n\in (0,1)$，否则取$k_n>\lambda_n$，并以$X_n^i\sim P(\frac{\lambda_n}{k_n}) \quad1 \leq i\leq  k_n$替代$X_n$，此时$S_n, \sum\limits_{}^{}\lambda_n$都保持不变。
+
+取$n_k=\inf \left\{ n:k^2\leq \underset{}{\mathbb{E}}\left[ S_n\right]<k^2+1  \right\}$ （由上述假设这样的$n_k$总是存在的）。则$\forall\varepsilon>0:$
+\begin{align*}
+  \mathbb{P}\left[ \left| \frac{S_{n-k}}{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] } -1\right| >\varepsilon\right]=&\mathbb{P}\left[ |S_{n_k}-\underset{}{\mathbb{E}}\left[ S_{n_k}\right] | >\underset{}{\mathbb{E}}\left[ S_{n_k}\right] \right]\\
+  \leq & \frac{\mathrm{Var}(S_{n_k})}{\varepsilon^2 \underset{}{\mathbb{E}}\left[ S_{n_k}\right]^2 }=\frac{\sum\limits_{i=1}^{n_k}\lambda_i}{\varepsilon^2 \underset{}{\mathbb{E}}\left[ S_{n_k}\right]^2 }\\
+  \leq & \frac{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] }{\varepsilon^2 \underset{}{\mathbb{E}}\left[ S_{n_k}\right]^2 }= \frac{1}{\varepsilon^2 \underset{}{\mathbb{E}}\left[ S_{n_{k}}\right] }\leq \frac{1}{\varepsilon^2 k^2}
+\end{align*}
+故$\sum\limits_{k\in \mathbb{N}}^{}\mathbb{P}\left[  \left| \frac{S_{n_k}}{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] } -1\right| >\varepsilon\right]\leq \sum\limits_{k\in \mathbb{N}}^{}\frac{1}{\varepsilon^2k^2}<\infty $。由Borel-Cantelli第一引理，$\mathbb{P}\left[ \left| \frac{S_{n_k}}{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] }-1 \right|>\varepsilon \quad \mathrm{i.o.} \right]=0$，即$\frac{S_{n_k}}{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] }\to 1 \quad \text{ a.s. }$
+对于一般的$\frac{S_n}{\underset{}{\mathbb{E}}\left[ S_n\right] }$，我们有如下估计：
+\begin{equation*}
+\frac{S_{n_k}}{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] } \frac{\underset{}{\mathbb{E}}\left[ S_{n_k}\right] }{\underset{}{\mathbb{E}}\left[ S_{n_k+1}\right] } \leq\frac{S_n}{\underset{}{\mathbb{E}}\left[ S_n\right] }\leq \frac{S_{n_k+1}}{\underset{}{\mathbb{E}}\left[ S_{n_k+1}\right] }\frac{\underset{}{\mathbb{E}}\left[ S_{n_k+1}\right] }{\underset{}{\mathbb{E}}\left[ S_{n_{k}}\right] }
+\end{equation*}
+故由夹逼定理结论仍然成立，得证。
+
+\subsection{(B6)}
+\paragraph{(i)}
+\begin{proof}
+  反设$X_1\in L^1$，则注意到$X_1>0$，$\sum\limits_{n=3}^{\infty}\mathbb{P}\left[ X_1> n \right]\leq \underset{}{\mathbb{E}}\left[ X_1\right]<\infty $。但
+  \[\sum\limits_{n=3}^{\infty}\mathbb{P}\left[ X_1>n \right]=\sum\limits_{n=3}^{\infty}\frac{e}{n\log(n)}\sim \int_{3}^{\infty} \frac{e}{x\log(x)} \,\mathrm{d}x =\left.e\log\log(x)\right|_3^{\infty}=\infty\]
+  矛盾！命题得证。
+\end{proof}
+
+\paragraph{(ii)}
+用Kolmogorov-Feller引理（即(A4)）。取$b_n=n$，考察其条件是否满足：
+\begin{itemize}
+\item $\lim\limits_{n\to \infty}\sum\limits_{j=1}^n\mathbb{P}\left[ X_j>b_n \right]=\lim\limits_{n\to \infty}\frac{e}{\log(n)}=0$，条件满足。
+\item 不难算得$X^2$的概率密度函数：$p_{X^2}(x)=\frac{e(\log(x)+2)}{x^{\frac{3}{2}}\log^2(x)}$。故$\underset{}{\mathbb{E}}\left[ X_j^2 \mathbf{1}_{|X_j|\leq n}\right]=\frac{1}{e}-\frac{e}{n\log(n)}$，故
+\begin{align*}
+  &\lim\limits_{n\to\infty}\frac{1}{n^2}\sum\limits_{j=1}^n \underset{}{\mathbb{E}}\left[ X_j^2 \mathbf{1}_{|X_j|\leq b_n}\right]\\
+  =&\lim\limits_{n\to\infty}(\frac{1}{ne}-\frac{e}{n^2\log(n)})=0
+\end{align*}
+
+\end{itemize}
+故引理条件满足，只需取$\mu_n=\frac{1}{n}\underset{}{\mathbb{E}}\left[ X_j\mathbf{1}_{|X_j|\leq n}\right]=\frac{e\log\log(n)}{n} $即可。
+
+\subsection{(B7)}
+$t\in\mathbb{Z}$的情形平凡地成立。再由周期性与奇偶性，只需考察$t\in(0,1)$。记$Y_n= X_n\cdot \frac{\sin(n\pi t)}{n}$。简记$\sigma_n=\frac{\sin(n\pi t)}{n}$，则$Y_n\sim \mathcal{N}(0, \sigma_n)$
+
+在三级数定理中取$C>1$，分别考察三级数：
+\begin{enumerate}
+\item 当$\sigma_n\neq 0$时：
+\begin{align}\label{est}
+  \mathbb{P}\left[ |Y_n|>C \right]=& 2\mathbb{P}\left[ Y_n>C \right]\\
+  =& 2\int_{C}^{\infty} \frac{1}{\sqrt{2\pi}\sigma_n}\exp(-\frac{x^2}{2\sigma_n^2}) \,\mathrm{d}x\\
+  \leq& 2\int_{C}^{\infty} \frac{1}{\sqrt{2\pi}\sigma_n}x\exp(-\frac{x^2}{2\sigma_n^2}) \,\mathrm{d}x\\
+  =& \frac{n}{\sqrt{2\pi}\sin(n\pi t)}\exp(-\frac{C^2n^2}{2\sin(n\pi t)^2})
+\end{align}
+\begin{itemize}
+\item 若$t\in\mathbb{Q}$，不妨设$t=\frac{p}{q} \quad p<q$且互质，则原级数$=$
+  \[\sum\limits_{n \mod{q}\neq 0}^{}\mathbb{P}\left[ |Y_n|>C \right]=\sum\limits_{1\leq l<q}\sum\limits_{k=1}^{\infty}\mathbb{P}\left[ X_{kq+l}>\frac{(kq+l)C}{\sin(\frac{pl}{q}\pi)} \right]\]
+  只要这$q-1$个级数都收敛，那么原级数就收敛。记$C_l=\frac{C}{\sin(\frac{pl}{q}\pi)}$，则只需证明：$\forall 1\leq l<q$
+  \begin{equation*}
+\sum\limits_{k=1}^{\infty}\mathbb{P}\left[ X_{kq+l}>(kq+l)C_l \right]<\infty
+\end{equation*}
+用与上面的计算相似的方法得到$\mathbb{P}\left[ X_{kq+l}>(kq+l)C \right]\leq \exp(-\frac{(kq+l)^2C_l^2}{2})=O(\exp(-k^2))$，故该级数收敛。
+\item 若$t\in (0,1)\setminus \mathbb{Q}$，则由Weil等分布定理，$nt\mod 1$在$(0,1)$内是等分布的。故$\forall \varepsilon>0, \mathbb{P}\left[ \sin(n\pi t)<\varepsilon\right]=\frac{\arcsin(\varepsilon)}{\pi}$。于是原级数=
+  \begin{equation*}
+\sum\limits_{\sin(n\pi t)<\varepsilon}^{}\mathbb{P}\left[ |Y_n|>C \right]+\sum\limits_{\sin(n\pi t)\geq \varepsilon}^{}\mathbb{P}\left[ |Y_n| >C\right]=: I_1+I_2
+  \end{equation*}
+分别考察$I_1,I_2$：
+\begin{itemize}
+\item 对于$I_1, |\sum\limits_{n=1}^{\infty}\frac{X_n}{n}\sin(n\pi t)|\leq \varepsilon \sum\limits_{n=1}^{\infty} \frac{|X_n|}{n}$。由SLLN，该级数 $\text{ a.s. }$收敛，故由三级数定理$I_1<\infty$
+\item 对于$I_2$，可将\ref{est}中的估计进一步放缩为：
+  \begin{equation*}
+\mathbb{P}\left[ |Y_n| >C\right]\leq \frac{n}{\sqrt{2\pi}\varepsilon}+\exp(-\frac{n^2C}{2\varepsilon^2})=O(\exp(-n^2))
+\end{equation*}
+故$I_{2}$收敛。
+\end{itemize}
+
+  
+  （或注意到$\sum\limits_{n=1}^{\infty}\frac{\sin(n\pi t)}{n}=\frac{\pi}{2}(1-t)\Rightarrow \sum\limits_{n=1}^{\infty}|X_{n}\frac{\sin(n\pi t)}{n}|<2|\frac{\pi}{2}{1-t}|<\infty$得该级数一致收敛，推出其仍具有连续性，再由连续性即得。）
+\end{itemize}
+\item $\sum_{n=1}^{\infty}\underset{}{\mathbb{E}}\left[ Y_n\mathbf{1}_{|Y_n|<C}\right] =0<\infty$
+\item 
+\begin{equation*}
+\sum\limits_{n=1}^{\infty}Var(Y_n\mathbf{1}_{|Y_n|\leq C})\leq \sum\limits_{n=1}^{\infty}Var(Y_n)=\sum\limits_{n=1}^{\infty}\frac{\sin^2(n\pi t)}{n^2}\leq \sum\limits_{n=1}^{\infty}\frac{1}{n^2}<\infty
+\end{equation*}
+
+\end{enumerate}
+综上，由三级数定理，命题成立。
+
+\subsection{(B8)}
+\begin{enumerate}
+\item[$(i)\Rightarrow (ii)$] 在三级数定理中取$C=1$再将前两个级数相加即得。
+\item[$(ii)\Rightarrow (iii)$]  $\underset{}{\mathbb{E}}\left[ \frac{X_n}{1+X_n}\right]=\underset{}{\mathbb{E}}\left[ \frac{X_n}{1+X_n}\mathbf{1}_{X_n<1}\right]+\underset{}{\mathbb{E}}\left[ \frac{X_n}{1+X_n}\mathbf{1}_{X_n>1}\right]\leq  \mathbb{P}\left[ X_n>1 \right]+\underset{}{\mathbb{E}}\left[ X_n\mathbf{1}_{X_n\leq 1}\right] $。求和，即由条件知其收敛。
+\item[$(iii)\Rightarrow(i)$]  $\underset{}{\mathbb{E}}\left[ \frac{X_n}{1+X_n}\right]\geq \underset{}{\mathbb{E}}\left[ \frac{X_n}{1+X_n}\mathbf{1}_{X_n<1}\right]\geq \frac{1}{2}\underset{}{\mathbb{E}}\left[ X_n\right]$。故$\underset{}{\mathbb{E}}\left[ X_n\right] $收敛，由(A2)(vi)即得。
+\end{enumerate}
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

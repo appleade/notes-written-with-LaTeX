@@ -1,0 +1,449 @@
+\ifx\allfiles\undefined
+\documentclass{ctexart}
+\usepackage{mathrsfs,amsmath,amssymb,amsthm,bm,ulem,comment,hyperref}
+\usepackage{tikz-cd}
+\usepackage[margin=1 in]{geometry}
+\begin{document}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+\newcommand{\alsu}{\text{ a.s. }}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathscr{F}}
+\newcommand{\G}{\mathscr{G}}
+\newcommand{\Bor}{\mathscr{B}}
+\newcommand{\pw}{\text{ p.w. }}
+\newcommand{\inof}{\text{ i.o. }}
+\newcommand{\X}{\bm{X}}
+\newcommand{\iid}{\mathrm{i.i.d.}~}
+\newcommand{\C}{\mathbb{C}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+
+\else
+\chapter{中心极限定理}
+\fi
+\begin{Eg}
+  $\left\{ X_n \right\}\iid$, $E[X_1]=0$, $E[X_1^2]=\sigma^2<\infty\Rightarrow$
+\begin{equation}
+\frac{\sum_{k=1}^nX_k}{\sigma \sqrt{n}}\Rightarrow N \left( 0,1 \right)=\frac{1}{\sqrt{2\pi}}\exp(-\frac{x^2}{2})
+\end{equation}
+\end{Eg}
+
+$P \left\{ \frac{S_n}{\sigma \sqrt{n}}\leq x \right\}\approx \int_{-\infty}^{\sigma \sqrt{n}x}\frac{1}{\sqrt{2\pi}}\exp(-\frac{x^2}{2})\dd x$
+
+此处$\sqrt{n}$的偏差较小。对于更大的$\phi(n)$，有所谓“大偏差理论”进行计算。
+
+\section{特征函数}
+事实上它就是傅里叶变换。
+\begin{Def}
+  设$\mu\in \mathrm{PM}(\mathbb{R}), \phi(\mu)=\hat{\mu}:\mathbb{R}\to \mathbb{C}$ 
+\begin{equation}
+\hat{\mu}(t)=\int_{\R}e^{itx}\dd\mu(x)=\int_{\R}\cos(tx)+i\sin(tx)\dd\mu(x)
+\end{equation}
+称$\phi_{\mu}$为$\mu$的特征函数。
+\end{Def}
+\begin{Rmk}
+  若$X$是$\left( \Omega,\mathscr{F},\mathbb{P}\right)$上的随机变量，$X\sim\mu$，则定义$\phi_X=\phi_{\mu}$
+\end{Rmk}
+\begin{Rmk}
+  $\phi_X(t)=E \left[ e^{itX} \right]$
+\end{Rmk}
+\begin{Rmk}
+  $X$是绝对连续的随机变量，有p.d.f.$f(x)$，则
+\begin{equation}
+\phi_X(t)=\phi_{\mu}(t)=\int_{\R}e^{itx}f(x)\dd x=\hat{f}(t)=(\mathcal{F}f)(t)
+\end{equation}
+\end{Rmk}
+
+\begin{Thm}
+  $\mu\in \mathrm{PM}(\mathbb{R})$，则
+\begin{enumerate}
+\item $\phi(0)=1, |\phi_{\mu}(t)|\leq 1, \phi_{\mu}(-t)=\overline{\phi_{\mu}(t)}$
+\item $\phi_{\mu}$一致连续  
+\begin{proof}
+  $|\phi_{\mu}(t)-\phi_{\mu}(s)|=\int_{\R}|e^{itx}(1-e^{i(s-t)x})|\dd \mu=\int_{\R}|(1-e^{i(s-t)x})|\dd \mu\to 0 \quad \left( s\to t \right)$
+\end{proof}
+\item $\phi_{aX+b}(t)=E[e^{it(aX+b)}]=E[e^{itaX}]e^{itb}=e^{itb}\phi_X(at), \phi_{-X}(t)=\phi_{X}(-t)= \overline{\phi_X(t)}$
+\item $\phi_1,\dots,\phi_n$都是$\mathrm{PM}$的特征函数，则$\forall \lambda_{i}\in [0,1]\st \sum_{i=1}^{n}\lambda_{i}=1, \sum_{i=1}^n\lambda_i\phi_i$也是$\mathrm{PM}$的特征函数。
+  \begin{proof}
+    $\forall j,\exists \mu_j\in \mathrm{PM}(\mathbb{R}),\phi_j=\mu_j,\sum_{j=1}\lambda_j\mu_j\in \mathrm{PM}(\mathbb{R})$ 
+\begin{equation}
+\phi_{\mu}(t)=\int_{\R}e^{itx}\dd\mu=\sum_{j=1}^n\lambda_j\int e^{itx}\dd\mu_j=\sum\lambda_j\phi_{\mu_j}(t)
+\end{equation}
+  \end{proof}
+\item $X,Y$独立，则$\phi_{X+Y}(t)=\phi_X(t)\phi_Y(t)$
+\item $\phi$是特征函数，则$|\phi|^2=\phi \overline{\phi}$犹为特征函数
+\end{enumerate}
+\end{Thm}
+
+\begin{Rmk}
+  $X,Y$独立，则$F_{X+Y}=F_X*F_Y, \phi_{X+Y}(t)=\phi_X(t)\phi_Y(t)$
+\end{Rmk}
+
+\begin{Eg}
+  若$X$是离散的，则$\phi_X(t)=\sum_{n=1}^{\infty}e^{itb_n}p_n \quad p_n=P \left\{ X=b_n \right\}$
+  
+\begin{enumerate}
+\item Dirac分布 $\mu=\delta_{ \left\{ a \right\}}\Rightarrow \hat{\mu}(t)=e^{iat}$
+\item Bernoulli 分布 $P \left\{ X=\pm 1 \right\}= \frac{1}{2}\Rightarrow\phi_X(t)=\cos(t)$
+\item 均匀分布 $X\sim U([-a,a]), f(x)=\frac{1}{2a} \mathbf{1}_{\left[ -a,a \right]}(t)\Rightarrow \phi_X=\mathrm{sinc}(at)=\frac{\sin(at)}{at}$
+\item 指数分布 $f(x)=\lambda e^{-\lambda x}\mathbf{1}_{[0,\infty)}(x), \phi_X(t)=\frac{\lambda}{\lambda-it}$
+\item 正态分布$X\sim \mathcal{N}(m,\sigma^2), \phi_{\mathcal{N}(m,\sigma^2)}(t)=e^{imt}\phi_{\mathcal{N}(0,1)}(\sigma t)$。故只需计算标准正态分布的特征函数： 
+\begin{align}
+  \phi_{\mathcal{N}(0,1)}(t)=&\frac{1}{\sqrt{2\pi}}\int_{\R}e^{-\frac{x^2}{2}}e^{itx}\dd x\\
+  =&e^{-\frac{1}{2}t^2}\frac{1}{\sqrt{2\pi}}\int_{\R}e^{-\frac{1}{2}(x-it)^2}\dd x\\
+  =&e^{-\frac{1}{2}t^2}\frac{1}{\sqrt{2\pi}}\int_{\R}e^{-\frac{1}{2}x^2}\dd x\\
+  =&e^{-\frac{1}{2}t^2}
+\end{align}
+故$\phi_{\mathcal{N}(m,\sigma^2)}(t)=e^{imt}e^{-\frac{1}{2}(\sigma^2 t^2)}$
+\end{enumerate}
+\end{Eg}
+
+Characteristic function characterize probability distribution:
+
+\begin{Thm}
+  $\mu\in \mathrm{PM}(\mathbb{R})$，则$\forall x<y \in \mathbb{R}$
+\begin{equation}
+  \mu[(x,y)]+\frac{1}{2}\mu\{x\}+\frac{1}{2}\mu\{y\}=\lim_{T\to\infty}\frac{1}{2\pi}\int_{-T}^T \left( \frac{e^{-itx}-e^{ity}}{it} \right)\phi_{\mu}(t)\dd t
+  \end{equation}
+\end{Thm}
+\begin{Rmk}
+  上式是$\infty$处的Cauchy主值积分：$|\left( \frac{e^{-itx}-e^{ity}}{it} \right)|=O(\frac{1}{t})\leq |x-y|$
+\end{Rmk}
+\begin{proof}
+  容易证明此处可以用Fubini定理交换积分：
+  
+\begin{equation}
+\frac{1}{2\pi}\int_{-T}^T \frac{e^{-itx}-e^{ity}}{it}\int_{\R}e^{itz}\dd\mu(z)\dd t =\frac{1}{2\pi}\int_{\R}\left( \int_{-T}^T \frac{e^{it(z-x)}-e^{it(z-y)}}{it} \right)\dd\mu(z)
+\end{equation}
+记内层积分为
+\begin{equation}
+I(x,y,z;T)=\frac{1}{2\pi}\int_{-T}^T \frac{\sin(t(z-x))-\sin(t(z-y))}{t}\dd t
+\end{equation}
+注意到$\int_{-T}^T \frac{\sin(\alpha t)}{t}= \mathrm{sgn}(\alpha)\int_{-|\alpha|T}^{|\alpha| T}\frac{\sin(u)}{u}\dd u \geq 0$。故化简得
+\begin{equation}
+I(x,y,z;T)= \mathrm{sgn}(z-x) \frac{1}{2\pi}\int_{-|z-x|T}^{|z-x|T} \frac{\sin(u)}{u}\dd u- \mathrm{sgn}(z-y) \int_{-|z-y|T}^{|z-y|T} \frac{\sin(u)}{u}\dd u
+\end{equation}
+又利用Cauchy积分公式得到$\lim\limits_{T\to\infty} \frac{1}{2\pi} \mathrm{sgn}(\alpha)\int_{-T}^T \frac{\sin(\alpha t)}{t}\dd t=\lim\limits_{\R\to\infty} \frac{1}{2\pi}\int_{-R}^R \frac{\sin(t)}{t}\dd t=\lim\limits_{R\to\infty}\int_{-R}^R \frac{1-\cos(t)}{t^2}\dd t=1$。故 
+\begin{equation}
+\lim_{T\to\infty}I(x,y,z;T)=
+\begin{cases}
+  0& z<x<y \lor z>y>x\\
+  \frac{1}{2} & z=x<y \lor z=y>x\\
+  1 & x<z<y
+\end{cases}
+\end{equation}
+故$\mathrm{RHS}=\int_{\R}\lim\limits_{T\to\infty}I(x,y,z)\dd\mu(z)= \mathrm{LHS}$。将$\lim$换出积分号是合理的，因为$|\int_{-T}^T \frac{\sin(\alpha t)}{t}\dd t|\leq \int_{0}^{\pi} \frac{\sin(t)}{t}\dd t<\infty$
+\end{proof}
+
+\begin{Cor}[$\phi_{\mu}$决定了$\mu$]
+  记$F(x)= \mu(-\infty,x]$。$\forall y\in \mathcal{C}_F, \mathrm{LHS}= \frac{1}{2}\left[ F(y)+F(y-) \right]-\frac{1}{2}\left[ F(x)+F(x-) \right]\Rightarrow F(y)= \lim\limits_{x\to-\infty} (\mathrm{RHS}(x,y))$。又因为$C_{\mu}$稠密，$F$右连续，$F(y)=\lim\limits_{x\searrow y, y\in \mathcal{C}_F}F(x)$。特别地，$\forall \mu,\nu\in \mathrm{PM}(\mathbb{R}), \mu=\nu \Leftrightarrow \phi_{\mu}=\phi_{\nu}$
+\end{Cor}
+
+\begin{Cor}
+  $\mu\in \mathrm{BM}(\mathbb{R}), \phi=\phi_{\mu}$，则
+  
+\begin{enumerate}
+\item $\mu \left\{ x \right\}=\lim\limits_{T\to \infty} \frac{1}{2T}\int_{-T}^{T}e^{-itx}\phi(t) \,\mathrm{d}t$
+\item $\sum\limits_{x\in \mathcal{D}_{\mu}}^{}(\mu \left\{ x \right\})^2 =\lim\limits_{T\to \infty}\frac{1}{2T}\int_{-T}^{T} |\phi(t)|^2\,\mathrm{d}t$
+\end{enumerate}
+  
+\end{Cor}
+
+\begin{proof}
+  
+\begin{enumerate}
+\item $\forall T>0$
+  
+\begin{align*}
+  &\frac{1}{2T}\int_{-T}^{T} e^{-itx}\phi(t)\,\mathrm{d}t \,\mathrm{d}\\
+  =&\frac{1}{2T}\int_{-T}^{T} \int_{\mathbb{R}}^{} e^{it(z-x)}  \,\mathrm{d}\mu(z) \,\mathrm{d}t\\
+  =&\int_{\mathbb{R}}^{} \frac{e^{it(z-x)}}{2Ti(z-x)}|_{-T}^T  \,\mathrm{d}\mu(z)\\
+  =&\int_{\mathbb{R}}^{} \mathrm{sinc}(T(z-x)) \,\mathrm{d}\mu(z)\\
+  =&\mu \left\{ x \right\}+ \int_{\mathbb{R}\setminus \left\{ x \right\}}^{} \mathrm{sinc}(T(z-x))  \,\mathrm{d}\mu(z)\to \mu \left\{ x \right\} \quad (t\to 0)
+\end{align*}
+\item   
+  $\left| \phi(t) \right|^2 = \phi_{\mu * \tilde{\mu}} \quad \mu(A)= \tilde{\mu}(-A)$。由(i)
+  
+\begin{align*}
+  \mathrm{RHS}=& (\mu * \tilde{\mu})\left\{ 0 \right\}\\
+  =&\int_{\mathbb{R}}^{} \mathbf{1}_{\left\{ 0 \right\}}(s)   \,\mathrm{d}\mu*\tilde{\mu}(s)\\
+  =&\int_{\mathbb{R}^2} \mathbf{1}_{\left\{ 0 \right\}}(x+y) \,\mathrm{d} \mu(x)\,\mathrm{d} \tilde{\mu}(y)\\
+  =& \int_{\mathbb{R}} \tilde{\mu}\left\{ -x \right\}\,\mathrm{d}\mu(x)\\
+  =&\int_{\mathbb{R}}\mu \left\{ x \right\} \,\mathrm{d}\mu(x)\\
+  =&\int_{\mathcal{D}_{\mu}}\mu \left\{ x \right\} \,\mathrm{d}\mu(x)= \mathrm{LHS}
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{Cor}
+  $\mu\in \mathrm{PM}(\mathbb{R}), \phi=\phi_{\mu}, \phi\in L^1(\mathbb{R}, \lambda)$，则$F=F_{\mu}$在$\mathbb{R}$上连续可微，且
+  \begin{equation*}
+F'(x)=\frac{1}{2\pi}\int_{\mathbb{R}}e^{-itx}\phi(t) \,\mathrm{d}t
+\end{equation*}
+即此时$\phi_{\mu}, p_{\mu}$互为Fourier （逆）变换。
+\end{Cor}
+
+\begin{proof}
+  注意到$\mathcal{D}_{\mu}=\emptyset$，故
+  
+\begin{align*}
+  \frac{F(y)-F(x)}{y-x}=&\lim\limits_{T\to\infty}\frac{1}{2\pi}\int_{-T}^{T}\mathbf{1}_{[-T,T]}(t)\frac{e^{-itx}-e^{-ity}}{it(y-x)}\phi(t)  \,\mathrm{d}t\\
+  =&\frac{1}{2\pi}\int_{-\infty}^{\infty}\lim\limits_{T\to\infty}\mathbf{1}_{[-T,T]}(t)\frac{e^{-itx}-e^{-ity}}{it(y-x)}\phi(t)  \,\mathrm{d}t\\
+  =&\frac{1}{2\pi}\int_{\mathbb{R}}e^{-itx}(\frac{1-e^{it (x-y)}}{it(y-x)})\phi(t) \,\mathrm{d}t。
+\end{align*}
+故由DCT，$F'(x)=\frac{1}{2\pi}\int_{\mathbb{R}}e^{-itx}\phi(t) \,\mathrm{d}t$
+\end{proof}
+
+特别地，以其一致收敛，$F\in C^1$。
+
+\begin{Eg}
+  $\left\{ X_j \right\}_{1\leq j\leq n}$独立，$X_j\sim \mathcal{N}(m_j,\sigma_j^2)\Rightarrow S_n=\sum\limits_{j=1}^n X_j \sim \mathcal{N}(\sum\limits_{j=1}^m m_j, \sum\limits_{j=1}^n \sigma_j^2)$。事实上，$\phi_{S_n}(t)= \prod_{j=1}^{n} e^{itm_j}e^{-\frac{1}{2} t^2 \sigma_j^2}=e^{imt}w^{-\frac{1}{2}\sigma^2 t^2}$
+\end{Eg}
+
+\begin{Eg}
+  称$X$为对称的，若$X \stackrel{\,\mathrm{d}}{=} -X \Leftrightarrow \phi(X)= \overline{\phi(X)}$
+\end{Eg}
+
+\section{随机向量的特征函数}
+$\mu\in \mathrm{PM}(\mathbb{R}^n, \mathcal{B}(\mathbb{R})^n), \phi_{\mu}: \mathbb{R}^n\to \mathbb{C}, \xi\mapsto \int_{\mathbb{R}^n}e^{i\xi\cdot \mathbf{x}} \,\mathrm{d}\mu$。$\phi_{\mathbf{X}}(\xi)= \underset{}{\mathbb{E}}\left[ \exp(i \left\langle \mathbf{\xi}, \mathbf{X} \right\rangle)\right]= \phi_{\left\langle \mathbf{\xi}, \mathbf{X} \right\rangle}(1) $
+
+\begin{Def}[Gauss随机向量]
+  称$\mathbf{X}=\left(X_{1},\dots, X_{n}\right)$为一个n维Gauss随机向量，若$\forall \mathbf{u}\in \mathbb{R}^n$, $\left\langle \mathbf{u}, \mathbf{X} \right\rangle(w)$是一个一维Gauss随机变量。
+\end{Def}
+\begin{Rmk}
+  取常数的随机变量也是Gauss随机变量：$\delta_{\left\{ m \right\}}=\mathcal{N}(m,0)$
+\end{Rmk}
+\begin{Eg}
+  $\mathbf{X}=(X_1,\dots, X_n), \left\{ X_j \right\}_{j=1}^n$独立，$X_j\sim \mathcal{N}(m_j, \sigma_j^2)$，·则$\mathbf{X}$是一个Gauss vector，其中$\phi_{\left\langle i,\mathbf{X} \right\rangle}=\mathbb{E}\left[ \exp(it \sum\limits_{j=1}^n u_j X_j) \right]$
+\end{Eg}
+
+\begin{Eg}
+  若$\mathbf{X}$是一个n维Gauss vector，$A\in M_{d,n}(\mathbb{R})$，则$\mathbf{Y}=A \mathbf{X}$是一个$d$维的Gauss vector。
+\end{Eg}
+
+对于随机向量$\mathbf{X}=(X_1,\dots, X_n)$，有covariance matrix $Cov_{\mathbf{X}}(\mathrm{cov}(X_j,X_k))_{jk}$。若$\mathbf{m}=\mathbb{E}\left[ \mathbf{X} \right], \Sigma= \mathrm{Cov}_{\mathbf{X}} $，则$\mathbb{E}\left[ \mathbf{Y} \right ]= A\mathbf{m}, \mathrm{Cov}_{\mathbf{Y}}=A\Sigma A^T $。
+
+\begin{Prop}
+  若$\mathbf{X}$是$n$维的Gauss vector, $\mathbf{m}= \mathbb{E}\left[ \mathbf{X} \right], \Sigma= \mathrm{Cov}_{\mathbf{X}} $，则$\phi_{\mathbf{X}}(\xi)=\exp(i \left\langle \mathbf{\xi}, \mathbf{m} \right\rangle)\exp(-\frac{1}{2} \left\langle \mathbf{\xi}, \Sigma \mathbf{\xi} \right\rangle)$
+\end{Prop}
+
+\begin{proof}
+  $\phi_{\mathbf{X}}(\mathbf{\xi})=\phi_{\left\langle \mathbf{\xi},\mathbf{X} \right\rangle}(1)$，而$\left\langle \mathbf{\xi}, \mathbf{X} \right\rangle$ 服从$\mathcal{N}(\langle\{ \mathbf{\xi},\mathbf{m} \rangle, \left\langle  \mathbf{\xi}, \Sigma \mathbf{\xi}\right\rangle)$
+\end{proof}
+
+\begin{Prop}
+  $\mu,\nu\in \mathrm{PM}(\mathbb{R}^n)$，则$\phi_{\mu}=\phi_n \Leftrightarrow \mu=\nu$
+\end{Prop}
+
+\begin{Prop}
+  $\mathbf{X}$是一个$n$维的Gauss vector$\sim \mathcal{N}(\mathbf{m}, \Sigma)$，则$\Sigma$是半正定的。遂$\exists A\in M_{n,n} \text{ s.t. } \Sigma= AA^T, \mathbf{X} \stackrel{\,\mathrm{d}}{=}  A\mathbf{Y}+\mathbf{m}$，其中$\mathbf{Y}\sim  \mathcal{N}(\mathbf{0}, I_n)$
+\end{Prop}
+
+\begin{Prop}
+  Gauss vector $(X,Y)$独立$\Leftrightarrow \mathrm{Cov}(X,Y)$是分块对角矩阵。
+\end{Prop}
+
+\section{PM中的弱收敛的特征函数刻画}
+\begin{Prop}
+ $\mu_n,\mu\in \mathrm{PM}(\mathbb{R}), \mu_n\Rightarrow \mu, \phi_n=\phi_{\mu_n}, \phi=\phi_{\mu}$，则
+\begin{enumerate}
+\item $\left\{ \phi_n \right\}$在$\mathbb{R}$上一致等度连续
+\item $\phi_n\to \phi$局部一致收敛
+\end{enumerate}
+\end{Prop}
+
+\begin{Thm}
+  $\left\{ \mu_n \right\}\subset \mathrm{PM}(\mathbb{R}), \phi_n=\phi_{\mu_n}$。若$\exists \phi: \mathbb{R}\to\mathbb{C}$，且$\phi_n(x)\to \phi(x)$且$\phi$在0处连续，则$\exists !\mu\in \mathrm{PM} \text{ s.t. } \phi=\phi_{\mu}, \mu_n\Rightarrow \mu$
+\end{Thm}
+
+换为随机变量也有相应的定理。
+
+\begin{Cor}
+  $\mu_n\Rightarrow \mu in \mathrm{PM}(\mathbb{R})\Leftrightarrow \phi_n \to \phi$局部一致收敛$\Leftrightarrow$定理中的2条条件满足
+\end{Cor}
+
+\begin{Eg}
+  $\mu_n= \frac{1}{2}\delta_{\left\{ 0 \right\}}+ \frac{1}{2}\delta_{\left\{ n \right\}}, \mu_n\Rightarrow \mu= \frac{1}{2} \delta_{\left\{ 0 \right\}}$，则$\phi_n=\frac{1+\exp(it n)}{2}$不存在逐点极限。
+\end{Eg}
+
+\begin{Eg}
+  $\mu_n\sim \mathrm{Unif}\left[ -n,n \right]$，则$\mu_n\Rightarrow \mu=0\in \mathrm{SPM}$。$\phi_n(t)= \mathrm{sinc}(nt) \to \bm{1}_{\left\{ 0 \right\}}$
+\end{Eg}
+
+\begin{proof}
+  分3步
+\begin{itemize}
+\item[Step 1] $\phi_n(x)\to \phi(x) \quad \forall x\in \mathbb{R}$ 
+\item[Step 2] $|\phi_n(t+h)-\phi_n(t)|\leq \int_{\mathbb{R}}|\exp(itx)(\exp(ihx)-1)| \,\mathrm{d}\mu_n(x)\leq \int_{\mathbb{R}}|\exp(ihx)-1|$。$\forall \varepsilon>0, \exists n_0\in \mathbb{N} \text{ s.t. } \forall n\geq n_0, |\phi_n(t+h)-\phi(t)|\leq \int_{\mathbb{R}}|\exp(ihx)-1| \,\mathrm{d}\mu +\frac{\varepsilon}{8}\leq 2 |h|A_0 +\frac{\varepsilon}{4}$。同理$|\phi_j(t+h)-\phi_j(t)|\leq 2|h|A_j +\frac{\varepsilon}{4}$。故令$\delta=\frac{1}{\max\limits_{0\leq j\leq n} \left\{ A_j \right\}}$，则$\forall |h|<\delta, |\phi_n(t+h)-\phi_n(t)|\leq \varepsilon$，故得一致等度连续性。
+\item[Step 3] $\forall M, \phi_n$在$C([-M,M])$中列紧。
+\end{itemize}
+\end{proof}
+
+\begin{proof}[定理的证明]
+  只需说明以下两点：
+\begin{enumerate}
+\item $\left\{ \mu_n \right\}_{n\in \mathbb{N}}$在$\mathrm{PM}(\mathbb{R})$中tight：$\varepsilon>0, \exists A>0 \text{ s.t. } \sup\limits_{n\in \mathbb{N}}\mu_n(\left[ -A,A \right]^c)<\varepsilon$
+\item $\mu_{n_k}\Rightarrow \mu$，则$\phi_{\mu}=\phi$，故可能的极限唯一。
+\end{enumerate}
+
+(ii)只需反证即可，下证明(i)。
+
+\begin{proof}
+  \begin{Lemma}
+    $\mu\in \mathrm{PM}(\mathbb{R}), \phi=\phi_{\mu}, \forall A>0, \mu(\left[ -2A,2A \right])\geq A\left| \int_{-\frac{1}{A}}^{\frac{1}{A}}\phi(t)  \,\mathrm{d}t \right|-1$
+  \end{Lemma}
+\end{proof}
+\begin{proof}
+  $\forall T>0$，之前已算得：
+  \[ \frac{1}{2T}\int_{-T}^{T} \phi(t) \,\mathrm{d}t=\frac{1}{2T}\int_{-T}^{T} \int_{\mathbb{R}}^{}e^{itx}  \,\mathrm{d}\mu(x) \,\mathrm{d}t= \int_{\mathbb{R}}^{} \mathrm{sinc}(Tx)  \,\mathrm{d}t\]
+取模长得
+\[\frac{1}{2T}|\int_{-T}^{T} \phi(t) \,\mathrm{d}t|\leq \int_{\mathbb{R}}^{}|\mathrm{sinc}(Tx)|  \,\mathrm{d}\mu(x)= \int_{-2A}^{2A} +\int_{[-2A,2A]^c}| \mathrm{sinc}(Tx)| \,\mathrm{d}\mu(x)= I_1+I_2\]
+分别估计两项：
+\begin{itemize}
+\item 对于$I_2, | \mathrm{sinc}(Tx)|\leq \frac{1}{|Tx|}\leq \frac{1}{2TA}$
+\item 对于$I_1, | \mathrm{sinc}(Tx)|\leq 1$
+\end{itemize}
+故用上述估计得到：
+
+\begin{equation*}
+\frac{1}{2T}\left| \int_{-T}^{T}  \phi(t) \,\mathrm{d}t \right| \leq \mu(\left[ -2A,2A \right])+\frac{1}{2TA}(1-\mu(\left[ -2A,2A \right]))
+\end{equation*}
+
+令$T=\frac{1}{A}$，整理即得。
+\end{proof}
+
+\begin{Rmk}
+$\mu(\left[ -2A,2A \right]^c)\leq A \int_{-\frac{1}{A}}^{\frac{1}{A}} (1- \mathrm{Re} \phi(t))  \,\mathrm{d}t$  
+\end{Rmk}
+
+今由引理，$\mu_n([-2A,2A]^c)\leq A \int_{-1/A}^{1/A} (1- \mathrm{Re}\phi_n(t)) \,\mathrm{d}t$。
+\begin{itemize}
+\item 一方面，因$\phi_n(t)\to \phi(t)$，$\mathrm{RHS}\to A \int_{-1/A}^{1/A} (1- \mathrm{Re}\phi(t)) \,\mathrm{d}t$，故$\exists n_0\in \mathbb{N} \text{ s.t. }\forall n\geq n_0,\mathrm{LHS}\leq \frac{\varepsilon}{8}+ A \int_{-1/A}^{1/A} (1- \mathrm{Re}\phi(t)) \,\mathrm{d}t$。
+
+  再由$0$处的连续性，$\exists \delta_0 >0 \text{ s.t. } |t|\leq \delta_0, |1- \mathrm{Re}\phi(t)|< \frac{\varepsilon}{8}$。取$A=\delta_0^{-1}$，则$\mathrm{LHS}\leq \varepsilon$。 
+\item 另一方面，$\forall j<n_0, \mu([-2A_j,2A_j]^c)\leq A_j \int_{-1/A_{j}}^{1/A_{j}} (1-\mathrm{Re}\phi_j(t)) \,\mathrm{d}t$，取足够大的$A_j$再由0处连续性，可以得到相同的估计。
+\end{itemize}
+故令$A=\max \limits_{1\leq j< n_0} \{A_{j}, \delta_0^{-1}\}$即得。
+\end{proof}
+
+\begin{Prop}[特征函数的进一步性质]
+ $\mu\in \mathrm{PM}(\mathbb{R}), \phi=\phi_{\mu}$，则
+\begin{enumerate}
+\item 若$m\in \mathbb{N}, \mathbb{E}\left[ |X|^m \right]= \int_{\mathbb{R}}^{}|x|^m  \,\mathrm{d}\mu<\infty $，则$\phi\in C^m(\mathbb{R})$，且
+  \begin{equation*}
+\phi^{(m)}(t)=\int_{\mathbb{R}}^{} (ix)^m\exp(itx)  \,\mathrm{d}\mu(x) \quad \forall t\in \mathbb{R}
+  \end{equation*}
+\item 若$m\in \mathbb{N}$是偶数，且$\phi^{(m)}(0)$存在，则$\mu$有$m$阶矩。
+\end{enumerate}
+\end{Prop}
+
+\begin{Rmk}
+  对于奇数次导数存在的情形，结论是复杂的。例如，若$\phi'(0)$存在，只能保证$\mathbb{E}\left[ X \right] $在Cauchy主值的意义下存在。
+\end{Rmk}
+
+\begin{Rmk}
+ $\phi(0)=\mu[\mathbb{R}], \phi'(0)=i \mathbb{E}\left[ X \right], \phi^{(m)}(0)=i^m \mathbb{E}\left[ X^m \right]  $
+\end{Rmk}
+
+\begin{proof}
+\begin{enumerate}
+\item 归纳地只需对$m=1$证明。由DCT，$\lim\limits_{h\to 0}\frac{\phi(t+h)-\phi(t)}{h}=\lim\limits_{h\to 0}\int_{\mathbb{R}}^{}\exp(itx)\frac{\exp(ihx)-1}{h}  \,\mathrm{d}\mu$，微分即得。
+\item 归纳地只需对$m=2$证明。既知二阶导之存在，其有计算公式$\phi''(0)=\lim\limits_{h\to 0}\frac{\phi(h)+\phi(-h)-2\phi(0)}{h^2}$。其中
+  \[\frac{\phi(h)+\phi(-h)-2\phi(0)}{h^2}=\frac{1}{h^2}\int_{\mathbb{R}}^{}(\exp(ihx)-\exp(-ihx)-2)  \,\mathrm{d}\mu(x)= h^{-2}\int_{\mathbb{R}}^{} 2(1-\cos(hx)) \,\mathrm{d}\mu(x) \]
+  由Fatou引理，$\varliminf\limits_{h\to 0} \mathrm{RHS}\geq \int_{\mathbb{R}}^{} x^2 \,\mathrm{d}\mu(x)= \mathbb{E}\left[ |X|^2 \right] $
+\end{enumerate}
+\end{proof}
+
+记号：记$\mu \left[ f \right]= \int_{\mathbb{R}}^{}  f \,\mathrm{d}\mu$
+
+\begin{Prop}
+  $\mu\in \mathrm{PM}(\mathbb{R}), \phi=\phi_{\mu}$。若$k\in \mathbb{N}$，则$\mu$有$k$阶矩，且
+
+\begin{equation*}
+\phi(t)=\sum\limits_{j=1}^k \frac{\phi^{(j)}(0)}{j!}t^j + E(t,k)=\sum\limits_{j=1}^k \frac{\mu \left[ (ix)^j \right]}{j!}+E(t,k)
+\end{equation*}
+且$E(t,k)=o(t^k)$（即$\lim\limits_{t\to 0} \frac{|E(t,k)|}{t^k}=0$），$|E(t,k)|\leq (\frac{\mathbb{E}\left[ |X|^{k+1}\right] }{(k+1)!}t^{k+1})\land (\frac{t^k 2\mathbb{E}\left[ |X|^k \right] }{k!})$
+
+\end{Prop}
+
+\begin{proof}
+  用积分余项展开：$\forall y\in \mathbb{R}, \exp(iy)= \sum\limits_{j=1}^k \frac{i^j}{j!}y^j +\frac{1}{k!}\int_0^y i^{k+1}\exp(is)(y-s)^k \,\mathrm{d}s$。故$\exp(itx)=\sum\limits_{j=1}^k \frac{(ix)^j}{j!} t^j +\frac{1}{k!}\int_0^{tx} i^{k+1}\exp(is)(tx-s)^k \,\mathrm{d}s$，其中不难用分部积分证明：$|\frac{1}{k!}\int_0^{tx} i^{k+1}\exp(is)(tx-s)^k \,\mathrm{d}s|\leq \frac{|tx|^{k+1}}{(k+1)!}\land \frac{2|y|^k}{k!}$
+
+  若只有$k$阶矩，则用Lagrange余项$\exp(itx)=\sum\limits_{j=1}^{k-1} \frac{(ix)^j}{j!}t^j +\frac{i^k(tx)^k}{k!}(-i\sin(\theta_1 tx)+\cos(\theta tx))=\sum\limits_{j=1}^k \frac{(ix)^j}{j!}t^j +\frac{i^k(tx)^k}{k!}(\cos(\theta_2 tx)-i\sin(\theta_1 tx)-1)$。积分，令$t\to 0$，再由DCT即得。
+\end{proof}
+
+
+\begin{Eg}[WLLN]
+  $\left\{ X_n \right\} \mathrm{i.i.d.}$，$X_1\in L^1$，则
+  \[\mathrm{Law}(\frac{S_n}{n})\Rightarrow \delta_{\left\{ m \right\}} \quad m=\mathbb{E}\left[ X_1 \right] \]
+
+$\phi_{\frac{S_n}{n}}(t)=\phi_{\sum\limits_{j=1}^n \frac{X_j}{n}}(t)=\prod\limits_{j=1}^{n} \phi_{\frac{X_j}{n}}(t)= \prod\limits_{j=1}^n \phi_{\frac{X_1}{n}}(t)= \prod\limits_{j=1}^n \phi_{X_1}(\frac{t}{n})= (\phi(\frac{t}{n}))^{n}$，其中$\phi(\frac{t}{n})= 1+ \frac{\phi'(0)t}{n}+o(\frac{t}{n})= 1+im \frac{t}{n}+o(\frac{t}{n})$，故$\phi_{\frac{S_n}{n}}(t)=(1+\frac{imt}{n}+o(\frac{t}{n}))^n \to \exp(imt)$。
+\end{Eg}
+
+\begin{Eg}[$L^2$下的中心极限定理]
+  $\left\{ X_n \right\}_{n\in \mathbb{N}} \mathrm{i.i.d.}~, X_1\in L^1, m=\mathbb{E}\left[ X_1 \right], \sigma^2=\mathrm{Var}(X_1) $，则
+  \begin{equation*}
+\mathrm{Law}(\frac{S_n-mn}{\sqrt{n\sigma^2}})\Rightarrow \mathcal{N}(0,1)
+\end{equation*}
+
+\begin{Rmk}
+  不妨设$m=0$。
+\end{Rmk}
+
+\begin{proof}
+  $\phi_{\frac{S_n}{\sqrt{n\sigma^2}}}(t) = (\phi_{\frac{X_1}{\sqrt{n\sigma^2}}}(t))^n= \left[ \phi(\frac{t}{\sqrt{n\sigma^2}}) \right]^n= (1 - \frac{1}{2}\frac{t^2}{n}+ o(\frac{t^2}{n\sigma^2}) )^n\to \exp(-\frac{1}{2}t^2)$
+\end{proof}
+\end{Eg}
+
+\begin{Eg}
+  $\forall\lambda>0, Z_{\lambda}\sim \mathrm{Poisson}(\lambda)$（即$\mathbb{P}\left[ Z_{\lambda}=k \right]= \exp(-\lambda)\frac{\lambda^k}{k!} \quad k=0,1,2,\dots$），则
+  \[\frac{Z_{\lambda}-\lambda}{\sqrt{\lambda}}\Rightarrow \mathcal{N}(0,1)\]
+
+  \begin{proof}
+    取$\lambda_n=n$，$Z_n\sim \mathrm{Poisson}(n)$。令$\left\{ X_j \right\} \mathrm{i.i.d.}~, X_1 \sim \mathrm{Poisson}(1)\Rightarrow S_n=\sum\limits_{j=1}^nX_j\sim Z_n$。故等价于证明$\frac{S_n-n}{\sqrt{n}}\Rightarrow \mathcal{N}(0,1)$，这正是上例。
+
+    对于一般的$\lambda_n\nearrow \infty, \forall \lambda>0, \lfloor \lambda \rfloor\leq \lambda leq \lfloor \lambda \rfloor+1$，则$Z_{\lambda} \stackrel{\,\mathrm{d}}{=}S_{\lfloor \lambda \rfloor}+R_{\lambda-\lfloor \lambda \rfloor}=S_{\lfloor \lambda \rfloor+1}-\tilde{R}_{\lfloor \lambda \rfloor+1- \lambda} $，其中$R,\tilde{R}$与$\left\{ X_j \right\}$独立
+
+$\mathbb{P}\left[ \frac{S_{\lfloor \lambda \rfloor+1}-\lambda}{\sqrt{\lambda}\leq x} \right]\leq\mathbb{P}\left[ \frac{Z_{\lambda}-\lambda}{\sqrt{\lambda}}\leq x \right]\leq \mathbb{P}\left[ \frac{S_{\lfloor \lambda \rfloor}-\lambda}{\sqrt{\lambda}}\leq x \right]$，由夹逼定理即得。
+
+
+  \end{proof}
+  
+\end{Eg}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\ifx\allfiles\undefined
+\end{document}
+\fi
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

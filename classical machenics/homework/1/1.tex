@@ -1,0 +1,53 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{分析力学第1次作业}
+\author{数91\and 董浚哲}
+\date{\today}
+
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frcac{\partial #1}{\partial #2}}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+\newcommand{\dual}[1]{\left<#1\right>}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\wsto}{\stackrel{*}{\rightharpoonup}}
+\newcommand{\cvin}{\text{ in }}
+\newcommand{\alev}{\text{ a.e. }}
+
+\begin{document}
+\maketitle
+
+\section*{1.}
+\paragraph{(i)}
+\begin{proof}
+  注意到$d(a,b),d(b,c)\in V$，即在线性空间$V$中，故由平行四边形法则：
+  \[LHS=(a-b)+(b-c)=(a-c)=RHS\]
+\end{proof}
+
+\paragraph{(ii)}
+\begin{proof}
+  \textbf{单射：}设$\exists b_{1}\neq b_{2}\in V\st d_{a}(b_{1})=d_{a}(b_{2})$，则$0=d_{a}(b_{1})-d_{a}(b_{2})=(b_{1}-a)-(b_{2}-a)=(b_{1}-b_{2})\neq 0$，矛盾！
+
+  \textbf{满射：}$\forall c\in V, c=(a+c)-a=d_{a}(a+c)$，故为满射。
+
+  综上，$d_{a}$是双射。
+\end{proof}
+
+
+
+
+
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

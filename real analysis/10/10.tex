@@ -1,0 +1,152 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{Homework 10 for Measure and Integral}
+\author{2019011985\and M91\and Junzhe Dong}
+\begin{document}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+
+\maketitle
+\paragraph{1.6.17}
+\begin{proof}
+By Littlewood's second principle, $\forall \varepsilon>0,\exists g(x)$ continuous, compactly supported $\st \|f-g\|_{L^1}<\varepsilon$. By Markov's inequality, this implies that $\forall \lambda>0, m(\{x\in\R^d;|f-g|(x)\geq\lambda\})<\frac{1}{\lambda}\|f-g\|_{L^1}<\frac{\varepsilon}{\lambda}$.
+
+By Hardy-Littlewood maximal inequality, \[m(\{x\in\R^d;\sup\limits_{r>0}\frac{1}{m(B(x,r))}\int_{B(x,r)}|f-g|(y)\dd y\geq\lambda\})\leq \frac{C_d}{\lambda}\left\|f-g\right\|_{L^1}<\frac{C_d\varepsilon}{\lambda}\]
+
+Denote $E=\{x\in\R^d;|f-g|(x)\geq\lambda\}\cup\{x\in\R^d;\sup\limits_{r>0}\frac{1}{m(B(x,r))}\int_{B(x,r)}|f-g|(y)\dd y\geq\lambda\}$. By monotonicity, $m(E)<\frac{C_d+1}{\lambda}\varepsilon$. Notice that since $g$ is continuous, the statement holds trivially for $g$: for sufficiently small $r$, $|\frac{1}{m(B(x,r))}\int_{B(x,r)}g(y)\dd y-g(x)|<\lambda$. So by triangle inequality:$\forall x\in E^c:$
+\[\begin{aligned}
+&\varlimsup_{r\to 0}|\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\dd y-f(x)|\\
+\leq& \varlimsup_{r\to 0}\left|\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\dd y- \frac{1}{m(B(x,r))}\int_{B(x,r)}g(y)\dd y\right|\\
+&+\varlimsup_{r\to 0}||\frac{1}{m(B(x,r))}\int_{B(x,r)}g(y)\dd y-g(x)|+|f(x)-g(x)|\\
+\leq &3\lambda
+\end{aligned}\]
+Now that the inequality in irrelavent with $g$, we may fix $\lambda$ while taking $\varepsilon\to 0$, then take $\lambda\to 0$ to reach
+\[\varlimsup_{r\to 0}|\frac{1}{m(B(x,r))}\int_{B(x,r)}f(y)\dd y-f(x)|\leq 0\]
+outside a null set, which proves the statement.
+\end{proof}
+
+\paragraph{1.6.19}
+\begin{proof}
+Here we modify the given proof. Fix $\varepsilon>0$. Still we take the compact set and conver it with $B(x,r)$ \textbf{where $\bm{r<\varepsilon}$}. Select the finite cover $\{B_i\}_{i=1}^n$ and select the subcover with greedy algorithm as was done in Vitali covering theorem $\{B'_j\}_{j=1}^m$, then $K\subset\bigcup\limits_{i=1}^n B_i\subset (2+\varepsilon)\bigcup\limits_{j=1}^m B'_j$. Proceed as was done in the standard proof and we get $m(K)\leq \frac{(2+\varepsilon)^d}{\lambda}\int_{\R^d}|f(y)|\dd y$, which is irrelavent with $\{B_i\}$. So take $\varepsilon\to 0$ and we get the desired  statement.
+\end{proof}
+
+
+
+\paragraph{1.6.21}
+\begin{proof}
+WLOG we may exclude intervals that coincide. Denote each interval by $I_k=(a_k,b_k)$, where $a_k\in \{-\infty\}\cup\mathbf{R},b_k\in\mathbf{R}\cup\{\infty\}$. Sort $\{I_k\}_{k=1}^n$ by $a_k$ in increasing order and by $b_k$ in decreasing order if $a_k$ coincide. Perform the following greedy algorithm:
+\begin{enumerate}
+\item $I_1=I'_1$
+\item while the process can still proceed, do the following: denote $I'_k=I_{k'}$ the latest chosen interval, $\forall j>k', a_j< b_{k'}$, choose $I'_{k+1}$ to be the $I_j$ with greatest $b_j$
+\item If step 2 stop at $I'_k=I_{k'}$, choose $I'_{k+1}$ from the intervals $I_j,j>k', a_j\geq b_{k'}$ with minimal $j$, and proceed step 2, until there's no interval left.
+\end{enumerate}
+Since there're only finitely many sets, the algorithm ends after finitely many steps. then by construction:
+\begin{enumerate}
+\item On one hand, $\bigcup\limits_{i=1}^n I_i\supset \bigcup\limits_{j=1}^m I'_j$. On the other hand, $\forall x\in \bigcup\limits_{i=1}^n I_i, \exists k\in \{1,\cdots, n\}\st x\in I_k$. WLOG assume $I_k\not\in\{I'_j\}_{j=1}^m$ since the other case is trivial. Then by construction, either $\exists k'<k\st a_k=a_{k'}, b_k<b_{k'}$ or $\exists j_1,j_2 \text{ contructed in step 2 }\st a_k>a_{j_1}, a_{j_2}>a_{j_1}, a_k<a_{j_2}, I'_{j_1}\cap I'_{j_2}\neq \varnothing$. So $I_k\subset I'_{k}$ or $I_k\subset I'_{j_1}\cup I'_{j_2}$, which shows that $\bigcup\limits_{i=1}^n I_i\subset \bigcup\limits_{j=1}^m I'_j$.
+
+\item By contruction, the intervals $\{I'_j\}_{j=1}^m$ overlap at most once: suppose $\exists x\in \bigcup\limits_{j=1}^m I'_m$ is simultaneously contained in three chosen intervals $(a'_1,b'_1),(a'_2,b'_2),(a'_3,b'_3)$ sorted in the order in construction, then either $a'_1=a'_2$ which is excluded in step 2, or $a'_2>a'_1,a'_3>a'_1$ while their intersection is non-empty, by construction either $(a'_2,b'_2)$ or $(a'_3,b'_3)$ should be excluded.
+\end{enumerate}
+Thus the statement is proved.
+\end{proof}
+
+\paragraph{1.6.22}
+\begin{proof}
+By inner regularity, it suffices to show that $\forall K$ compact, $K\subset \{x\in\R;\sup\limits_{x\in I}\frac{1}{\mu(I)}\int_{I}|f(y)|\dd\mu(y)>\lambda\}$, $m(K)<\frac{2}{\lambda}\int_{\R}|f(y)|\dd\mu(y)$.
+
+By construction, $\forall x\in K, \exists I_x\st x\in I_x, \frac{1}{\mu(I_x)}\int_{I_x}|f(y)|\dd\mu(y)>\lambda$. $\{I_x\}_{x\in K}$ is an open cover of $K$, so $\exists \{I_i\}_{i=1}^n\subset \{I_x\}_{x\in K}\st K\subset \bigcup\limits_{i=1}^n I_n$. By Besicovich covering lemma, $\exists \{I'_j\}_{j=1}^m\subset \{I_i\}_{i=1}^n$ satisfying the properties in the lemma. This indicates that
+\[\mu(K)\leq \mu(\bigcup_{i=1}^n I_i)\leq 2\sum_{k=1}^m \mu(I'_j)\leq 2\sum_{j=1}^m \frac{1}{\lambda}\int_{I'_j}|f(y)|\dd y\leq \frac{2}{\lambda}\|f\|_{L^1}\]
+Now that we have proved the statement for strict inequality, $\forall\varepsilon>0:$
+\[\mu(\{x\in\R;\sup\limits_{x\in I}\frac{1}{\mu(I)}\int_{I}|f(y)|\dd\mu(y)\geq\lambda\})\leq \mu(\{x\in\R;\sup\limits_{x\in I}\frac{1}{\mu(I)}\int_{I}|f(y)|\dd\mu(y)>\lambda-\varepsilon\})\leq \frac 2 \lambda \|f\|_{L^1}\]
+Take $\varepsilon\to 0$ and we get the desired inequality.
+\end{proof}
+
+\paragraph{1.6.26}
+\subparagraph{(i)}
+
+Firstly, construct an open dense subset of $[0,1]$ as follows: fix $0<\varepsilon<\frac 1 3$, enumerate rational numbers in $[0,1]$ as $\{a_n\}_{n=1}^{\infty}$. Construct $I_n=B(a_n,2^{-n-1}\varepsilon)$, and denote $U=\bigcup\limits_{n=1}^\infty I_n$. Then by definition, $U$ is open, $m(U)\leq\sum\limits_{n=1}^{\infty}2^{-n}\varepsilon\leq\varepsilon<1$, while $[0,1]=\overline{[0,1]\cap \mathbf{Q}}\subset \overline{U\cap [0,1]}\subset [0,1]$. So $U$ has the desired properties. Denote $K=U^c$, then K is closed and bounded, thus compact. $m(K)=1-m(U)=1-\varepsilon>0$.
+
+Since compact sets are Lebesgue measurable, by Carath\'eodory criterion, $m(I)=m(I\cap K)+m(I\cap K^c)=m(I\cap K)+m(I\cap U)$. So $m(K\cap I)=|I|-m(U\cap I)$. So it suffice to show that $m(U\cap I)>0$. This is obviously true since $\forall$ interval $I$ with positive measure, $\exists a_n\in\mathbf{Q}\cap [0,1]\st a_n\in I\Rightarrow m(U\cap I)\geq m(I\cap B(a_n,2^{-n-1}\varepsilon))>0$.
+
+Translate $K$ to $n+K, n\in\mathbf{N}$ and take union, and we get the desired set on $\mathbf{R}$.
+\subparagraph{(ii)}
+Compact sets are measurable, so is their countable union, so the set in (i) is an example.
+
+More generally, we have the construction owing to Rudin:
+
+THEOREM. There is a measurable set $A \subset I=[0,1]$ such that
+$$
+0<m(A \cap V)<m(V)
+$$
+for every nonempty open set $V \subset I$.
+Proof. Let CTDP mean: Compact Totally Disconnected subset of $I$, having Positive measure. Let $\left\{I_{n}\right\}$ be an enumeration of all segments in $I$ whose endpoints are rational. Construct sequences $\left\{A_{n}\right\},\left\{B_{n}\right\}$ of CTDP's as follows:
+Start with disjoint CTDP's $A_{1}$ and $B_{1}$ in $I_{1}$. Once $A_{1}, B_{1}, \ldots, A_{n-1}, B_{n-1}$ are chosen, their union $C_{n}$ is CTD, hence $I_{n} \backslash C_{n}$ contains a nonempty segment $J$, and $J$ contains a pair $A_{n}, B_{n}$ of disjoint CTDP's. Continue in this way, and put
+$$
+A=\bigcup_{n=1}^{\infty} A_{n} .
+$$
+If $V \subset I$ is open and nonempty, then $I_{n} \subset V$ for some $n$, hence $A_{n} \subset V$ and $B_{n} \subset V$. Thus
+$$
+0<m\left(A_{n}\right) \leq m(A \cap V)<m(A \cap V)+m\left(B_{n}\right) \leq m(V)
+$$
+the last inequality holds because $A$ and $B_{n}$ are disjoint. Done.
+
+\paragraph{1.6.28}
+\subparagraph{(i)}
+\begin{proof}
+For brevity, denote $F(x)=\sum\limits_{n=1}^\infty a_n(x)$, where $\forall n\in \mathbf{N},a_n(x)=4^{-n}sin(8^n\pi x)$ is continuous. Meanwhile, $|a_n(x)|<4^{-n}$, and that $\sum\limits_{n=1}^\infty 4^{-n}$ is convergent. So by Weierstrass M-test, $F(x)$ uniformly, absolutely converges. By uniform convergence and the fact that $a_n(x)$ are continuous, $F(x)$ is continuous.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Consider $b_{m,n,j}=a_m(\frac{j+1}{8^n})-a_m(\frac{j}{8^n})=4^{-m}\sin(8^{m-n}(j+1)\pi )-\sin(8^{m-n}j\pi)$. $\forall m\geq n, b_{m,n,j}=0$. So 
+\[\begin{aligned}
+&|F(\frac{j+1}{8^n})-F(\frac{j}{8^n})|\\
+=&|\sum\limits_{m=1}^{n-1}4^{-m}[\sin(\frac{(j+1)\pi}{8^{n-m}})-\sin(\frac{j\pi}{8^{n-m}})]|\\
+=&|\sum\limits_{m=1}^{n-1}4^{-m}[2\cos(\frac{2j+1}{2}\frac{\pi}{8^{n-m}})\sin(\frac{1}{2}\frac{\pi}{8^{n-m}})]|\\
+=&|4^{-n}\sum_{k=1}^{n-1}4^{k}[2\cos(\frac{2j+1}{2}8^{-k}\pi)\sin(\frac{1}{2}8^{-k}\pi)]|\\
+%\leq&|\sum_{m=1}^{n-1}4^{-m}\frac{\pi}{8^{n-m}}|
+\geq&4^{-n}|\sum_{k=1}^{n-1}4^{-k}\cos(\frac{2j+1}{2}8^{-k}\pi)|
+\end{aligned}\]
+Meanwhile, by Weierstrass M-test, $\sum\limits_{k=1}^\infty 4^{-k}\cos(\frac{2j+1}{2}8^{-k}\pi)$ is a convergent sequence. Denote $w$ as its limit, then $\forall\varepsilon>0,\exists N\in\mathbf{N}\st |\sum\limits_{k=1}^\infty 4^{-k}\cos(\frac{2j+1}{2}8^{-k}\pi)-\sum\limits_{k=1}^n \cos(\frac{2j+1}{2}8^{-k}\pi)|<\varepsilon$. So take $c=\inf\{w-\varepsilon, \sum\limits_{k=1}^n \cos(\frac{2j+1}{2}8^{-k}\pi)\quad\forall n<N\}$, and we get the desired inequality.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+By (ii), $\frac{F(\frac{j+1}{8^n})-F(\frac{j}{8^n})}{8^{-n}}\geq c4^n$.
+
+Suppose the converse is true, then $\exists x_0\st F$ is differentiable at $x_0$. Put $x_0$ into octal number: $x_0=a_0.a_1a_2\cdots a_n\cdots$. Denote $x^-_n=a_0.a_1\cdots a_n,x^+_n=a_0.a_1\cdots (a_n+1)$. Then $F'(x_0)=\lim\limits_{n\to\infty}\frac{F(x_n^+)-F(x_n^-)}{x_n^+-x_n^-}\geq\lim\limits_{n\to\infty}c4^n=\infty$, which is a contradiction.
+%, then $F'(x_0)=\lim\limits_{n\to\infty}\frac{F(x_0)-F(x_n)}{x_0-x_n}=\lim\limits_{n\to\infty}\frac{F(x_0)-F(x_{n+1})}{x_0-x_{n+1}}$.
+\end{proof}
+
+\paragraph{1.6.30}
+\begin{proof}
+We'll prove the result for $D^+F(x)$, and the proof for the other three are similar. WLOG, assume $F(x)$ is monotone increasing.
+
+Define $F_n(x)=\sup_{0<h<\frac 1 n}\frac{F(x+h)-F(x)}{h}$. Since the limit of measurable functions are measurable and that $D^+F(x)=\lim\limits_{n\to\infty}F_n(x)$, it suffice to show that $\forall n\in\mathbf{N}, F_n(x)$ is measurable. Notice that $F(x)$ is monotone increasing, $F_n(x)\geq 0$, so it's equivalent to show that $\forall \lambda>0, \{F(x)>\lambda\}$ is measurable. 
+
+Denote $A=\{x\in\R; F_n(x)>\lambda\}$. WLOG suppose $A\neq\varnothing$, otherwise it's trivial. Take $x_0\in A$, then $\exists 0<h<\frac{1}{n}\st \frac{F(x_0+h)-F(x_0)}{h}>\lambda$. Since the inequality is strict, $\exists h<h'<\frac 1 n\st$:
+\[\lambda<\frac{F(x_0+h)-F(x_0)}{h'}<\leq \frac{F(x_0+h')-F(x_0)}{h'}\]
+Since $F$ is monotone increasing, the inequality holds for $[x_0,x_0+h']$. So $A$ is the union of segments, thus measurable.
+\end{proof}
+
+\paragraph{1.6.31}
+\begin{proof}
+By inner regularity, it suffices to prove that $\forall K\subset \{x\in\R:\overline{D^+}F(x)>\lambda\}$ compact, $m(K)<\frac{F(b)-F(a)}{\lambda}$. 
+
+Still we consider $G(x)=F(x)-\lambda x$, then by construction, $\forall x\in K$, $\exists x\in I_x$ open interval $\st \forall y\in I_x, G(y)>0$. Since $K$ is compact and $\{I_x\}_{x\in K}$ is an open cover of $K$, $\exists \{I_i\}_{i=1}^n\subset \{I_x\}_{x\in K}\st K\subset \bigcup\limits_{i=1}^n I_i$. By Besicovitch lemma, $\exists \{I'_j\}_{j=1}^m\st \bigcup_{i=1}^n I_i=\bigcup_{j=1}^m I'_m$ which overlap at most twice. So 
+\[m(K)\leq 2\sum_{j=1}^m [b_j-a_j]\leq 2\sum_{j=1}^m \frac{F(b_j)-F(a_j)}{\lambda}\leq 2\frac{F(b)-F(a)}{\lambda}\]
+The last two inequalities follows from $G(x)>0$ and the monotonicity of $F$ respectively. Thus we get the desired inequality by taking $\sup$.
+\end{proof}
+
+\paragraph{1.6.32}
+\begin{proof}
+Since $\{x\in\R:\sup_{r>0}\frac 1 {2r}\mu([x-r,x+r])\geq \lambda\}\subset E_+\cup E_-$, where $E_+=\{x\in\R:\sup_{r>0}\frac 1 {2r}\mu([x,x+r])\geq \lambda\}, E_-=\{x\in\R:\sup_{r>0}\frac 1 {2r}\mu([x-r,x])\geq \lambda\}$, by monotonocity it suffices to prove the statement for $E_+$. (The statement for $E_-$ is similar after translation.)
+
+By monotonicity of increasing sets, it suffices to show that: $\forall a<b\in\R$
+\[|E|=|\{x\in (a,b):\sup_{\substack{r>0 \\ [x-r,x+r]\subset (a,b)}}\frac{1}{2r}\mu([x-r,x+r])\geq\lambda\}|\leq \frac{C}{\lambda}\mu(\R)\]
+
+Consider the monotone increasing function $F(x)=\mu([a,x])$, then $x\in E\Leftrightarrow \exists 0<r<b-x \st F(x+r)-F(x)>\lambda r\Leftrightarrow \overline{D^+F(x)}>\lambda$. By One-sided Hardy-Littlewood inequality, this means
+\[m(E)\leq C\frac{F(b)-F(a)}{\lambda}\leq C\frac{\mu([a,b])}{\lambda}\leq \frac{C}{\lambda}\mu(\R)\]
+Thus we've proved the inequality.
+\end{proof}
+
+\end{document}

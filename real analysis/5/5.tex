@@ -1,0 +1,268 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+%\usepackage{hyperref}
+\usepackage{ulem}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 5 for Measure and Integral}
+\begin{document}
+\maketitle
+\newcommand{\st}{\text{ s.t.}}
+\newcommand{\dx}{\,\mathrm{d} x}
+\newcommand{\re}{\mathrm{Re}\,}
+\newcommand{\im}{\mathrm{Im}\,}
+\newcommand{\sip}{\mathrm{Simp}}
+\newcommand{\R}{\mathbf{R}^d}
+\newcommand{\oit}{\overline{\int_{\R}}}
+\newcommand{\uit}{\uline{\int_{\R}}}
+\newcommand{\sit}{\sip\int_{\R}}
+\newcommand{\cit}{\int_{\R}}
+\newcommand{\WLOG}{without loss of generality}
+\newcommand{\M}{\mathcal{M}(\R)}
+\newcommand{\uspf}{\sip^+({\R})}
+\newcommand{\aeeq}{\stackrel{\mathrm{a.e.}}{=}}
+
+
+\DeclareRobustCommand{\rchi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+Denote $\M$ the set of Lebesgue measurable sets in $\R$. Denote the linear space of unsigned simple functions $\uspf$
+
+
+As was proved in previous homework, for an unsigned lebesgue measurable function, $\forall n\in\mathbb{N}, 0\leq k\leq 2^{2n}-1$,define
+\begin{equation}\label{folland}
+E_n^k=f^{-1}((k2^{-n},(k+1)2^{-n}])\qquad F_n=f^{-1}((2^m,\infty])
+\end{equation}
+and $\{\phi_n(x)\}\in \uspf$ satisfying
+\[\phi_n(x)=\sum_{k=0}^{2^{2n}-1}1_{E_n^k}(x)+2^n1_{F_n}(x)\]
+Then $\{\phi_n(x)\}$ is a non-decreasing sequence that converges to $f(x)$, uniformly where $f(x)$ is bounded.
+
+\paragraph{1.3.12}
+\begin{proof}
+From exercise 1.3.2(iii), we learn that for a Lebesuge measurable set $E$, we have
+\[\sip\int_{\R}1_{E}\dx=m(E)\]
+$\forall$ union of disjoint boxes $B^k=\bigcup_{n=1}^{\infty}B_i\supset E$, $B$ is Lebesgue measurable with the property that $1_{B^k}\geq 1_{E}$ and that $m^*(B^k)-m(E)\leq \frac 1 k$. By monotonicity
+\[\oit 1_{E}\dx\leq\sit 1_{B^k}\dx=m(B^k)\leq m^*(E)+\frac 1 k\]
+Take $k\to\infty$ and we get $\leq$ of the equality.
+
+%By definition, $m^*(E)\leq \sum\limits_{n=1}^{\infty}|B_i|$, where $B_i$ are disjoint boxes with the property $\bigcup\limits_{n=1}^{\infty}B_i\subset $
+
+By definition, we may assume that $\forall k\in \mathbf{N},f_k(x)$ is a sequence of unsigned simple functions where \[f_(x)\geq 1_{E}(x)\quad\sit f_n(x)\dx-\oit 1_{E}(x)\dx \leq \frac{1}{k}\]
+\WLOG , we assume that $\forall x\in E, f_n(x)=1$ since it's the least value it can take on $E$. By definition and compatibility, $\sit f_n(x)\dx \geq m^*(E)$. So
+\[\uit 1_{E}(x)\dx \geq \sit f_n(x)\dx -\frac 1 k\geq m^*(E)-\frac 1 k\]
+Take $k\to\infty$ and we get $\geq$ side of the equality.
+\end{proof}
+
+\paragraph{1.3.14}
+\begin{proof}
+By horizontal truncation and vertical truncation, it suffice to show the case where $f$ is unsigned measurable, bounded and finitely supported. By exercise 1.3.11, this indicates that $\uit f(x) \dx=\oit f(x)\dx$.
+
+Now approximate f with \ref{folland}.
+
+Suppose $M$ is a map satisfying the given properties. Take $f(x)=g(x)=0$ into (ii), and we get $M(0+0)=M(0)+M(0)$. So $M(0)=0$.By (ii), $M(f(x))=M(\phi_n(x))+M(f(x)-\phi_n(x))=\sit \phi_n(x)+M(f(x)-\phi_n(x))$. Take $n\to\infty$ and we get $M(f(x))=\uit f(x)\dx +M(0)=\cit f(x)\dx$. This proves the uniqueness.
+\end{proof}
+
+\paragraph{1.3.15}
+\begin{proof}
+Firstly, consider $E\in \M$. Then by translation invariance of Lebesgue measurable sets, $\cit 1_E(x+y)\dx=m(E+y)=m(E)=\cit 1_{E}(x)\dx$. So the statement is true for characteristic functions. 
+
+From linearity of unsigned simple functions, we see that the equality still holds for unsigned simple functions.
+
+Denote F(x)=f(x+y). Then $\forall g(x)\in \uspf$ where $g(x)\leq f(x)\quad\forall x\in \R$, $g(x+y)\leq F(x)$ 
+\[\cit f(x)\dx =\uit f(x)\dx= \sup\limits_{\substack{0\leq g\leq f\\g \in\uspf}}\sit g(x)\dx =\sup\limits_{\substack{0\leq g\leq f\\g\in\uspf}}\sit g(x+y)\dx\leq\uit F(x)\dx =\cit F(x)\dx\]
+And the $\leq$ side of the inequality is proved.
+
+The other side is similar since $f(x)=f((x+y)-y)$. Thus the equality is proved.
+\end{proof}
+
+\paragraph{1.3.16}
+\begin{proof}
+By horizontal truncation and vertical truncation, it suffice to show the case where $f$ is unsigned measurable, bounded and finitely supported.
+%Firstly, $\forall E\in \M$, consider $1_{E}(x)$.
+%By taking the usual orthogonal basis $\{e_1,\cdots,e_d\}$, we present $T$ as a matrix $A$: $T(e_1,\cdots,e_d)'=A(e_1,\cdots,e_d)$. 
+%$\forall$ boxes $B\in \R$, from compatibility and linear algebra, we learn that $\cit 1_B(x)\dx =$
+
+Firstly, we'll prove that $\forall \text{ boxes } B\in\R$, the equality holds for $1_B(x)$. By translation invariance, we may assume that $T$ fixes the origin. Then by singular value decomposition, it suffice to prove that 
+\begin{enumerate}
+\item {invariance under rotation and reflection:} Such transformation only translates a disc, so this holds trivially for discs. Meanwhile, a box is the disjoint union of countable discs, so this still holds for boxes.
+\item {transformation under stretches:} It suffice to prove the case for one-dimensional cases since for a diagnal matrix $V=diag\{v_1,\cdots,v_d\},\quad\det{V}=\prod\limits_{n=1}^{d}v_n$. 
+
+For one-dimensional case (d=1), $\forall c\in \mathbf{R}_+$ and interval $[a,b]$, we need to prove that 
+\[c\cit 1_{[a,b]}(x)\dx=\cit 1_{[a,b]}(\frac 1 c x)\dx\]
+A direct verification shows that $1_{[ca,cb]}(x)=1_{[a,b]}(\frac 1 c x)$. So $LHS=c(b-a)=cb-ca=RHS$.
+\end{enumerate} 
+Now that the equality holds for characteristic functions over boxes, it also holds for that of elementary sets. Since $\forall E\in \M$ where $m(E)<\infty$, $E$ can be approximated by elementary sets, it also holds for that of Lebesgue measurable sets. By exercise 1.3.1(i)(ii), the equality holds for unsigned simple functions.
+
+The rest is similar to the proof in exercise 1.3.15 since $T$ is invertible.
+\end{proof}
+
+\paragraph{1.3.18}
+\subparagraph{(i)}
+\begin{proof}
+$\forall n\in\mathbf{N}$, denote $E_n=\{x\in\R:f(x)\geq n\}$. Obviously $E_n\supset E_{n+1}$ and that $E=\bigcap_{n=1}^{\infty}$ is the set where $f$ is not finite. Then it suffice to prove that $m(E)=0$. ($E$ is indeed measurable since $E_n$ are measurable by definition and that $E$ is the countable intersection of them.) 
+
+Denote $\cit f(x)\dx =I<\infty$.
+
+By Markov's inequality, $m(E_n)\leq \frac{1}{n} \cit f(x)\dx <\infty$. So by exercise 1.2.11(ii) (downward monotone convergence), 
+\[m(E)=\lim\limits_{n\to\infty}m(E_n)\leq\lim\limits_{n\to\infty}\frac 1 n I=0\]
+which proves the statement.
+\end{proof}
+Counter example: Construct $f(x)$ defined on the Cantor set as follows: Take $f_0(x)=1_{[0,1]}(x)$ and $I_0=[0,1]$. $\forall n\in\mathbf{N}$:
+\begin{enumerate}
+\item{} Construct $I_{n+1}$ from $I_{n}$ as was done in constructing the usual Cantor set.
+\item{} Denfine $f_{n+1}(x)=\frac 4 3 f_n(x)1_{I_{n+1}}(x)$
+\end{enumerate}
+Then $\forall n\in \mathbf{N}$, $f_n(x)$ is an unsigned simple function where $\sit f_n(x)\dx=1$. Define $f(x)=\lim\limits_{n\to\infty}f_n(x)\dx$, then by definition, $f$ is measurable, infinite on the Cantor set which of zero measure, and $\cit f(x)\dx\geq \sit f_n(x)\dx=1\neq 0$.
+
+\subparagraph{(ii)}
+\begin{proof}
+The ``if'' side is trivial. 
+
+For the ``only if'' side, suppose the converse is true. Define $E_n=\{x\in\R:f(x)\geq \frac 1 n\}$, then $\exists N\in\mathbf{N}\st m(E_N)\geq 0$. By Markov's inequality, $\cit f(x)\dx\geq \frac 1 N m(E_N)\geq 0$, which is a contrary.
+\end{proof}
+
+\paragraph{1.3.19}
+\subparagraph{multiplicity by constant}
+\begin{proof}
+First we assume $f(x)$ is real, where the case $c\geq 0$ is trivial. 
+%Let $f(x)=f_+(x)-f_-(x)$, where $f_+(x),f_-(x)$ are unsigned measurable functions, approximated by the non-decreasing sequence of unsigned simple functions $\{f_+^n(x)\}, \{f_-^n(x)\}$ respectively. Then
+\[\begin{aligned}
+\cit -f(x)\dx=&\cit (-f)_-(x)\dx-\cit(-f)_+(x)\dx\\
+=&\cit f_-(x)\dx-\cit f_+(x)\dx\\
+=&-\cit f(x)\dx
+\end{aligned}\]
+Now that we've proved the case where $c=-1$. Notice that $\forall c<0, c=(-1)*|c|$, the equality holds $\forall c\in\mathbf{R}$.
+For the general case, denote $c=u+iv$, where $u,v$ are real. Then
+\[\begin{aligned}
+\cit cf(x)\dx=&\cit(u+iv)(\re f+i\im f)(x)\dx\\
+=&\cit (u\re f-v\im f)(x)\dx+i\cit (u\im f+v\re f)(x)\dx\\
+=&u\cit \re f\dx-v\cit \re f\dx +iu\cit \im f\dx+iv\cit \re f\dx\\
+=&(u+iv)\cit \re f(x)+i\im f(x)\dx\\
+=&c\cit f(x)\dx
+\end{aligned}\]
+\end{proof}
+
+\subparagraph{additivity}
+\begin{proof}
+First assume that $f(x),g(x)$ are real. Assume that $g(x)\geq 0$. Then
+\[\begin{aligned}
+\cit f(x)+g(x)\dx=&\cit [f+g]_+(x)\dx-\cit [f+g]_-(x)\dx\\
+=&\cit f_+(x)+g(x)\dx-\cit f_-(x)\dx\\
+=&\cit f_+(x)\dx+\cit g(x)\dx -\cit f_-(x)\dx\\
+=&\cit f(x)\dx+\cit g(x) \dx
+\end{aligned}\]
+Similarly, the equation is proved for $g(x)\leq 0$ with the help of $-\cit g_-(x)\dx=\cit -g_-(x)\dx$.
+For the general real case,
+\[\begin{aligned}
+\cit f(x)+g(x)\dx=&\cit [f(x)-g_-(x)]+g_+(x)\dx\\
+=&\cit f(x)-g_-(x)\dx+\cit g_+(x)\dx\\
+=&\cit f(x)\dx+[\cit g_+(x)\dx-\cit g_-(x)\dx\\
+=&\cit f(x)\dx+\cit g(x)\dx
+\end{aligned}\]
+For the general complex case:
+\[\begin{aligned}
+\cit f(x)+g(x)\dx=&\cit \re (f+g)(x)\dx+i\cit \im (f+g)(x)\dx\\
+=&\cit \re f(x)\dx+\cit \re g(x)\dx +i\cit \im f(x)\dx +i\cit \im g(x)\dx\\
+=&\cit f(x)\dx+\cit g(x)\dx
+\end{aligned}\]
+\end{proof}
+\subparagraph{conjugate}
+\begin{proof}
+\[\cit \overline{f(x)}\dx=\cit \re f(x)\dx+i\cit -\im f(x)\dx=\cit \re f(x)\dx-i\cit \im f(x)\dx=\overline{\cit f(x)\dx}\]
+\end{proof}
+
+\paragraph{1.3.21}
+\subparagraph{``if'' side}
+\begin{proof}
+Define the sequence $f_k(x)=\sum\limits_{|n|\leq k}c_n1_{[n,n+1)}(x)\quad \forall k\in\mathbf{N}$. Then $\re f_n(x),\im f_n(x)$ are unsigned simple function, and that $\lim\limits_{k\to\infty}f_k(x)=f(x)$.  Therefore, $\re f,\im f$ are measurable functions. Notice that 
+\[\cit|\re f| \dx\leq\cit \lim\limits_{k\to\infty}|\re(f_k)|(x)\dx=\lim_{k\to\infty} \cit |\re f_k(x)|\dx=\sum_{n\in\mathbf{Z}}|\re c_n|\leq \sum_{n\in\mathbf{z}}|c_n|<\infty\]
+(Taking $\lim$ outside the integral is legitimate since $f_n(x)$ converges uniformly to the bounded function $f$. )
+Similarly, $\cit |\im f|\dx<\infty$. So 
+\[\cit |f(x)|\dx\leq \cit |\re f(x)|\dx+\cit |\im f(x)|\dx<\infty\]
+So $f$ is absolutele integrable.
+
+\[\cit f(x)\dx=\cit \lim_{k\to\infty}f_k(x)\dx =\lim_{k\to\infty}\cit f_k(x)\dx=\lim_{k\to\infty}\sum_{|n|<k}c_n=\sum_{n\in\mathbf{Z}}c_n\]
+\end{proof}
+\subparagraph{``only if'' side}
+\begin{proof}
+Denote $S_n=\sum\limits_{|k|<n}c_k$. $|S_n|=\cit |f_n(x)|\dx\leq \cit |f(x)|\dx<\infty$. Take $n\to\infty$ and we learn that $\sum\limits_{n\in\mathbf{Z}}|c_n|=\lim\limits_{n\to\infty}|S_n|<\infty$, so $\sum c_n$ absolutely converges.
+\end{proof}
+ 
+\paragraph{1.3.22}
+\begin{proof}
+$\forall M\in\M$, consider $f(x)=1_M(x)$. Then 
+\begin{gather}
+\int_{E}f(x)\dx=\cit 1_M(x)1_E(x)\dx=\cit 1_{M\cap E}(x)\dx=m(M\cap E)\\
+\int_{E\cup F}f(x)1_E(x)\dx=\int_{E\cup F}1_{M\cap E}(x)\dx=\cit 1_{M\cap E}(x)\dx=m(M\cap E)
+\end{gather}
+So they coincide. Furthermore, since $E,F$ are disjoint, $M\cap E, M\cap F$ are still disjoint. So
+\begin{gather}
+\int_{E}f(x)\dx+\int_{F}f(x)\dx=m(E\cap M)+m(F\cap M)=m((E\cup F)\cap M)\\
+\int_{E\cup F}f(x)\dx=m((E\cup F)\cap M)
+\end{gather}
+So they coincide.
+
+Now that we've proved that the equality holds for characteristic functions, by linearity, it still holds for unsigned simple functions. Notice that $\re f_+(x)=\lim\limits_{n\to\infty} \phi_n(x)$ where $\phi_n(x)$ are unsigned simple functions in \ref{folland}. Apply $\phi_n(x)$ to the equalities and take $n\to\infty$ (where taking $\lim$ inside $\int$ is always legitimate since $f$ absolutely converges, thus bounded, $\phi_n(x)$ uniformly converges), and we see that the equalities hold for $\re f_+,\re f_-,\im f_+,\im f_-$. The general equality holds from linearity.
+\end{proof}
+
+\paragraph{1.3.23}
+
+\begin{proof}
+For a fixed $R>0$, consider $f$ on $B(0,R)\in R$, the ball centered at the origin with radius $R$. Then by hypothesis, $f$ is absolutly integrable on $B(0,R)$
+%, so $\forall \varepsilon>0, \exists \{f_n(x)\}$ continuous $\st \| f-f_n\|_{L^1(\R)}\leq \frac {\varepsilon} {4^n}$. 
+Similar to the proof on textbook, we learn that $\forall n\in\mathbf{N}, \varepsilon>0, f(x)$ is continuous on $B(0,n)\cap (E_n)^c$, where $m(E_n)<\frac{\varepsilon}{2^n}$. $E=\bigcup\limits_{n=1}^{\infty}E_n$ is the set outside which $f(x)$ is continuous. Meanwhile, by additivity, $m(E)\leq \sum\limits_{n=1}^{\infty}m(E_n)<\varepsilon$, which proves the statement. 
+
+\WLOG, we may replace $f$ by $f1_{|f|\leq n}$ from the horizontal truncation. Thus $f$ is bounded, say $\exists M>0\st|f(x)|<M \forall x\in\R$. Then for arbitraty bounded measurable set $E$, $\int_{E}f(x)\dx\leq M*m(E)<\infty$. Thus $f$ is locally absolutely integrable, which, by the proof for locally absolutely integrable functions, proves the statement.
+\end{proof}
+
+\paragraph{1.3.25}
+\subparagraph{(i)}
+\begin{proof}
+Denote $S_n=\int_{B(0,n)}|f(x)|\dx \quad \forall n\in\mathbf{N}$. Then 
+\[\lim_{n\to\infty}S_n=\cit |f(x)|\dx<\infty\]
+So $S_n$ converges: $\forall \varepsilon>0, \exists N>0, \forall n>N, \cit f(x)\dx-S_n<\varepsilon$. By exercise 1.3.22, this means that $\int_{\R\backslash B(0,n)}f(x)\dx<\varepsilon$, which proves the statement.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Denote $A_n=\{x\in\mathbf{C}: |x|\leq n\}$. Fix $R>0$, and consider $f^{-1}(A_n)\cap B(0,R)$. Since $f(x)$ is measurable, $f^{-1}(A_n)$ is measurable. Observe that $f^{-1}(A_n)\subset f^{-1}(A_{n+1})$. So
+\[\lim\limits_{n\to\infty}m(f^{-1}(A_n)\cap B(0,R))=m(\bigcup\limits_{n=1}^{\infty}f^{-1}(A_n)\cap B(0,R))=m(B(0,R))\]
+So $\forall \varepsilon>0,\exists N>0,\st \forall n>N, m(B(0,R))-m(B(0,R)\cap f^{-1}(A_n))<\varepsilon$. From Carath\'eodory criterion, this means $m(B(0,R)\cap (f^{-1}(A_n))^c)<\varepsilon$. The statement follows from the definition of $A_n$.
+\end{proof}
+
+\paragraph{1.3.24}
+
+\subparagraph{``if'' side}
+\begin{proof}
+Claim: A continuous function $f$ is measurable. Since $\forall \text{ open set }O, f^{-1}(O) $ is open, thus measurable, $f$ is indeed measurable. 
+
+Claim: Limit of measurable functions are still measurable. From exercise 1.3.7(iii), it suffice to prove the case for unsigned measurable functions. Suppose $f_n(x)$ is a sequence of measurable functions which a.e. pointwise converges to $f$, then 
+\[f^{-1}([a,\infty])= \lim_{n\to\infty}f_n^{-1}([a,\infty])=\overline{\lim_{n\to\infty}}f^{-1}_n([a,\infty])= \bigcup_{n\in\mathbb{N}}f_n^{-1}([a,\infty])\]
+So $f^{-1}([a,\infty])\in\M$ , so $f$ is measurable.
+
+By concluding the claims above, ``if'' side is proved. 
+\end{proof}
+
+\subparagraph{``only if'' side}
+\begin{proof}
+From exercise 1.3.7, we learn that $(\re f)_+,(\re f)_-,(\im f)_+,(\im f)_-$ are unsigned measurable simple functions. 
+
+Firstly, we consider $g(x)=(\re f)_+(x)$, which is the pointwise limit of $\phi_n(x)$ in \ref{folland}, where $|g(x)-\phi_n(x)|<\frac 1 {2^n}$ on ponits where $g(x)$ is bounded. By exercise 1.3.25(ii), a measurale function is almost locally bounded. So $\exists \{g_n(x)\}$, a sub-sequence of $\phi_n(x)\st m(\{x\in B(0,n):|g(x)-g_n(x)|\geq \frac 1 {4n}\})<\frac {1}{4^n}$. 
+Meanwhile, $g_n(x)=\sum_{i=1}^{N_n}c_i1_{E_i^n}(x)$ where $E_i^n$ are almost disjoint, we have an open set $F_i^n\subset\subset E_i^n \st m^(E_i^n\backslash F_i^n)<\frac{\varepsilon}{2^i}$. Denote $F^n=\bigcup\limits_{i=1}^{N_n}F^n_i $ Thus we get for $R>>1$
+\[h_n(x)=\begin{cases}
+g_n(x)& \text{if } d(x,F^n)=0\\
+c_i*\max\{1-R*d(x,F^n_i),0\}& \text{if } x\in E_i^n\backslash F_i^n\\
+0&\text{otherwise}
+\end{cases}\]
+It's easy to see that $m(\{x\in B(0,n):|g(x)-h_n(x)|\geq \frac 1 {4n}\})<\frac {1}{2^n}$ and that $h(x)$ is continuous.
+
+The statement is similar for the other three functions. By linearity, $\exists \{f_n(x)\}$, a sequence of continuous functions, $\st m(\{x\in B(0,n):|f(x)-f_n(x)|\geq \frac 1 n\})<\frac {1}{2^n}$. Meanwhile, $B=\bigcap_{n=1}^{\infty}\{x\in B(0,n):|f(x)-f_n(x)|\geq \frac 1 n\}$ is the set where $f$ is not approximated by $f_n(x)$ and it is the countable intersection of a decreasing sequence of sets. So by downward monotone convergence, 
+\[m(B)=\lim_{n\to\infty}m(\{x\in B(0,n):|f(x)-f_n(x)|\geq \frac 1 n\leq \lim_{n\to\infty}\frac {1}{2^n}=0\]
+So $f\aeeq \lim\limits_{n\to\infty}f_n(x)$, where $f_n(x)$ are continuous.
+\end{proof}
+\subparagraph{proof of Lusin's theorem}
+\begin{proof}
+%Since continuity is a pointwise property, it suffice to prove the theorem on a finitely measured set.
+Now that $f$ is the a.e. pointwise limit of a sequence of continuous functions, by Egorov's theorem, $\forall \varepsilon>0,\exists A\in\M\st m(A)<\varepsilon$ and that $f_n(x)$ converges locally uniformly on $A^c$, so $f(x)$ is continuous on $A^c$ since it's the uniform limit of continuous functions and that continuity is a point-wise property. 
+\end{proof}
+
+\end{document}

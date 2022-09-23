@@ -1,0 +1,173 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,ulem}
+\usepackage[margin=1 in]{geometry}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 2 for Measure and Integral}
+
+\begin{document}
+\maketitle
+
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\pc}{\text{ p.c.}}
+\newcommand{\st}{\text{ s.t.}}
+%\newcommand{\tnss}{The not so Short Introduction to \LaTeXe}
+\paragraph{1.}
+\begin{proof}
+%\tnss
+$\forall f:[a,b]\to\mathbb{R}, f \text{bounded}, \forall \text{partition } P:a=x_0<x_1\cdots <x_n=b, \text{denote } m_i=\inf\limits_{x_{i-1}<\xi <x_i}f(\xi), M_i=\sup\limits_{x_{i-1}<\xi <x_i}, x_i^*\in [x_{i-1},x_i]$. Then 
+\[\uline{\int^b_a}f(x)\dd x =\lim_{|P|\to 0}\sum_{i=0}^{n-1} m_i|x_i-x_{i-1}|\]
+\[\overline{\int^b_a}f(x)\dd x =\lim_{|P|\to 0}\sum_{i=0}^n M_i|x_i-x_{i-1}|\]
+Since
+\[\sum_{i=0}^n m_i|x_i-x_{i-1}|\leq \sum_{i=0}^{n-1}f(x_i^*)|x_i-x_{i-1}|\leq \sum_{i=0}^n M_i|x_i-x_{i-1}|\]
+By taking $|P|$ to 0, we have
+\[\uline{\int^b_a}f(x)\dd x\leq \lim_{|P|\to 0}\sum_{i=0}^{n-1}f(x_i^*)|x_i-x_{i-1}|<\overline{\int^b_a}f(x)\dd x\]
+The statement follows from squeeze theorem.
+\end{proof}
+
+\paragraph{1.21.1}
+\subparagraph{(1)}
+\begin{proof}
+Suppose $\{I_i\}_{i=1}^N,\{J_i\}_{i=1}^{N'}$ are the partitions of $[a,b]$  where $f(x_i)=c_i\quad \forall x_i\in I_i$ and $g(x_i)=c'_i\quad x_i\in J_i$.
+%where by exercise 1.1.20, $\int_a^b f(x)\dd x=\sum\limits_{n=1}^{N}c_i|I_i|,\int_a^b g(x)\dd x=\sum\limits_{n=1}^{N'}c'_i|J_i|$.
+
+$\forall x_i\in I_i,f(x_i)=c_i$. Then, $cf(x_i)\equiv c*c_i$. Therefore, $cf$ is still piecewise constant w.r.t. the partition $\{I_i\}_{i=1}^{N}$, and 
+\[\pc \int_a^b cf(x)\dd x=\sum_{i=1}^{N}c|I_i|=c\sum_{i=1}^{N}|I_i|=c\pc\int_a^b f(x)\dd x\]
+
+Consider the partition $\{L_{i,j}\}_{i=1,j=1}^{N,N'}$ where $L_{i,j}=\bar{I_i \cap J_j}$. Notice that $\forall x_{i,j}\in L_{i,j}, f(x_{i,j})\equiv c_i,g(x_{i,j})\equiv c'_j$, so $f+g(x_{i,j})\equiv c_i+c'_j$, so $f+g$ is still piecewise constant where
+\[\pc\int_a^b f+g(x)\dd x=\sum_{i=1,j}^{N,N'}(c_i+c'_j)|L_{i,j}|=\sum_{i=1}^{N}c_i|I_i|+\sum_{j=1}{N'}c'_j|J_j|=\pc\int_a^b f(x)\dd x+\pc\int_a^b g(x)\dd x\]
+\end{proof}
+\subparagraph{(2)}
+\begin{proof}
+From (1), we learn that $g-f$ is still piecewise constant where
+\[\pc\int_a^b g-f(x)\dd x=\pc\int_a^b g(x)\dd x-\pc\int)_a^b f(x)\dd x\]
+So it's equivalent to prove that $\pc\int_a^b g-f(x)\dd x \geq 0$. This is obvious since $g-f>0$ and consider the partition $\{L_{i,j}\}$ in (1)
+\[\pc\int_a^b g-f(x)\dd x =\sum_{i,j=1}^{N,N'}(g-f)(x_{i,j})|L_{i,j}|\geq 0\]
+\end{proof}
+\subparagraph{(3)}
+\begin{proof}
+Since E is elementary, $\exists \text{sequence of disjoint boxes}\{[a_i,b_i]\}_{i=1}^{N}\text{ s.t.} E=\bigcup\limits_{i=1}^{N}[a_i,b_i]$. These $[a_i,b_i]$ give the desired partition of E where $1_E|_{[a_i,b_i]}\equiv 1$, so it's piecewise constant by definition. Furthermore,
+\[\pc\int_a^b 1_{E}(x)\dd x=\sum_{i=1}^{N}1_E|_[a_i,b_i]=\sum_{i=1}^{N}(b_i-a_i)=\sum_{i=1}^{N}m([b_i,a_i])=m(E)\]
+the desired identity.
+\end{proof}
+
+\paragraph{1.1.22}
+\begin{proof}
+The "only if" side and the equility has been proved by the first problem.
+
+Now we prove the "if" side. Use the notations in the first problems. If $f$ is Riemann integrable, for the given partition$\mathcal{P},\forall \varepsilon>0, \exists \uline{x^*_i},\overline{x^*_i}\in[x_{i-1},x_i]$ s.t. $f(x^*_i)<m_i+\varepsilon,f(x^*_i)>M_i-\varepsilon$. So
+\begin{align*}
+&\sum_{i=1}^{n}f(\uline{x_i^*})|x_i-x_{i-1}|\\
+\leq&\sum_{i=1}^{n} (\inf_{x\in [x_{i-1},x_i]}f(x)+\varepsilon)\\
+\leq&\uline{\int_a^b} f(x)\dd x +\varepsilon (b-a)\\
+\leq&\overline{\int_a^b} f(x) \dd x +\varepsilon (b-a)\\
+\leq&\sum_{i=1}^n (\sup_{x\in [x_{i-1},x_i]}f(x))|x_i-x_{i-1}|+\varepsilon (b-a)\\
+\leq&\sum_{i=1}^n f(\overline{x^*_i})|x_i-x_{i-1}|+2\varepsilon (b-a)
+\end{align*}
+Let $\varepsilon\to 0$, and the statement follows from sqeeze theorem.
+\end{proof}
+
+\paragraph{1.1.25}
+\begin{proof}
+If $f$ is Riemann integrable, so is $|f|$, since it adds only countable number of points where f is not continuous (else, the set on which $f$ is not continuous has Lebesgue measure $>0$, and f wouldn't be Riemann measurable, which is a contradiction).  Define $f_+=\frac{|f|+f}{2},f_-=\frac{|f|-f}{2}$, then $f_+,f_-$ are still Riemann integrable, where $f_+\geq 0,f_-\geq 0,f=f_+-f_-$. Then f is integrable $\Leftrightarrow$ $f_+,f_-$ are integrable. For $f_+,m^2(E_-)=0$, $-f_-,m(E_+)=0$ and that $\int\limits_a^b f(x)\dd x=\int\limits_a^b (f_+-f_-)\dd x=m^2(E_+)-m^2(E_-)$, it suffice to show the case for $f_+,f_-$ respectively, where we only need to prove the statement for non-negative functions, where $m^2(E_-)=0$.
+
+For simplicity, we denote $E=E_+$, and use notations in the first exercise.
+
+If $f$ is Riemann integrable, it is also Daboux integrable. Notice that for a Darboux lower sum $\uline{S}(\mathcal P)=\sum_{i=1}^{n}m_i|x_i-x_{i-1}|$ is the measure of the elementary set $S_D\bigcup\limits_{i=1}^{n}[x_{i-1},x_{i}]\times [0,m_i]\subset E$, and the Darboux upper sum $\overline{S}(\mathcal P)=\sum_{i=1}^{n}M_i|x_i-x_{i-1}|$ is the measure of the elementary set $S^D=\bigcup\limits_{i=1}^{n}[x_{i-1},x_{i}]\times [0,M_i]\supset E$. Therefore we have the inequality
+\[m(S_D)\leq m_{*,(J)}(E)\leq m^{*,(J)}\leq m(S^D)\]
+Let $|P|\to 0$ and we have $\uline{\int_a^b}f(x)\dd x=\lim\limits_{|P|\to\infty}m(S_D)=\lim\limits_{|P|\to\infty}m(S^D)=\overline{\int_a^b}f(x)\dd x$, and the fact that $m_{*.(J)}=m^{*,(J)}$, which means that it's Jordan measurable, follows from squeeze theorem.
+
+If $E$ is Jordan measurable, then $m_{*,(J)}=m^{*,(J)}$. By definition of $m_{*,(J)}, \forall n\in\mathbb{N},\exists S_{Dn},\st |m(S_{Dn})-m_{*,(J)}|<\frac 1 n$. Similarly, $\forall n\in\mathbb{N},\exists S^{Dn},\st |m(S^{Dn})-m^{*,(J)}|<\frac 1 n$. Therefore we have the inequality
+\[m(S^Dn)-\frac 1 n<m^{*,(J)}(E)=m_{*,(J)}(E)<m(S_Dn)+\frac 1 n\]
+and notice that 
+\[m(S_Dn)\leq \underline{\int_a^b}f(x), m(S^{Dn})\geq  \overline{\int_a^b}f(x)\dd x\quad \underline{\int_a^b}f(x)\dd x\leq \overline{\int_a^b}f(x)\dd x \]
+Taking $n\to\infty$ and from the above inequalities we have 
+\[\underline{\int_a^b}f(x)\dd x=m_{*,(J)}(E)=m^{*,(J)}=\overline{\int_a^b}f(x)\dd x\]
+which means that $f$ is Darboux integrable, thus Riemann integrable.
+\end{proof}
+
+\paragraph{1.2.1}
+\begin{proof}
+Denote A=$[0,1]\cap \mathbb{Q},A^c=[0,1]\backslash A$. It has already been proved in class that $m_{*,(J)}(A)=0\neq 1=m^{*,(J)}$, $m_{*,(J)}(A^c)=0\neq 1=m^{*,(J)}(A^c)$. 
+
+Notice that $A$ is a countable set, we can list the elements of A by $\{a_1, a_2,\cdots\}$ where $a_i$ are different rational numbers within $[0,1]$. $\{a_i\}$ itself is an elementary set, which has Jordan measure $0$. Nevertheless, $\bigcup\limits_{n=1}^{\infty}\{a_n\}=A$, which is not Jordan measurable.
+
+Denote $B_n=[0,a_n)\cup (a_n,1]$, which Obviously has Jordan measure 1. Nevertheless, $\bigcap_{n=1}^{\infty}B_n=A^c$, which is not Jordan measurable.
+\end{proof}
+
+\paragraph{1.2.2}
+\begin{proof}
+Still we use the notations in exercise 1.2.1.
+Define the function
+\[f_n(x)=
+\begin{cases}
+1 &\text{if } \exists 1\leq i\leq n \st x=a_i\\  
+0 &\text{else}
+\end{cases}\]
+$\forall n\in\mathbb{N},f_n$ is Riemann integrable. Nevertheless, $\lim_{n\to\infty}f_n=f$ is the Dirichlet function :
+\[f=
+\begin{cases}
+1 &\text{if } x\in A\\
+0 &\text{else}
+\end{cases}
+\]
+which is not Riemann integrable.
+
+Uniform convergence guarantees that $\lim\limits_{n\to\infty}f_n$ is still Riemann integrable.
+\end{proof}
+
+\paragraph{1.2.3}
+\subparagraph{(1)}
+\begin{proof}
+$\forall n\in\mathbb{N}, \exists B_n\text{ a box centered at the origin whose edge measures} \frac 1 n$. Obviously, $\varnothing\in B_n$. So
+\[m^*(\varnothing)\leq m(B_n)=\frac{1}{n^d}\]
+Take $n\to\infty$, and we have $m^*(\varnothing)=0$, the desired statement.
+\end{proof}
+
+\subparagraph{(2)}
+\begin{proof}
+$\forall k\in\mathbb{N},\text{union of boxes satisfying} \bigcup\limits_{n=1}^{\infty}B^k_n \supset F, \sum\limits_{n=1}^{\infty}|B^k_n|-m^*(F)<\frac 1 k,$ we can infer that $ \bigcup\limits_{n=1}^{\infty}B^k_n\supset E$. Therefore,  
+\[\lim_{k\to\infty}\sum_{n=1}^{\infty}|B^k_n|=m^*(F)\]
+\[\sum_{n=1}^{\infty}|B^k_n|\leq m^*(E) \]
+Take $k\to\infty$ and the statement is proved.
+\end{proof}
+\subparagraph{(3)}
+\begin{proof}
+By the definition of Lebesgue outer measure, we have:
+$\forall n\in\mathbb{N},\varepsilon>0, \exists \text{countable sequence of disjoint boxes} \{B_{n,m}\} \st$
+\[E_n\subset \bigcup_{m=1}^{\infty}B_{n,m}\qquad 0\leq\sum_{m=1}^{\infty}|B_{n,m}|-m^*(E_n)<\frac{\varepsilon}{2^n}\]
+Therefore
+\[\sum_{n=1}^{\infty}m^*(E_n)> \sum_{m=1}^{\infty}\sum_{n=1}^{\infty}|B_{n,m}|-\varepsilon\]
+By Tonelli's theorem, 
+\[\sum_{n=1}^{\infty}m^*(E_n)> \sum_{n=1}^{\infty}\sum_{m=1}^{\infty}|B_{n,m}|-\varepsilon\geq m(\bigcup_{n=1}^{\infty}\bigcup_{m=1}^{\infty}B_{n,m})-\varepsilon\]
+Obviously, $\bigcup\limits_{n=1}^{\infty}\bigcup\limits_{m=1}^{\infty}B_{n,m}\supset \bigcup\limits_{n=1}^{\infty}m(E_n)$, which shows that $m^*(\bigcup\limits_{n=1}^{\infty}E_n)$.
+From monotonicity and the above inequalities, and take $\varepsilon\to 0$, we get the desired inequality.
+\end{proof}
+
+\paragraph{1.2.4}
+\begin{proof}
+Without loss of generosity, we assume that $E$ is compact. Fix $p\in E$, and consider $d_p=\inf\limits_{q\in F}d(p,q) $. It's easy to see that $d(p,q)$ is continuous (by explicitly putting down its expressions), so $\exists q_p\in F\st d_p=d(p,q_p)>0$ since $E\cap F=\varnothing$ (else, $p=q_p\in E\cap F$ which is a contrary). Denote $B(p)$ the open ball centered at $p$ with radius $\frac{d_p}{2}$. Obviously
+\[E\subset\bigcup_{p\in E}B(p)\]
+by the definition of compact sets, $\exists \{p_1,\cdots,p_n\}\in E$ s.t, $E\subset\bigcup\limits_{i=1}^{n}B(p_i)=B_0$, an open set with the property $B_0\cap F=\varnothing$. 
+Denote $d_0=\min\limits_{1\leq i\leq n}\{\frac{d_{p_i}}{2}\}>0$, then from triangle inequality, $d(E,F)>d(B_0,F)\leq \frac{d_0}{2}>0$, which is the desired statement.
+
+Consider the graph of $f_1(x)=\frac{1}{x} \quad (x>0)$ (denoted by $G_1$) and $f_2(x)=-\frac{1}{x}\quad x<0$ (Denoted by $G_2$). Both of them are unbounded closed set, but $d(G_1,G_2)<d((\frac{1}{n},n),(-\frac{1}{n},n))\to 0\quad n\to\infty$. 
+\end{proof}
+
+\paragraph{1.2.5}
+\begin{proof}
+Since $E$ can be expressed as the union of almost disjoint boxes, we denote $E=\bigcup\limits_{n=1}^{\infty}B_n$ where $\{B_n\}_{n=1}^{\infty}$ is a set of countable almost disjoint boxes. From Lemma 1.2.9, $m^*(E)=\sum_{n=1}^{\infty}|B_n|$. $\forall \text{countable union of boxes} C=\bigcup\limits_{n=1}^{\infty}C_n \text{ where }C\subset E, m(C)\leq m(E) $from monotonicity. Thus $m_{*,(J)}(E)\leq m^*{E}$.
+
+So it suffice to prove that $m_{*,(J)}(E)\geq \sum\limits_{n=1}^{\infty}|B_n|$. $\forall N\in\mathbb{N}, \bigcup\limits_{n=1}^{N}B_n\subset E$, so by definition $\sum\limits_{n=1}^{N}|B_n|=m(\bigcup\limits_{n=1}^{N}B_n)\leq m_{*,(J)}$. Take $n\to\infty$, and the statement is proved.
+
+
+
+
+
+
+
+\end{proof}
+
+\paragraph{1.2.6}
+Consider the set $E=[0,1]\backslash \mathbb{Q}$. As mentioned above, $m^*(E)=1$. Nevertheless, since $\mathbb{Q}$
+is dense in $\mathbb{R}$, if $U\subset E, U\text{ open,then}, U=\varnothing$. So $\sup\limits_{U\subset E, U\text{ open}}m^*(U)=0\neq 1=m^*(E)$, which is a contrary.  
+\end{document}

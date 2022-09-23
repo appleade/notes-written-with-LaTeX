@@ -1,0 +1,420 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+%\usepackage{hyperref}
+\usepackage{ulem}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 4 for Measure and Integral}
+\begin{document}
+\maketitle
+\newcommand{\st}{\text{ s.t.}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\re}{\mathrm{Re}\,}
+\newcommand{\im}{\mathrm{Im}\,}
+\newcommand{\sip}{\mathrm{Simp}}
+
+\DeclareRobustCommand{\rchi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+\paragraph{1.}
+\begin{proof}
+Without loss of generosity, we may assume $E$ is bounded. Otherwise, simply consider a bounded subset if $E$ with positive measure. Such a set always exists by the fact that $m(E)=\sup_{\substack{k\subset E}\\K\text{ compact}}m(K)$.
+%Set the quotient space $\mathbf{R}^n/\mathbf{Q}^n=\{x+\mathbf{Q}^n|x\in\mathbf{R}^n\}$ with each coset dense in $\mathbf{R}^n$, so $\forall$ coset $C\in \mathbf{R}^n/\mathbf{Q}^n$, 
+
+Define $W=E/\mathbf{Q}^n$, where $\bar{x}=\bar{y}\Leftrightarrow x-y\in \mathbf{Q}^n, \forall x,y\in E$. Select one representative element from each equivalent class, which is possible by the axiom of choice, we get the set $V\subset E$. Suppose $V$ is Lebesgue measurable.
+
+On one hand, $E\subset\bigcup\limits_{y\in \mathbf{Q}^n\cap E}(V+y)$, which is the union of disjoint sets. By countable additivity, translation invariance and that $V$ is Lebesgue measureable, one have $0<m(E)<\sum\limits_{y\in \mathbf{Q}^n\cap E}m(V)$, so $m(V)>0$.
+
+On the otherhand, E is bounded, and so is $\bigcup\limits_{y\in \mathbf{Q}^n\cap E}(V+y)$, which states that $\exists 0<M<+\infty\st\sum\limits_{y\in \mathbf{Q}^n\cap E}m(V)<M$, which can not be true if $m(V)>0$, a contradiction. 
+
+So $V$ is not Lebesgue measurable.
+\end{proof}
+
+\paragraph{2.}
+\begin{proof}
+By exercise 1.2.17 (Carath\'eodory criterion), it's equivalent to construct the set $\st m(E\cap I)>0, m(E\cap I^c)>0$. Now perform the following operations: denote $B(x,r)=(x-\frac r 2,x+\frac r 2)$. Denote $I_0^1=[0,1]$. For arbitrary interval $I$, denote $x_I$ the point at the middle of the interval. Take $\delta=\frac{1}{4}$.
+\begin{enumerate}
+\item{} $I_1=I_0^1\backslash B(x_{I_0^1},)$. Denote the resulting connected intervals $I_1^1,I_1^2$
+\item{} Perform the routine on $I_1^1, I_1^2$. Meanwhile, refill $B(x_{I_0^1})$ and perform the routine on that interval.
+\item{} Perform the routine inductively for all resulting intervals.
+\end{enumerate}
+Thus we get a Cantor set with positive measure, with its gaps filled with the same kind of Cantor sets. $\forall$ interval $I$, $I\cap E, I^c\cap E$ are unions of Cantor sets of positive measure, so $m(I\cap E)>0,m(I^c\cap E)>0$.
+\end{proof}
+
+
+\paragraph{3.}
+I don't really understand what is asked$\cdots$. 
+
+\paragraph{4.}
+\begin{proof}
+Define the characteristic function 
+\[\rchi_E(x)=\begin{cases}
+1&x\in E\\
+0&\text{else}
+\end{cases}\]
+Define $E=\bigcup\limits_{i=1}^{n}E_i$. Define $Ch(E)={\rchi_F|F\in 2^E}$. $\forall \rchi_1,\rchi_2\in Ch(E)$, it's straight forward to define $\rchi_1+\rchi_2,\rchi_1*\rchi_2$ to be the usual summation and multiplication in binary field $\mathbf{F}_2$.
+It's not hard to prove that the rings $(2^E,\bigtriangleup, \cup),(Ch(E),+,*)$ are isomorphic under the definition of the characteristic function. 
+
+$\forall x\in \mathbf{R}^d$, define $v(x)=(\rchi_{E_1},\cdots,\rchi_{E_n})\in \mathbf{F}_2^n$, and $A_k=\{x\in\mathbf{R}^d| k=\sum\limits_{i=1}^n v(x)^i*2^i\}$ (Equivalently, allocate $x$ with the same $v(x)$ to the same set). By definition, the allocation is unique and that $\bigcup\limits_{k=0}^{2^n-1}A_k=\mathbf{R}^d$. In total, there are $2^n$ disjoint $A_k$. By the isomorphic above, $\forall 0\leq k< 2^n, A_k$ is the intersection of $E_i$ and $E_i^c$.
+\end{proof}
+
+\paragraph{5.}
+\begin{proof}
+$\forall n\in\mathbf{N},0\leq k\leq 2^{2n}-1$, let
+\[E_n^k=f^{-1}((k2^{-n},(k+1)2^{-n}])\quad F_n=f^{-1}((2^n,\infty])\]
+and define unsigned simple functions
+\begin{equation}\label{folland}
+\phi_n=\sum_{k=0}^{2^{2n}-1}k2^{-n}\rchi_{E_n^k}+2^n\rchi_{F_n}
+\end{equation}
+By direct calculation, one sees that $\phi_n\leq\phi_{n+1}$. If $f(x)<\infty$, then $\exists N\st f(x)<2^N$, then $f(x)-\phi_n<2^{-n}\quad \forall n>N$. If not, $\phi_n(x)>2^n\to\infty\quad (n\to\infty)$. So $\phi_n$ is the required sequence.
+%Define
+%\[f_k(x)=\sum_{n=0}^{\infty} \frac{1}{2^k}\rchi_{f^{-1}([\frac{n}{2^k},\infty])}(x)\]
+%By definition, it can be easily verified that $f_{k+1}-f_{k}(x)=\sum\limits_{\substack{n=0\\n \text{ odd}}}^{\infty}\frac{1}{2^{k+1}}\rchi_f^{-1}([\frac{n}{2^{k+1}},\infty])(x)\geq 0$, so $\{f_k\}$ is a non decreasing sequence. By (iv), the characteristic functions are defined on Lebesgue measurable sets, so $f_k$ indeed defines a unsigned simple function.
+
+%Now we prove that $f(x)=\sup\limits_{i\geq 1}f_i(x)=\lim\limits_{k\to\infty}f_k(x)$. Fix $x \in \mathbf{R}^d$. If $f(x)=\infty$, then $\forall n\in\mathbf{N}, f_n(x)=\infty$, and the case is trivially proved. If $f(x)=C<\infty$, then write $C$ in the binary form: $C=[C]+0.a_1a_2\cdots $. $f(x)-f_k(x)=0.0\cdots 0a_ka_{k+1}\cdots\to 0\quad(k\to\infty)$, and the case is proved.
+\end{proof}
+
+
+
+\paragraph{1.3.1}
+
+\begin{proof}
+Suppose $f=\sum c_i\rchi_{E_i},g=\sum c'_i\rchi_{E'_i}, h=\sum c''_i\rchi_{E''_i}$. With the Venn diagram we may partition $\mathbf{R}^d$ into disjoint intersections of $E_i,E'_i,E''_i$. Denote the partiton as $A_k\quad (1\leq k\leq N)$. So $f=\sum_{i=1}^{N}c_i\rchi_{A_i},g=\sum_{i=1}^{N}c'_i\rchi_{A_i},f+g=\sum_{i=1}^{N}(c_i+c'_i)\rchi_{A_i}$. 
+
+In the following, we'll always use the notations constructed above.
+\subparagraph{(i)}
+By definition:
+\[
+%=\sum_{i=1}^{N}(c_i+c'_i)m(A_i)\\
+%=\sum_{i=1}^{N}c_im(A_i)+\sum_{i=1}^{N\c'_im(A_i)\\
+LHS=\sum_{i=1}^{N}(c_i+c'_i)m(A_i)=\sum_{i=1}^{N}c_im(A_i)+\sum_{i=1}^{N}c'_im(A_i)=RHS
+\]
+\end{proof}
+
+\newcommand{\supp}{\mathrm{supp}}
+\subparagraph{(ii)}
+\begin{proof}
+The ``if'' side is trivial.Now we prove the ``only if'' side. 
+
+If $f$ is not finite almost everywhere, $\exists E\subset \supp(f)\st m(E)>0$ where $\forall x\in E, f(x)=\infty$. Then $\sip\int_{\mathbf{R}^d}f(x)\dd x\leq m(E)*\infty=\infty$, which is a contradiction.
+
+If $m(\supp(f))=\infty$, then $c=\inf\limits_{x\in\supp(f)}f(x)>0$, and that $\sip\int_{\mathbf{R}^d}f(x)\dd x\geq m(\supp(f))*c=\infty$, which is a contrary.
+
+\end{proof}
+
+\subparagraph{(iii)}
+\begin{proof}
+The ``if'' side is trivial. Now we prove the ``only if'' side.
+
+If not, $m(\supp(f))>0$. Denote $c=\inf\limits_{x\in\supp(f)}f(x)>0$. Therefore, $\sip\int_{\mathbf{R}^d}f(x)\dd x\geq c*m(\supp(f))>0$, which is a contradiction.
+\end{proof}
+
+\subparagraph{(iv)}
+\begin{proof}
+Define $h(x)=\max\{f(x)-g(x),g(x)-f(x)\}$. Then $h$ is zero almost everywhere, so by (iii), $\sip\int_{\mathbf{R}^d}h(x)\dd x=0$. Notice that:
+\[\sip\int_{\mathbf{R}^d}f(x)\dd x\leq \sip\int_{\mathbf{R}^d}g(x)\dd x+\sip\int_{\mathbf{R}^d}h(x)\dd x=\sip\int_{\mathbf{R}^d}g(x)\dd x\]
+\[\sip\int_{\mathbf{R}^d}g(x)\dd x\leq \sip\int_{\mathbf{R}^d}f(x)\dd x+\sip\int_{\mathbf{R}^d}h(x)\dd x=\sip\int_{\mathbf{R}^d}f(x)\dd x\]
+the equation follows.
+\end{proof}
+
+\subparagraph{(v)}
+\begin{proof}
+Denote $E=\bigcup\limits_{j\in J}A_j$ as the set where $f(x)>g(x)$ and $J\subset \{1,2,\cdots,N\}$. Denote $f_1=f|_{E}, f_2=f-f_1$. Both of them are unsigned simple function. Obviously, $f_1$ is zero almost everywhere, so $\sip\int_{\mathbf{R}^d}f_1(x)\dd x=0$. Therefore:
+%By the given condition, $m(E)=0$. Then $\forall 0\leq i\leq N, A_i\backslash E=A_i\cap E^c$ is still Lebesgue measurable, and 
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}f(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f_1(x)\dd x+\sip\int_{\mathbf{R}^d}f_2(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f_2(x)\dd x\\
+\leq &\sip\int_{\mathbf{R}^d}g(x)|_{E^c}\dd x\\
+\leq &\sip\int_{\mathbf{R}^d}g(x)\dd x
+\end{aligned}
+\]
+\end{proof}
+
+\subparagraph{(vi)}
+It follows from definition.
+\subparagraph{uniqueness}
+\begin{proof}
+Suppose $M:\sip^+(\mathbf{R}^d)\to [0,+\infty]$ is a function satisfying the properties above. $\forall f=\sum_{i=1}^{N} c_i1_{A_i}\in \sip^+(\mathbf{R}^d)$, by (i), $M(f)=\sum_{i=1}^{N}c_iM(A_i)$. By (vi), $M(f)=\sum_{i=1}^Nc_im(A_i)$, which is the definition of simple unsigned integral. The uniqueness is thus proved.
+\end{proof}
+
+\paragraph{1.3.2}
+Still, we use the partitions in exercise 1.3.1.
+\subparagraph{(i)}
+\begin{proof}
+First assume $f,g$ are real. Then from properties of unsigned simple functions:
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}(f+g)(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}(f+g)_+(x)\dd x-\sip\int_{\mathbf{R}^d}(f+g)_-(x)\dd x\\
+=&[\sip\int_{\mathbf{R}^d}f_+(x)\dd x-\sip\int_{\mathbf{R}^d}f_-(x)\dd x]\\
+&+[\sip\int_{\mathbf{R}^d}g_+(x)\dd x-\sip\int_{\mathbf{R}^d}g_-(x)\dd x]\\
+=&\sip\int_{\mathbf{R}^d}f(x)\dd x+\sip\int_{\mathbf{R}^d}g(x)\dd x
+\end{aligned}\]
+
+Now that we've proved the real case, for the general case:
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d} f(x)+g(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d} \mathrm{Re}f(x)+g(x)\dd x+\sip\int_{\mathbf{R}^d} \mathrm{Im}f(x)+g(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d} \mathrm{Re}f(x)\dd x+\sip\int_{\mathbf{R}^d} \mathrm{Re}g(x)\dd x\\
+&+\sip\int_{\mathbf{R}^d} \mathrm{Im}f(x)\dd x+\sip\int_{\mathbf{R}^d} \mathrm{Im}g(x)\dd x\\
+=&[\sip\int_{\mathbf{R}^d} \mathrm{Re}f(x)\dd x+\sip\int_{\mathbf{R}^d} \mathrm{Im}f(x)\dd x]\\
+&+[\sip\int_{\mathbf{R}^d} \mathrm{Re}g(x)\dd x+\sip\int_{\mathbf{R}^d} \mathrm{Im}g(x)\dd x]\\
+=&\sip\int_{\mathbf{R}^d} f(x)\dd x+\sip\int_{\mathbf{R}^d} g(x)\dd x
+\end{aligned}\]
+
+Now we prove (1.11) where $c>0,c=0,\text{ and }c=-1$. Then $\forall c<0,c=(-1)*c'$ where $c'>0$, and 
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}cf(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}(-1)*(c'f)(x)\dd x\\
+=&-\sip\int_{\mathbf{R}^d}(c'f)(x)\dd x\\
+=&-c'\sip\int_{\mathbf{R}^d}f(x)\dd x\\
+=&c\sip\int_{\mathbf{R}^d}cf(x)\dd x
+\end{aligned}\]
+Furthermore, $\forall c\in\mathbf{C}$, $c=u+iv\quad u,v\in \mathbf{R}$. Then
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}cf(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}\re(cf(x))\dd x+i\sip\int_{\mathbf{R}^d}\im(cf(x))\dd x\\
+=&\sip\int_{\mathbf{R}^d} u\re f-v\im f\dd x+\sip\int_{\mathbf{R}^d}i(v\re f(x)+u\im f(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d} u\re f-v\im f\dd x+i\sip\int_{\mathbf{R}^d}(v\re f(x)+u\im f(x)\dd x\\
+=&u\sip\int_{\mathbf{R}^d}\re f(x)\dd x-v\sip\int_{\mathbf{R}^d}\im f(x)\dd x\\
+&+iu\sip\int_{\mathbf{R}^d}\im f(x)\dd x+v\sip\int_{\mathbf{R}^d}\im \re f(x)\dd x\\
+=&(u+iv)[\sip\int_{\mathbf{R}^d}\re f(x)\dd x+i\sip\int_{\mathbf{R}^d}\im f(x)\dd x]\\
+=&c\sip\int_{\mathbf{R}^d}f(x)\dd x
+\end{aligned}\]
+
+
+\begin{enumerate}
+\item{case $c=0$}
+$LHS=\sip\int 0\dd x$. Here, $0$ is an unsigned simple function, and the problem degenerate to the case of unsigned simple function. By exercise 1.3.1(iii), $LHS=0$. Meanwhile, by our definition of $\infty$, $0\cdot \infty=0$. So no matter whether $\sip\int_{\mathbf{R}^d}f(x)\dd x<\infty$ or not, $RHS=0=LHS$.
+\item{case $c>0$}
+First we assume $f$ is real. 
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}cf(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}(cf)_+(x)\dd -\sip\int_{\mathbf{R}^d}(cf)_-(x)\dd x\quad\text{from definition of }f_+,f_-\\
+=&\sip\int_{\mathbf{R}^d}c(f_+)(x)\dd x-\sip\int_{\mathbf{R}^d}c(f_-(x))\dd x\quad\text{from properties of unsigned simple functions}\\
+=&c\sip\int_{\mathbf{R}^d}f_+(x)\dd x-c\sip\int_{\mathbf{R}^d}f_-(x)\dd x\\
+=&c[\,\sip\int_{\mathbf{R}^d}f_+(x)\dd x-\sip\int_{\mathbf{R}^d}f_-(x)\dd x\,]\\
+=&c\sip\int_{\mathbf{R}^d}f(x)\dd x
+\end{aligned}\] 
+
+Then we consider $f(x)=u(x)+iv(x)$, where $u,v$ are real.
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}cf(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}cu(x)+icv(x)\dd x\\
+=&c\sip\int_{\mathbf{R}^d}u(x)\dd x+ic\sip\int_{\mathbf{R}^d}v(x)\dd x\\
+=&c[\,\sip\int_{\mathbf{R}^d}u(x)\dd x+\sip\int_{\mathbf{R}^d}v(x)\dd x\,]\\
+=&c\sip\int_{\mathbf{R}^d}f(x)\dd x
+\end{aligned}\]
+\item{case $c=-1$}
+%First assume that $f$ is real. Denote $g=-f$. Then by definition,$g_+(x)=(-f)_-(x),g_-(x)=(-f)_+(x)$. So
+\[%\begin{aligned}
+\sip\int_{\mathbf{R}^d}-f(x)\dd x
+=\sum_{i=1}^{N}-c_im(A_i)
+=-\sum_{i=1}^{N}c_im(A_i)
+%&\sip\int_{\mathbf{R}^d}cf(x)\dd x
+%=&\sip\int_{\mathbf{R}^d}(-f)_+(x)-(-f)_-(x))\dd x\\
+%=&\sip\int_{\mathbf{R}^d}g_-(x)-g_+(x)\dd x\\
+%=&\sip\int_{\mathbf{R}^d}g_-(x)\dd x-\sip\int_{\mathbf{R}^d}g_+(x)\dd x\\
+%=&-[\,\sip\int_{\mathbf{R}^d}g_+(x)\dd x-\sip\int_{\mathbf{R}^d}g_-(x)\dd x\,]\\
+%=&\sip\int_{\mathbf{R}^d}g(x)\dd x\\
+=-\sip\int_{\mathbf{R}^d}f(x)\dd x
+%\end{aligned}
+\]
+\end{enumerate}
+
+As for the last equation, it can be directly verified:
+\[%\begin{aligned}
+\sip\int_{\mathbf{R}^d}\overline{f}(x)\dd x
+=\sum_{i=1}^{N}\overline{c_i}m(A_i)
+=\overline{\sum_{i=1}^{N}c_im(A_i)}
+=\overline{\sip\int_{\mathbf{R}^d}f(x)\dd x}
+%\end{aligned}
+\]
+\end{proof}
+
+\subparagraph{(ii)}
+\begin{proof}
+Equivalently and from linearity, we need to prove $f\stackrel{\mathrm{a.e.}}{=}0\ \Rightarrow\ \sip\int_{\mathbf{R}^d}f(x)\dd x=0$.
+
+Denote $f=u_+(x)-u_-(x)+iv_+(x)-iv_-(x)$, where $u_+(x),u_-(x),v_+(x),v_-(x)$ are unsigned simple fuction. Obviously, since $m(\supp(f))=0$, $\supp(u_+),\supp(u_-),\supp(v_+),\supp(v_-)$ all have zero measure. Therefore, from exercise 1.3.1(iii), $\sip\int_{\mathbf{R}}u_+(x)\dd x=0,\sip\int_{\mathbf{R}}u_-(x)\dd x=0,\sip\int_{\mathbf{R}}v_+(x)\dd x=0,\sip\int_{\mathbf{R}}v_-(x)\dd x=0$. The statement follows from linearity.
+\end{proof}
+
+\subparagraph{(iii)}
+The statement follows directly from the definition.
+%the uniqueness is left t be proved
+\subparagraph{uniqueness}
+\begin{proof}
+Suppose $M:\sip^{abs}(\mathbf{R}^d)\to \mathbf{C}$ is a function satisfying the properties above.
+By (i)(iii), we learn that the funtion is unique for unsigned simple funtions. Let $f(x)=u(x)+iv(x)$ where $u,v$ are real. By (i):
+\[\begin{aligned}
+&M(f)\\
+=&M(u_+)+M(u_-)+iM(v_+)=iM(v_-)\\
+=&\sip\int_{\mathbf{R}^d}u_+(x)\dd x+\sip\int_{\mathbf{R}^d}u_-(x)\dd x+\sip\int_{\mathbf{R}^d}v_+(x)\dd x+\sip\int_{\mathbf{R}^d}v_-(x)\dd x
+\end{aligned}\]
+which is the definition. Uniqueness is thus proved.
+\end{proof}
+
+\paragraph{1.3.4}
+\begin{proof}
+``If'' side:
+
+$f$ is measurable by definition.
+
+Suppose $\{f_n\}$ is the sequence of bounded simple functions, which is a cauchy sequence. So $\forall \varepsilon>0, \exists N\in\mathbf{N}\st \forall m,n\in \mathbf{N}, \forall x\in \mathbf{R}^d, |f_n(x)-f_m(x)|<\varepsilon$. Since $f_n(x)$ is bounded, $\exists M\in\mathbf{R}_+\st f_n(x)\leq M$. Take $m\to\infty$, and we see that $|f_n(x)-f(x)|<\varepsilon$. From triangle inequality, $f(x)<\varepsilon+M$, so $f$ is bounded. 
+
+``Only if'' side:
+
+Approximate f by the sequence in (\ref{folland}). Since $f$ is bounded, $\exists N\in\mathbf{N}\st f(x)<2^N\quad(\forall x\in\mathbf{R}^d)$. Then $\forall x\in\mathbf{R}^d, n>N, 0<f(x)-\phi_n(x)<2^{-n}$. The uniform convergence follows from definition.
+\end{proof}
+
+
+\paragraph{1.3.6}
+\begin{proof}
+Since $f(x)$ is a measurable function, $f(x)=\lim\limits_{n\to\infty}f_n(x)$ where $f_n(x)$ are non-decresing unsigned simple function. Denote $E=\{(x,t)\in\mathbf{R}^d\times\mathbf{R}|0\leq t\leq f(x)\}$. Similarly, denote $E_n=\{(x,t)\in\mathbf{R}^d\times\mathbf{R}|0\leq t\leq f_n(x)\}$. Obviously, $E_n\subset E$. Since $f_n$ is an unsigned simple function, $E_n$ is the finite union of Lebesgue measurable sets $A_i\times [0,c_i]$. (It is obviously Lebesgue measurable: $\forall\varepsilon>0, \exists \text{ Lebesgue measurable set } U_\varepsilon\in\mathbf{R}^d\st m^*(U_{\varepsilon}\bigtriangleup E)<\varepsilon $, so $m^*(U_\varepsilon\times [0,c_i]\bigtriangleup E\times [0,c_i])<c_i\varepsilon$. By the arbitrarity of $\varepsilon$ and the fact that $0\cdot \infty=0$, the measurability follows. )
+
+First we assume that $f$ is bounded, then by exercise 1.3.4, $f_n(x)$ uniformly converges to $f(x)$. This means $\forall \varepsilon>0,\exists N\in\mathbf{N},\forall n>N, |f(x)-f_n(x)|<\varepsilon\quad (\forall x\in \mathbf{R}^d)$. Denote $D_R$ the open (thus Lebesgue measurable) ball origined at the origin in $\mathbf{R}^{n+1}$ with radius $R>0$. Fix $R$, and denote $E^R=E\cap D_R$, $E_n^R=E_n\cap D_R$. Then $m^*(E^R\bigtriangleup E_n^R)<\varepsilon$. So $E^R$ is almost measurable, thus Lebesgue measurable. Since $E=\lim\limits_{R\to\infty}E^R$, $\forall \varepsilon>0,\exists R(\varepsilon)>0, \st m^*(E\bigtriangleup E^R)<\varepsilon$. So $E$ is almost measurable, thus Lebesgue measurable.
+
+Now we consider the case where $f$ is not bounded. By definition, $f_n(x)$ are still bounded, so the proof above still applies.
+
+\end{proof}
+\paragraph{1.3.7}
+%After all, values on a set with zero measure does not influence measurability. So WLOG, we assume  
+\subparagraph{(i)$\Leftrightarrow$(ii)}By definition.
+\subparagraph{(i)$\Rightarrow$(iii)}
+\begin{proof}
+Take $\lim\limits_{n\to\infty}f_n(x)=f(x)$. Separate real and  imaginary parts and we get $\lim\limits_{n\to\infty}\re f_n(x)=\re f(x), \lim\limits_{n\to\infty} \im f_n(x)=\im f(x)$. So $\re f,\im f$ are indeed limits of simple functions. Separate positive and nageative parts and we get the desired statement.
+\end{proof}
+\subparagraph{(iii)$\Rightarrow$(i)}
+\begin{proof}
+By definition, unsigned measurable functions are pointwise limits of simple functions, and so does their linear combinations. So it's trivial.
+\end{proof}
+\subparagraph{(iii)$\Rightarrow$(iv)}
+\begin{proof}
+%Take the sequence of simple functions $\{f_n(x)\}\st \lim\limits_{n\to\infty}f_n(x)=f(x)$. 
+Since open sets are countable unions of dyadic boxes, it suffice to show that $\forall$ box $B=[a,b]\times[i*c,i*d]\in\mathbf{C}$, $f^{-1}(B)$ is Lebesgue measurable. 
+
+WLOG, assume that $a>0,c>0$ (after translation, thanks to translation invariance). Notice that $\re f_+,\im f_+$ are unsigned simple functions, so $\re f_+^{-1}([a,b]),\im f_+^{-1}([c,d])$ are Lebesgue measurable sets, and so is $f^{-1}(B)=\re f_+^{-1}([a,b])\times \im f_+^{-1}([c,d])$.
+\end{proof}
+\subparagraph{(iv)$\Rightarrow$(iii)}
+\begin{proof}
+Denote $f(x)=u(x)+iv(x)$, where $u,v$ are real functions. Since the open and close sets are arbitrarily chosen, we may still construct the sequence as \ref{folland} does. Thus we acquire $\psi_n^+(x),\psi_n^-(x),\zeta_n^+(x),\zeta_n^-(x)$ which approximate $u_+(x),u_-(x),v_+(x),v_-(x)$ respectively.
+\end{proof}
+\subparagraph{(iv)$\Rightarrow$(v)}
+For a fixed close set $K$, define the open set $U_n=K\cup \{x\in\mathbf{R}^d|dist(x,\partial K)<\frac{1}{n}\}$. Then $K=\bigcap\limits_{n=1}^{\infty}U_n$. So $f^{-1}(K)=\bigcap\limits_{n=1}^{\infty}f^{-1}(U_n)$. Since countable intersection of Lebesgue measurable sets is still Lebesgue measurable, $f^{-1}(K)$ is Lebesgue measurable.
+\subparagraph{(v)$\Rightarrow$(iv)}
+For a fixed open set $U$, define the closed set $K_n=U\cap \{x\in\mathbf{R}^d|dist(x,\partial U)<\frac{1}{n}\}^c$. Then $U=\bigcup\limits_{n=1}^{\infty}K_n$. So $f^{-1}(U)=\bigcap\limits_{n=1}^{\infty}f^{-1}(K_n)$. Since countable union of Lebesgue measurable sets is still Lebesgue measurable, $f^{-1}(U)$ is Lebesgue measurable.
+
+\paragraph{1.3.10}
+
+\subparagraph{(i)}
+\begin{proof}
+One one hand, $\forall\text{unsigned simple functions}\  g\leq f\leq h$, by definition $\sip\int_{\mathbf{R}^d}g(x)\dd x \leq \sip\int_{\mathbf{R}^d}f(x)\dd x\leq \sip\int_{\mathbf{R}^d}g(x)\dd x$. Take limits and we get $\underline{\int_{\mathbf{R}^d}}f(x)\dd x\leq\int_{\mathbf{R}^d}f(x)\dd x\leq \overline{\int_{\mathbf{R}^d}}f(x)\dd x$. Meanwhile, since $f\geq f,f\leq f$, so $\sip\int_{\mathbf{R}^d}f(x)\dd x\geq \overline{\int_{\mathbf{R}^d}}f(x)\dd x$, $\sip\int_{\mathbf{R}^d}f(x)\dd x\leq \underline{\int_{\mathbf{R}^d}}f(x)\dd x$ by definition. The equation thus follows.
+\end{proof}
+\subparagraph{(iv)}
+Denote $E$ the set where $f,g$ don't agree. Denote $\{f_n(x)\}$ the non-decreasing sequence of unsigned simple functions with the property $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\underline{\int_{\mathbf{R}^d}}f(x)\dd x$. Adjust the value on $E$ to get $g_n(x)$. By exercise 1.3.1(iv), $\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\sip\int_{\mathbf{R}^d}g_n(x)\leq \underline{\int_{\mathbf{R}^d}}g(x)$. Take $n\to\infty$ and we get 
+\[\underline{\int_{\mathbf{R}^d}}f(x)\dd x\leq\underline{\int_{\mathbf{R}^d}}g(x)\dd x\]
+Switch the position of $f,g$ and repeat the operation above, and we get 
+\[\underline{\int_{\mathbf{R}^d}}g(x)\dd x\leq\underline{\int_{\mathbf{R}^d}}f(x)\dd x\]
+So
+\[\underline{\int_{\mathbf{R}^d}}f(x)\dd x=\underline{\int_{\mathbf{R}^d}}g(x)\dd x\]\\
+The case for upper integral is proved similarly.
+\subparagraph{(ii)}
+Since by (iv), changing values on a zero measure set does not change the value of the integral, we may assume that $f(x)\leq g(x)$ point-wise. \\
+$\forall 0\leq h(x)\text{ simple satisfying}h(x)\leq f(x), h(x)\leq g(x)$. So
+\[\underline{\int_{\mathbf{R}^d}}f(x)\dd x=\sup_{\substack{0\leq h\leq f\\h\text{ simple }}}\sip\int_{\mathbf{R}^d}h(x)\dd x\leq \sup_{\substack{0\leq h\leq g\\h\text{ simple }}}\sip\int_{\mathbf{R}^d}h(x)\dd x=\underline{\int_{\mathbf{R}^d}}g(x)\dd x\] 
+
+$\forall 0\leq h(x)\text{ simple satisfying}h(x)\geq g(x), h(x)\geq f(x)$. So
+\[\overline{\int_{\mathbf{R}^d}}f(x)\dd x=\inf_{\substack{h\geq f\\h\text{ simple }}}\sip\int_{\mathbf{R}^d}h(x)\dd x\leq \inf_{\substack{h\geq g\\h\text{ simple }}}\sip\int_{\mathbf{R}^d}h(x)\dd x=\overline{\int_{\mathbf{R}^d}}g(x)\dd x\] 
+\subparagraph{(iii)}
+\begin{proof}
+The case where $c=0$ is trivial. Now we consider the case where $c\neq 0$.\\
+By definition, $\exists \{f_n(x)\}$ sequence of simple functions satisfying $f_n(x)\leq f(x), \lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\underline{\int_{\mathbf{R}^d}}f(x)\dd x$. Meanwhile, $\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\frac{1}{c}\int_{\mathbf{R}^d}cf_n(x)\dd x\leq \frac{1}{c}\underline{\int_\mathbf{R}^d}cf(x)\dd x$. Take $n\to\infty$ and we get:
+\[\underline{\int_{\mathbf{R}^d}}f(x)\dd x\leq\frac{1}{c}\underline{\int_\mathbf{R}^d}cf(x)\dd x\]
+Take $c'=\frac{1}{c}$, $g(x)=cf(x)$ and repeat the operation above, and we get
+\[\underline{\int_{\mathbf{R}^d}}f(x)\dd x\geq\frac{1}{c}\underline{\int_\mathbf{R}^d}cf(x)\dd x\]
+The equation thus follows.
+\end{proof}
+
+\subparagraph{(v)}
+\begin{proof}
+Denote $\{f_n(x)\},\{g_n(x)\}$ the non-decreasing sequence of unsigned simple functions with the property $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\underline{\int_{\mathbf{R}^d}}f(x)\dd x$, $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}g_n(x)\dd x=\underline{\int_{\mathbf{R}^d}}g(x)\dd x$. Meanwhile, $(f_n+g_n)(x)\leq(f+g)(x)$, and that
+\[\sip\int_{\mathbf{R}^d}f_n(x)\dd x+\sip\int_{\mathbf{R}^d}g_n(x)\dd x=\sip\int_{\mathbf{R}^d}(f_n+g_n)(x)\dd x\leq \underline{\int_{\mathbf{R}^d}}(f+g)(x)\dd x\]
+Take $n\to \infty$ and we get the desired inequality.
+\end{proof}
+\subparagraph{(vi)}
+\begin{proof}
+Denote $\{f_n(x)\},\{g_n(x)\}$ the non-increasing sequence of unsigned simple functions with the property $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\overline{\int_{\mathbf{R}^d}}f(x)\dd x$, $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}g_n(x)\dd x=\overline{\int_{\mathbf{R}^d}}g(x)\dd x$. Meanwhile, $(f_n+g_n)(x)\geq(f+g)(x)$, and that
+\[\sip\int_{\mathbf{R}^d}f_n(x)\dd x+\sip\int_{\mathbf{R}^d}g_n(x)\dd x=\sip\int_{\mathbf{R}^d}(f_n+g_n)(x)\dd x\geq \overline{\int_{\mathbf{R}^d}}(f+g)(x)\dd x\]
+Take $n\to \infty$ and we get the desired inequality.
+\end{proof}
+\subparagraph{(vii)}
+\begin{proof}
+Denote $f_n(x)$ the non-decreasing sequence of unsigned simple functions with the property $\lim\limits_{n\to\infty}\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\underline{\int_{\mathbf{R}^d}}f(x)\dd x$. Keep using the notations used in exercise 1.3.1, where $E$ participated in the partition. Then 
+\[\sip\int_{\mathbf{R}^d}f_n(x)\dd x=\sum_{A_i\subset E}c_im(A_i)+\sum_{A_j\cap E=\varnothing}c_jm(A_j)=\sip\int_{\mathbf{R^d}f_n(x)1_{E}(x)\dd x+\sip\int_{\mathbf{R}^d}}f_n(x)1_{E^c}f_n(x)\dd x\]\\
+Now it suffice to prove that $\lim\limits_{n\to\infty}\int_{\mathbf{R}^d}f_n(x)1_{E}\dd x=\underline{\int_{\mathbf{R}^d}}f(x)1_E(x)\dd x$.\\
+By construction, $\forall \varepsilon>0,\exists N\in\mathbf{N}\st \forall n>N$
+\[\begin{aligned}
+&|\int_{\mathbf{R}^d}f_n(x)1_{E}\dd x-\underline{\int_{\mathbf{R}^d}}f(x)1_E(x)\dd x|\\
+\leq&|\int_{\mathbf{R}^d}f_n(x)\dd x-\underline{\int_{\mathbf{R}^d}}f(x)\dd x|\\
+\leq&\ \varepsilon
+\end{aligned}\]
+The statement follows from definition.
+\end{proof}
+\subparagraph{(viii)}
+\begin{proof}
+On one hand, since $\min\{n,f(x)\}\leq f(x)$, from (ii) we have $\underline{\int_{\mathbf{R}^d}}\min\{n,f(x)\}\dd x\leq \underline{\int_{\mathbf{R}^d}}f(x)\dd x$. 
+
+On the other hand, by defintion, $\exists \text{simple function} 0\leq g(x)\leq f(x)\st$ 
+\[\sip\int_{\mathbf{R}^d}g(x)\dd x\geq \underline{\int_{\mathbf{R}^d}}f(x)\dd x-\varepsilon\]
+Since each simple function is bounded, we have for sufficiently large $n,\quad g(x)\leq \min\{n, f(x)\}$. So we have $\\sip\int_{\mathbf{R}^d}g(x)\dd x\leq \underline{\int_{\mathbf{R}^d}}\min\{f(x),n\}\dd x$. Therefore,
+\[\lim_{n\to\infty}\uline{\int_{\mathbf{R}^d}}\min\{n,f(x)\}\dd x\geq \uline{\int_{\mathbf{R}^d}}f(x)-\varepsilon\dd x\]
+Take $\varepsilon\to 0$ and we're finished. 
+\end{proof}
+\subparagraph{(ix)}
+\begin{proof}
+On one hand, since $f(x)1_{|x|\leq n}\leq f(x)$, from (ii) we have $\underline{\int_{\mathbf{R}^d}}f(x)1_{|x|\leq n}\dd x\leq \underline{\int_{\mathbf{R}^d}}f(x)\dd x$.
+
+On the other hand, WLOG, we assume that $f$ is bounded.
+
+If $f$ is bounded almost everywhere, we may adjust the unbounded points to 0 without afflicting the integral by (iv). If f is unbounded on a positive measure set $E$, then $\exists N\in\mathbf{N}\st m(\{|x|<N\}\cap E)>0$, so \[\lim\limits_{n\to\infty}\underline{\int_{\mathbf{R}^d}}f(x)1_{|x|\leq n}\dd x\geq \underline{\int_{\mathbf{R}^d}}f(x)1_{|x|\leq N}=\infty=\underline{\int_{\mathbf{R}^d}}f(x)\dd x\]
+
+Now that $f$ is bounded, $\exists M\in\mathbf{R}_+\st f(x)\leq M$. Notice that $\lim\limits_{n\to\infty}m(E\cap\{x\in\mathbf{R}^d:|x|\leq n\})=m(E), \forall \varepsilon >0,\exists N\in\mathbf{N}\st |m(E)-m(E\cap\{x\in\mathbf{R}^d:|x|\leq N\})|<\frac{\varepsilon}{M}.$ Therefore, denote $g(x)=f(x)1_{|x|\leq N}$, we have
+\[\underline{\int_{\mathbf{R}^d}}g(x)\dd x\geq \underline{\int_{\mathbf{R}^d}}f(x)\dd x-\varepsilon\]
+repeat the operationn in (viii) and the equality follows.
+\end{proof}
+\subparagraph{(x)}
+\begin{proof}
+$\forall \varepsilon>0, \exists$ simple function $f'$ satisfying $f'\leq f, \sip\int_{\mathbf{R}^d}f'(x)\geq \underline{\int_{\mathbf{R}^d}}f(x)\dd x-\varepsilon$, define $g'=(f+g)-f'\geq g$ which is still a simple function. So by definition and linearity of simple functions:
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}f(x)+g(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f'(x)+g'(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f'(x)\dd x+\sip\int_{\mathbf{R}^d}g'(x)\dd x\\
+\geq&\underline{\int_{\mathbf{R}^d}}f(x)\dd x+\overline{\int_{\mathbf{R}^d}}g(x)\dd x-\varepsilon\\
+\end{aligned}\] 
+Take $\varepsilon\to 0$ and we get $\geq$ side of the equation.
+
+$\forall \varepsilon>0, \exists$ simple function $g'$ satisfying $g'\geq g, \sip\int_{\mathbf{R}^d}g'(x)\leq \underline{\int_{\mathbf{R}^d}}g(x)\dd x+\varepsilon$, define $f'=(f+g)-g'\leq f$ which is still a simple function. So by definition and linearity of simple functions:
+\[\begin{aligned}
+&\sip\int_{\mathbf{R}^d}f(x)+g(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f'(x)+g'(x)\dd x\\
+=&\sip\int_{\mathbf{R}^d}f'(x)\dd x+\sip\int_{\mathbf{R}^d}g'(x)\dd x\\
+\leq&\underline{\int_{\mathbf{R}^d}}f(x)\dd x+\overline{\int_{\mathbf{R}^d}}g(x)\dd x+\varepsilon\\
+\end{aligned}\] 
+Take $\varepsilon\to 0$ and we get $\leq$ side of the equation.
+\end{proof}
+
+
+\paragraph{1.3.11}
+\begin{proof}
+Now that $m(\supp(f))<+\infty$, by exercise 1.2.16, it can be appeoximated by a sequence of compact set. So we assume that $E=\supp(f)$ is compact. Once this is proved, from exercise 1.3.10, the original function shares the same integral and we're done.
+
+Still we approximate $f(x)$ by the sequence \ref{folland}, which uniformly converges to $f$ on $E$. By exercise 1.3.10(i), we see that 
+\[\underline{\int_{\mathbf{R}^d}}\phi_n(x)\dd x=\sip\int_{\mathbf{R}^d}\phi_n(x)\dd x=\overline{\int_{\mathbf{R}^d}}\phi_n(x)\dd x\]
+
+One one hand, $\lim\limits_{n\to\infty}\underline{\int_{\mathbf{R}^d}}\phi_n(x)\dd x\leq\underline{\int_\mathbf{R^d}}f(x)\dd x$. On the other hand, $\forall \varepsilon>0,\exists n\in\mathbf{N}\st \sip\int_{\mathbf{R}^d}\phi_n(x)\dd x\geq \geq\int_{\mathbf{R}^d}f(x)\dd x-\varepsilon\underline{\int_{\mathbf{R}^d}}f(x)\dd x-\varepsilon$. Take $\varepsilon\to 0$ and we see that 
+\[\int_{\mathbf{R}^d}f(x)\dd x=\underline{\int_{\mathbf{R}^d}}f(x)\dd x\]
+Repeat similar operation above and we see that 
+\[\int_{\mathbf{R}^d}f(x)\dd x=\overline{\int_{\mathbf{R}^d}}f(x)\dd x\]
+The equality thus follows.
+\end{proof}
+\end{document}

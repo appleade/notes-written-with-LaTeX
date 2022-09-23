@@ -1,0 +1,217 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 1 for Measure and Integral}
+
+
+\begin{document}
+\maketitle
+
+\paragraph{5.}
+$(1)\Rightarrow (3)$ Since E is Jordan measurable, $\exists$ sequence $\{E_n\}\in \mathcal{E}(\mathbb{R}^d)$s.t$m^{\star ,(J)}(E)=\lim\limits_{n\to\infty}m^{\star,(J)}(E_n)$.That is,$\forall \varepsilon > 0, \exists N\in \mathbb{N}$ s.t.$m(E)-m(E_n)= m(E\bigtriangleup E_N)<\varepsilon$, which is the desired set $A$.
+
+$(3)\Rightarrow (1)$ $\forall \varepsilon=\frac1 n$,$\exists A_n$s.t.$m(A_n\bigtriangleup E)<\frac 1 n$.So, for fixed $n$,$\exists A'_n,A''_n$s.t.$m(A_n)-m(A'_n)<\frac 1 n$and $m(A_n)-m(A''_n)<\frac 1 n$where $A'_n\subseteq A_n \subseteq A''_n$.So $m(E)-m(A'n)<\frac 2 n$and $m(E)-m(A''_n)<1/n$.Let $n\to \infty$ proves the statement.
+
+\paragraph{6.}
+\subparagraph{(1)}
+
+
+Take a very large box G s.t. $G\supset E,G\supset F$. Then $E,F$'s completion in $G$:
+\[E^c= G\backslash E\quad F^c=G\backslash F\]
+are also Jordan measurable sets. By De Morgan's law:
+\[(E\cap F)^c=E^c\cup F^c\]
+So $(E\cap F)^c$ is Jordan measurable, and so is $E\cup F=G\backslash(E\cap F)^c$.
+
+$E\bigtriangleup F$ is measurable following its definition and previous proof on $E\backslash F$ and $E\cup F$.
+\subparagraph{(2)}
+\begin{proof}
+Suppose a Jordan measurable set $E$ with the property $m(E)<0$. Then by definition:
+\[0>m(E)=\inf_{\substack{B\supset E\\B elementary}}m(B)\]
+there exists an elementary set $B'$ s.t. $m(B')<\frac{m(E)}{2}<0$, which is contrary to the definition of elementary measure. 
+\end{proof}
+\subparagraph{(3)}
+\begin{proof}
+On one hand, since $E, F$ are Jordan measurable, there exists sequence of elementary sets $\{E_n\}\{F_n\}$ s.t. $\lim_{n\to\infty}m(E_n)=m(E),\lim\limits_{n\to\infty}m(F_n)=m(F)$ and $E_n \subset E, F_n \subset F$. Obviously $E_n\cap F_n=\varnothing$. $m(E)+m(F)=\lim\limits_{n\to\infty}m(E_n)+m(F_n)=\lim\limits_{n\to\infty}m(E_n+F_n)\leq\sup\limits_{\substack{B\subset E\cup F\\B \text{elementary}}}m(B)=m(E\cup F)$. Thus the $\geq$ side of the equality is proved.
+
+As for the other side, see the proof in (5).
+\end{proof}
+\subparagraph{(4)}
+\begin{proof}
+Notice that Jordan sets are closed under $\backslash$ and non-negativity, we have 
+\[m(F)=m(E)+m(F\backslash E)\geq m(E)\]
+\end{proof}
+
+\subparagraph{(5)}
+\begin{proof}
+Suppose the contrary is true. Then $\exists E,F\in \mathcal{J}(\mathbb{R}^d)\text{s.t.} m(E\cup F)>m(E)+m(F)$. Since $E,F$ are Jordan measurable, $\exists \text{sequence of elementary sets} \{E_n\}\{F_n\}$s.t. $E_n\supset E,F_n\supset F,\lim\limits_{n\to\infty}m(E_n)=m(E),\lim\\limits_{n\to\infty}m(F_n)=m(F)$. Obviously $E_n\cup F_n\supset E\cup F$.So
+\[m(E\cup F)\leq m(E_n\cup F_n)\leq m(E_n)+m(F_n)\]
+Take $n\to\infty$ and we acquire
+\[m(E\cup F)\leq m(E)+m(F)\]
+which is a contrary to the assumption.
+\end{proof}
+
+\subparagraph{(6)}
+\begin{proof}
+Since E is Jordan measurable, $\exists \text{sequence of elementary sets} \{E^i_n\} \text{s.t,} \lim\limits_{n\to\infty}m(E^i_n)=m(E), E^1_n\subset E\subset E^2_n$. Obviously $x+E^1_n\subset x+E \subset x+E^2_n$. Meanwhile:
+\[m(E+x)\leq\lim_{n\to\infty}m(E^2_n+x)=\lim_{n\to\infty}m(E^2_n)=m(E)\]
+\[m(E+x)\geq\lim_{n\to\infty}m(E^1_n+x)=\lim_{n\to\infty}m(E^1_n)=m(E)\]
+The statement is thus proved with squeeze theorem.
+\end{proof}
+
+\paragraph{7.}
+\subparagraph{(1)}\begin{proof}
+Since $B$ is close and finite, it is compact. Since $f$ is continuous, its image is compact,so the graph is also compact. Furthermore, it's easy to see that $f$ is uniformly continuous. So $\forall \varepsilon > 0,x_1.x_2\in \mathbb{R}^d,\exists \delta$, as long as $|x_1-x_2|<\delta,f(x_1)-f(x_2),<\varepsilon$.Consider open boxes $B(x_0)$ centered at $(x_0,f(x_0))$ whose edges measures $\varepsilon,\varepsilon,\cdots,\varepsilon,\delta$ respectively. Because the graph is compact, up to $O(\frac{|B|}{\varepsilon^d})$ boxes cover the whole graph, which unions into an elementary set $E(\varepsilon)$.$m(E(\varepsilon))=O(\delta)$. Let $\varepsilon \to 0$, $m(E)\to m^{\star,(J)}=0=m(E)_{\star,(J)}$,which proves the statement.  
+\end{proof}
+
+\subparagraph{(2)}
+\begin{proof}
+From (1), we learn that its boundary is Jordan measurable:$\exists E_n,$ s.t. $\partial E\subseteq E'_n$and $\lim\limits_{n\to \infty}m(E_n)=0$. Take $F_n=E\cup E_n$ and $F'_n=E-E_n$.Both are elementary sets and $m(F_n)\to m^{\star,(J)}(E)$,$m(F'_n)\to m_{\star,(J)}(E)\quad (n\to \infty)$. Since $F_n-F'_n=E_n$,$m^{\star,(J)}(E)=m_{\star,(J)}(E)$,which proves the statement. 
+\end{proof}
+
+\paragraph{10.}
+Due to translation invariance, it suffice to prove the case for balls centered at the origin.
+\subparagraph{(1)}
+It suffice to show that $\partial B$ has Jordan measure 0. Since $\partial B$ is the union of the upper and lower hemisphere, which are identical after reflection, it suffice to prove the statement to the upper hemisphere. Apply \[f:\mathbb{R}^{d-1}\to \mathbb{R}\quad x\to \sqrt{r^2-|x|^2}\]
+to the previous exercise, and the statement is proved.
+\subparagraph{(2)}
+\begin{proof}
+Consider the box $A$ centered at the origin with edges measuring $2r$. It's clear that $B\subseteq A$, so by monotonicity, $m(B)<m(A)=(2r)^d$, which proves the upper bound.
+
+Consider the box $C$ centered at the origin with its diagonal measuring $2r$. Thus its edge meaasures $\frac{2r}{\sqrt{d}}$. The following is the same with the proof of the upper bound.
+\end{proof}
+
+\paragraph{12.}
+\begin{proof}
+For arbitrary Jordan null set $F \subset E$, $\exists \{E_n\}$,a sequence of elementary sets satisfying $\lim\limits_{n\to \infty}m(E_n)=0=\inf\limits_{B\supset E, B elementary} m(B)\geq\inf\limits_{elementary set B\supset f} m(B)\geq 0$. Meanwhile, $0=m_{*,(J)}(E) \geq m_{*,(J)}(F)\geq 0$. Thus
+\[ m_{*,(J)}(F)=m^{*,(J)}(F)=0\]
+which proves the statement.
+\end{proof}
+
+
+\paragraph{13.}
+\begin{proof}
+Since $E$ is Jordan measurable, $\exists \{E_n\}$,a sequence of elementary sets satisfying
+\[m(E)=\lim_{n\to\infty}m(E_n) \quad \text{and} E\subseteq E_n\]
+As elementary sets, $E_n$ satisfies (1.1), so
+\begin{align*}
+m(E)&=\lim_{n\to\infty}\lim_{N\to\infty}\frac{1}{N^d}\# (E_n\cap \frac{1}{N}\mathbb{Z}^d)\\
+&=\lim_{N\to\infty}\lim_{n\to\infty}\frac{1}{N^d}\# (E_n\cap \frac{1}{N}\mathbb{Z}^d)\\
+&=\lim_{N\to\infty}\frac{1}{N^d}\# (E\cap \frac{1}{N}\mathbb{Z}^d)
+\end{align*}
+(the switch of limits is obviously legitimate because it unifomaly  converges when $N\to \infty$)
+
+This proves the statement.
+\end{proof}
+
+\paragraph{14.}
+\begin{proof}
+The measure of a single box is $2^{-nd}$, so $2^{-nd}\mathcal{E}^*(E,2^{-n}),2^{-nd}\mathcal{E}_*(E,2^{-n})$ are the measure of the union of corresponding sets. From definitions, $m^{*,(J)}(E)\leq 2^{-nd}\mathcal{E}^*(E,2^{-n}), m_{*,(J)}(E)\geq 2^{-nd}\mathcal{E}_*(E,2^{-n})$. Take $n\to\infty$, and the "only if" side follows from the definition of Jordan measure and squeeze theorem, with the required equation trivially followed.
+
+If $E$ is Jordan measurable, from 18.(3) we learn that it's equivalent to $m(\partial E)=0$, and $\lim\limits_{n\to\infty}2^{-nd}\mathcal{E}^*(E,2^{-n})-2^{-nd}\mathcal{E}_*(E,2^{-n})$ is equivalent to the measure of the union of dyadic cubes intersecting with $\partial E$. 
+%Since $m^{*,(J)}(E)=0, \forall n\in\mathbb{N},\exists A_n\in\mathcal{E}(\mathbb{R}^d)  \text{s.t.} m(E)-m(A_n)<\frac 1 n$.  
+Suppose the contrary is true. Then $\exists a>0$ s.t. $\lim\limits_{n\to\infty}2^{-nd}\mathcal{E}^*(E,2^{-n})-2^{-nd}\mathcal{E}_*(E,2^{-n})>a$, thus $m^{*,(J)}(E)>\frac a 2>0=m_{*,(J)}(E)$, which is contrary to the measurability if E.
+\end{proof}
+
+\paragraph{15.}
+\begin{proof}
+Suppose the contrary is true. From exercise 1.3, we learm that the map is unique on $\mathcal{E}(\mathbb{R}^d)$. $\forall J \in \mathcal{J}(\mathbb{R}^d)-\mathcal{E}(\mathbb{R}^d)$，and $m',m''$are two different maps satisfying given conditions where $\frac {m'(J)}{m''(J)}\not\equiv Const$. Take the sequence of elementary sets $\{E_n\}$ with the property that $\lim\limits_{n\to\infty}m'(E_n)=m'(J)$.Then from the uniqueness on elementary sets, we learn:
+\begin{align*}
+\frac{m'(J)}{m''(J)}&=\lim_{n\to\infty}\frac {m'(E_n)}{m''(E_n)}\\
+&=\lim_{n\to\infty}Const\\
+&=Const.
+\end{align*}
+which is a contrary to the definition of $m',m''$.
+\end{proof}
+
+\paragraph{16.}
+\begin{proof}
+First we prove the statement for elementary sets.
+
+Notice that the statement is trivial for boxes. Take arbitrary elementary sets $E=\bigcup\limits_{i=1}^{N}I_i$and $F=\bigcup\limits_{j=1}^{N'}J_j$.Then
+\begin{align*}
+E\times F&=(\bigcup\limits_{i=1}^{N}I_i)\times(\bigcup\limits_{j=1}^{N'}J_j)\\
+&=\bigcup_{i=1}^{N}\bigcup_{j=1}^{N'}(I_i\times J_j)
+\end{align*}
+which is indeed an elementary set. Furthermore, we have
+\begin{align*}
+m^{d_1+d_2}(E\times F)&=\sum_{i=1}^{N}\sum_{j=1}^{N'}m^{d_1+d_2}(I_i\times J_j)\\
+&=\sum_{i=1}^{N}\sum_{j=1}^{N'}(m^{d_1}(I_i)\times m^{d_2}(J_j))\\
+&=m^{d_1}(E)\times m^{d_2}(F)
+\end{align*}
+which proves the statement.
+
+Then we prove the statement for Jordan measurable sets.
+
+$\forall J^i\in \mathcal{J}(\mathbb{R}^d_i),\exists \{A^i_n\},\{B^i_n\}\in\mathcal{E}(\mathbb{R}^{d_i})$ s.t.
+\[A^i_n\subseteq J^i \subseteq B^i_n\]
+and
+\[\lim\limits_{n\to\infty}m(B^i_n\backslash A^i_n)=0,\quad i=1,2\]
+
+Obviously, $A^1_n\times A^2_n\subseteq J^1\times J^2\subseteq B^1_n\times B^2_n$,and 
+\begin{align*}
+&\lim_{n\to\infty}m^{d_1+d_2}(B^1_n\times B^2_n\backslash A^1_n\times A^2_n)\\
+&=\lim_{n\to\infty}m^{d_1+d_2}(B^1_n\times B^2_n)-m^{d_1+d_2}(A^1_n\times A^2_n)\\
+&=\lim_{n\to\infty}m^{d_1}(B^1_n)\times m^{d^2}(B^2_n)-m^{d_1}(A^1_n)\times m^{d^2}(A^2_n)\\
+&=\lim_{n\to\infty}m^{d_1}(B^1_n)\times [m^{d^2}(B^2_n)-m^{d_1}(B^1_n)\times m^{d^2}(A^2_n)]+[m^{d_1}(B^1_n)\times m^{d^2}(A^2_n)-m^{d_1}(A^1_n)\times m^{d^2}(A^2_n)]\\
+&=0
+\end{align*}
+So $J^1\times J^2$ is Jordan measurable, with measure
+\begin{align*}
+m^{d_1+d_2}(J_1\times J_2)&=\lim_{n\to\infty}m(A^1_n\times A^2_n)\\
+&=\lim_{n\to\infty}m^{d_1}(A_n^1)\times m^{d_2}(A_n^2)\\
+&=m^{d_1}(J^1)\times m^{d_2}(J_2)
+\end{align*}
+which proves the statement.
+\end{proof}
+
+\paragraph{18.}
+\subparagraph{(1)}
+\begin{proof}
+First notice that $\forall \text{elementary set} E, 0=m(\partial E)=m(\bar{E}\backslash E)=m(\bar{E})-m(E)$. This implies that $m(E)=m(\bar{E})$.
+
+Now take an arbitrary set $E$. On one hand, from monotonicity, it's obvious that $m^{\star,(J)}(\bar{E})\geq m^{*.(J)}(E)$.On the other hand, $m^{*,(J)}(E)=\inf\limits_{\substack{B\supset E\\B elementary}}m(B)=\inf\limits_{\substack{B\supset E\\B elementary}}m(\bar{B})$. Notice that $\bar{E}=\bigcup\limits_{\substack{I\supset E\\I closed}}I$, $\inf\limits_{\substack{B\supset E\\B elementary}}m(\bar{B})\geq m^{*,(J)}(\bar{E})$. The equality follows from the two inequalities.
+\end{proof}
+\subparagraph{(2)}
+\begin{proof}
+Take a very large box $G$ s.t. $E\subset G$. Then
+\begin{align*}
+&m_{*,(J)}(E^\circ)=m_{*,(J)}(E)\\
+\Leftrightarrow&m(G)-m_{*，(J)}(E^\circ)=m(G)-m_{*,(J)}(E)\\
+\Leftrightarrow&m^{*,(J)}(\bar{E^c})=m^{*,(J)}(E^c)
+\end{align*}
+which has been proved in (1).
+\end{proof}
+\subparagraph{(3)}
+\begin{proof}
+From (1)(2):
+\begin{align*}
+&E\text{ is Jordan measurable}\\
+\Leftrightarrow &m^{*,(J)}(E)=m_{*,(J)}(E)\\
+\Leftrightarrow &m^{*,(J)}(\bar{E})=m_{*,(J)}(E^\circ) \quad \text{notice that} \partial E=\bar{E}\backslash E^\circ\\
+\Leftrightarrow &m^{*,(J)}(\partial E)=0
+\end{align*}
+Furthermore, it's obvious that $m_{*,(J)}(E)\geq 0$. So the last statement is equivalent to $\partial E$ is Jordan measurable and has 0 measure.
+\end{proof}
+\subparagraph{(4)}
+\begin{proof}
+Denote $A=[0,1]\backslash \mathbb{Q}^2$ and $B=[0,1]\cap \mathbb{Q}$.
+
+Notice that $\mathbb{Q}$ is dense in $\mathbb{R}$, we learn that $\bar{A}=\bar{B}=[0,1],A^\circ=B^\circ=\varnothing$. The statement follows from (1)(2) and the definition of Jordan measurable sets.
+\end{proof}
+
+
+\paragraph{19.}
+\begin{proof}
+From 18.(1), it suffice to prove
+\[m^{*,(J)}(\bar{E})=m^{*,(J)}(\bar{E\cap F})+m^{*,(J)}(\bar{E\backslash F})\]
+So without any loses, we assume $E,F$ are closed set. Because $E\backslash F=E\backslash (E\cup F)$, without any loses we assume that $F\subset E$.
+
+On one hand, $\exists \text{sequence of elementary sets}\{E_n\}$ s.t. $\lim\limits_{n\to\infty}m(E_n)=m^{*,(J)}(E)$ and $E_n\supset E$. Then $m(E_n\backslash F)=m(E_n)-m(F)$. So \[m^{*,(J)}(E\backslash F)\leq \lim\limits_{n\to\infty}m(E_n)-m(F)=\lim\limits_{n\to\infty}m^{*,(J)}(E)-m(F)\] Meanwhile, \[m^{*,(J)}(E\cap F)\leq m(E_n\cap F)\leq m(F)\] Sum the two inequalities above and we reach the $\geq$ side of the equality.
+
+On the other hand, take the sequence of elementary sets $\{A_n\},\{B_n\}$ s.t. $A_n\supset E\cap F$, $B_n\supset E\backslash F$, $\lim\limits_{n\to\infty}m(A_n)=m^{*,(J)}(E\cap F)$ and $\lim\limits_{n\to\infty}m(B_n)=m^{*,(J)}(E\backslash F)$. From definitions and the fact that $E=(E\cap F)\cup (E\backslash F)$, $A_n\cup B_n\supset E$. So 
+\[m(A_n)+m(B_n)\geq m(A_n\cup B_n)\geq \inf\limits_{\substack{I\supset E\\I \text{elementary}}}m(I)=m^{*,(J)}(E)\]
+Let $n\to\infty$ and the $\leq$ side of the inequality is proved.
+\end{proof}
+
+\end{document}

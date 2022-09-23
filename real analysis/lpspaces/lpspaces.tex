@@ -1,0 +1,359 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{$L^p$ Spaces}
+\author{Junzhe Dong}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+
+
+\newtheorem{Thm}{Theorem}[section]
+\newtheorem{Lemma}[Thm]{Lemma}
+\newtheorem{Prop}[Thm]{Proposition}
+\newtheorem{Cor}[Thm]{Corollary}
+\newtheorem{Def}{Definition}[section]
+\newtheorem{Rmk}{Remark}[section]
+\newtheorem{Eg}{Example}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+
+\section{$L^p$ Spaces($0<p\leq \infty$)}
+\begin{Def}
+Let $E\subset\R^n$ be a measurable set, $f:E\to\mathbf{C}$ a measurble function. Define 
+\begin{enumerate}
+\item the $L^p$-norm of $f$,denoted by $\|f\|_p$, is defined by $\|f\|_p=(\int_E|f(x)|^p)^{\frac{1}{p}}$
+\item If $p=\infty$, $\|f\|_\infty=\inf\limits_{\substack{S\subset E\\m(S)=0}}\sup\limits_{x\in E\backslash S}|f(x)|$, the essential supremum norm.
+\item The $L^p(0<p\leq\infty)$ space $L^p(E)$ of $E$ is defined as
+\[L^p(E)=\{f\text{ measurable }:\|f\|_p<\infty\}\] 
+\end{enumerate}
+\end{Def}
+
+\begin{Prop}
+If $0<m(E)<\infty$,then we have 
+\[\lim_{p\to\infty}\|f\|_p=\|f\|_{\infty}\]
+\end{Prop}
+\begin{proof}
+Let $M=\|f\|_{\infty}$. 
+
+\textbf{Case 1:$\bm{M<\infty}$} First it's clear that $\|f\|_p=(\int_E|f(x)|^p\dd x)^{\frac 1 p}\leq (\int_E\|f\|_\infty^p\dd x)^{\frac 1 p}=M(m(E))^{\frac 1 p}$. Let $p\to\infty$, we get $\varlimsup\limits_{p\to\infty}\|f\|_p\leq \|f\|_\infty=M$.
+
+Secondly, $\forall 0\leq M'<M$, WLOG assume $M>0$, otherwise trivial. We set $A=\{x\in E:|f(x)|>M\}\Rightarrow m(A)>0$, otherwise it violates the definition of $\|f\|_\infty$. Then $\|f\|^p_p=\int_E|f(x)|^p\dd x\geq \int_A|f(x)|^p\dd x\geq (M')^pm(A)\Rightarrow \|f\|_p\geq M'(m(A))^{\frac 1 p}\Rightarrow \varliminf\limits_{p\to\infty}\|f\|_p\geq M'$. By letting $M'\to M$, we get $\varliminf\limits_{p\to\infty}\|f\|_p\geq M$.
+
+So $\lim\limits_{p\to\infty}\|f\|_p=M$
+
+\textbf{Case 2:$\bm{M=\infty}$} The argument above also gives the claim.
+\end{proof}
+
+\begin{Thm}
+The $L^p(E)(0<p\leq\infty)$ is a linear space over $\mathbf{C}$. That is $\forall f,g\in L^p(E),a,b\in\mathbf{C},af+bh\in L^p(E)$
+\end{Thm}
+\begin{proof}
+\textbf{Case 1} If $p=\infty$, then obviously \[\|af+bg\|_\infty\leq |a|\|f\|_\infty+|b|\|g\|_\infty<\infty\Rightarrow af+bg\in L^\infty(E)\]
+
+\textbf{Case 2} If $0<p<\infty$, we have 
+\[\begin{aligned}
+\|af+bg\|_p^p=&\int_E|af+bg|^p\dd x\\
+\leq &\int_E(|a||f(x)|+|b||g(x)|)^p\dd x\\
+\leq  &2^p\int_E(\max\{|a||f(x)|,|b||g(x)|)^{p}\dd x\}\\
+\leq &2^p(\int_E|a|^p|f(x)|^p\dd x+\int_E |b|^p|g(x)|^p\dd x)\\
+<&\infty\quad\Rightarrow af+bg\in L^p(E)
+\end{aligned}\]
+\end{proof}
+
+\begin{Def}
+We say two numbers $p,q$ are conjugate, if $\frac 1 p+\frac 1 q=1$. If $p=1$, then $q=\infty$.
+\end{Def}
+
+\begin{Thm}[H\"older inequality]
+Let $p,q\in [1,\infty]$ be conjugte, $f\in L^p(E),g\in L^q(E)$, then we have $\|f\cdot g\|_1\leq \|f\|_p\cdot \|g\|_q$. In particular, $f,g\in L^1(E),\int_E|f\cdot g|\dd x\leq\min\{\|f\|_\infty\cdot \|g\|_1,\|f\|_1\|g\|_\infty\}$.
+\end{Thm}
+
+\begin{proof}
+If $p=1$ or $p=\infty$, it's clear.
+
+If $1<p<\infty$, first one may assume that $\|f\|_p>0,\|g\|_q>0$, otherwise $f(x)g(x)=0$ for a.e. $x\in E$ and $\|f\cdot g\|_1=0$, it's done.
+
+Recall that $h(x)=e^x\Rightarrow h''(x)>0\Rightarrow h(x)$ is convex$\Rightarrow h(t_1x+t_2y)\leq t_1h(x)+t_2h(y)\quad\forall t_1,t_2\in[0,1], t_1+t_2=1\Rightarrow\forall a,b>0$, we have $a^{\frac 1 p}b^{\frac 1 q}=e^{\frac{1}{p}\log a+\frac{1}{q}\log b}\leq \frac 1 pe^{\log a}+\frac 1 q e^{\log b}=\frac a p+\frac b q$. Set $a=\frac{|f(x)|^p}{\|f(x)\|_p^p},b=\frac{|g(x)|^q}{\|g(x)\|^q_q}\Rightarrow$
+\[\frac{|f(x)|}{\|f(x)\|_p}\frac{|g(x)|}{\|g(x)\|_q}\leq \frac 1 p\frac{|f(x)|^p}{\|f(x)\|^p_p}+\frac 1 q\frac{|g(x)|^q}{\|g(x)\|^q_q}\]
+Take integral over $E$ and we get 
+\[\frac{\|fg\|_1}{\|f\|_p\|g\|_q}\leq \frac 1 p+\frac 1 q=1\]
+Rearrange and we get the desired inequality.
+\end{proof}
+
+\begin{Eg}
+\begin{enumerate}
+\item$E=(0,1), \log{\frac 1 x}\in L^p(E)\quad \forall p>0$, but $\log{\frac 1 x}\neq L^\infty(E)$.
+\item$E=(0,1), f(x)=\frac{1}{x^{\frac 1 p}}\in L^{p-\alpha}\quad\forall\alpha\in (0,p)$, but $f(x)\not\in L^p(E)$.
+\end{enumerate}
+\end{Eg}
+
+\begin{Prop}
+If $m(E)<\infty,0<p_1<p_2\leq\infty$, then $L^{p_2}(E)\subset L^{p_1}(E)$
+\end{Prop}
+
+\begin{proof}
+If $p_2=\infty$, it follows by the triangle inequality: $\forall f\in L^\infty(E)\Leftrightarrow \|f\|_\infty<\infty\Rightarrow \forall p\in(0,\infty)\int_E|f(x)|^p\dd x\leq \|f\|^p_\infty m(E)<\infty$.
+
+If $p_2<\infty$, set $r=\frac{p_2}{p_1}>1$, and $r'$ be its cojugate. $\forall f\in L^{p_2}(E)\Rightarrow\|f\|_{p_1}^{p_1}=\||f|^{p_1}\cdot 1\|\leq \||f|^{p_1}\|_r\|1\|_{r'}=(m(E))^{\frac 1 {r'}}(\|f\|_{p_2}^{p_2})^{\frac 1 r}<\infty$
+\end{proof}
+
+\begin{Thm}[Minkowski inequality]
+If $f,g\in L^p(E)\quad(1\leq 1\leq \infty)$, then $\|f+g\|_p\leq \|f\|_p+\|g\|_p$.
+\end{Thm}
+
+This also shows that $L^p(E)$ is a linear space.
+
+\begin{proof}
+If $p=1$ or $p=\infty$, then it clearly follows by the triangle inequality.
+
+If $1<p<\infty$, $\|f+h\|_p^p=\int_E|f+g|^{p-1}|f+g|\dd x\leq \int_E |f+g|^{p-1}|f|\dd x+\int_E|f+g|^{p-1}|g|\dd x$. Since $\frac 1 p+\frac {1}{\frac{p}{p-1}}=1$, it follows by Holder's inequality that 
+\begin{gather*}
+\int_E|f+g|^{p-1}|f|\dd x\leq \|f+g\|_p^{p-1}\|f\|_p\\
+\int_E|f+g|^{p-1}|g|\dd x\leq \|f+g\|_p^{p-1}\|g\|_p
+\end{gather*}
+So $\|f+g\|^p\leq \|f+g\|_p^{p-1}(\|f\|_p+\|g\|_p)$. Rearrange and we get the desired inequality.
+\end{proof}
+
+\section{Structure of $L^p(E)$}
+We always assume that $1\leq p\leq \infty$.
+
+\subsection{$L^p(E)(1\leq p\leq \infty)$ is complete}
+
+$\forall f,g\in L^p(E)$, we say that $f=g\in L^p(E)$, if $f(x)-g(x)=0$ for a.e. $x\in E\Leftrightarrow \|f-g\|_{p}=0$. In particular, for any measurable function $f$ on $E$ with $m(\{x\in E:f(x)\neq 0\})=0$, we have $f=0\in \L^p(E)$.
+
+Recall that a set $X$ with a binary operator $dist(\cdot,\cdot):X\times X\to \R_+$ is called a metric space, if 
+\begin{enumerate}
+\item(Positivity) $dist(x,y)\geq 0,\forall x,y\in X$, and ``$=$'' holds iff $x=y\in X$.
+\item(Symmetry) $dist(x,y)=dist(y,x)\quad \forall x,y\in X$.
+\item(Triangle inequality)$ dist(x,z)\leq dist (x,y)+dist(y,z)\quad\forall ,y\in X$.
+\end{enumerate}
+
+\begin{Thm}
+$\forall f,g\in L^p(E)$, we define $dist(f,g)=\|f-g\|_p$, then $(L^p(E),dist)$ is a metric space, still denoted by $L^p(E)$.
+\end{Thm}
+
+\begin{proof}Trivial, by Minkowski's inequality.\end{proof}
+
+\begin{Def}
+We say a sequence $\{f_k\}\subset L^p(E)$ converges to $f\in L^p(E)$ in $L^p(E)$, if 
+\[\lim_{k\to\infty}dist(f_k,f)=\lim_{k\to\infty}\|f_k-f\|_p=0\] 
+We also say $\{f_k\}$ is convergent in $L^p(E)$ and $f$ is a limit of $\{f_k\}$.
+\end{Def}
+
+\begin{Rmk}[Uniqueness]
+If $f_k\to f$ in $L^p(E)$, $f_k\to h$ in $L^p(E)$ as $k\to\infty\Rightarrow \|f-h\|_p\leq \|f_k-f\|_p+\|f_k-h\|_p\to 0$ as $k\to \infty\Rightarrow f=h \text{ in } L^p(E)$.
+\end{Rmk}
+
+\begin{Rmk}
+If $f_k\to f\quad(k\to \infty)$, then $\|f_k\|_p\to \|f\|_p\quad(k\to\infty)$
+\end{Rmk}
+\begin{proof}
+$|\|f_k\|_p-\|f\|_p|\leq \|f_k-f\|_p\to 0\quad (k\to\infty)$ by Minkowski inequality.
+\end{proof}
+
+\begin{Def}
+We call a sequence $\{f_k\}\subset L^p(E)$ is a Cauchy sequence iff $\lim\limits_{i,j\to\infty}\|f_i-f_j\|_p=0$.
+\end{Def}
+
+If $\{f_k\}$ is convergent in $L^p(E)$ as $k\to \infty$, then $\{f_k\}$ is a Cauchy sequence: $\|f_k-f_j\|_p\leq \|f_k-f\|_p+\|f_j-f\|_p\to \infty\quad (k\to \infty)$.
+
+\begin{Def}[normed vector space]
+We call $(V,\left\|\cdot\right\|)$ a normed vector space if $V$ is a vector space over $\mathbf{C}$ and $\left\|\cdot\right\|:V\to \R_+$ is a function satisfying:
+\begin{enumerate}
+\item $\forall v\in V,\|v\|\geq 0$. Moreover, ``$=$'' holds iff $v=0$.
+\item $\|c\cdot v\|=|c|\|v\|\quad\forall c\in\mathbf{C}, v\in V$.
+\item $\|v+w\|\leq \|v\|+\|w\|\quad\forall v,w\in V$.
+\end{enumerate}
+A normed vector space $(V,\left\|\cdot\right\|)$ is called a Banach space if it is complete: any Cauchy sequence has a limit in $V$. 
+\end{Def}
+
+\begin{Lemma}
+Let $\{f_k\}$ be a sequence of measurable functions satisfying that $\forall \varepsilon>0$,
+\[\lim_{j,k\to\infty}m(\{x\in E:|f_j(x)-f_k(x)|\geq\varepsilon\})=0\]
+Then $\exists$ a measurable function $f:E\to \mathbf{C}$ and a subsequence $\{f_{k_i}\}\subset \{f_i\}\st$
+\[\lim_{i\to\infty}f_{k_i}(x)=f(x)\quad \text{ for a.e. } x\in E\]
+\end{Lemma}
+
+\begin{Thm}
+The space $L^p(E)\quad(1\leq p\leq \infty)$ is a Banach space.
+\end{Thm}
+Obviously, $(L^p(E),\|\cdot\|_p)$ is a normed space. It suffices to show that $(L^p(E),\|\cdot\|_p)$ is complete.
+
+\begin{proof}
+\textbf{Case 1:} $\bm{p\in [1,\infty)}$. Let $\{f_k\}\subset L^p(E)$ be a Cauchy-sequence. $\forall\varepsilon>0,$ we set $E_{j,k}(\varepsilon)=\{x\in E:|f_j(x)-f_k(x)|\geq\varepsilon\}$.
+
+$\|f_j-f_k\|_p^p=\int_E|f_j-f_k|\dd x\geq \int_{E_{j,k}}|f_j-f_k|\dd x\geq \varepsilon^p m(E_{j,k}(\varepsilon))\Rightarrow \lim\limits_{j,k\to\infty}m(E_{j,k}(\varepsilon))=0\quad\forall\varepsilon>0$. By the lemma above, $\exists$ a subsequence $\{f_{k_i}\}\subset \{f_i\}$ and a measurable function $f$\st $\lim\limits_{k_i\to\infty}f_{k_i}(x)=f(x)$ for a.e. $x\in E$. So $\|f_k-f\|_p^p=\int_E\lim\limits_{i\to\infty}|f_k(x)-f_{k_i}(x)|^p\dd x\leq \varliminf\limits_{i\to\infty}\int_E |f_k(x)-f_{k_i}(x)|^p\dd x=\varliminf\limits_{i\to\infty}\|f_k-f_{k_i}\|_p^p$. Let $k\to\infty$ we get $\lim\limits_{k\to\infty}\|f_k-f\|_p=0$.
+
+It remains to show that $f\in L^p(E)$. By Minkowski's inequality, $\|f\|_p\leq \|f-f_k\|_p+\|f_k\|_p<\infty$ for $k$ large enough $\Rightarrow f\in L^p(E)$.
+
+\textbf{Case 2:}$\bm{p=\infty}$. Let $\{f_k\}\in L^\infty(E)$ satisfying that $\lim\limits_{j,k\to\infty}\|f_j-f_k\|_{\infty}=0$. By definition, $|f_k(x)-f_j(x)|\leq \|f_k-f_j\|_\infty$ for a.e. $x\in E\Rightarrow \exists Z\subset E$ with $m(Z)=0\st$ $\forall k,j\geq 1$ we have 
+\[|f_j(x)-f_k(x)|\leq \|f_k-f_j\|_\infty\quad \forall x\in Z\]
+Since $\|f_j-f_k\|_\infty\to 0$ as $k,j\to\infty\quad \forall x\in E\backslash Z$, $\{f_k(x)\}_{k\geq 1}$ is a Cauchy sequence. We define $f:E\backslash Z\to\mathbf{C}$ as $f(x)=\lim\limits_{k\to\infty}f_k(x)$.
+
+Aim: $\|f_k-f\|_\infty\to 0$ as $k\to\infty$. If the aim is true, $\|f\|_\infty\leq \|f_k-f\|_\infty +\|f_k\|_\infty$ for $k>>1\Rightarrow f\in L^\infty(E)$.
+
+Proof of Claim: $\forall\varepsilon>0, \exists N_0=N_0(\varepsilon)\st \forall j,k\geq N_0$, we have
+\[\|f_k-f_j\|_\infty\leq \varepsilon\]
+which implies that $\forall x\in E\backslash Z, k\geq N_0$,
+\[|f_k(x)-f(x)|=\lim\limits_{j\to\infty}|f_k(x)-f_j(x)|\leq \varepsilon\]
+$\Rightarrow \|f_k-f\|_\infty\leq \varepsilon,\forall k\geq N_0\Rightarrow f_k\to f$ in $L^\infty(E)$ as $k\to\infty$. The proof is thus complete.
+\end{proof}
+
+\subsection{$L^p(E)(1\leq p< \infty)$ is separable }
+\begin{Def}
+A metric space $X$ is called separable, if $\exists$ a countable subset $\Gamma\subset X\st \Gamma$ is dense in $X$, i.e. $\forall \varepsilon>0, x\in X,\exists y\in \Gamma\st dist(x,y)<\varepsilon$.
+\end{Def}
+\begin{Eg}
+
+\begin{enumerate}
+\item $\mathbf{Q}\subset \R, \mathbf{Q}^n\subset \R^n$ are dense.
+
+\item Let $C^0([0,1])$ be the set of continuous functions on $[0,1]$ endowed with a metric distant defined as $dist(f(x),g(x))=\max\limits_{x\in[0,1]}|f(x)-g(x)|$. $C^0([0,1])$ is a vector space of infinite dimension.
+\begin{Thm}[Stone-Weierstrass]
+The space $C^0([0,1])$ is separable.
+\end{Thm}
+\begin{proof}
+Any continuous function can be approximated by polynimials of rational coefficients.
+\end{proof}
+\item$(\R^n,dist)$ where $dist(x,y)=\begin{cases}1&x=y\\0&x\neq y\end{cases}\Rightarrow(\R^n,dist)$ is not separable.
+\end{enumerate}
+\end{Eg}
+
+\begin{Thm}
+The space $(L^p(E), \|\cdot\|_p)(1\leq p< \infty)$ is separable. 
+\end{Thm}
+\begin{proof}
+We first prove it for $E=\R^n$. By homework, $\forall f\in L^p(\R^n),\exists$ a compactly supported step function $\phi(x)=\sum\limits_{i=1}^k c_i1_{B_i}(x)$, where  each $B_i$ is a product of intervals with rational endpoints $\st\int_{\R^n}|f(x)-\phi(x)|\dd x<(\frac{\varepsilon}{2})^p$.Let $M>0\st \forall 1\leq i\leq k$, $|c_i|\leq M, m(B_i)\leq M^p$. Now we choose a rational number $r_i\st$ $|r_i|\leq M, |c_i-r_i|<\frac{\varepsilon}{2kM}$.
+
+Set $\psi(x)=\sum\limits_{i=1}^k r_i1_{B_i}\in \Gamma=\{\sum\limits_{i=1}^K s_i1_{B'_i}(x):{K\in \mathbf{N}}, s_i\in \mathbf{Q}, B_i\text{ is a box with rational endpoints}\}$. Since $\mathrm{dim}(\R^n)=n<\infty,\Gamma\cong\mathbf{Z}$ is countable. $\Rightarrow \|\phi-\psi\|_p\leq \sum\limits_{i=1}^k \|c_i1_{B_i}(x)-r_i1_{B_i(x)}\|_p\leq \sum\limits_{i=1}^k |c_i-r_i|m(B_i)^{\frac 1 p}\leq\frac{\varepsilon}{2kM}\sum\limits_{i=1}^k m(B_i)^{\frac 1 p}\leq \frac{\varepsilon}{2kM}kM=\frac{\varepsilon}{2}$.
+
+So $\|f-\psi\|_p\leq \|f-\phi\|_p+\|\phi-\psi\|_p=\varepsilon$. Since $\varepsilon$ is arbitrary and $\Gamma$ is countable, $L^p(\R^n)$ is separable.
+
+For the general $E$, let $f\in L^p(E)$, we define $F(x)=\begin{cases}f(x)&x\in E\\0&\text{ otherwise }\end{cases}\Rightarrow F\in L^p(\R^n)$. By above, $\exists \psi\in\Gamma\st \|F-\psi\|_p\leq \varepsilon$. We define $\Psi:E\to\mathbf{C}$ as $\Psi(x)=\psi(x)\Rightarrow \|\Psi-f\|_{L^p(E)}\leq \|\psi-F\|_{L^p(\R^n)}\leq \varepsilon$.
+Set $\Gamma'=\left.\Gamma\right|_{E}\Rightarrow \Gamma'\subset L^p(E)$ is dense and countable.
+\end{proof}
+
+\section{$L^2(E)$ Spaces}
+\subsection{$L^2(E)$ Spaces}
+\begin{Def}
+Let $V$ be a linear space over $\R$. A binary operator $\left<\cdot,\cdot\right>:V\times V\to \R$ is called an inner product if $\forall u,v,w\in W, a\in \R$, we have
+\begin{enumerate}
+\item $\left<v,v\right>\geq 0$, ``$=$'' holds iff $v=0$
+\item $\left<v,w\right>=\left<w,v\right>$
+\item $\left<u+v,w\right>=\left<u,w\right>+\left<v,w\right>$
+\item $\left<av,w\right>=a\left<v,w\right>=\left<v,aw\right>$
+\end{enumerate}
+\end{Def}
+
+\begin{Def}
+$\|v\|_2=\sqrt{\left<v,v\right>}$, $\forall v\in V$.
+\end{Def}
+
+$\forall v\neq 0, w\neq 0$, $0\leq\|\frac{v}{\|v\|_2}-\frac{w}{\|w\|_2}\|=\left<\frac{v}{\|v\|_2}-\frac{w}{\|w\|_2},\frac{v}{\|v\|_2}-\frac{w}{\|w\|_2}\right>=2-\frac{2}{\|v\|_2\|w\|_2}\left<v,w\right>\Rightarrow\left<v,w\right>\leq \|v\|_2\|w\|_2\quad \forall v,w\in V$. 
+
+Q: Is $(V,\left\|\cdot\right\|_2)$ a normed space? A: Yes.
+
+$\|v+w\|_2\leq \|v_2\|+\|w\|_2\Leftrightarrow\|v+w\|_2^2\leq (\|v\|_2+\|w\|_2)^2\Leftrightarrow <v,w>\leq \|v\|_2\|w\|_2$, which is the Cauchy-Schwarz inequality. So the space $(V,\left\|\cdot\right\|)$ is a normed space.
+
+\begin{Def}
+A space $(V,\left\|\cdot\right\|)$ is called a Hilbert space if it is complete.
+\end{Def}
+
+For $p=2,\forall f,g\in L^2(E)$, we define $<f,g>:=\int_E f(x)g(x)\dd x$
+
+\begin{Thm}
+The space $L^2(E)$ is a Hilbert space.
+\end{Thm}
+
+$\forall f,g\in L^2(E)$, $\|f+g\|_2^2+\|f-g\|_2^2=2\|f_2\|^2+2\|g_2\|_2^2$.
+
+\begin{Thm}[Continuity]
+If $\{f_k\}\subset L^2(E)$ satisfies that $\|f_k-f\|_2\to 0$ as $k\to\infty$ for some $f\in L^2(E)$, then we have $\lim\limits_{k\to\infty}\left<f_k,g\right>=\left<f,g\right>$
+\end{Thm}
+\begin{proof}
+By Cauchy-Schwarz ineaquality:
+$|\left<f_k,g\right>-\left<f,g\right>|=|\left<f_k-f,g\right>|\leq \|f_k-f\|_2\|g\|_2\to 0$ as $k\to\infty$.
+\end{proof}
+
+\begin{Def}
+A system $\{f_k\}_{k\in K}$ is called an orthogonal system if $\left<f_{k_1},f_{k_2}\right>=0\quad \forall k_1\neq k_2$. It is called an orthonormal system if $\{f_k\}_{k\in K}$ is an orthogonal system satisfying $\|f_k\|_2=1\quad \forall k\in K$.
+\end{Def}
+
+\begin{Eg}
+The space $L^2([-\pi,\pi])$ has the following orthonormal system:
+\[\{\frac{1}{\sqrt{2\pi}}, \frac{1}{\sqrt{\pi}}\cos x,\frac{1}{\sqrt{\pi}}\sin x,\cdots,\frac{1}{\sqrt{\pi}}\cos kx,\frac{1}{\sqrt{\pi}}\sin kx,\cdots\}\]
+\end{Eg}
+
+\begin{Thm}
+Any orthonormal system in $L^2(E)$ is countable.
+\end{Thm}
+\begin{proof}
+$\forall$ orthonormal system $\{f_k\}_{k\in K}$, we have $\forall j\neq k\in K,\|f_j-f_k\|_2^2=2$.
+ 
+Since $L^2(E)$ is separable, $\{f_k\}_{k\in K}$. Otherwise, suppose $K$ is uncountable, one may assume that $\{g_i\}_{i\geq 1}\subset L^2(E)$ is dense. Then $\exists$ at least 2 different $f_{k_1}\neq f_{k_2}\st \|f_{k_1}-g\|<\frac 1 3,\|f_{k_2}-g\|<\frac 1 3\Rightarrow \sqrt{2}=\|f_{k_1}-f_{k_2}\|_2\leq \|f_{k_1}-g\|+\|f_{k_2}-g\|_2<\frac{2}{3}$, which is a contradiction.
+\end{proof}
+
+\subsection{Generalized Fourier coeffients}
+\begin{Def}
+Given an orthonarmal system $\{\phi_i\}\subset L^2(E)$, then $\forall f\in L^2(E),i\geq 1$, the generalized Fourier coefficient $c_i$ of $f$ w.r.t. $\{\phi_i\}$ is defined as $c_i=\left<f,\phi_i\right>=\int_Ef(x)\phi_i(x)\dd x$.
+
+The generalized Fourier series of $f$ w.r.t. $\{\phi_i\}$ is defined as $\sum\limits_{i=1}^{\infty}c_i\phi_i(x)$ and we write $f\sim\sum\limits_{i}c_i\phi_i(x)$ where $c_i=\left<f,\phi_i\right>$
+\end{Def}
+
+\begin{Thm}
+Given an orthonomal system $\{\phi_i\}\subset L^2(E)$ and let $f\in L^2(E)$. $\forall k\geq 1$, set $f_k(x)=\sum\limits_{i=1}^k a_i\phi_i(x)$ where $a_i\in\R$, then $\|f-f_k\|$ attains its minimal value $\|f\|_2^2-\sum\limits_{i=1}^k c_i^2$ iff $a_i=c_i=\left<f,\phi_i\right>\quad \forall 1\leq i\leq k$.
+\end{Thm}
+
+\begin{proof}
+Since $\{\phi_i\}$ is an orthonormal system, $\|f-f_k\|_2^2=\left<f-\sum\limits_{i=1}^k a_i\phi_i,f-\sum\limits_{i=1}^k a_i\phi_i\right>=\|f\|^2_2-2\sum\limits_{i=1}^k c_ia_i+\sum\limits_{i=1}^k a_i^2=\|f\|_2^2 +\sum\limits_{i=1}^k(a_i-c_i)^2-\sum\limits_{i=1}^k c_i^2\geq \|f\|_2^2-\sum\limits_{i=1}^k c_i^2$.  ``$=$'' holds iff $\forall 1\leq i\leq k$, $a_i=c_i$.
+\end{proof}
+
+\begin{Thm}[Bessel's inequality]
+$\forall f\in L^2(E),\forall$ orthonormal system $\{\phi_i\}\subset L^2(E)$, we have $\sum\limits_{i=1}^\infty c_i^2\leq \|f\|_2^2$ where $c_i=\left<f,\phi_i\right>\quad \forall i\in\mathbf{N}_+$.
+\end{Thm}
+
+\begin{proof}
+By the theorem above, $\|f\|_2^2-\sum\limits_{i=1}^k c_i^2=\|f-\sum\limits_{i=1}^k c_i\phi_i\|_2^2\Rightarrow \sum\limits_{i=1}^k c_i^2\leq \|f\|_2^2\Rightarrow \sum\limits_{i=1}^\infty c_i^2\leq \|f\|_2^2$ since $k$ is arbitrary.
+\end{proof}
+
+\begin{Thm}[Riesz-Fischer]
+Given an orthonormal system $\{\phi_i\}\subset L^2(E)$ and let $\{c_i\}\subset \R$ with $\sum\limits_{i=1}^\infty c_i^2<\infty$. Then $\exists h\in L^2(E)\st \left<h,\phi_i\right>=c_i,\forall i\in\mathbf{N}_+$.
+\end{Thm}
+\begin{proof}
+$\forall k\geq 1$, set $S_k(x)=\sum\limits_{i=1}^kc_i\phi_i(x)$, then obviously $\forall l\geq 1$, $\|S_{k+l}-S_{k}\|_2^2=\sum\limits_{i=k+1}^{k+l}c_i^2$. Recall that $\sum\limits_{n=1}^\infty c_i^2<\infty$, so $\{S_k\}$ is a Cauchy sequence. Since $L^2(E)$ is a Hilbert space, $\exists h\in L^2(E)\st h=\lim\limits_{k\to\infty}S_k\Rightarrow \forall i\in\mathbf{N}_+, k\gg 1$
+\[|\left<h,\phi_i\right>-c_i|=|\left<h,\phi_i\right>-\left<S_k,\phi_i\right>|=|\left<h-S_k,\phi_i\right>|\leq \|h-S_k\|_2\to 0\quad k\to\infty\] 
+$\Rightarrow \left<h,\phi_i\right>=c_i\quad\forall i\in \mathbf{N}_+$. 
+\end{proof}
+
+Q: $f(x)=\sum\limits_{i=1}^\infty c_i\phi_i(x)$?
+
+\begin{Eg}
+$E=[-\pi,\pi], \phi_i(x)=\frac{1}{\sqrt{\pi}}\sin(ix)$, $f(x)=\cos(x)$. Then $\forall i\in \mathbf{N}_+, c_i=0\Rightarrow f(x)\neq\sum\limits_{i=1}^\infty c_i\phi_i(x)$
+\end{Eg}
+
+\begin{Def}
+An orthonormal system $\{\phi_i\}\subset L^2(E)$ is called orhtogonal basis of $L^2(E)$ if $\forall f\in L^2(E)$, $c_i=\left<f,\phi_i\right>=0\quad \forall i\in\mathbf{N}_+\Leftrightarrow f=0$ in $L^2(E)\Leftrightarrow f\stackrel{a.e.}{=}0$.
+\end{Def}
+
+\begin{Thm}
+Let $\{\phi_i\}$ be an orthonormal basis of $L^2(E)$ and $f\in L^2(E)$. Set $c_i=<f,\phi_i>\forall i\in\mathbf{N}_+$, then $\lim\limits_{k\to\infty}\sum\limits_{i=1}^k c_i\phi_i(x)=f(x)$ in $L^2(E)$.
+\end{Thm}
+\begin{proof}
+By Bessel's inequality, $\sum\limits_{i=1}^\infty c_i^2\leq \|f\|_2^2<\infty$, so by Riesz-Fishcer theorem, $\lim\limits_{k\to\infty}\sum\limits_{i=1}^\infty c_i\phi_i(x)=h(x)\in L^2(E)\Rightarrow \forall i\in\mathbf{N}_+,\left<h,\phi_i\right>=c_i=\left<f,\phi_i\right>\Rightarrow \forall i\in \mathbf{N}_+,\left<h-f,\phi_i\right>=0$. Since $\{\phi_i\}$ is an orthonormal basis, $h-f=0\in L^2(E)\Rightarrow f=h\in L^2(E)$.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

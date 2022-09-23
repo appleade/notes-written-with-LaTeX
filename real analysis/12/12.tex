@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin= 1 in]{geometry}
+\title{Homework 12 for Measure and integral}
+\author{2019011985\and M91\and Junzhe Dong}
+\date{\today}
+\begin{document}
+\maketitle
+
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\sip}{\mathrm{Simp}}
+
+\paragraph{1.6.48}
+\subparagraph{(i)}
+\subparagraph{(ii)}
+\begin{proof}
+Perform induction on $n$:
+\begin{enumerate}
+\item For $n=0$, $F_0(x)=x$ obviously has these properties.
+
+\item If these properties hold for $F_{n-1}(x)$, then for $F_n(x)$: $\frac 1 2F_{n-1}(3x), \frac 1 2+\frac 1 2F_{n-1}(3x-2)$ are also continuous. So it suffices to check the connecting points: $F_n(\frac 1 3)=\frac 1 2 F_{n-1}(1)=\frac 1 2$, $F_n(\frac 2 3)=\frac 1 2+\frac 1 2 F_{n-1}(0)=\frac 1 2$. Also $F_n(0)=0, F_n(1)=1$ can be checked directly. All three parts of the continuous function are non-decreasing, so $F_n$ is non-decreasing.
+\end{enumerate}
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+The graph of $F_n(x)$ is symmetric w.r.t $(\frac 1 2, \frac 1 2)$, while $F_n(x)\equiv \frac 1 2\forall x\in [\frac 1 3,\frac 2 3]$. So it suffices to show the inequality for $x\in [0,\frac 1 3]$. Perform induction on $n$:
+\begin{enumerate}
+\item For $n=0$, $F_1(x)-F(x)=\frac {3x}{2}-x=\frac{x}{2}<1$. 
+\item If the statement is true for $n-1$, then 
+\[|F_{n+1}(x)-F_n(x)|=\frac 1 2\begin{cases}F_n(3x)-F_{n-1}(3x)& 0\leq x\leq \frac 1 9\\0&\frac 1 9\leq x\leq \frac 2 9\\ F_n(3x)-F_{n-1}(3x-2)-1&\frac 2 9\leq x\leq \frac 1 3 \end{cases}\]
+The graph of the function above is symmetric w.r.t $(\frac 1 6,0)$, so it suffices to check $|F_{n+1}(x)-F_n(x)|$ on $[0, \frac 1 6]$, which is either $0$ or by induction hypothesis: $|F_{n+1}(x)-F_n(x)|\leq \frac 1 2|F_n(3x)-F_{n-1}(x)|\leq 2^{n+1}$
+\end{enumerate}
+So $\forall n\in\mathbf{N}$, the inequality holds. Since $\sum\limits_{n=0}^\infty 2^-n<\infty$, the fact that $F_n(x)$ converges uniformly follows from Weierstrass M-test.
+\end{proof}
+
+\subparagraph{(iv)}
+\begin{proof}
+Since $F_n(0)=0, F_n(1)=1$ and $F_n\to F$ pointwise, $F(0)=0, F(1)=1$.
+
+Since $F_n$ are continuous and $\{F_n\}$ converges uniformly to $F$, F is also continuous.
+
+Suppose for contrary that $\exists 0\leq a<b\leq 1\st F(a)-F(b)=\delta>0$. Take $\varepsilon=\frac 1 3\delta$, then by uniform convergency, $\exists n\in\mathbf{N}\st |F_n(x)-F(x)|<\varepsilon$. Then $F_n(a)-F_n(b)>\varepsilon>0$, which is in denial of the fact that $F_n$ is monotone non-decreasing. 
+\end{proof}
+
+\subparagraph{(v)}
+\begin{proof}
+Denote the intervals removed from $[0,1]$ in the contruction of Cantor sets in the $n$-th step as $I_n$, with $I_1=(\frac 1 3, \frac 2 3)$. Observe that $\forall n\in \mathbf{N}, F_n(I_1)=\frac 1 2$, which is constant. By construction, $F_{n+1}(I_2)=F_{n}(I_1)$ are constant. Perform induction in this way and we see that $F_{n+k}(I_k)$ is constant $\forall n,k\in\mathbf{N}$. Notice that the minimal of such $n$ is $1$, so $\forall x\not\in \mathcal{C}, \exists k\st x\in I_k, \forall n>k F_n(I_k)\equiv Const$, so $F(I_k)\equiv Const$, which proves the statement by taking $I_k$ as the neighborhood. 
+\end{proof}
+
+\subparagraph{(vi)}
+\begin{proof}
+By induction, we first prove that $\forall N\in\mathbf{N}, F(\sum\limits_{n=0}^Na_n3^{-n})=\sum\limits_{n=1}^N 2^{-n}$. notice that they are the boundaries of the sets deleted at the $n$-th step of construction, which stabilizes after step $N$, so it suffices to check $F_N(\sum\limits_{n=0}^Na_n3^{-n})=\sum\limits_{n=1}^N 2^{-n}$.
+\begin{enumerate}
+\item For $N=1$, verify directly with $F_1(0)=0, F_1(\frac 2 3)=\frac 1 2$.
+\item if $\forall k<N$ the statement holds. WLOG assume $a_1=0$, since $F_N$ is symmetric w.r.t. $(\frac 1 2, \frac 1 2)$. Then $F_N(\sum\limits_{n=0}^Na_n3^{-n})=F_{N-1}(\sum\limits_{n=1}^{N-1} a_{n-1}3^{-n})=\frac 1 2\sum\limits_{n=1}^{N-1}\frac{a_{n-1}}{2}2^{-n}=\sum\limits_{n=1}^{N}\frac {a_n}{2}2^{-n}$. 
+\end{enumerate}
+With this statement at hand, we prove the general case: suppose $x=\sum\limits_{n=1}^{\infty}a_n3^{-n}$, $x_N=\sum\limits_{n=1}^N a_n3^{-n}$. Then $\lim\limits_{N\to\infty}x_N=x$. Since $F(x)$ is continuous, $F(x)=F(\lim\limits_{N\to\infty}x_N)=\lim\limits_{n\to\infty}F(x_N)=\sum\limits_{n=0}^\infty \frac{a_n}{2}2^{-n}$, which proves the desired equality.
+\end{proof}
+
+\subparagraph{(vii)}
+By direct observation $|I|=3^{-n}$.
+
+Observe that the boundaries of $I$ are boundaries of the sets deleted in the $n$-th step in the construction of Cantor set, whose image stabilizes after the $n$-th step in the construction of Cantor function. Perform induction on $n$ to get the equality: we wish to prove that at step $n$, the stabilized values $K_n$ are all the multiples of $\frac {1}{2^n}$ that's contained in $[0,1]$, then $|I_n|=\frac{1}{2^n}$
+\begin{enumerate}
+\item $n=1$, trivial by construction of $F_1$, since the stabilized values are $K_1\{0,\frac 1 2, 1\}.$
+\item If $\forall k<n$ the statement holds, then by construction of $F_n$, $K_n=\frac{1}{2}K_{n-1}\cup \frac{1}{2}+K_{n-1}$, which proves the claim.
+\end{enumerate}
+
+\subparagraph{(viii)}
+\begin{proof}
+Suppose the converse is true, then $\exists x_0=\sum\limits_{n=1}^\infty a_n 3^{-n}$. Denote $x_0^n=x_0+\frac{2}{3^n}$ if $a_n=0$, and $x^n_0=x_0-\frac{2}{3^n}$ if $a_n=2$. Note that $|x^n_0-x_0|=\frac{2}{3^n}\to 0\quad (n\to\infty)$. Then $\frac{F(x^n_0)-F(x_0)}{x^n_0-x_0}=\frac{3^n}{2^{n-1}}\to\infty\quad(x^n_0-x_0\to 0)$, which is contrary to the definition of differentiability. So $F(x)$ is not differentiable at $\mathcal{C}$.
+\end{proof}
+
+\paragraph{1.6.49}
+\subparagraph{(i)}
+\begin{proof}
+By definition, $f$ uniformly continuous if $\forall\varepsilon>0,\exists \delta>0\st \forall x_1,x_2\st |x_1-x_2|<\delta, |f(x_1)-f(x_2)|<\varepsilon$. This is exactly the definition of absolutely continuous where $n=1$.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+By definition, $\forall\varepsilon>0,\exists\delta\st \forall \{(a_j,b_j)\}_{j=1}^n\st \sum\limits_{j=1}^n(b_j-a_j)<\delta, \sum\limits_{j=1}^n|F(b_j)-F(a_j)|$. 
+
+$\forall x\in [a,b]$, denote $I_x=[a,b]\cap (x-\frac \delta 2,x+\frac \delta 2)$. Then $\forall n\in\mathbf{N},p\in P(I_x), \sum\limits_p|F(x_j)-F(x_{j-1})|<\varepsilon$. So $\|F\|_{TV(I_x)}<\varepsilon$. Since $[a,b]$ is compact and $\bigcup\limits_{x\in [a,b]}I_x$ is an open cover of it, $\exists \{I_{x_i}\}_{i=1}^K\st [a,b]\subset \bigcup\limits_{i=1}^K I_{x_i}$. WLOG shrink these sets $\st\forall 1\leq i_1\neq i_2\leq K, I_{x_{i_1}}\cap I_{x_{i_2}}=\varnothing$. Then $\|F\|_{TV([a,b])}=\sum\limits_{i=1}^K \|F\|_{TV(I_{x_i})}=K\varepsilon<\infty$, which proves the statement.
+
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+Denote $C$ the Lipschiz constant of $f$.
+
+By definition, $\forall\varepsilon>0$, take $\delta=\frac{\varepsilon}{C}$, given intervals $\{(a_i,b_i)\}_{i=1}^n$\st $\sum\limits_{i=1}^n(b_i-a_i)<\delta$, we have $|\sum\limits_{i=1}^n|f(b_i)-f(a_i)|<C\sum\limits_{i=1}^n (b_i-a_1)<C\delta=\varepsilon$, which proves the statement by definition.
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+\textbf{not Lipschtiz:} Suppose for contrary that $C$ is the Lipschitz constant. Take $x_0=0, x_n=\frac{1}{n^2}$, then $\frac{1}{n}=|f(x_n)-f(x_0)|\leq C|x_n-x_0|=\frac{C}{n^2}$, which results in $n\leq C\forall n\in\mathbf{N}$, which is impossible.
+
+\textbf{absolutely continuous:}Given sets $\{(a_j,b_j)\}_{j=1}^n$. If $\min\limits_{1\leq j\leq n}\{a_j\}=a_0>0$, then $f'(x)\geq \frac{1}{2\sqrt{a_0}}<\infty$, so $\sum\limits_{j=1}^n|F(b_j)-F(a_j)|\leq \sum\limits_{j=1}^n \frac{1}{2\sqrt{a_0}}(b_j-a_j)$. Repeat the proof in (iii) and we're done.
+
+So it suffices to consider the case where $a_1=0$. WLOG assume $n=1$, since other intervals can be estimated using the argument above. $\forall \varepsilon>0$, take $\delta=\varepsilon^2$, then $\forall 0<b_1<\delta$, $F(b_1)-F(a_1)<\sqrt{\delta}=\varepsilon$, which proves the statement by definition. 
+\end{proof}
+
+\subparagraph{(v)}
+Since other statements have been proved in exercise 1.6.48, we only need to prove that it's not absoluetely continuous.
+
+$\forall N\in\mathbf{N}$, denote $\delta=3^{-N}$. Denote the remaining sets at the $n$-th step of the construction of Cantor set as $I_n$, by exercise 1.6.48(vii), while $|I_n|=3^{-n}$, $F(I)=2^{-n}$. So $\forall k\in \mathbf{N},\exists \{I^j_{N+k}\}_{j=1}^{3^k}$'s with $\sum\limits_{j=1}^{3^k}I^j_{N+k}=\delta$, while $\sum\limits_{j=1}^{3^k}F(I^i_{N+k})=(\frac{3}{2})^k-N$, which goes to $\infty$ as $k\to \infty$, which violates the definition of absolute continuity.
+
+
+\subparagraph{(vi)}
+\begin{proof}
+Since $f(x)$ is absolutely integrable, $\{f(x)\}$ is uniformly integrable. By exercise 1.5.13, $\forall \varepsilon >0, \exists \delta>0\st \forall E\subset \R\st m(E)<\delta, \int_E|f(x)|\dd x<\varepsilon$.
+
+Given disjoint intervals $\{a_j,b_j\}_{j=1}^n \st E=\bigcup\limits_{j=1}^n (a_j,b_j), m(E)<\delta$, we have $\sum\limits_{j=1}^n |F(b_j)-F(a_j)|\leq\sum\limits_{j=1}^n \int_{a_j}^{b_j}|f(x)|\dd x=\int_{E}|f(x)|\dd x<\varepsilon$, which by definition proves the statement.
+\end{proof}
+
+\subparagraph{(vii)}
+\begin{proof}
+Suppose F,G are two absolutely continuous functions, where $\forall\varepsilon>0, \delta_1,\delta_2$ are the maximal length of intervals of $F,G$ respectively. By (i), $F,G$ are continuous on the closed interval $[a,b]$, so $\exists M>0\st \forall x\in [a,b], \max\{|F(x)|,|G(x)|\}<M$.
+
+Given intervals $\{(a_j,b_j)\}_{j=1}^n\st \sum_{j=1}^n b_j-a_j<\min\{\delta_1,\delta_2\}$
+\[\begin{aligned}
+&\sum\limits_{j=1}^n|F(b_j)G(b_j)-F(a_j)G(a_j)|\\
+\leq&\sum\limits_{j=1}^n|F(b_j)G(b_j)-F(b_j)G(a_j)|+|F(b_j)G(a_j)-F(a_j)-G(a_j)|\\
+\leq&M\sum\limits_{j=1}^n|F(b_j)-F(a_j)|+|G(b_j)-G(a_j)|\\
+\leq&2M\varepsilon
+\end{aligned}\]
+which proves the statement by definition.
+
+If $[a,b]$ is replaced with $\R$, then the boundary $M$ is not possible to be found, and the proof is not valid. 
+\end{proof}
+
+\paragraph{1.6.51}
+\begin{proof}
+\textbf{``if'' side:} Extend $\hat f=1_{[a,b]}(x)f(x)$. Then $\hat f(x)$ is absolutely integrable in $[-\infty,b]$ and that $F(x)=\int_{[-\infty,x]}\hat f(y)\dd y+C$, which by exercise 1.6.49(vi) show that $F$ is absolutely continuous.
+
+\textbf{``only if'' side:} Since $F$ is continuous on a compact set, it is bounded. By exercise 1.6.44, $F'(x)=f(x)$ exists and is absolutely integrable. By theorem 1.6.40, $\int_{[a,x]}f(x)\dd x=F(x)-F(a)$. So take $C=F(a)<\infty$, we have $F(x)=\int_{[a,x]}f(x)\dd x+C$, which is the desired statement.
+\end{proof}
+
+\paragraph{1.6.53}
+\begin{proof}
+Firstly, we prove that $F(x)$ is continuous: $\lim\limits_{x\to 0}|F(x)-F(0)|\leq \lim\limits_{x\to 0}x^2=0$, and $\forall x\neq 0$ $F(x)$ is obviously continuous, $F(x)$ is continuous on $[-1,1]$.
+
+Secondly, check the differentiability of $F$: $\forall x\neq 0, F'(x)=2 x \sin(\frac{1}{x^3}) - 3 \frac{\cos(\frac{1}{x^3})}{x^2}$. $F'(0)=\lim\limits_{x\to 0}\frac{F(x)-F(0)}{x-0}=\lim\limits_{x\to 0}x\sin (\frac{1}{x^3})=0$, so $F$ is everywhere differentiable.
+
+Meanwhile, $\int_0^1 |F(x)|\dd x=\int_1^\infty  2\frac{|\sin(t^3)|}{t^3}+3|\cos(t^3)|\dd t$. Obviously $\int_1^\infty |\cos(t^3)|\dd t=\infty$, so it's not absolutely integrable.
+\end{proof}
+
+\newcommand{\HK}{Henstock-Kurzweil }
+
+\paragraph{1.6.54}
+Denote $P_k=\{a=t_0<t_1<\cdots<t_k=b\}$, the set of all partitions with $k+1$ points. If $p\in P_k$, denote $\xi_p$ a set of $k$ points $t^*_j\st t_{j-1}\leq t^*_j\leq t_j$. Denote $S(f,p,\xi_p)=\sum_{p}f(t^*_j)(t_j-t_{j-1})$.
+
+For a gauge function $\delta$, a tagged partition $(p,\xi_p)$ is called $\delta-$finite if it satisfies the conditions in the problem. By Cousin's lemma, $\forall$ gauge function $\delta$, $\exists p\in P_k\st(p,xi_p)$ is $\delta$-finite.
+
+\subparagraph{(i)}
+\begin{proof}
+Suppose for contrary that $L_1,L_2$ are two different \HK integral of $f$, then by definition, $\forall \varepsilon>0, \exists \delta_1,\delta_2\st \forall (p_1,\xi_{p_1}), (p_2,\xi_{p_2})$ which are $\delta_1,\delta_2$-finite, we have 
+\[|S(f,p_1,\xi_{p_1})-L_1|<\frac{\varepsilon}{2}\quad |S(f,p_2,\xi_{p_2})-L_2|<\frac{\varepsilon}{2}\]
+Define $\delta=\min\{\delta_1,\delta_2\}$, which is still a gauge function. By Cousin's lemma, $\exists (p,\xi_p)$ $\delta$-finite, which by definition is furthermore $\delta_1,\delta_2$-finite.So
+\[\begin{aligned}
+|L_1-L_2|=&|L_1-S(f,p,\xi_p)+S(f,p,\xi_p)-L_2|\\
+\leq&|L_1-S(f,p,\xi_p)|+|S(f,p,\xi_p)-L_2|\\
+<\frac{\varepsilon}{2}+\frac{\varepsilon}{2}=\varepsilon
+\end{aligned}\]
+Since LHS is irrelavent with $\varepsilon$, take $\varepsilon\to 0$ and we have $L_1=L_2$, which proves the uniqueness.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+By definition, if $f$ is Riemann integrable, then $\forall\varepsilon>0,\exists \delta_\varepsilon>0\st\forall p\st \|p\|<\delta_\varepsilon, |S(f,p,\xi_p)-\int_a^bf(x)\dd x|<\varepsilon$. Take $\delta(x)\equiv \delta_\varepsilon$, then by definition $f$ is \HK integrable and the integral coincides with the Riemann integral.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+Since $f$ is bounded, denote $|f(x)|<M\quad \forall x\in [a,b]$.
+
+Since $f$ is absolutely integrable, it is Lebesgue integrable. By Littlewood's second principle, $\forall n\in\mathbf{N}, \exists f_n$ a step function $\st \|f_n-f\|_{L^1}<\frac{1}{2^n}$. So $\sum\limits_{n=1}^\infty \|f_n-f\|_{L^1}<\infty$, so by exercise 1.5.5 (Fast $L^1$ convergence), $\{f_n\}$ converges almost uniformly to $f$ on $[a,b]$. Denote $E$ the set outside which the convergence does not hold, then $m(E)=0$. By definition, $\forall\varepsilon>0,\exists E\subset U$ open. Denote $p_n^-$ the intervals contained in $U$ and $p_n^+$ the others, where $f_n\rightrightarrows f$. So $\forall\varepsilon>0, \exists N\in\mathbf{N}\st \forall n>N, x\not\in E, |f_n(x)-f(x)|<\varepsilon$.
+
+$f_n$ gives a partition $p_n$ where $f_n=\sum\limits_{p_n}c_j(t_j-t_{j-1})$. Take the gauge function $\delta(x)\equiv|p_n|$, then $\forall$ tag $\xi_{p_n}$, $(p_n,\xi_{p_n})$ is $\delta_n$-finite.
+
+So we have: $\forall n>\max\{N,\frac{1}{\varepsilon}\}$, 
+\[\begin{aligned}
+&|S(f,p_n,\xi_{p_n})-\int_{[a,b]}f(x)\dd x|\\
+\leq&|S(f,p_n,\xi_{p_n})-\sip\int_{[a,b]}f_n(x)\dd x|+\|f_n-f\|_{L^1}\\
+<&\varepsilon + \sum_{p_n^+}|f(t^*_j)-c_j|(t_j-t_{j_1})+\sum_{p_n^-}|f(t^*_j-c_j)|(t_j-t_{j-1})\\
+<&\varepsilon+(b-a)\varepsilon+2M\varepsilon=[1+b-a+2M]\varepsilon
+\end{aligned}\] 
+Thus by definition we've proved the statement.
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+$\forall\varepsilon>0$, define the gauge function in the following way: since $F(x)$ is differentiable everywhere, define $\delta(x)>0\st \forall y\in B(x,\delta(x))\cap [a,b], |F(y)-F(x)-F'(x)(y-x)|<\frac{\varepsilon}{2(b-a)}|y-x|$, which always exists since $\frac{F(y)-F(x)}{y-x}=o(|y-x|)$. Then $\forall$ partition $p$ which is $\delta$-finite, we have 
+\begin{gather*}
+|F(t_j)-F(t^*_j)-F'(t^*_j)(t_j-t^*_j)|<\frac{\varepsilon}{2(b-a)}(t_j-t^*_j)\\
+|F(t^*_j)-F(t_{j-1})-F'(t^*_j)(t^*_j-t_{j-1})|<\frac{\varepsilon}{2(b-a)}(t^*_j-t_{j-1})
+\end{gather*}
+Apply the triangle inequality and we have 
+\[|F(t_j)-F(t_{j-1})-F'(t^*_j)(t_j-t_{j-1})|<\frac{\varepsilon}{2(b-a)}(t_j-t_{j-1})\]
+Sum the equality above with the triangle inequality and we have
+\[|[F(b)-F(a)]-F'(t^*_j)(t_j-t_{j-1})|<\frac{\varepsilon}{2}\]
+which proves the statement by definition.
+\end{proof}
+\subparagraph{(v)}
+By (iii) we learn that a function is Lebesgue function, then it's \HK integrable, with the desired integral by (iv)
+
+\paragraph{(6)}
+\begin{proof}
+In the following, we prove $(b)$ directly, which obviously implies (a). Considering the remark, WLOG assume $p>1$.$\forall f\in L^p$, it's measurable.By linearity it suffices to prove the case where $f$ is real and $f(x)\geq 0$.
+The case for $p=1$ is exactly theorem 1.3.20 and has been proved. So assume $p>1$ in the following proof.
+
+
+
+Recall that in previous homework, we've constructed a non-decreasing sequence of simple functions $\{\phi_n(x)\}$ in the following way: denote
+\[E_n^k=f^{-1}((k2^{-n},(k+1)2^{-n}])\quad F_n=f^{-1}((2^n,\infty])\]
+then define\[\phi_n(x)=\sum_{k=0}^{2^{2n}-1}1_{E_n^k}+2^n1_{F_n}\]
+Then $\{\phi_n(x)\}$ converges to $f(x)$ pointwise, and the convergence is uniform where $f$ is bounded. Such a construction endows $\{\phi_n(x)\}$ with the following critical properties:
+\begin{enumerate}
+\item $\forall n\in\mathbf{N}, |\phi_n(x)|^p\leq \|f(x)\|^p\Rightarrow \int_E|\phi_n(x)|^p\dd x\leq \|f(x)\|_p^p<\infty$, so $\phi_n(x)\in L^p(E)$.
+\item $\forall n\in\mathbf{N}, |\phi_n(x)-f(x)|^p\leq 2^p|f(x)|^p$ where $f\in L^p(E)\subset L^1(E)$ which shows that $\{\phi_n(x)-f(x)\}$ satisfies the conditions required in dominated convergence theorem.
+\end{enumerate}
+Apply dominated convergence theorem, and we see that 
+\[\lim_{n\to\infty}\|f-\phi_n\|_p=\lim_{n\to\infty}(\int_E [f-\phi_n(x)]^p\dd x)^{\frac 1 p}=(\int_E [f(x)-\lim_{n\to\infty}\phi_n(x)]^p\dd x)^{\frac 1 p}=0\]
+So $\forall\varepsilon>0,\exists N\in \mathbf{N}\st \forall n>N,\|\phi_n(x)-f(x)\|_p<\frac{\varepsilon}{2}$.
+
+On the other hand, since $\forall n\in\mathbf{N},\phi_n(x)\in L^p(E)$ is simple which takes the form $\phi_n(x)=\sum\limits_{k=1}^{K_n}a_{n,k} 1_{A_{n,k}}$, where $|a_k|<\infty$ and $A_{n,i}\cap A_{n,j}=\varnothing\quad \forall 1\leq i\neq j\leq K_n$. So $\forall n\in\mathbf{N},\|\phi_n(x)\|_p=\sum\limits_{k=1}^{K_n}|a_{n,k}|^p m(A_{n,k})^p<\infty$, which requires $m(A_{n,k})<\infty\quad (\forall 1\leq k\leq K_n)$. By exercise 1.2.16, each $A_{n,k}$ can be approximated by open sets with finite measure: $m^*(A_{n,k}\bigtriangleup U_{n,k})<\frac{\varepsilon}{8^{K_n}|a_{n,k}|}$, wich is the disjoint union of countably many dyadic cubes:$U_{n,k}=\bigcup\limits_{m=1}^\infty D^{n,k}_m$. By construction, since these open sets have only finite measure, $\exists L\in \mathbf{N}\st\forall l>L, m(U\backslash \bigcup\limits_{m=1}^{l}D^{n,k}_m)<\frac{\varepsilon}{8^{K_n}|a_{n,k}|}$. Then $f_n(x)=\sum\limits_{k=1}^{K_n}a_k\sum\limits_{m=1}^l 1_{D^{n,k}}$ has the desired properties and by triangle inequality, has the desired distance to $f$.
+\end{proof}
+\end{document}

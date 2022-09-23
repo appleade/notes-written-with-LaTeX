@@ -1,0 +1,242 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,ulem,bm}
+\usepackage[margin=1 in]{geometry}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 7 for Measure and Integral}
+\begin{document}
+\maketitle
+\newcommand{\st}{\text{ s.t.}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\du}{\,\mathrm{d} \mu}
+\newcommand{\re}{\mathrm{Re}\,}
+\newcommand{\im}{\mathrm{Im}\,}
+\newcommand{\sip}{\mathrm{Simp}}
+\newcommand{\R}{\mathbf{R}^d}
+\newcommand{\WLOG}{without loss of generality}
+\newcommand{\aeeq}{\stackrel{\mathrm{a.e.}}{=}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\alg}{\mathcal{A}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\Leb}{\mathcal{L}}
+
+\DeclareRobustCommand{\rchi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+\paragraph{1.7.1}
+\begin{proof}
+On one hand, by monotonicity, $\mu^*(A)\leq \mu^*(A\cap E)+\mu^*(A\backslash E)$.
+
+On the other hand, by monotonicity, $0\leq\mu^*(A\cap E)\leq \mu^*(E)=0$, so $\mu^*(A\cap E)=0$. Then $m^*(A\cap E)+\mu^*(A\backslash E)=\mu^*(A\backslash E)\leq \mu^*(A)$ by monotonicity. Combine both inequalities and we get the statement.
+\end{proof}
+
+\paragraph{1.7.2}
+\begin{proof}
+From exercise 1.2.17 (which is in previous homework) we learn that $E\in\Leb(\R)\Leftrightarrow \forall A\in\mathcal{E}(\R), m(A)=m^*(E\cap A)+m^*(A\backslash E)$. 
+
+\textbf{``if'' side: }Now suppose $A\subset \R$, then by definition $\forall \varepsilon>0, \exists \{B_n\}_{n=1}^{\infty}$, a family of almost disjoint boxes s.t. $\bigcup\limits_{n=1}B_i\supset A, m(\bigcup\limits_{n=1}^\infty B_n)\leq m^*(A)+\varepsilon$. Now that boxes are Carath\'eodory measurable, $\forall n\in \mathbf{N}, m(B_n)=m^*(E\cap B_n)+m^*(B_n\backslash E)$. So 
+\[m^*(A)\geq m^*(\bigcup_{n=1}^\infty B_i)-\varepsilon=\sum_{n=1}^\infty m(B_i)-\varepsilon=\sum_{n=1}^\infty m^*(B_n\backslash E)+m^*(B_n\cap E)-\varepsilon\]
+Meanwhile, since $\sum\limits_{n=1}^{\infty}m^*(B_n\cap E)\geq m^*((\bigcup\limits_{n=1}^\infty B_n)\cap E_n)\geq m^*(A\cap E)$, $\sum\limits_{n=1}^{\infty}m^*(B_n\backslash E)\geq m^*((\bigcup\limits_{n=1}^\infty B_n)\backslash E_n)\geq m^*(A\backslash E)$, by taking $\varepsilon\to 0$, we get $m^*(A)\geq m^*(A\cap E)+m^*(A\backslash E)$, which proves the if side of the statement.
+
+\textbf{``only if'' side: } trivial, since we may take $A\in\mathcal{E}(\R)$, which by exercise 1.2.17 proves the statement. 
+\end{proof}
+
+\paragraph{1.7.3}
+\textbf{``only if'' side: } trivial by definition.
+
+\textbf{``if'' side: } It suffice to show that $\B$ is closed under countable unions, i.e. given $\{E_n\}_{n=1}^\infty\in\B, \bigcup\limits_{n=1}^{\infty}E_n\in \B$. Define $F_1=E_1, F_n=E_n\backslash (\bigcup\limits_{k=1}^{n-1}E_k)\quad n\geq 2$. Then by definition, $\{F_n\}_{n=1}^{\infty}\in\B$, $\bigcup\limits_{n=1}^{N}F_n=\bigcup\limits_{n=1}^N E_n$, and that $\{F_n\}$ are disjoint. Take $N\to\infty$ and we see that $\bigcup\limits_{n=1}^{\infty}E_n=\bigcup\limits_{n=1}^\infty F_n\in \B$, which proves the statement.
+
+\paragraph{1.7.4}
+\subparagraph{(i)}
+\begin{proof}We're required to show that $\mu_0$ is finitely additive, i.e. given disjoint sets $\{E_n\}_{n=1}^N\in\B, \mu_0(\bigcup\limits_{n=1}^{N}E_n)=\sum\limits_{n=1}^N \mu_0(E_n)$. Since $\B$ is a Boolean algebra, $\bigcup\limits_{n=1}^{N}E_n\in \B$, so we take $E_m=\varnothing\quad \forall m>N$, and we get 
+\[\mu_0(\bigcup_{n=1}^N E_n)=\mu_0(\bigcup_{n=1}^{\infty})=\sum_{n=1}^\infty\mu_0(E_n)=\sum_{n=1}^\infty\mu_0(E_n)\]\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+We're required to show that $\mu_0(\bigcup\limits_{n=1}^\infty E_n)\geq \sum\limits_{n=1}^{\infty}\mu_0(E_n)$. Suppose the converse is true, then $\mu_0(\bigcup\limits_{n=1}^\infty E_n)< \sum\limits_{n=1}^{\infty}\mu_0(E_n)$. So $\exists N\in\mathbf{N}\st \mu_0(\bigcup\limits_{n=1}^N E_n)<\sum\limits_{n=1}^N \mu_0(E_n)$, which is in denial of the definition that $\mu_0$ is finitely additive.
+\end{proof}
+\subparagraph{(iii)}
+Consider $X=\mathbf{N}, \B_0=2^{\mathbf{N}}$ the discrete algebra, and $\forall E\in\B_0$:
+\[\mu_0(E)=\begin{cases}
+0 &E=\varnothing\\
+1 &\mathrm{Card}(E)<\infty\\
+\infty &\mathrm{Card}(E)=\infty
+\end{cases}\]
+Though $(\mathbf{N},2^{\mathbf{N}},\mu_0)$ satisfies relaxed conditions, it is not even a measure.
+
+\paragraph{1.7.6}
+Consider $X=\mathbf{N}, \B_0=2^{\mathbf{N}}$ the discrete algebra, and $\forall E\in\B_0$:
+\[\mu_0(E)=\begin{cases}
+1 &\mathrm{Card}(E)<\infty\\
+\infty &\mathrm{Card}(E)=\infty
+\end{cases}\]
+Obviously, $(X,\B_0,\mu_0)$ is a finitely additive measure. 
+Take $E_n=\{n\}$, then $\mu_0(\bigcup\limits_{n=1}^{\infty}E_n)=\infty$, $\sum\limits_{n=1}^\infty\mu_0(E_n)=0$. So it's not a pre-measure.
+
+\paragraph{1.7.9}
+\subparagraph{(i)}
+\begin{proof}
+By definition, $\mu(E)=\inf\limits_{\substack{E_n\in \B_0\\E\subset\bigcup\limits_{n=1}^\infty E_n}}\sum\limits_{n=1}^\infty\mu_0(E_n)$. Since $\bigcup\limits_{n=1}^\infty E_n\in\left<\B_0\right>$, $\exists \{F_n\}\in \left<\B_0\right> \st F_n\supset E, \mu(F_n\backslash E)\leq \mu_(F_n)-\mu(E)<\frac 1 n$. Take $F=\bigcap\limits_{n=1}^\infty F_n$, then $\mu(F\backslash E)\leq\lim\limits_{n\to\infty}\mu(F_n\backslash E)=0$. Furthermore, since $F_n\in\left<\B_0\right>, \exists\{F_{n,m}\}_{m=1}^\infty\in\B_0\st F_n=\bigcup\limits_{n=1}^{\infty}F_{n,m}$.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Take $F_{n,m}$ in (i). Then $\lim\limits_{n\to\infty}\mu(E\bigtriangleup (\bigcup\limits_{n=1}^{\infty}\bigcup\limits_{m=1}^{\infty}F_{n,m}))=0$. By definition, $\forall \varepsilon>0,\exists N\in\mathbf{N}\st \mu(E\bigtriangleup (\bigcup\limits_{n=1}^{N}\bigcup\limits_{m=1}^{N}F_{n,m}))<\varepsilon$. Since $\B_0$ is a Boolean algebra, $F=\bigcup\limits_{n=1}^{N}\bigcup\limits_{m=1}^{N}F_{n,m}\in\B_0$, and the statement follows.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+From exam we learn that $\exists F\in\B\st \mu^*(E)=\mu(F)$. Now it suffice to check Carath\'eodory measurability: $\forall A\subset X, \mu^*(A\cap E)\leq m^*(A\cap F)+\mu^*(E\bigtriangleup F)=m^*(A\cap F)$. By taking completion we learn that the given condition still holds for $E^c$, with the approximating sets $F^c$, so similarly, $\mu^*(E^c\cap A)\leq \mu^*(F^c\cap A)$. Since $F\in\B$, $\mu^*(A\cap E)+\mu^*(A\cap E^c)\leq \mu^*(A\cap F)+\mu^*(A\cap F^c)=\mu(F)=\mu^*(E)$. So $E$ is Carath\'eodory measurable, and the statement follows.
+\end{proof}
+
+\paragraph{1.7.18}
+\subparagraph{(i)}
+\begin{proof}
+One one hand, $\forall E\in\B_X, Y\in\B_Y, E\times F=\pi^*_X(E)\cap\pi^*_Y(F)\in\left<E\times F\right>\subseteq\left<\pi^*_X(\B_X)\cup\pi^*_Y(\B_Y)\right>$, so $\left<E\times F\right>\subseteq\left<\pi^*_X(\B_X)\cup\pi^*_Y(\B_Y)\right>$.
+
+On the otherhand, $\forall E\times Y\in\pi^*_X(E), E\in\B_X, Y\in\B_Y$, so $E\times Y\in\left<E\times F\right>$. In the same way, $\forall X\times F\in \pi^*_{Y}(\B_Y), X\times F\in\left<E\times F\right>$. So $\pi^*_X(\B_X)\cup\pi^*_Y(\B_Y)\subset \left<E\times F\right>$. Therefore, $\left<E\times F\right>\supseteq\left<\pi^*_X(\B_X)\cup\pi^*_Y(\B_Y)\right>$. Combine both inequalities and we get the desired statement.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+%Suppose the converse is true, then $\exists \alg$, a $\sigma$-algebra on $X\times Y$, which is coarser than $\B_X\times\B_Y$. 
+By definition, we're required to prove that $\forall \sigma-$algebra $\alg$ on $X\times Y$,  the identity map $id_X:X\to X$ is a measurable morphism from $(X,\alg)$ to $(X,\B_X\times B_Y)$. That is, every measurable set on $\B_X\times \B_Y$ is a measurable set on $\alg$. since both are $\sigma$-algebra, and that $\B_X\times\B_Y=\left<\pi^*_X(\B_X)\cup \pi^*_Y(\B_Y)\right>$, from symmetry it suffice to check that $\forall E\times Y\in \pi^*_X(\B_X)$ where $E\in \B_X$, $E\times Y\in \alg$, which is true since $\alg$ is on $X\times Y$. 
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+From symmetry, it suffice to show that $E_x\in \B_Y$.
+
+%Take a decreasing sequence $\{E_n\}\in\B_X\st E_n\supset E_{n+1}, \bigcap\limits_{n=1}^{\infty}E_n=\{x\}$. Denote $F_n=E\cap \pi^*_X(E_n)\in \B_X\times \B_Y$, then $F\lim\limits_{n\to\infty}F_n=E\cap\pi^*_X(\{x\})\in \B_X\times\B_Y$.
+
+Firstly, suppose $E=A\times B$, where $A\in \B_X, B\in \B_Y$. 
+%Then $E=\pi^*_X(A)\times \pi^*_Y(B)=A\times Y\cap X\times B$. 
+Denote $E'=E\cap \pi^*_X(\{x\})=\{x\}\times Y\cap X\times B=\{x\}\times B\in \B_X\times \B_Y$, then $E_x=\pi_X(E')=B\in \B_Y$, which is a special case for the desired statement.
+
+Generally, suppose $E=\bigcup\limits_{n=1}^\infty E_n\in \B_X\times \B_Y$, then $E_x=\bigcup\limits_{n=1}^{\infty} E_{n,x}\in \B_Y$, which proves the desired statement.
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+By symmetry, it suffice to show that $\forall x\in X, f_x$ is $\B_Y$-measurable. Use the notations in (iii).
+
+Firstly, check indicator functions: Take arbitrary $F\in X\times Y$, and denote $f(x,y)=1_F(x,y)$. Then $\forall\lambda>0$:
+\[\{f_x(y)\geq \lambda\}=\begin{cases}\varnothing &\lambda>1\\ F_x&\text{otherwise}\end{cases}\]
+Both sets are $\B_Y$-measurable by (iii), so the statement is true for indicator functions.
+
+Next, check simple functions. Take $f(x)=\sum\limits_{n=1}^N c_nA_n$, where $A_n\cap A_m=\varnothing\quad \forall 1\leq n\neq m\leq N, c_1<c_2<\cdots<c_N$. The case where $\lambda\leq c_1,\lambda>c_N$ are trivial as the case of indicator functions, so WLOG suppose $c_k<\lambda\leq c_{k+1}\quad k<N$. Then $\{f_x>\lambda\}=\bigcup\limits_{i=k+1}^N A_{i,x}\in \B_Y$.
+
+Now for arbitrary measurable $f$, take $\{f_n(x)\}_{n=1}^{\infty}$, an increasing sequence of simple functions $\st \lim\limits_{n\to\infty}f_n(x,y)=f(x,y)$. So $\{f_x(y)>\lambda\}=\lim\limits_{n\to\infty}\{f_{n,x}(y)>\lambda\}=\bigcup\limits_{n=1}^{\infty}\{f_{n,x}>\lambda\}\in\B_Y$, and the statement is proved by definition.
+\end{proof}
+\subparagraph{(v)}
+\begin{proof}
+(sorry but I'm not familiar with cardinal arithmetic)
+
+Just generate $\alg$: $\left<\alg\right>=\left<\pi_Y(E\cap \{x\}\times Y)\cup \B_Y\right>$, which is the desired countably generated $\sigma$-algebra.
+
+%To be studied closely
+\end{proof}
+
+\paragraph{1.7.19}
+\subparagraph{(i)}
+\begin{proof}
+List directly: $\B_X=\{\varnothing,X\}, \B_Y=\{\varnothing, Y\}$, then $\B_X\times \B_Y=\{\varnothing, X\times Y\}$, since $\varnothing\times Y=X\times \varnothing=\varnothing$. It is indeed trivial.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Suppose $\B_X,\B_Y$ have atom $X=\bigcup\limits_{\alpha\in I}A_\alpha, Y=\bigcup\limits_{\beta\in J}A'_\beta$. Then $\forall E\in\B_X\times\B_Y=\bigcup\limits_{n=1}^{\infty} E_n\times F_n=\bigcup\limits_{n=1}^\infty \bigcup\limits A_\alpha\times A'_\beta$, so $X\times Y=\bigcup\limits_{\alpha\in I,\beta\in J}A_\alpha\times A'_\beta$ are the atoms of $\B_X\times \B_Y$, which proves the statement.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+By exercise 1.4.4, every finite Boolean algebra (thus $\sigma$-algebra) is atomic, which has finite cardinality. So the statement follows directly from (ii).
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+Borel-algebra is the algebra generated by open sets while open sets are countable unions of dyadic cubes, so Borel algebra is the algebra is the algebra generated by dyadic cubes. Meanwhile, the product of cubes are still cubes, so  the product algebra is still generated by cubes, which is a Borel-algebra.
+\end{proof}
+\subparagraph{(v)}
+\begin{proof}
+Suppose the converse is true, then $\forall E\in \B_X\times \B_Y, x\in\R, E_x\in\Leb(\mathbf{R}^{d'})$. Take $d=d'=1$ for instance, and take $E=\{1\}\times V$, where $V$ is the Vitali set which is unmeasurable in one-dimension. Meanwhile, equiped with the usual Lebegue measure, since $E\subset \{1\}\times [0,1]=F,m(F)=0$, $E$ is a sub-null set which is measurable. Meanwhile, $E_1=V$ is not measurable, which is a contradiction.
+\end{proof}
+\newcommand{\Rd}{\mathbf{R}^{d+d'}}
+
+\subparagraph{(vi)}
+\begin{proof}
+By (v), $\B_X\times\B_Y$ contains the product Borel measure, and it has been proved in previous homework that the Lebesgue measure is its completion. so (denote completion with overline)
+\[\Leb[\Rd]=\overline{\B[\Rd]}\subset \overline{\left<\Leb[\mathbf{R}^d]\times\Leb[\mathbf{R}^{d'}]\right>}\subset\overline{\Leb[\Rd]}=\Leb[\Rd]\]
+Thus all are equivalent, and the statement follows.
+\end{proof}
+\subparagraph{(vii)}
+\begin{proof}
+WLOG, assume $X$ is countably infinite. Then $\forall E\in\B_X\times\B_Y$, $E=\bigcup\limits_{n=1}^\infty \{x_n\}\times E_{x_n}$, where $\forall n\in\mathbf{N}, E_{x_n}\in\B_Y$, and is the countable union of its elements. So $E$ is the countable union of discrete elements, and the statement follows.
+\end{proof}
+\paragraph{1.7.20}
+\subparagraph{(i)}
+\begin{proof}
+Denote the the measure on $(X,\B_X),(Y,\B_Y)$ as $\delta_x,\delta_y$ respectively. Obviouly they are $\sigma$-finite measure spaces. So the product measure obeys $\delta_x\times\delta_y(E\times F)=1_{E}(x)1_{F}(y)=1_{E\times F}(x\times y)$. So $\forall A\in \B_X\times\B_Y, E=\bigcup\limits_{n=1}^\infty E_n\times F_n$, which is a disjoint union. So if $\exists n\in \mathbf{N}\st x\times y\in E_n\times F_n$, then $\delta_x\times \delta_y(E)=1$, otherwise $\delta_x\times\delta_y(E)=0$. So $\delta_x\times\delta_y(E)=1_{E}(x\times y)=\delta_{x\times y}$, which proves the statement.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Obviously both spaces are $\sigma$-finite since they are at most countable. So $\forall E\in\B_X\times\B_Y$, $E=\bigcup\limits_{n=1}^\infty E_n\times F_n$, a disjoint union where $E_n\in \B_X, F_n\in \B_Y$. So by the definition of a measure, $\mu(E)=\sum\limits_{n=1}^\infty \mu(E_n\times F_n)=\sum\limits_{n=1}^\infty \mu(E_n)\mu(F_n)=\sum\limits_{n=1}^{\infty}\mathrm{Card}(E_n)\mathrm{Card}(F_n)=\mathrm{Card}(E)$, which proves the statement.
+\end{proof}
+
+\paragraph{1.7.21}
+\begin{proof}
+$\bm{(\B_X\times\B_Y)\times\B_Z=\B_X\times(\B_Y\times\B_Z):}$ Take $E\in (\B_X\times\B_Y)\times\B_Z$, then $E=\bigcup\limits_{n=1}^\infty A_n\times B_n \quad (A_n\in \B_X\times \B_Y, B_n\in \B_Z\quad \forall n\in\mathbf{N})$. Meanwhile, $A_n=\bigcup\limits_{m=1}^\infty A_{n,m}\times A'_{n,m}\quad (A_{n,m}\in \B_X, A'_{n,m}\in \B_Y)$ . So $E=\bigcup\limits_{m,n=1}^{\infty}A_{n,m}\times A'_{n,m}\times B_n$. Rearrange it and we get $E=\bigcup\limits_{k=1}^\infty)\bigcup\limits_{m=1}^\infty A_{k,m}\times (\bigcup\limits_{n=1}^{\infty}A_{n,m}\times B_n)\in \B_X\times (\B_Y\times B_Z)$, so the $\subset$ side is proved. The other side is proved similarly.
+
+$\bm{(\mu_X\times \mu_Y)\times \mu_Z=\mu_X\times (\mu_Y\times \mu_Z):}$ Now that all these spaces are $\sigma$-finite, so is their product: $X=\bigcup\limits_{n=1}^{\infty}A_n$, $Y=\bigcup\limits_{m=1}^\infty B_n$, $\mu_X(A_n)<\infty, \mu_Y(B_m)<\infty\quad(\forall n,m\in\mathbf{N})$, So $X\times Y=\bigcup\limits_{m,n=1}^\infty A_n\times B_m\quad \mu_{X\times Y}(A_n\times B_m)=\mu_X(A_n)\mu_Y(B_m)<\infty$.
+
+Now that product of algebra is associative, we denote it as $B_X\times \B_Y\times \B_Z$. $(\mu_X\times \mu_Y)\times \mu_Z((E\times F)\times G)=\mu_X\times\mu_Y(E\times F)\mu_Z(G)=\mu_X(E)\mu_Y(F)\mu_Z(G)$. Similarly, $mu_X\times (\mu_Y\times\mu_Z)(E\times (F\times G))=\mu_X(E)\mu_Y(F)\mu_Z(G)$. Meanwhile, $\forall A\in \B_X\times \B_Y\times \B_Z$, $A=\bigcup\limits_{n=1}^\infty E_n\times F_n\times G_n$. So $(\mu_X\times \mu_Y)\times\mu_Z(A)=\mu_X\times(\mu_Y\times \mu_Z)(A)=\sum\limits_{n=1}^\infty \mu_X(E_n)\mu_Y(F_n)\mu_Z(G_n)$. So it is associative.
+\end{proof}
+
+\paragraph{1.7.22}
+\subparagraph{(i)}
+\begin{proof}
+$\forall \lambda>0:$
+\[f^{-1}([\lambda,\infty])=\begin{cases}\varnothing &\lambda>1\\E&0<\lambda\leq 1\end{cases}\]
+So it suffice to show that $E$ is measurable w.r.t the product $\sigma$-algebra, so it suffice to show that $E$ is a Borel set.
+This is obvious since we may cover $E$ with cubes on the diagnal: $E_n=\bigcup_{i=1}^n [\frac {i-1}{n},\frac{i}{n}]$ then $E=\lim\limits_{n\to\infty} E_n$.
+
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+$\int_Y 1_E\dd\#(y)=\#(E^x)=1$, since $E_x$ has a single point. So $\int_X(\int_Y 1_E(x,y)\dd\#(y))\dd m(x)=\int_{[0,1]}1\dd m(x)=1$.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+It suffice to show that $g(y)=\int_X 1_E(x,y)\dd m(x)$ is $\#(y)-$almost everywhere (which indeed means everywhere) zero. Meanwhile, by definition, $g(y)=m(E^y)=0$ since $E^y$ has merely a single point, so the statement follows.
+\end{proof}
+\subparagraph{(iv)}
+Construct the measure as follows:
+\begin{gather*}
+\mu(E\times F)=\int_X(\int_Y 1_{E\times F}\dd\#(y))\dd m(x)\\
+\nu(E\times F)=\int_Y(\int_X 1_{E\times F}\dd m(x))\dd \#(y)
+\end{gather*}
+Then $\mu(E\times F)=\#(F)\int_X 1_E\dd m(x)=m(E)\#(F), \nu(E\times F)=m(E)\int_Y 1_F\dd \#(x)$, which are actually different by (ii)(iii).
+\paragraph{1.7.23}
+\begin{proof}
+Consider the following function:
+\[f(x,y)=\frac{x^2-y^2}{(x^2+y^2)^2}\]
+then $f$ is measurable since it is continuous. Meanwhile, we have
+\begin{gather*}
+\int_{[0,1]}(\int_{[0,1]}f(x,y)\dd m(x))\dd m(y)=\int_{[0,1]}-\frac{1}{1+x^2}\dd m(x)=-\frac{\pi}{4}\\
+\int_{[0,1]}(\int_{[0,1]}f(x,y)\dd m(y))\dd m(x)=\int_{[0,1]}\frac{1}{1+y^2}\dd m(y)=\frac{\pi}{4}\\
+\end{gather*}
+which are not equal.
+\end{proof}
+\paragraph{1.7.24}
+\begin{proof}
+Suppose $\exists$ an increasing sequence of measurable functions $\{f_n\}_{n=1}^\infty\st\lim\limits_{n=1}^\infty f_n(x)=f(x)$ pointwise, with $\forall n\in\mathbf{N},f_n$ satisfies the given equation. Then by monotone convergence theorem (both for sets and functions), we have
+\[\begin{aligned}
+\lim_{n\to\infty}(\mu\times m)(\{(x,t)\in X\times\mathbf{R}:0\leq t\leq f_n(x)\})&=\lim_{n\to\infty}\int_X f_n(x)\dd\mu(x)\\
+(\mu\times m)(\{(x,t)\in X\times\mathbf{R}:0\leq t\leq f(x)\})&=\int_X f(x)\dd \mu(x)
+\end{aligned}\]
+Since measurable functions are limits of simple functions, it suffice to prove the statement for simple functions. Denote $f(x)=\sum\limits_{n=1}^N c_n 1_{A_n}$ where $A_n$ are disjoint set, then by linearity:
+\begin{gather*}
+(\mu\times m)(\{(x,t)\in X\times\mathbf{R}:0\leq t\leq f(x)\})=\sum_{n=1}^{N}c_n(\mu\times m)\{(x,t)\in X\times \mathbf{R}0\leq t\leq 1_{A_n}\}\\
+\int_X f(x)\dd\mu(x)=\sum_{n=1}^N c_n\int_X 1_{A_n}\dd\mu
+\end{gather*}
+So it suffice to prove the statement for indicator functions, which is obvious by definition.
+\end{proof}
+\paragraph{1.7.25}
+\begin{proof}
+By exercise 1.7.24, $LHS=(\mu\times m)(\{(x,t)\in X\times \mathbf{R}:0\leq t\leq f(x)\})=(\mu\times m)\{(x,t)\in X\times\mathbf{R}:x\geq f^{-1}(t)\}=\int_0^\infty\mu(f^{-1}([\lambda,\infty]))\dd\lambda$, which is the desired equality.
+
+As for the second statement, by the defintion of a measure, it suffice to show that $\int_0^\infty\mu(f^{-1}\{\lambda\})\dd\lambda=0$. Since $f$ is unsigned, it suffice to show that $g(\lambda)=\mu(f^{-1}\{\lambda\})=0$ $\mu$-almost everywhere. This is obviously true for simple functions since only at a finite number of points does $g(\lambda)\neq 0$. Take the sequence $\{f_n\}$ in exercise 1.7.24 with correspponding $\{g_n(\lambda)\}$, where $f_n$ satisfies the given property, then by monotone convergence theorem of sets w.r.t fixed $\lambda$:
+\[\mu(f^{-1}\{\lambda\})=\mu(\lim_{n\to\infty}f^{-1}_n(\{\lambda\}))=\lim_{n\to\infty}\mu(f^{-1}_n\{\lambda\})=\lim_{n\to\infty}g_n(\lambda)\stackrel{\mathrm{a.e.}}{=}0=g(\lambda)\]
+Since measurable functions are limits of simple functions, the statement follows.
+\end{proof}
+\end{document}

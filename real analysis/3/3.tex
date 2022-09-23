@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+%\usepackage{fancyhdr}
+\pagestyle{headings}
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+%\fancyhf{}
+%\fancyfoot[C]{\bfseries\thepage}
+%\fancyhead[LO]{\bfseries\rightmark}
+%\fancyhead[RE]{\bfseries\leftmark}
+%\renewcommand{\headrulewidth}{0.4pt} 
+%\renewcommand{\footrulewidth}{0pt}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 3 for Measure and Integral}
+\begin{document}
+\maketitle
+\newcommand{\st}{\text{ s.t.}}
+
+%\paragraph{1.2.7}
+%\subparagraph{(i)$\Leftrightarrow$(ii)}
+%By definition.
+%\subparagraph{(ii)$\Rightarrow$(iii)}
+%For the $U$ chosen in (ii), $E\backslash U=\varnothing$. So $m^*(U\bigtriangleup E)\leq m^*(U\backslash E)+m*(E\backslash U)\leq \varepsilon+0=\varepsilon$.
+%\subparagraph{(iii)$\Rightarrow$(iv)}
+
+\paragraph{1.2.8}
+\begin{proof}
+For a Jordan measurable set $E$, $\forall \varepsilon >0, \exists \text{elementary set }A_{\varepsilon} \st m^*(E\bigtriangleup A_{\varepsilon})\leq m^{*,(J)}(E\bigtriangleup A_{\varepsilon})\leq\varepsilon$. Since elementary sets are Lebesgue measurable, $E$ is almost measurable, so by exercise 1.2.7(vi), $E$ is Lebesgue measurable. 
+\end{proof}
+
+\paragraph{1.2.11}
+\subparagraph{(i)}
+\begin{proof}
+Denote $E'_n=E_n\backslash \bigcup_{i=0}^{n-1}E_i$ where $E_0=\varnothing$.
+
+Firstly, we'll prove that $E'_n$ are Lebesgue measurable. Since $\forall n\in \mathbb{N}, E_n$ is Lebesgue measurable, so is $\bigcup_{i=0}^{n-1}E_n$, and so is $\mathbb{R}^d\backslash \bigcup_{i=0}^{n-1}E_i$, and so is $E_n\cap (\mathbb{R}^d\backslash \bigcup_{i=0}^{n-1}E_i)=E'_n$
+
+By definition, $E'_i\cap E'_j=\varnothing\quad i\neq j$, and that $m^*(E'_n)=m(E_n)-m(E_{n-1})$. Obviously, $\bigcup\limits_{n=0}^{\infty}E_n=\bigcup_{n=0}^{\infty}E'_n$. So by infinite additivity, 
+\[m(\bigcup_{n=0}^{\infty}E_n)=m(\bigcup_{n=0}^{\infty}E'_n)=\lim_{N\to\infty}\sum_{n=1}^N m(E'_n)=\lim_{N\to\infty}\sum_{n=1}^N m(E_n)\]
+%$m(\cup_{n=1}^{\infty}E'_n)=m(\cup_{n=1}^{\infty}E_n)=\sum_{i=0}^{\infty}m(E'_n)=\lim\limits_{n\to\infty}m(E_n)$
+\end{proof}
+
+\subparagraph{(ii)}
+\begin{proof}
+For brevity, denote $E=\bigcap\limits_{n=1}^{\infty}E_n$.
+
+Without loss of generosity, we may assume that $m(E_1)<\infty$. Denote $E'_i=E_i-E_{i-1}$, then $E'_i\cap E'_j=\varnothing \quad \forall i\neq j\in\mathbb{N}_+$. Furthermore,we have
+\[E_1=E\cup(\bigcup_{i=1}^{\infty}E'_i)\]
+By countable additivity, we have
+\[m(E_1)=m(E)+\lim_{n\to\infty}m(E'_i)=m(E)+m(E_1)-\lim_{n\to\infty}m(E_n)\]
+Since $m(E_1)<\infty$, we may cancel $m(E_1)$ on both sides to get
+\[m(E)=\lim_{n\to\infty}m(E_n)\]
+\end{proof}
+
+\subparagraph{(iii)}
+In $\mathbb{R}$,$E_n=[n,\infty)$. Then $E_i\supset E_{i+1}\forall i\in\mathbb{N}$, $m(E_n)=\infty$, so $\lim\limits_{n\to\infty}m(E_n)=\infty$. Meanwhile, $\bigcap\limits_{n=1}^{\infty}E_n=\varnothing$. This is because $\forall a \in \mathbb{R}_+, \exists n\in \mathbb{N}, a<n\quad \Rightarrow a\in E_n$. So $m(\bigcap\limits_{n=1}^{\infty}E_n)=0$, which gives the contradiction.
+
+\paragraph{1.2.15}
+\begin{proof}
+By monotonicity, $\forall K\subset E, K \text{ compact},m(E)\geq m(K)$. So $m(E)\geq \sup\limits_{\substack{K\subset E\\ K\text{ compact}}}m(K)$. If we can find sequence of compact set$\{E_n\}\st \forall \lim\limits_{n\to\infty}m(E)-m(E_n)=0, E_n\subset E\forall n\in\mathbb{N}$ ,then 
+\[m(E)=\lim_{n\to\infty}m(E_n)\leq\sup{\substack{K\subset E\\ K\text{ compact}}}m(K)\leq m(E)\]
+and the statement is proved.
+
+Now construct $\{E_n\}$ as follows. Since E is Lebesgue measurable, it can be approximated by closed sets. That is, $\forall k\in \mathbb{N}_+,\exists \text{a closed set}F_k \st m(E)-m(F_k)\leq m^*(E\backslash F_k)\leq \frac 1 k$. For that fixed m, define $F_{k,l}=B_l(0)\cap F_k$, where $B_l(0)$ is the ball centered at the origin with radius $l,\quad l\in \mathbb{N}$. Select $E_n=F_{n,n}$, then by definition its the desired set. 
+\end{proof}
+
+\paragraph{1.2.20}
+\begin{proof}
+Since $E$ is Lebesgue measurable, $\forall\varepsilon>0, \exists \text{ an open set }U\st U\supset E \text{ and that } m^*(U\backslash E)<\varepsilon$. 
+Denote $E_x=E+x$ and $U_x=U+x$. Then $\forall p\in E_x, p-x\in E\subset U \Rightarrow p\in U_x$, so $E_x\subset U_x$ . Similarly, we can prove that $U_x$ is still open.
+
+Since $m^*(U\backslash E)<\varepsilon$, $\exists$ boxes $\{B_n\}$ s.t. $U\backslash E\subset\bigcup\limits_{n=1}^{\infty}B_i, \sum_{n=1}^{\infty} |B_n|<2\varepsilon$. Notice that elementary measure is translation invariant and that it coincide with Lebesgue measure, we have $U_x\backslash E_x\subset \bigcup\limits_{n=1}^{\infty}(B_n+x), m^*(U_x\backslash E_x)\leq\sum\limits_{n=1}^{\infty}m(B_n+x)=\sum\limits_{n=1}^{\infty}m(B_n)<2\varepsilon$. So by definition, $E+x$ is Lebesgue measurable.
+
+Observe that \[m(E)=\inf\limits_{\substack{\bigcup_{n=1}^{\infty}B_i\supset E\\B_i boxes}}\sum_{i=1}^{\infty}|B_i|=\inf\limits_{\substack{\bigcup_{n=1}^{\infty}B_i+x\supset E+x\\B_i boxes}}\sum_{i=1}^{\infty}|B_i|\geq m(E+x)\] and \[m(E+x)=\inf\limits_{\substack{\bigcup_{n=1}^{\infty}B_i\supset E\\B_i boxes}}\sum_{i=1}^{\infty}|B_i|=\inf\limits_{\substack{\bigcup_{n=1}^{\infty}B_i-x\supset E-x\\B_i boxes}}\sum_{i=1}^{\infty}|B_i|\geq m(E)\] the statement follows from squeeze theorem.
+\end{proof}
+
+
+
+
+\end{document}

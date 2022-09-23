@@ -1,0 +1,431 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1 in]{geometry}
+\usepackage{ulem}
+\author{2019011985\and M91\and Junzhe Dong}
+\title{Homework 6 for Measure and Integral}
+\begin{document}
+\maketitle
+\newcommand{\st}{\text{ s.t.}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\du}{\,\mathrm{d} \mu}
+\newcommand{\re}{\mathrm{Re}\,}
+\newcommand{\im}{\mathrm{Im}\,}
+\newcommand{\sip}{\mathrm{Simp}}
+\newcommand{\R}{\mathbf{R}^d}
+\newcommand{\WLOG}{without loss of generality}
+\newcommand{\aeeq}{\stackrel{\mathrm{a.e.}}{=}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+
+\DeclareRobustCommand{\rchi}{{\mathpalette\irchi\relax}}
+\newcommand{\irchi}[2]{\raisebox{\depth}{$#1\chi$}} 
+
+\paragraph{1.}
+Define the Cantor function as follows: $\forall x\in [0,1]$, interpret $x$ in ternary:
+\[x=\sum_{n=1}^{\infty}\frac{a_{nx}}{3^n}\]
+Denote $N_x=\max\{nx:a_{nx}=1\}$, where $N_x=\infty$ if there's none. Then the Cantor function is given as:
+\[\phi(x)=\frac{1}{2^{N_x}}+\frac{1}{2}\sum_{n=1}^{N_x-1}\frac{a_{nx}}{2^n}\]
+Then $\phi(x)$ is a non-decreasing continuous function (but not uniformly continuous) that maps the cantor set $\mathcal{C}$ to $[0,1]$ by defintion. Define $f(x)=\phi(x)+x$, then f is an increasing continuous function, thus a homeomorphism from $[0,1]$ to $[0,2]$. 
+Observe that by definition, $\forall (a,b)\subset [0,1]\backslash \mathcal{C}$, $\phi(x)$ is constant on $(a,b)$. So $m(f(a,b))=b-a$. Summing all such intervals gives $m(f([0,1]\backslash \mathcal{C}))$. This shows that $m(f(\mathcal{C}))=m([0,2])-m(f([0,1]\backslash \mathcal{C}))=1>0$. Meanwhile, $m(\mathcal{C})=0$, which proves the statement. 
+\subparagraph{(a)}
+\begin{proof}
+As was proved in previous homework, since $f(\mathcal{C})>0$, $\exists B\in f(\mathcal{C})$, where $B$ is not Lebesgue measurable. Since Borel algebra is coarser than Lebesgue algebra, so every Borel measurable sets are Lebesgue measurable. So $B$ is not Borel measurable. Meanwhile, $f^{-1}(B)\subset \mathcal{C}$, which is of zero measure, so $f^{-1}(B)$ should be Lebesgue measurable. So $f^{-1}(B)\subset [0,1]$ is the desired set.
+\end{proof}
+\subparagraph{(b)}
+\begin{proof}
+While $\mathcal{C}$ is a set with zero measure, its subset $f^{-1}(B)$ is not measurable. So it's not a complete measure space.
+\end{proof}
+
+\paragraph{1.4.2}
+\begin{proof}
+\begin{enumerate}
+\item{(empty set)} Since $\varnothing\in \B,\varnothing\cap Y=\varnothing,\varnothing\in \B\downharpoonright_{Y}$
+\item{(complement)}If $E\in \B\downharpoonright_{Y}, \exists E_1\in\B\st E=E_1\cap Y$. Then $E_1^c\in \B, E_2=E_1^c\cap Y\in \B\downharpoonright_{Y}$. Obviously, $E\cap E_2=\varnothing, E\cup E_2=Y$, so $E^c=E_2\in Y$, which proves the law.
+\item{(finite unions)}$\forall E,F\in \B\downharpoonright_{Y},\exists E_1,F_1\in \B\st E=E_1\cap Y, F=F_1\cap Y$. $E_1\cup F_1\in\B$, so $(E_1\cup F_1)\cup Y=(E_1\cap Y)\cup (E_2\cap Y)=E\cup F\in \B\downharpoonright_{Y}$, 
+\end{enumerate}
+
+The $\subset$ side is obvious by definition. For the $\supset$ side, $\forall E\in Y, E\in \B$, $E=E\cap Y, E\cap Y\subset B\downharpoonright_{Y}$, which proves the statement. 
+\end{proof}
+
+\paragraph{1.4.4}
+\begin{proof}
+List the sets in $\B$ as $\{E_0=X,E_1,\cdots,E_n\}$. Take $A=\{E_0\}$, then do the following iteration:
+\begin{enumerate}
+\item{} $\forall E\in A$, for$(i=1:i\leq n;i++)$, if $E\cap E_i\neq\varnothing, E\neq E_i$ replace $E$ with $E_i, E_i^c$
+\item set $E=E_i,E_i^c$ respectively,remove identical sets and null sets in $A$ and repeat 1. 
+\end{enumerate} 
+Since $\B$ is finite, the above process ends up within a finite number of steps. When it comes to and end, $A$ is the desired partition. Suppose $|A|=n$, then $|\B|=|2^A|=2^n$.
+\end{proof}
+
+\paragraph{1.4.6}
+\begin{proof}
+\begin{enumerate}
+\item{(empty set)}$\forall \alpha\in I, \varnothing\in \B_\alpha\Rightarrow \varnothing\in \bigcap\limits_{\alpha\in I}\B_\alpha=\bigwedge_{\alpha\in I}\B_\alpha$
+\item{(complement)}$\forall E\in\bigwedge_{\alpha\in I}\B_\alpha, E\in \B_\alpha,\forall \alpha\in I$. From definition of $\B_\alpha, E^c\in \B_\alpha,\forall \alpha\in I$. Therefore, $E^c\in \bigcap\limits_{\alpha\in I}\B_\alpha=\bigwedge\limits_{\alpha\in I}\B_{\alpha}$.
+\item{(finite unions)} $\forall E,F\in\bigwedge_{\alpha\in I}\B_\alpha, E,F\in \B_\alpha,\forall \alpha\in I$. From definition of $\B_\alpha, E\cup F\in \B_\alpha,\forall \alpha\in I$. Therefore, $E\cup F\in \bigcap\limits_{\alpha\in I}\B_\alpha=\bigwedge\limits_{\alpha\in I}\B_{\alpha}$.
+\end{enumerate}
+
+The fact that $\bigwedge\limits_{\alpha\in I}\B$ is coarser than $\B_{\alpha}\quad \forall \alpha\in I$ follows trivially from definitions.
+
+Suppose $\bigwedge\limits_{\alpha\in I}\B_\alpha$ is not yet the finest, then $\exists $a Boolean algebra on X$\mathcal{C}\st \bigwedge\limits_{\alpha\in I}\B_\alpha\subset\mathcal{C}\subset \B_{\alpha}\quad \forall \alpha \in I$. Take the intersection on RHS and we get 
+\[\bigwedge\limits_{\alpha\in I}\B_\alpha\subset\mathcal{C}\subset \bigcap_{\alpha\in I}\B_{\alpha}\] 
+which shows that $\mathcal{C}=\bigwedge_{\alpha\in I}\B_\alpha$, so it is indeed the finest.
+\end{proof}
+
+\paragraph{1.4.8}
+\begin{proof}
+By Venn diagram, $\mathcal{F}$ is partitioned into $2^n$ disjoint sets $\mathcal{F}'$ where $\forall F\in\mathcal{F},F$ is a finite union of sets in $\mathcal{F}'$ and its complement. The case where $\B$ is infinite can be excluded by the existance of a finite one, since $\left< F \right>_{\text{bool}}$ is minimal. 
+%The existance of a finite one is obvious: partition $X$ into $2^n$ atoms $\mathcal{A}$ where $\forall F\in\mathcal{F}',\exists! A\in \mathcal{A}\st F\subset A$. This Boolean algebra has cardinality $2^n$.
+
+Suppose $|\left< F \right>_{\text{bool}}|>2^{2^n}$, then $\left< F \right>_{\text{bool}}$ has more than $2^n$ atoms, each of which should include a unique set in $\mathcal{F}'$, for otherwise it's not minimal. This is impossible by the pigeonhole principle.
+
+Consider the space of discrete cubes: $X=\{0,1\}^n$, which has cardinality $2^n$. Consider $F=\{E_1,
+\cdots,E_n\}$ where $E_i=(0,\cdots, 1,0,\cdots,0)$ where $1$ is at the i'th place. Then $\left< F \right>_{\text{bool}}=2^X, |\left< F \right>_{\text{bool}}|=2^{2^n}$.
+\end{proof}
+
+\paragraph{1.4.9}
+\begin{proof}
+``$\subset$'' side: By definition, $\F\subset \bigcup_{n=1}^{\infty}\F_n$. So it suffice to show that $\bigcup_{n=1}^{\infty}$ is indeed a Boolean algebra.
+\begin{enumerate}
+\item{(empty set)}It follows from the definition (ii) that $\varnothing\in\bigcup_{n=1}^{\infty}$.
+\item{(complement)}If $E\in \bigcup_{n=1}^{\infty}\F_n$, then $\exists N\in\mathbf{N}\st E\in \F_N$. Therefore, fy definition (ii), $E$ is the union of sets in $\F_{N-1}$, whose complement are also in $\F_N$. So $E^c\in \F_N\subset\bigcup_{n=1}^{\infty}$.
+\item{(union)}$\forall E,F\in \bigcup_{n=1}^{\infty}\F_n$,$\exists N\in\mathbf{N}\st E,F\in \F_N$. Then by definition. $E\cup F\subset \F_{N+1}\subset \bigcup_{n=1}^{\infty}$.
+\end{enumerate}
+So $\bigcup_{n=1}^{\infty}\F_n$ is indeed a Boolean algebra involving $\F$, so $<\F>_{\text{bool}}\subset\bigcup_{n=1}^{\infty}\F_n$.
+
+``$\supset$'' side: From the proof about union, we see that for a fixed $N\in\mathcal{N}$, $\bigcup_{n=1}^{N}$ is not yet a Boolean algebra. Meanwhile, all its sets are unions and intersections of sets involving the partition of $\F$, so $\bigcup_{n=1}^{N}\F_n\subset \left< \F\right>_{\text{bool}}$. Take $N\to\infty$ and we get the $\supset$ side of the equality.
+\end{proof}
+
+\paragraph{1.4.11.}
+\begin{proof}
+Now that they are all Boolean algebras, it suffice to check the countable union property.
+\begin{enumerate}
+\item{(Lebesgue algebra)}
+It follows trivially from the fact that Lebesgue measurable sets are closed under countable union.
+\item{(null algebra)} Given sets $\{E_n\}_{n=1}^{\infty}\in \mathcal{N}(\mathbf{R}^d)$. All of them are Lebesgue measurable, since null sets are Lebesgue measurable and that Lebesgue measurable sets are closed under complement. The statement follows from the fact that Lebesgue measurable sets are closed under finite union.
+\item{(elementaray and Jordan algebra)}. Denote $A=[0,1]\cap\mathbf{Q}$, which is a countable set. List the elements in $A=\{a_1,a_2,\cdots\}$. Denote $A_n=\{a_n\}$. Then $\forall n\in\mathbf{N}$, $A_n$ is elementary and Jordan measurable. Meanwhile, $A=\bigcup_{n=1}^{\infty}A_n$ is neither elementary measurable or Jordan measurable.
+\end{enumerate}
+\end{proof}
+\paragraph{1.4.13.}
+\begin{proof}
+\begin{enumerate}
+\item{(empty set)}$\forall \alpha\in I, \varnothing\in \B_\alpha\Rightarrow \varnothing\in \bigcap\limits_{\alpha\in I}\B_\alpha=\bigwedge_{\alpha\in I}\B_\alpha$
+\item{(complement)}$\forall E\in\bigwedge_{\alpha\in I}\B_\alpha, E\in \B_\alpha,\forall \alpha\in I$. From definition of $\B_\alpha, E^c\in \B_\alpha,\forall \alpha\in I$. Therefore, $E^c\in \bigcap\limits_{\alpha\in I}\B_\alpha=\bigwedge\limits_{\alpha\in I}\B_{\alpha}$.
+\item{(countable unions)} Given $\{E_n\}_{n=1}^{\infty}\in \bigwedge_{\alpha\in I}\B_\alpha, \forall n\in\mathbf{N},E_n\in \B_{\alpha}\quad\forall\alpha\in I$. By properties of $\B_{\alpha}$, $\bigcup_{n=1}^{\infty}E_n\in \B_\alpha$. Take intersections and we get $\bigcup_{n=1}^{\infty}\B_{\alpha}\in \bigwedge_{\alpha\in I}$.
+\end{enumerate}
+The fact that $\bigwedge\limits_{\alpha\in I}\B$ is coarser than $\B_{\alpha}\quad \forall \alpha\in I$ follows trivially from definitions.
+
+Suppose $\bigwedge\limits_{\alpha\in I}\B_\alpha$ is not yet the finest, then $\exists $a Boolean algebra$\mathcal{C} \text{ on } X\st \bigwedge\limits_{\alpha\in I}\B_\alpha\subset\mathcal{C}\subset \B_{\alpha}\quad \forall \alpha \in I$. Take the intersection on RHS and we get 
+\[\bigwedge\limits_{\alpha\in I}\B_\alpha\subset\mathcal{C}\subset \bigcap_{\alpha\in I}\B_{\alpha}\] 
+which shows that $\mathcal{C}=\bigwedge_{\alpha\in I}\B_\alpha$, so it is indeed the finest.
+\end{proof}
+
+
+%\paragraph{1.4.15.}
+%\begin{proof}
+%Firstly, we'll prove that $\bigcup\limits_{\alpha\in\omega_1}\mathcal{F}_{\alpha}$ is indeed
+%\begin{enumerate}
+%\item{(empty set)}From (ii), $\forall \alpha, \varnothing\in \mathcal{F}_\alpha$, so $\varnothing\in \bigcup\limits_{a\in\omega_1}\mathcal{F}_\alpha$. 
+%\item{(complement)}It is the direct corollary of (ii)
+%\item{(countable unions)} Given $\{E_n\}_{n=1}^{\infty}$, by construction of (ii)(iii)\footnote{sorry but I'm completely unfamiliar with ordinals and have to assume it right}, $\bigcup\limits_{n=1}^{\infty}E_n\in\bigcup\limits_{\alpha\in\omega_1}\mathcal{F}_\alpha$.
+%\end{enumerate}
+%The proof of uniqueness is the same as that in exercise 1.4.13.
+%\end{proof}
+\paragraph{1.4.20.}
+\subparagraph{(i)}
+\begin{proof}
+Since $E,F\in\B$, $F\backslash E=E^c\cup F\in \B$, with $E,F\backslash E$ being disjoint. Meanwhile, So $\mu(E)\le m(E)+m(F\backslash E)=m(F)$ 
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Perform induction on $k$.
+\begin{enumerate}
+\item {case 1:$k=1,2$} trivial by definition.
+\item {case 2: the statement holds for $k<n$}. Obviously, $E_n\cap \bigcup\limits_{i=1}^{n-1}E_i=\bigcup\limits_{i=1}^{n-1}(E_n\cap E_i)=\varnothing$. So by the induction assumption:
+\[\mu(\bigcup\limits_{i=1}^{n-1}E_i\cup E)=\mu(\bigcup\limits_{i=1}^{n-1}E_i)+\mu(E_n)=\sum_{i=1}^{n}\mu(E_i)\]
+\end{enumerate}
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+Perform induction on $k$.
+\begin{enumerate}
+\item {case 1:$k=1,2$} trivial by definition.
+\item {case 2: the statement holds for $k<n$}.
+By the induction assumption:
+\[\mu(\bigcup\limits_{i=1}^{n-1}E_i\cup E)\leq\mu(\bigcup\limits_{i=1}^{n-1}E_i)+\mu(E_n)\leq\sum_{i=1}^{n}\mu(E_i)\]
+\end{enumerate}
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+Since $E,F$ are $\B$ measurable, so are $E\backslash F, E\cap F$, which are disjoint. So by definition \[\mu(E)=\mu(E\backslash F\cap (E\cup F))=\mu(E\backslash F)+\mu(E\cap F)\] Notice that $E\backslash F\cap F=\varnothing$, so by definition \[\mu(E\cup F)= \mu(E\backslash F\cup F)=\mu(F)+\mu (E\backslash F)\] Sum the two equations above (with the first one having LHS on the right) and we get the equation in case $\mu(E\backslash F)$ is finite.
+
+In case $\mu (E\backslash F)=\infty$, we learn that $\mu(E\cup F)\geq \mu(E)\geq \mu(E\backslash F)=\infty$. So both sides equals to $\infty$, and the equation holds.
+\end{proof}
+
+\paragraph{1.4.22}
+\subparagraph{(i)}
+\begin{proof}
+If $c=0$, then $c\mu$ is the zero measure, which is still a countably additive measure.
+
+If $c\neq 0$, then $c\mu(\varnothing)=c*0=0$, and $c\mu(\bigcup_{n=1}^{\infty}E_n)=c\sum_{n=1}^{\infty}\mu(E_n)=\sum_{n=1}^{\infty}c\mu(E_n)$, so $c\mu$ is countable additive.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+$\sum_{i=1}^{\infty}\mu_n(\varnothing)=\sum_{n=1}^{\infty}\mu(\varnothing)=\sum_{n=1}^{\infty}0=0$. Also, by Tonelli's theorem:
+\[\sum_{n=1}^{\infty}\mu(\bigcup_{k=1}^{\infty}E_k)=\sum_{n=1}^{\infty}\sum_{k=1}^{\infty}\mu_n(E_k)=\sum_{k=1}^{\infty}\left[\sum_{n=1}^{\infty}\mu_n(E_k)\right]\]
+So by definition, $\sum_{n=1}^{\infty}\mu_n$ is still countable additive.
+\end{proof}
+
+\paragraph{1.4.23}
+\subparagraph{(i)}
+\begin{proof}
+Suppose the converse is true. Then $\exists \{E_n\}_{n=1}^{\infty}\in \B\st \mu(\bigcup_{n=1}^{\infty}E_n)>\sum_{n=1}^{\infty}\mu(E_n)$. This is impossible if $\forall i\neq j, E_i\cap E_j=\varnothing$ by definition. So \WLOG , assume that $E_1\cap E_2\neq \varnothing$. So by exercise 1.4.20, $\mu(\bigcup_{n=1}^N E_n)<\sum_{n=1}^{N}\mu(E_n)\quad \forall N\in \mathbf{N}$. Take $n\to\infty$ and we get $\mu(\bigcup_{n=1}^{\infty}E_n)\leq \sum_{n=1}^{\infty}\mu(E_n)$, which is a contradiction.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+$\forall n\in \mathbf{N}, \mu(E_n)\leq \sup\limits_{n}\mu(E_n)$ by definition, so take $n\to\infty$ and we get $\lim\limits_{n\to\infty}\mu(E_n)\leq \sup\limits_{n}\mu(E_n)$.
+
+$\forall n\in\mathbf{N},\mu(E_n)\leq \mu(\bigcup\limits_{k=1}^{\infty}E_k)$ since $E_n\subset \bigcup\limits_{n=1}^{\infty}E_n$. Take it to supremum and we get $\sup\limits_{n}\mu(E_n)\leq \mu(\bigcup\limits_{n=1}^{\infty}E_n)$.
+
+Since $\{E_n\}$ is strictly increasing, by monotonicity, so is the sequence $\{\mu(E_n)\}$. So $\mu(\bigcup_{k=1}^n E_n)=\mu(E_n)\leq \lim\limits_{k\to\infty} \mu(E_k)\quad \forall n\in\mathbf{N}$. So by taking $n\to\infty$, we get $\mu(\bigcup\limits_{n=1}^{\infty}E_n)\leq \lim\limits_{n\to\infty}\mu(E_n)$.
+
+Combining the three inequalities above and we get the equality.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+WLOG, we assume $\mu(E_1)<\infty$. So $\forall n\in \mathbf{N}$, $\mu(E_n)<\infty$, and cancellation is always legitimate. For brevity, denote $E=\bigcap\limits_{n=1}^{\infty}E_n$.  Denote $E'_i=E_i-E_{i-1}$, then $E'_i\cap E'_j=\varnothing \quad \forall i\neq j\in\mathbb{N}_+$. Furthermore,we have $E_1=E\cup(\bigcup_{i=1}^{\infty}E'_i)$
+By countable additivity, we have
+\[\mu(E_1)=\mu(E)+\lim_{n\to\infty}\mu(E'_i)=\mu(E)+\mu(E_1)-\lim_{n\to\infty}\mu(E_n)\]
+Since $\mu(E_1)<\infty$, we may cancel $\mu(E_1)$ on both sides to get $\mu(E)=\lim_{n\to\infty}\mu(E_n)$
+
+By definition, $\forall n\in\mathbf{N}, \mu(E_n)\geq \inf\limits_{n}\mu (E_n)$. Take $n\to\infty$ and we get $\lim\limits_{n\to\infty}\mu(E_n)\geq \inf\limits_{n}\mu(E_n)$.
+
+$\forall n\in\mathbf{N},\mu(E_n)\geq \mu(\bigcap\limits_{k=1}^{\infty}E_k)$ since $E_n\supset \bigcup\limits_{n=1}^{\infty}E_n$. Take it to infimum and we get $\inf\limits_{n}\mu(E_n)\geq \mu(\bigcap\limits_{n=1}^{\infty}E_n)$.
+
+Combine the equalities and inequalities above and we get the desired equality.
+\end{proof}
+
+\paragraph{1.4.26}
+\begin{proof}
+Define $\mathcal{N}=\{N\in\B|\mu(N)=0\}$. Define $\overline{\B}=\{E\cup F|E\in\B,\exists N\in \mathcal{N}\st F\subset N\}$.
+
+Claim: $\overline{\B}$ is indeed a $\sigma$-algebra. 
+\begin{enumerate}
+\item $\varnothing\in \B,\varnothing\in \mathcal{N}$, so $\varnothing=\varnothing\cup\varnothing \in \overline{\B}$. 
+\item Take $E\cup F\in\overline{\B}, F\in N\in\mathcal{N}$. WLOG, assume $E\cap N=\varnothing$: otherwise replace $F,N$ with $F\backslash E, N\backslash E$. Then \[(E\cup N)\cap (N^c\cup F)=(E\cap N)\cup (N\cap N^c)\cup (E\cap F)\cup (N\cap F)=E\cup F\]
+Thus by De Morgan's law:
+\[(E\cup F)^c=(E\cup N)^c\cup (N\backslash F)\]
+Since $(E\cup N)^c\in B, N\backslash F\subset N\in\mathcal{N}$, so $(E\cup F)^c \in \overline{\B}$.
+\item Since $\B,\mathcal{N}$ are closed under countable union, so is $\overline{\B}$. 
+\end{enumerate}
+$\forall E\cup F\in\overline{\B}$, define $\overline{\mu}(E\cup F)=\mu(E)$. It is well-defined: if $E_1\cup F_1=E_2\cup F_2$,with $F_i\subset N_i\in \mathcal{N}\quad i=1,2 $. then $E_1\subset E_2\cup N_2$. So
+$\overline{\mu}(E_1\cup F_1)=\mu(E_1)\leq \mu(E_2\cup N_2)\leq \mu(E_2)+\mu(N_2)=\mu(E_2)=\overline{\mu}(E_2\cup F_2)$
+Similarly, $\overline{\mu}(E_2\cup F_2)\leq \overline{\mu}(E_1\cup F_1)$. So $\overline{\mu}(E_1\cup F_1)=\overline{\mu}(E_2\cup F_2)$. Thus it is well-defined. 
+
+Completeness: Suppose $\overline{\mu}(E\cup F)=0$, where WLOG $E\cap F=\varnothing$ as was proved above. $E'\cup F'\subset E\cup F$. Then WLOG, assume that $E'\subset E$. Otherwise, replace $E',F'$ with $E'\backslash F, F'\cap F$ respectively. Then $\overline{\mu}(E'\cup F')=\mu(E')\leq \mu(E)=0$, so it is measurable. So $(X,\overline{\B},\overline{\mu})$ is complete. 
+
+Uniqueness: Suppose $\nu$ is another measure on $\overline{\B}\st \left.\nu\right|_{\B}=\left.\mu\right|_{\B}$ and that it's complete. Then $\forall E\cup F\in \overline{\B}$ defined as above, $\nu(E\cup F)\leq \nu(E)+\nu(N)=\nu (E)=\mu(E)=\overline{\mu}(E\cup F)$. Similarly, $\overline{\mu}(E\cup F)\leq \nu(E\cup F)$. So $\overline{\mu}(E\cup F)=\nu(E\cup F)$, and uniqueness is proved.
+
+The last statement follows from construction. The fact that it is the coarest possible such refinement follows.
+\end{proof}
+\paragraph{1.4.27}
+\begin{proof}
+Construct the completion of Borel measure space $(X,\overline{\B}[\R],\overline{m})$, where $\overline{\B}[\R]=\{E\cup F: E\in\B, F\subset N, N\in \mathcal{N}=\{N\in \B:m(N)=0\}\}$. Then it suffice to prove that $\overline{\B}[\R]=\mathcal{L}[\R]$.
+
+\subparagraph{$\subset$ side:} $\forall E\cup F\in\overline{B}[\R]$, where $E\in \B[\R], F\subset N\in \mathcal{N}$. Since $\mathcal{L}[\R]$ is finer than $\B[\R]$, $E\in \mathcal{L}[\R], N\in\mathcal{L}[\R]$. Since $\mathcal{L}[\R]$ is complete, $F\subset N, m(N)=0\ \Rightarrow F\in\mathcal{L}[\R]$. So $E\cup F\in\mathcal{L}[\R]$. The statement follows directly.
+
+\subparagraph{$\supset$ side:} From exercise 1.2.19(iii), we learn that every Lebesgue measurable set is the union of a $F_\sigma$ set and a null set. So $\forall E\in\mathcal{L}[\R], E=F\cup N$, where $F=\bigcup\limits_{n=1}^{\infty}F_n\in\B[\R]$ and $m(N)=0$. By definition, $forall n\in \mathcal{N}, \exists V_n\subset N \text{open}\st m(V_n\backslash N)<\frac 1 n$. Thus $N\subset \bigcap\limits_{n=1}^{\infty}$, a Borel null set. So $N\in \mathcal{N}$. Conclude the argument on $F,N$ and we get $\mathcal{L}[\R]\subset \overline{\B}[\R]$.
+\end{proof}
+
+\paragraph{1.4.29}
+We refer $\{f(x)>\lambda\}$ to the set $\{x\in X : f(x)>\lambda\}$ and so on.
+
+\subparagraph{(i)}
+\begin{proof}
+The ``only if'' side is trivial by definition. 
+
+For the ``if'' side. Since $\{f(x)>\lambda\}$ is $\B$ measurable, so is $\{f(x)>\lambda\}^c=\{f(x)\leq \lambda\}$,  Meanwhile, $\{f(x)<a\}=\lim\limits_{n\to\infty}\{f(x)<a-\frac 1 n\}$. So by countable additivity, $\{f(x)<\lambda\}$ is $\B$ measurable, so $\forall \lambda_1<\lambda_2, \{\lambda_1<f(x)<\lambda_2\} $ is $\B$ measurable. Since any open set is the countable union of opn sets, so $\forall O$ open, $f^{-1}(O)$ is $\B$ measurable. So it is $f$ is measurable by definition.
+\end{proof}
+
+\subparagraph{(ii)}
+\begin{proof}
+Take arbitrary open set $O$ 
+\begin{enumerate}
+\item If $1\not\in O$, $1_E^{-1}(O)=\varnothing$ is $\B$-measurable, and is the trivial case.
+\item If $1\in O$, $1_E^{-1}(O)=E$. So if $1_E$ is measurable, $E$ is $\B$-measurable. If $E$ isn't $\B$-measurable, so isn't $1_E$.
+\end{enumerate}
+\end{proof}
+
+\subparagraph{(iii)}
+\begin{proof}
+Since Borel-measurable sets are generated by open sets, by definition, their preimages are generated by $\B$-measurable sets, which are still $\B$-measurable sets. So the ``only if'' side trivially follows.
+
+For the ``if'' side, $\forall \lambda>0, \{f(x)>\lambda\}$ is a $\B$-measurable set since $(\lambda,\infty]=\bigcup\limits_{n>[\lambda]}(\lambda,n)$ is Borel-measurable since it is the countable union of open sets. The statement follows from (i).  
+\end{proof}
+
+\subparagraph{(iv)}
+\begin{proof}
+Denote $f(x)=u(x)+iv(x)$, where $u,v$ are real functions.
+
+``if'' side: Given any dyadic cube $C=[\frac{i}{2^n},\frac{i+1}{2^n})$, $u^{-1}(C),v^{-1}(C)$ is measurable since $[\frac{i}{2^n},\frac{i+1}{2^n})=\bigcap\limits_{m=1}^{\infty}([\frac{i}{2^n}-\frac{1}{e^m},\frac{i+1}{2^n})$, the countable intersection of open sets. Thus for any product cube $C'=[\frac{i}{2^n},\frac{i+1}{2^n}]\times [\frac{j}{2^n},\frac{j+1}{2^n}), f^{-1}(C')$ is measurable. Since any open set is the countable union of dyadic cubes, the statement follows from definition.
+
+``only if'' side: $\forall \text{interval} I\subset \mathbf{R},x\in \mathbf{R}$, $u^{-1}(I)\times v^{-1}(x)=f^{-1}(I\times \{x\})=\bigcap\limits{n=1}^{\infty}f^{-1}(I\times [x-\frac 1 n,x+\frac 1 n])$ is measurable. By the arbitrarity of $x$, $u^{-1}(I)$ is measurable. Since any open set is the countable union of intervals, the fact that $u$ is measurable follows. Similarly, $v$ is measurable follows from similar discussion on $\{x\}\times I$.
+\end{proof}
+
+\subparagraph{(viii)}
+\begin{proof}
+Copying the proof in (i) and  we learn that the criterion still holds for the general case if we assume $\lambda\in\mathbf{R}$.  $\forall f,g$ measurable, $\{(f+g(x)>a)\}=\bigcup\limits_{q\in\mathbf{Q}}\{f(x)>a+q\}\cup \{g(x)>a-q\}$, and the claim follows.
+
+$\forall f,g$ measurable, $f*g=\frac 1 2 [(f+g)^2-(f-g)^2]$. So it suffice to prove the case where $f=g$. By definition, $\forall \lambda>0$, $\{f(x)<-\sqrt{\lambda}\}\cup \{f(x)>\sqrt{\lambda}\}=\{f^2(x)>\lambda\}$ is measurable, and the statement follows from (i).
+\end{proof}
+
+\subparagraph{(v)}
+\begin{proof}
+``if'' side:  Since $f=f_+-f_-$, the statement follows from (viii).
+
+``only if'' side: $\forall \lambda>0$, $\{f(x)>\lambda\}=\{f_+(x)>\lambda\}$, so from (i) $f_+(x)$ is measurable. $f_-=f_+-f$, a linear combination of measurable functions, so it is also measurable. 
+\end{proof}
+
+\subparagraph{(vi)}
+\begin{proof}
+Since $f_n(x)$ is measurable, $\forall a\in[0,+\infty],\{f_n(x)>a\}$ is measurable. Since $f(x)=\lim\limits_{n\to\infty}f_n(x)=\lim\limits_{n\to\infty}\sup\limits_{k>n}f_n(x)$, Since $\{\sup\limits_{n}f_n(x)>a\}=\bigcup\limits_{n=1}^{\infty}\{f_n(x)>a\}$, the statement follows from (i) and countable additivity. Apply the statement to real and imaginary parts respectively, and we can extend the statement to complex functions by (iv)(v).
+\end{proof}
+
+\subparagraph{(vii)}
+\begin{proof}
+Given any open set $O$, we learn by definition that $\phi^{-1}(O)$ is open. So $(\phi\circ f)^{-1}(O)=f^{-1}[\phi^{-1}(O)]$ is measurable. The statement follows from definition.
+\end{proof}
+
+\paragraph{1.4.31}
+\begin{proof}
+WLOG, we assume $f_n\to f$ pointwisely by modifying their value on a null set which can eventually be absorbed into $E$. Thus by denoting $E_{N,m}=\{x\in X:|f_n(x)-f(x)>\frac 1 m\quad \text{for some } n\geq N\}$, a measurable set by exercise 1.4.29(i)(viii), we see that $\bigcap\limits_{N=0}^{\infty}E_{N,m}=\varnothing$. Since $\mu$ is finite, we may apply the downward monotone convergence to conclude that $\lim\limits_{N\to\infty}\mu(E_{N,m})=0$. In particular, $\forall m\in\mathbf{N}, \exists N_m\in\mathbf{N}\st \mu(E_{N,m})\leq \frac{\varepsilon}{2^m}\quad \forall N>N_m$ for the given $\varepsilon$. Denote $E=\bigcup\limits_{m=1}^{\infty}E_{N_m,m}$, which is measurable by countable union property, and by countable subadditivity, $\mu(E)\leq \sum\limits_{n=1}^{\infty}\mu(E_{N_m,m})=\varepsilon$. Thus by definition, $|f_n(x)-f(x)|<\frac 1 m\quad \forall n>N_m$, which shows that $f_n(x)$ converges uniformly on $X\backslash E$, the desired statement.
+
+The counter example: Take $\mu=m$, the usual Lebesgue measure. $f_n(x)=\sum\limits_{i=0}^{n}\frac{x^i}{i!}$, then $\lim\limits_{n\to\infty}f_n(x)=e^x$, pointwisely, uniformly on any given set with finite measure, but not on the whole $\mathbf{R}$ with a set with measure $\varepsilon$ removed.
+\end{proof}
+
+%————————————
+\newcommand{\sit}{\sip\int_{X}}
+%————————————
+
+\paragraph{1.4.33}\footnote{assume the properties proved in exercise 1.4.33}
+Suppose $f=\sum\limits_{i=1}^{k}a_i1_{E_i}$, $g=\sum\limits_{j=1}^{k'}a'_j1_{E'_j}$ where $E_i=f^{-1}(a_i), E_j=g^{-1}(a_j)$. From Venn diagram, $X$ is partitioned into $N=2^{k+k'}$ disjoint measurable sets of intersections of $\{E_i\}_{i=1}^{k},\{E'_j\}_{j=1}^{k'}$ and thier completions. Denote these sets as $\{A_n\}_{n=1}^{N}$, then we have  $f=\sum\limits_{n=1}^{N}a_n1_{A_n},g=\sum\limits_{n=1}^{N}b_n1_{A_n}$. 
+
+In case where there're three functions or more, do the partition inductively and still we get the desired partition $\{A_n\}$.
+\subparagraph{(i)}
+\begin{proof}
+Since $\{A_n\}$ are disjoint, $f\leq g$ implies $a_n\leq b_n$. So $\sip\int_{X} f \du=\sum\limits_{n=1}^{N}a_n\mu(A_n)\leq \sum\limits_{n=1}^{N}b_n\mu(A_n)=\sip\int_{X} g\du$.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+Since $1_E$ takes only finitely many values, it is indeed a measurable function. So by definition, $\sit 1_{E}\du=1*\mu(1_E^{-1}(1))=\mu(E)$.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+Denote $g=cf$. Then $\forall 1\leq n\leq N, b_n=c*a_n$. So 
+\[\sit cf \du=\sit g \du=\sum_{n=1}^{N}b_n\mu{A_n}=\sum_{n=1}^{N}c*a_n\mu(A_n)=c\sum_{n=1}^{N}a_n\mu(A_n)=c\times \sit f \du\]
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+Denote $h(x)=\sum\limits_{n=1}^{N}c_n1_{A_n}$. Since $\{A_n\}$ are disjoint, we learn that $c_n=a_n+b_n$. So 
+\[\begin{aligned}
+\sit (f+g)\du&=\sum_{n=1}^{N}c_n\mu(A_n)\\
+&=\sum_{i=1}^{N}(a_n+b_n)\mu(A_n)=\sum_{n=1}^{N}a_n\mu(A_n)+\sum_{n=1}^{N}b_n\mu(A_n)\\
+&=\sit f\du+\sit g\du
+\end{aligned}\]
+\end{proof}
+\subparagraph{(v)}
+\begin{proof}
+By definition, $\sit f\du=\sum_{j=1}^k a_j\mu(f^{-1}(\{a_j\}))$. Since $f^{-1}(\{a_j\})\in\B$, $\B\subset \B'$, so $f^{-1}(\{a_j\})\in\B'$. Since $\mu$ is the restriction of $\mu'$ on $\B$, $\mu(f^{-1}(\{a_j\}))=\mu'(f^{-1}(\{a_j\}))$. So
+\[\sit f\du=\sum_{j=1}^k a_j\mu(f^{-1}(\{a_j\}))=\sum_{j=1}^k a_j\mu'(f^{-1}(\{a_j\}))=\sit f\du'\]
+\end{proof}
+\subparagraph{(vi)}
+\begin{proof}
+Since $f,g$ are $\mu$-almost every $x\in X$, we learn that $\exists \mathcal{A}=\{A_i:a_i\neq b_i\}$ and that $\mu(\bigcup\limits_{A_i\in \mathcal{A}})=\sum\limits_{A_i\in \mathcal{A}}=0$. From monotoncity, this implies $\forall A_i\in \mathcal{A}, \mu(A_i)=0$. Notice that $\infty\cdot 0=0$, we have $\sum\limits_{A_i\in \mathcal{A}}a_i\mu(A_i)=\sum\limits_{A_i\in\mathcal{A}}b_i\mu(A_i)=0$. So
+\[\sit f\du=\sum_{A_i\not\in \mathcal{A}}a_i\mu(A_i)+\sum_{A_i\in \mathcal{A}}a_i\mu(A_i)=\sum_{A_i\not\in \mathcal{A}}a_i\mu(A_i)=\sum_{A_i\not\in \mathcal{A}}b_i\mu(A_i)+\sum_{A_i\in \mathcal{A}}b_i\mu(A_i)=\sit g\du\]
+\end{proof}
+\subparagraph{(vii)}
+\begin{proof}
+WLOG, assume $f$ is finite everywhere by adjusting values on a null set by (vi).
+
+The ``if'' side is trivial by direct culculation. For the ``only if'' side: If $f$ is not finite everywhere, then $ for E=f^{-1}(\infty),\mu(E)=c>0$. Then $\sit f\du\geq \infty*\mu(E)=c*\infty=\infty$, which is a contradiction. If $f$ is not finitely supported, then $\exists c>0\st \text{for} E=f^{-1}(\{c\}), \mu(E)=\infty$. So $\sit f(x)\du\geq \mu(E)*c=\infty$, which is a contradiction.
+\end{proof}
+\subparagraph{(viii)}
+\begin{proof}
+The ``if'' side is trivial by direct calculation. For the ``only if'' side: If $f\stackrel{\mathrm{a.e.}}{\neq}0$, then $\exists c>0\st \text{for} E=f^{-1}(c)>0$. Then $\sip f\du\geq c*\mu(E)>0$, which is a contradiction.
+\end{proof}
+
+%——————————————
+\newcommand{\cit}{\int_{X}}
+%——————————————
+
+\paragraph{1.4.35}
+For $f$ measurable, define the sequence of simple functions $\{f_n\}_{n=1}^{\infty}\st $\[\cit f\du-\frac 1 n\leq \sit f_n\du\leq \cit f\du\] Define $\{g_n\}_{n=1}^{\infty}$ and so on in the same way when needed.
+\subparagraph{(i)}
+\begin{proof}
+Define the set $A$ to be the set where $f\neq g$. Modify $f_n$ to $f_n|_{X\backslash A}$. Since value on a null set does not interfere the value of the simple integral by exercise 1.4.33(vi), still we have $\lim\limits_{n\to\infty}\sit f_n\du=\cit f\du$. Meanwhile, by definition $\sit f_n\du\leq \cit g\du$. Take $n\to \infty$ and we get $\cit f\du\leq \cit g\du$. In the same way, we get $\cit g\du\leq \cit f\du$. The equivalence thus follows.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+From (i), WLOG, we may assume $f\leq g$ pointwise. By definition, $\forall n\in \mathbf{N}, f_n\leq f\leq g$, so $\sit f_n\du\leq \cit g\du$. Take $n\to\infty$ and we get $\cit f\du\leq \cit g\du$.
+\end{proof}
+\subparagraph{(iii)}
+\begin{proof}
+Since $f_n\leq f, cf_n\leq cf$, which is still a simple funtion. So by definition, $c\sit f_n\du =\sit cf_n\du\leq\cit cf\du$. So
+\[\begin{aligned}
+\lim\limits_{n\to\infty}c\sit f_n\du&=c\lim\limits_{n\to\infty}\sit f_n\du\\&=c\cit f\du\leq \cit cf\du
+\end{aligned}\] 
+
+Take $g=cf, c'=\frac 1 c$, and we get $c'\cit g\du\leq \cit c'g\du$, which, after simplification, shows $\cit cf\du\leq c\cit f\du$. Combine both inequalities and the equation is proved.
+\end{proof}
+\subparagraph{(iv)}
+\begin{proof}
+Since the simple function $f_n+g_n\leq f+g$, by definition \[\sit f_n+g_n\du\geq\sit f_n+g_n\du=\sit f_n\du+\sit g_n\du\] Take $n\to\infty$ and we get $\sit f+g\du\geq\cit f\du+\cit g\du$
+\end{proof}
+\subparagraph{(v)}
+\begin{proof}
+Since $f\leq f$, by definition, $\cit f\du\geq \sit f\du$. Meanwhile, $\forall n\in\mathbf{N}, f_n\leq f$, so $\sit f_n\du\leq \sit f_n\du$. Take $n\to\infty$ and we get $\cit f\du\leq \sit f\du$. Combine both inequalities and we get the equation.
+\end{proof}
+\subparagraph{(vi)}
+\begin{proof}
+Since $f$ is measurable, $E=f^{-1}([\lambda,\infty])$ is measurable. So Define the simple function $g=\lambda1_{E}$, then obviously $g\leq f$. So by defintion, $\sit g\du=\lambda*\mu(\{f(x)>\lambda\})\leq \cit f\du$. Multiply $\frac 1 \lambda$ on both sides and we get the desired inequality.
+\end{proof}
+\subparagraph{(vii)}
+\begin{proof}
+Suppose the converse is true. Then $E=f^{-1}(\{\infty\})$ is not a null set. By definition of $f_n, \forall x\in E, f_n(x)=\infty$. So by exercise 1.4.33(vii), $\cit f\du\geq\sit f_n\du=\infty$, which is a contrary.
+\end{proof}
+\subparagraph{(viii)}
+\begin{proof}
+Suppose the converse is true. Then $\exists c>0\st \text{for } E=\{f(x)>c\}, \mu(E)>0$. By definition, $exists N\in\mathbf{N}\st\forall n>N, \text{for}E_n=\{f_n>frac c 2\},\mu(E_n)>0$. So $\cit f\du\geq \sit f_n\du\geq \frac c 2*\mu(E_n)>0$, which is a contradiction.
+\end{proof}
+\subparagraph{(ix)}
+\begin{proof}
+On one hand, since $\min\{n,f(x)\}\leq f(x)$, from (ii) we have $\int_{X}\min\{n,f(x)\}\du\leq \int_{X}f(x)\du$. 
+
+On the other hand, by defintion, $\exists \text{ simple function} 0\leq g(x)\leq f(x)\st$ 
+\[\sip\int_{X}g(x)\du\geq \int_{X}f(x)\du-\varepsilon\]
+Since each simple function is bounded, we have for sufficiently large $n,\quad g(x)\leq \min\{n, f(x)\}$. So we have $\sip\int_{X}g(x)\du\leq \int_{X}\min\{f(x),n\}\du$. Therefore,
+\[\lim_{n\to\infty}\int_{X}\min\{n,f(x)\}\du\geq \int_{X}f(x)-\varepsilon\du\]
+Take $\varepsilon\to 0$ and we're finished. 
+\end{proof}
+\subparagraph{(x)}
+\begin{proof}
+On one hand, since $f(x)1_{E_n}\leq f(x)$, from (ii) we have $\int_{X}f(x)1_{E}\du\leq \int_{X}f(x)\du$.
+
+On the other hand, WLOG, we assume that $f$ is bounded.
+
+If $f$ is bounded almost everywhere, we may adjust the unbounded points to 0 without afflicting the integral by (iv). If $f$ is unbounded on a positive measure set $E$, then $\exists N\in\mathbf{N}\st m(E_n\cap E)>0$, so 
+\[\lim_{n\to\infty}\int_{X}f(x)1_{E_n}\du\geq \int_{X}f(x)1_{E_n}=\infty=\int_{X}f(x)\dd x\]
+
+Now that $f$ is bounded, $\exists M\in\mathbf{R}_+\st f(x)\leq M$. Notice that $\forall E\in \B,\lim\limits_{n\to\infty}m(E\cap E_n)=m(E), \forall \varepsilon >0,\exists N\in\mathbf{N}\st |m(E)-m(E\cap E_n)|<\frac{\varepsilon}{M}.$ Therefore, denote $g(x)=f(x)1_{E_n}$, we have
+\[\int_{E_n}g(x)\du\geq \int_{E_n}f(x)\du-\varepsilon\]
+repeat the operationn in (ix) and the equality follows.
+\end{proof}
+\subparagraph{(xi)}
+\begin{proof}
+Firstly, assume $f=\sum\limits_{n=1}^{N}a_i1_{A_i}$, a simple function. Then $f1_Y=\sum\limits_{n=1}^{N}a_i1_{A_i\cap Y}$. Since $\forall x\not\in Y, f1_Y(x)=0$, $f=f\downharpoonright_{Y}$. By definition, since $A_i\cap Y$ is $Y$-measurable, $\mu\downharpoonright_{Y}(A_i)=\mu(A_i)$. So $\cit f1_{Y}\du=\int_{Y}f\du$.
+
+Now that the equality holds for simple functions, it holds for all $f_n$. Take $n\to\infty$ and we get the desired equality.
+\end{proof}
+
+\end{document}

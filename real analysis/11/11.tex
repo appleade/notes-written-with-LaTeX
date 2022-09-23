@@ -1,0 +1,155 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{Homework 11 for Measure and Integral}
+\author{2019011985\and M91 \and Junzhe Dong}
+\date{\today}
+\begin{document}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+
+\maketitle
+
+In the following, we always denote $F(x+)=\lim\limits_{y\to x^+}F(y),F(x-)=\lim\limits_{y\to x^-}F(y)$.
+
+\paragraph{1.6.33}
+\begin{proof}
+Suppose there're two different decompositions of $F=F_c+F_{pp}=F'_c+F'_{pp}$, where $F_c, F'_c$ are continuous and $F_{pp},F'_{pp}$ are jump functions. So 
+\[F_c-F'_c=F'_{pp}-F_{pp}\]
+Since LHS is continuous, so is RHS. This means $\forall x\in\R\st F_{pp}$ is not continuous, $[F'_{pp}-F_{pp}](x+)=[F'_{pp}-F_{pp}](x-)=F'_{pp}(x)-F_{pp}(x)$. Similar arguments holds for $F'_{pp}$'s uncontinuous points. Thus $F_{pp},F'_{pp}$ share the same uncontinuous points and $c_x, \theta_x$, which by contruction shows that they're identical, and so are $F_c, F'_c$. Thus we've proved the uniqueness.
+\end{proof}
+
+Denote $P_n([a,b])=\{a\leq x_0<x_1<\cdots<x_n\leq b\}$, the set of all partitions with $n$ intervals. Given partitions $p_1,p_2$, denote $p_1+p_2$ as the refined partition acquired by partitioning with all partition points in $p_1,p_2$.
+
+\paragraph{1.6.35}
+\begin{proof}
+$\forall F:\R\to \R$, $\|-F\|_{TV([a,b])}=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|(-F)(x_i)-(-F)(x_{i+1})|=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|F(x_i)-F(x_{i+1})|=\|F\|_{TV([a,b])}$.
+
+So WLOG assume $F$ is monotone increasing, otherwise replace $F$ with $-F$. By definition, $\|F\|_{TV([a,b])}=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|f(x_i)-f(x_{i+1})|=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n[f(x_{i+1})-f(x_{i})]=\sup\limits_{P_n([a,b])}F(x_n)-F(x_0)=F(b)-F(a)=\left|F(b)-F(a)\right|$
+\end{proof}
+
+\paragraph{1.6.36}
+\begin{proof}
+By definition, $\|F+G\|_{TV(\R)}=\sup\limits_{[a,b]\subset\R}\|F+G\|_{TV([a,b])}$, so it suffices to show these inequalities on $[a,b]$. 
+
+\textbf{triangle property:}By definition:
+$\|F+G\|_{TV([a,b])}=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|(F+G)(x_i)-(F+G)(x_{i+1})|\leq \sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|F(x_i)-F(x_{i+1})|+|G(x_i)-G(x_{i+1})|\leq \sum\limits_{i=1}^n|F(x_i)-F(x_{i+1})|+\sum\limits_{i=1}^n|G(x_i)-G(x_{i+1})|=\|F\|_{TV([a,b])}+\|G\|_{TV([a,b])}$.
+
+\textbf{homogeneity:} By definition, $\|cF\|_{TV([a,b])}=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|cF(x_i)-cF(x_{i+1})|=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|c||F(x_i)-F(x_{i+1})|=|c|\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|F(x_i)-F(x_{i+1})|=|c|\|F\|_{TV([a,b])}$
+
+\textbf{constant: } The ``if'' side is trivial by definition. For the ``only if'' side, suppose the converse is true, then $\exists y_1,y_2\in [a,b]\st F(y_1)\neq F(y_2)$. Then $\|F\|_{TV(\R)}\geq\|F\|_{TV([a,b])}\geq |f(y_1)-F(y_2)|>0$, which is in denial of the assumption.
+\end{proof}
+
+\paragraph{1.6.37}
+\begin{proof}
+\textbf{$\bm{\leq}$:} $\forall p_1=(x_1,\cdots, x_n)\in P_n([a,b]),p_2=(x'_1,\cdots,x'_{m})\in P_m([b,c])$, we have 
+\[ \begin{aligned}
+&\sum\limits_{p_1}|F(x_i)-F(x_{i+1})|+\sum\limits_{p_2}|F(x'_i)-F(x'_{i+1})|\\
+\leq &\sum\limits_{p_1}|F(x_i)-F(x_{i+1})|+\sum\limits_{p_2}|F(x'_i)-F(x'_{i+1})|+|F(x_n)-F(x'_1)|\\
+=&\sum_{p_1+p_2\in P_{m+n}([a,c])}|F(x_i)-F(x_{i+1})|\leq \|F\|_{TV([a,c])}
+\end{aligned}\]
+Take $\sup$ on LHS of the inequality and we get the desired inequality.
+
+\textbf{$\bm{\geq}$:} Given $p\in P_n([a,c])$, suppose $x_k\leq b<x_{k+1}$, then
+\[\begin{aligned}
+&\sum_{p}|F(x_i)-F(x_{i+1})|\\
+=&\sum_{i=1}^{k-1}|F(x_i)-F(x_{i+1})|+\sum_{k+1}^n|F(x_i)-F(x_{i+1})|+|F(x_k)-F(x_{k+1})|\\
+\leq&\sum_{i=1}^{k-1}|F(x_i)-F(x_{i+1})|+\sum_{k+1}^n|F(x_i)-F(x_{i+1})|+|F(x_k)-F(b)|+|F(b)-F(x_{k+1})|\\
+=&\sum_{p_1\in P_k([a,b])}|F(x_i)-F(x_{i+1})|+\sum_{p_2\in P_{n-k}([b,c])}|F(x_i)-F(x_{i+1})|\\
+\leq&\|F\|_{TV([a,b])}+\|F\|_{TV([b,c])}
+\end{aligned}\]
+Take $\sup$ on LHS and we get the desired inequality.
+\end{proof}
+
+\paragraph{1.6.38}
+\subparagraph{(i)}
+\begin{proof}
+\textbf{bounded:} Suppose the converse is true. Fix $x_0\in \R\st F(x_0)<+\infty$ then $\forall n\in\mathbf{N},\exists x_n\in\R\st |F(x_n)-F(x_0)|\geq n$. Denote $\{I_n\}_{n=1}^\infty$ an non-decreasing sequence of segments $\st \lim\limits_{n\to\infty}I_n=\R, x_0,x_n\in I_n$. So $\|F\|_{TV(\R)}=\lim\limits_{n\to\infty}\|F\|_{TV(I_n)}\geq \lim\limits_{n\to\infty}|F(x_n)-F(x_0)|=\infty$, which is in denial of the assumption.
+
+\textbf{well-defined limit:} Since $\lim\limits_{x\to-\infty}f(x)=\lim\limits_{x\to\infty}f(-x)$, and that $f(x),f(-x)$ shares the same total variation by definition, so it suffices to show the statement for $\lim\limits_{x\to\infty}f(x)$ is well-defined.
+
+$\forall\{x_n\}_{n=1}^\infty\subset\R\st\lim\limits_{n\to\infty}x_n=\infty$. By Heine's lemma, it suffices to show that $\{F(x_n)\}$ converges. In other words, it's a Cauchy sequence. Fix $\forall \varepsilon>0$.
+
+Define $g(h)=\|F\|_{TV([h,\infty])}$. Since $\lim\limits_{h\to\infty}g(h)=0$ and that it is monotone decreasing, $\exists H\in \R\st \forall h>H, g(h)<\varepsilon$. By definition, $\exists N\in\mathbf{N}\st\forall n,m>N, x_n,x_m\in [h,\infty], \text{ thus } |F(x_n)-F(x_m)|\leq g(h)<\varepsilon$. So $\{F(x_n)\}$ is indeed a Caucnthy sequence, which proves the statement.
+
+\end{proof}
+\subparagraph{(ii)}
+By exercise 1.6.28(ii), Weierstrass function restricted on a compact set is such a function.
+
+\paragraph{1.6.40}
+\begin{proof}
+\textbf{(1)}By definition, $\forall\varepsilon>0,\exists p_1\in P_n([-\infty, x]), p_2\in P_m([-\infty,x])\st |F^+(x)-\sum\limits_{p_1}\max\{F(x_{i+1})-F(x_i),0\}|<\varepsilon, |F^-(x)-\sum\limits_{p_2}\max\{-F(x_{i+1}+F(x_i),0\}|<\varepsilon$. Notice that a refined partition would only make the difference smaller, so take the partition $p=p_1+p_2$, we have 
+\[\begin{aligned}
+&|F(x)-F(-\infty)-F^+(x)+F^-(x)|\\
+=&|\sum_{p}[F(x_{i+1})-F(x_i)]-F^+(x)+F^-(x)|\\
+\leq&|F^+(x)-\sum\limits_{p_1}\max\{F(x_{i+1})-F(x_i),0\}|+|F^-(x)-\sum\limits_{p_2}\max\{-F(x_{i+1}+F(x_i),0\}|\\
+<&2\varepsilon
+\end{aligned}\]
+Take $\varepsilon\to 0$ and we get the equality.
+
+\textbf{(2)}Denote $\sum^+$ the sum of all positive $F(x_{i+1})-F(x_i)$ and $\sum^{-} $ for negative ones. Then $\forall\varepsilon>0, \exists p\in P_n([a,b])\st$, $|\|F\|_{TV([a,b])}-\sum\limits_{p}|F(x_i)-F(x_{i+1})|<\varepsilon$. So 
+\[\|F\|_{TV([a,b])}\leq \varepsilon+\sum^+_p[F(x_i)-F(x_{i+1})]+\sum^-_p[F(x_i)-F(x_{i+1})]\leq\varepsilon+ [F+(b)-F^-(b)]+\sum^-_p [F(x_i)-F(x_{i+1})]\]
+\[\|F\|_{TV([a,b])}-[F^+(b)-F^+(a)]\leq \varepsilon + \sum^-_p[F(x_i)-F(x_{i+1})]\]
+Take limit on RHS then let $\varepsilon\to 0$ and we get 
+\[\|F\|_{TV([a,b])}-[F^+(b)-F^+(a)]\leq [F^-(b)-F^-(a)]\]
+Similarly, we have 
+\[\|F\|_{TV([a,b])}-[F^-(b)-F^-(a)]\geq [F^+(b)-F^+(a)]\]
+Combine both inequalities and we get the proof.
+
+\textbf{(3)} The last inequality follows from the second by taking $a\to -\infty, b\to \infty$ while noticing that by definition $F^+(-\infty)=F^-(-\infty)=0$.
+\end{proof}
+
+\paragraph{1.6.42}
+\begin{proof}
+\textbf{locally bounded variation:} $\forall [a,b]\subset \R$, \[\|F\|_{TV([a,b])}=\sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n|F(x_i)-F(x_{i+1})|\leq \sup\limits_{P_n([a,b])}\sum\limits_{i=1}^n C(x_{i+1}-x_i)=C(b-a)<\infty\], so locally is it has bounded variation.
+
+\textbf{bounded derivative:} Given $x\st F$ is differentiable at $x$, by definition:
+\[|F'(x)|=\lim_{y\to x}\frac{|F(y)-F(x)|}{|y-x|}\leq\lim_{y\to x}\frac{C|y-x|}{|y-x|}=C\] 
+\end{proof}
+
+\paragraph{1.6.43}
+\begin{proof}
+The definition is equivalent to the following inequality: $\forall x_1<x_2<x_3\in \R:$
+\[\frac{f(x_2)-f(x_1)}{x_2-x_1}\leq \frac{f(x_3)-f(x_1)}{x_3-x_1}\leq \frac{f(x_3)-f(x_2)}{x_3-x_2}\]
+
+$\forall [a,b]\subset \R,x_1,x_2\in [a,b]$, we thus have $|f(x_2)-f(x_1)|<M|x_2-x_1|$ using the inequality, where $M=\max\{|\lim\limits_{y\to a^-}\frac{f(y)-f(a)}{y-a}|,|\lim\limits_{y\to b^+}\frac{f(y)-f(b)}{y-b}|\}$. So locally $f(x)$ is Lipschitz continuous, which proves countinuity and a.e. differentiability.
+
+Also from the inequality, we have $\forall x_1<x_3\in [a,b]$, $f'(x_1+)\leq f'(x_3+)$ by taking $x_2\to x_1,x_3$ respectively on LHS, RHS. So at points where $f'$ exists, $f'$ is monotone increasing.
+
+\end{proof}
+
+
+\newcommand{\lip}{\mathrm{Lip}}
+Denote $\lip([a,b])$ all Lipschitz functions on $[a,b]$. By definition $\max_{y\in [a,b]}|F(y)|\leq |F(a)|+C|F(b)-F(a)|<\infty$, so Lipschitz functions on intervals are bounded.
+\paragraph{1.6.45}
+\begin{proof}
+Denote $C$ the Lipschitz constant of $F$. Extend $F(x)=F(b)\quad \forall x>b$, $F(x)=F(a)\quad x<a$. Then $F(x)$ is bounded on $\R$, and $F'(x)$ is bounded by $C1_{a,b}$, which is absolutely integrable. Define Newton quotient:
+\[f_n(x)=\frac{F(x+\frac{1}{n})-F(x)}{\frac{1}{n}}\]
+Then $|f_n(x)|\leq \frac{C|\frac{1}{n}|}{\frac{1}{n}}\leq C$, which shows that $f_n(x)$ is bounded $C1_{[a-1,b+1]}$. So by dominated convergence theorem:
+\[\lim_{n\to\infty}\int_{[a,b]}f_n(x)\dd x=\int_{[a,b]}\lim_{n\to\infty}f_n(x)\dd x=\int_{[a,b]}F'(x)\dd x\]
+where (since Lipschitz function are continuous, thus integrable) by Lebesgue integration theorem:
+\[\begin{aligned}
+LHS=&\lim_{n\to\infty}n[\int_{[a+\frac 1 n,b+\frac{1}{n}]}F(y)\dd y-\int_{[a,b]}F(x)\dd x]\\
+=&\lim_{n\to\infty}n\int_{[b,b+\frac 1 n]}F(x)\dd x-\lim_{n\to\infty} n\int_{[a,a+\frac 1 n]}F(x)\dd x
+=F(b)-F(a)\end{aligned}\]
+Which proves the statement.
+\end{proof}
+
+\paragraph{1.6.46}
+\begin{proof}
+Take $F,G\in\lip([a,b])$ with Lipschitz constant $C,C'$ respectively, bounded by $M,M'$ respectively. Then 
+\[\begin{aligned}
+&|F(x)G(x)-F(y)G(y)|\\
+=&|F(x)G(x)-F(x)G(y)+F(x)G(y)-F(y)G(y)|\\
+\leq&|F(x)||G(x)-G(y)|+|G(y)||F(x)-F(y)|\\
+\leq&[MC'+M'C]|x-y|
+\end{aligned}\] 
+So $FG\in\lip([a,b])$ with Lipschitz constant $CM'+C'M$. 
+
+By exercise 1.6.45, 
+\[\int_{[a,b]}F'(x)G(x)+F(x)G'(x)\dd x=\int_{[a,b]}(F(x)G(x))'\dd x=F(b)G(b)-F(a)G(a)\]
+Rearrange and we get the desired equality.
+\end{proof}
+
+\end{document}

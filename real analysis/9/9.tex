@@ -1,0 +1,147 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{Homework 9 for Measure and integral}
+\author{2019011985\and M91\and Junzhe Dong}
+\begin{document}
+\maketitle
+
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Leb}{\mathcal{L}}
+\newcommand{\dd}{\,\mathrm{d}}
+\paragraph{1.6.1}
+\begin{proof}
+$\forall$ fixed $x\in [a,b]$, $\lim\limits_{y\to x}F(y)-F(x)=\lim\limits_{y\to x}(y-x)F'(x)=0$, so by definition $F$ is continuous.
+
+Now that $F$ is already differentiable, $\forall x\in [a,\frac{a+b}{2})$,$F'(x)=\lim\limits_{n\to\infty}n[F(x+\frac 1 n)-F(x)]$. (The case $x\in [\frac{a+b}{2},b]$ is similar, and the sum of the two measurable functions $F1_{[a,\frac{a+b}{2})},F1_{[\frac{a+b}{2},b]}$ is still measurable. So it suffice to show the case above). Since the limit of measurable functions is still measurable, it suffice to show that $F_n(x)=n[F(x+\frac 1 n)-F(x)]$ is measurable. In previous homework, we've proved the fact that $\Leb[\R]$ is closed under translation. Since $F$ is continuous, it is meaasurable by defintion, so $\forall \lambda\in\R, F^{-1}(x)([\lambda,\infty])\in\Leb(\R)$, so $F^{-1}(x+\frac 1 n)([\lambda,\infty])=F^{-1}(x)([\lambda,\infty])-\frac 1 n\in\Leb[\R]$, which means $F_n$ is the linear combination of measurable functions, thus measurable.
+
+In the proof above, we may as well choose $\{a_n\}\st\lim\limits_{n\to\infty}a_n=0$ to relpace $\frac 1 n$, while avioding points where $F_n$ are not measurable (this is possible since points like that are of zero measure), and the proof above applies to the general case.
+
+Take $[a,b]=[0,1],f(x)=1_{[0,\frac 1 2]}$, and it is the desired counter example. 
+\end{proof}
+
+\paragraph{1.6.5}
+\begin{proof}
+Since $f$ is absolutely measurable, the sequence $\{f\}_{n=1}^\infty$ is uniformly integrable, so $\forall \varepsilon>0,\exists \delta>0\st \forall E\in\Leb[\R],m(E)<\delta, \int_{E}|f(t)|\dd t<\varepsilon$. Take $E=[x,x+\delta]$, and we get $|F(x+\delta)-F(x)|=\left|\int_E f(t)\dd t\right|<\varepsilon$, which by definition proves the statement.
+\end{proof}
+
+\paragraph{1.6.7}
+\begin{proof}
+Since value on a null set does not influence the integral, WLOG we assume $g$ is bounded (say, $g(x)<M$). So $\|f*g\|_{L^1}<M\|f\|_{\Leb^1}$, which shows that it is indeed well-defined.
+
+By Littlewood's second principle, $f$ can be approximated by compactly supported continuous functions in $L^1$-norm. Notice that such functions are uniformly continuous: $\forall \varepsilon>0,\exists \delta>0\st \forall x,x_0\in\R^d, |x-x_0|<\delta, |f(x)-f(x_0)|<\varepsilon$. After linear change of variables, which has been proved in previous homework, $0\leq \lim\limits_{x\to x_0}|f*g(x)-f*g(x_0)|=|\int_{\R^d}[f(x-y)-f(x_0-y)]g(y)\dd y|\leq M *2m(\mathrm{supp}(f))\lim\limits_{x\to x_0}\max\limits_{\substack{\xi\in\R^d\\ \Delta x=(x-x_0)}}|f(\xi+\Delta x)-f(\xi)|=0$, which proves the statement.  
+
+Now that the statement is true for compactly supported continuous functions, $\forall\varepsilon>0,\exists f_\varepsilon$ compactly supported and continuous$\st |\int_{\R^d}f-f_\varepsilon\dd x|<\varepsilon$. Then 
+\[|f*g(x)-f_\varepsilon *g|=|\int_{\R^d}[f_\varepsilon(y)-f(y)]g(x-y)\dd y|<M*\|f-f_\varepsilon\|<M\varepsilon\]
+So by definition, $f_\varepsilon * g$ converges to $f*g$ uniformly on $\R^d$, which infers that $f*g$ is continuous.
+\end{proof}
+
+\paragraph{1.6.8}
+\begin{proof}
+Notice that the set $E-E$ is invariant under translation, so WLOG assume $0\in E$. Since $m(E)>0,\exists R>0\st m(E_R)>0$ where $E_R=E\cap B(0,R)$. If we can prove the statement for $E_R$, then $E-E\subset E_R\supset E_R$ and the statement follows.
+
+So now it suffice to prove the statement for bounded sets. Consider $f(x)=1_E*1_{-E}(x)=\int_{\R^d}1_E(y)1_{-E}(x-y)\dd y=\int_{\R^d}1_E(y)1_E(y-x)\dd y=\int_{\R^d}1_E(y)1_{E+x}(y)\dd y=\int_{\R^d}1_{E\cap E+x}(y))\dd y=m(E\cap E+x)$. $1_E(x),1_{-E}(x)$ are absolutely integrable since $E$ is bounded, so by exercise 1.6.7, $f(x)$ is continuous. Note that $f(0)=m(E)>0$, $\exists O\supset \{0\}$, $O$ open, $f(x)>0\quad \forall x\in O$. So $\forall x\in O$, $m(E\cap E+x)>0$. This immplies that $\forall x\in O, x\in E-E$, which proves the statement.
+\end{proof}
+
+\paragraph{1.6.9}
+\subparagraph{(i)}
+\begin{proof}
+Denote $D(z,r)$ the disc in $\mathbf{C}$ centered at $z$ with radius $r$. $\forall D$ discs centered at the origin, examine $f^{-1}(D+z)\quad \forall z\in \mathbf{C}$. Since $f$ is measurable, $f^{-1}(D+z)$ is a measurable set. CLAIM: $\exists z\in \mathbf{C}\st m(f^{-1}(D+z))>0$. Suppose the converse is true. Since any disc can be covered in a finite union of such discs, the statement is true for every disc centered at the origin. Then $\forall E\in\R^d\st m(E)>0$, $\forall z\in \mathbf{C}, r>0, f(E)\not\subset D(z,r)$, which is impossible.
+
+By definition, we're required to prove that $\forall O\subset \mathbf{C}$ open, $f^{-1}(O)$ is open. $\forall x\in f^{-1}(O),\text{ fixed, denote } z=f(x)$. Then $\exists r>0\st D(z,r)\subset O$, and $\exists z_0\in\mathbf{C}\st m(f^{-1}(z_0+z+D))>0$. By Steinhaus theorem, $f^{-1}(z_0+z+D)-f^{-1}(z_0+z+D)$ contains an neighbourhood of the origin: $\exists U$ open $\st 0\in U$, $\forall y\in U, \exists \xi,\eta\in f^{-1}(z_0+z+D)\st \xi-\eta=y$. Notice that $f$ is an homomorphism, $f(y)=f(\xi)-f(\eta)\in D, f(x+y)=z+f(y)\in f(z+D)$, which by definition proves the statement.
+\subparagraph{(ii)}
+\textbf{``if'' side:} Trivial, since $f$ is linear and continuous.
+
+\textbf{``only if'' side:} First consider $x\in\mathbf{Q}^d$. It suffice to show that $f$ is a linear map, which can only take the given form. 
+
+$\forall \lambda=\in \mathbf{N}$, $f(x_1,\cdots,\lambda x_i,\cdots,x_n)=f(x_1,\cdots,x_n)+f(x_1,\cdots, (\lambda-1)x_i,\cdots, x_n)$. With this and the identity $f=f$, we perform induction on $\lambda$ to get $f(x_1,\cdots,\lambda x_i,\cdots,x_n)=\lambda f(x_1,\cdots,x_n)$.
+
+From $f(0+0)=f(0)+f(0)$, we see $f(0)=0$, so $f(x)+f(-x)=f(0)=0$. So $\forall\lambda<0\in\mathbf{Z}, f(x_1,\cdots,\lambda x_i,\cdots,x_n)=-f(x_1,\cdots,-\lambda x_i,\cdots,x_n)=-(-\lambda)f(x_1,\cdots,x_n)=\lambda f(x_1,\cdots,x_n)$. 
+
+Take $x'_i=\lambda x_i$, and we get $\frac 1 \lambda f(x_1,\cdots, x'_i,\cdots,x_n)=f(x_1,\cdots, \frac 1 \lambda x'_i,\cdots, x_n)$. 
+
+Thus in general we've proved that $f(x_1,\cdots, \frac p q x_i,\cdots, x_n)=\frac p q f(x_1,\cdots, x_n)$, which, together with $f(x+y)=f(x)+f(y)$ shows that $f$ is linear, which can only take the given form.
+
+For the general case, since $\mathbf{Q}^d$ is dense in $\R^d$, $\forall x=(x^1,\cdots,x^d),\exists \{x_n^i\}\in\mathbf{Q}\st \lim\limits_{n\to\infty}x^i_n=x^i$. From (i) we learn that $f$ is continuous, so $f(x)=\lim\limits_{n\to\infty}f(x^1_n,\cdots, x^d_n)=\sum\limits_{k=1}^d x_kz_k$, which proves the statement.
+\end{proof}
+
+
+
+
+\paragraph{1.6.10}
+\begin{proof}
+Denote $I_x=\bigcup\limits_{\substack {(a,b)\subset U\\x\in (a,b)}}(a,b)\subset U$. By definition, $\forall x\in U,\exists a_x<b_x\in [0,1]\st x\in (a_x,b_x)$, so $I_x\neq\varnothing$. $I_x$ is the maximal open interval containing $x$. So if $x_i\neq x_2$, then either $I_{x_1}=I_{x_2}$, or $I_{x_1}\cap I_{x_2}=\varnothing$. (If not, then $I_{x_1}\cup I_{x_2}$ is a bigger interval in $U$ containing $I_{x_1},I_{x_2}$, contradicting the maximal property). From density of rational numbers, $\forall I_{x},\exists q\in\mathbf{Q}\cap [0,1]\st q\in I_{x}$, so there are at most countbly many such openn intervals $\{I_{n}\}_{n=1}^\infty$. On one hand, $I_n\subset U\Rightarrow \bigcup\limits_{n=1}^\infty I_n\subset U$. On the other hand, $\forall x\in U,\exists I_n\st x\in I_n\Rightarrow U\subset \bigcup\limits_{n=1}^\infty I_n$. So $U=\bigcup\limits_{n=1}^\infty I_n$, which is a disjoint union. 
+
+The fact that the endpoints does not lie in the open set follows directly from the definition of open sets.
+\end{proof}
+
+\paragraph{1.6.11}
+\begin{proof}
+By repalcing $h$ with $-h$ and withh the help of change of variables, we conclude the other side of Hardy-Littlewood maximal inequality:
+\[m(\{x\in\mathbf{R}:\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t\geq \lambda\})\leq \frac{1}{\lambda}\int_{\R}|f(t)|\dd t\]
+
+\[\sup\limits_{x\in I}\frac{1}{|I|}\int_{I}|f(t)|\dd t\leq\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t+ \sup\limits_{h>0}\frac{1}{h}\int_{[x,x+h]}|f(t)|\dd t\]
+so
+\[\{\sup\limits_{x\in I}\frac{1}{|I|}\int_{I}|f(t)|\dd t\geq \lambda\}\subset\{x\in\mathbf{R}:\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t\geq \lambda\}\cup\{x\in\mathbf{R}:\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t\geq \lambda\}\]
+so by monotonicity:
+\[m(\{\sup\limits_{x\in I}\frac{1}{|I|}\int_{I}|f(t)|\dd t\geq \lambda\})\leq m(\{x\in\mathbf{R}:\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t\geq \lambda\})+ m(\{x\in\mathbf{R}:\sup\limits_{h>0}\frac{1}{h}\int_{[x-h,x]}|f(t)|\dd t\geq \lambda\})\]
+Apply one-sided Hardy-Littlewood inequality and we get the desired inequality.
+\end{proof}
+
+\paragraph{1.6.12}
+\begin{proof}
+By horizontal truncation, we may as well restrit the inequality to arbitrary $[a,b]\subset \mathbf{R}$.First consider the case where $\lambda=0$.
+
+Define the function $F(x)=\int_{[a,x]}f(x)\dd x$. Since $f$ is absolutely integrable, $F$ is well-defined and by exercise 1.6.5, it is continuous. Apply the rising sun lemma, we get the desired disjoint intervals $I_n=(a_n,b_n)$ with the properties in the lemma.
+
+Observe that $f^*(x)>0\Leftrightarrow \exists h\st F(x+h)>F(x)$, which is not satisfied by $x\in [a,b]\backslash \bigcup\limits_{n=1}^{\infty}I_n$, but satisfied otherwise. So $\{f^*(x)>0\}=\bigcup\limits_{n=1}^\infty I_n$. Since $F(a_n)=F(b_n)$ unless $a_n=a, F(b_n)\geq F(a_n)$, we have:
+\[\int_{\bigcup_{n=1}^\infty I_n}f(x)=\sum_{n=1}^\infty \int_{I_n}f(x)\dd x=\sum_{n=1}^\infty [F(b_n)-F(a_n)]\geq 0\]
+which is the desired result for $\lambda=0$.
+
+More generally, we consider $g(x)=f(x)-\lambda\quad (\forall\lambda\in\mathbf{R})$. Then $g^*(x)=f^*(x)-\lambda$ and the problem reduces to proving $\int_{x:g^*(x)>0}g(x)\dd x$, which is has been proved above.
+\end{proof}
+
+\paragraph{1.6.14}
+\subparagraph{(i)}
+\begin{proof}
+\textbf{``if'' side:} $\forall \xi\in\R^d, \int_{B(\xi,|\xi|)}|f(x)|\dd x<\int_{B(0,2\xi)}|f(x)|\dd x$, so by definition, it is locally integrable.
+
+\textbf{``only if'' side:} By monotonicity, $\int_{\overline{B(0,r)}}|f(x)|\dd x\geq \int_{B(0,r)}|f(x)|\dd x$. $\forall x\in \overline{B(0,r)},\exists U_x$ open $\st \int_{U_x}|f(x)|\dd x<\infty$. $\{U_x\}_{x\in\overline{B(0,r)}}$ is an open cover of the bounded close, thus compact set $\overline{B(0,r)}$, so $\exists \{U_{x_n}\}_{n=1}^N\st B(0,r)\subset \bigcup\limits_{n=1}^{N}U_{x_n}$. So by monotonicity (since $|f(x)|>0$), $\int_{B(0,r)}|f(x)|\dd x\leq\sum\limits_{n=1}^N\int_{U_{x_n}}|f(x)|\dd x<\infty$. The statement thus follows.
+\end{proof}
+\subparagraph{(ii)}
+\begin{proof}
+By (i), if $f$ is locally integrable, $\forall r<\infty$, $\int_{B(0,r)}|f(x)|\dd x$. For fixed $x\in\mathbf{R}^d$, define $\hat{f}(y)=f1_{B(0,2|x|)}(y)$. Then $\hat{f}$ is absolutely integrable, which satisfies theorem 1.6.19. Meanwhile, $\forall r<|x|, y\in B(x,r), \hat{f}(y)\equiv f(y)$. So 
+\[\lim_{r\to 0}\frac{1}{m(B(x,r))}\int_{B(x,r)}|f(y)-f(x)|\dd y=\lim_{r\to 0}\frac{1}{m(B(x,r))}\int_{B(x,r)}|\hat{f}(y)-\hat{f}(x)|\dd y=0\]
+So we get the desired statement.
+\end{proof}
+
+\paragraph{1.6.15}
+\begin{proof}
+In the same way in exercise 1.6.14, it suffice to show the statement for absolutely integrable functions.
+
+By definition, we're required to prove that $\forall \varepsilon>0,\exists h>0\st |\frac{\int_{x+E_h}f(y)-f(x)\dd y}{m(E_h)}|<\varepsilon$. By monotonicity, $|\int_{x+E_h}f(y)-f(x)\dd y|\leq \int_{x+E_h}|f(y)-f(x)|\dd y\leq \int_{B(x,h)}|f(y)-f(x)|\dd x$. So 
+\[
+|\frac{\int_{x+E_h}f(y)-f(x)\dd y}{m(E_h)}|
+\leq\frac{1}{c}|\frac{\int_{x+E_h}f(y)-f(x)\dd y}{m(B(0,h))}|
+\leq\frac{1}{c}|\frac{\int_{B(0,h)}|f(y)-f(x)|\dd y}{m(B(0,h))}|
+\]
+Meanwhile, from theorem 1.6.19, we have (for the $\varepsilon$ above)$\exists h_\varepsilon \st|\frac{\int_{B(0,h)}|f(y)-f(x)|\dd y}{m(B(0,h))}|<c\varepsilon$, which proves the statement.
+
+Take $E_h=[x,x+h]$ in the one-dimensional case, where $c=\frac 1 2$, and the statement follows directly.
+\end{proof}
+
+\paragraph{1.6.23}
+\begin{proof}
+$\forall x\in [a,b]$, define the open sets $U_x=B(x,\frac{1}{3}\delta(x))$. Since $\delta(x)>0, x\in U_x$. $\{U_x\}_{x\in [a,b]}$ is an open cover of the compact set $[a,b]$, so by Borel-Heine's lemma, $\exists \{x_n\}_{n=1}^N\st [a,b]\subset \bigcup\limits_{n=1}^N U_{x_n}$. Now shrink each $U_{x_n}$ to a close interval $U'_{x_n}\subset U_{x_n} \st \exists !t_n, U_{x_n}\cap U_{x_{n+1}}=\{t_n\}$. Take $t_0=a, t_N=b$, and we ge the desired statement.
+\end{proof}
+
+\paragraph{1.6.24}
+\begin{proof}
+For a fixed measurable set $E\in\mathbf{R}^d$, define $f(x)=1_E(x)$. It is locally integrable, so it satisfies the Lebesgue differentiation theorem: for a.e $x\in \mathbf{R}^d$:
+\[\lim_{r\to 0}\frac{m(B(x,r)\cap E)}{m(B(x,r))}=\lim_{r\to 0}\frac{\int_{B(x,r)}f(x)\dd x}{m(B(x,r))}=1_E(x)\]
+which proves the statement by definition.
+\end{proof}
+
+
+\end{document}

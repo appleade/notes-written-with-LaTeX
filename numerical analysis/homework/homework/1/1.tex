@@ -1,0 +1,112 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业1}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{1.}
+\begin{proof}
+设$x=(x_1,\cdots, x_n)$.
+
+一方面，
+\[\nm{A}_\infty=\max_{\nm{x}_\infty=1}\nm{Ax}_\infty=\max_{1\leq i\leq n}\{\sum_{j=1}^na_{ij}x_j\}\leq \max_{1\leq i\leq n}\{\sum_{j=1}^n |a_{ij}|\}\]
+\end{proof}
+故$\nm{A}_\infty\leq \max\limits_{1\leq i\leq n}\{\sum\limits_{j=1}^n |a_{ij}|\}$。
+
+另一方面，对于上述$i$，$x_j=\mathrm{sign}(a_{ij})$时，$\nm{Ax}_\infty=\max\limits_{1\leq i\leq n}\{\sum_{j=1}^n |a_{ij}|\}$，故由定义$\nm{A}_\infty\geq =\max\limits_{1\leq i\leq n}\{\sum_{j=1}^n |a_{ij}|\}$
+
+综上两方面即得所需结论。
+
+\paragraph{2.}
+\begin{proof}
+考察方程$Ax=b$，$\nm{A}_\infty$即在$\nm{b}_\infty=1$的限制下$\nm{x}_\infty$的最大值。考察其中第$i$个方程，得到
+\[\sum_{j=1}^na_{ij}x_j=b_i\]
+考虑到$\nm{b}_\infty=1$，有限制$|b_i|\leq 1$，代入上式得
+\[|a_{ii}x_i+\sum_{j=1,j\neq i}^n a_{ij}x_j|\leq 1\quad \forall 1\leq i\leq n\]
+其中
+\begin{align*}
+LHS&\geq a_{ii}|x_i|-|\sum_{j=1,j\neq i}^n a_{ij}x_j|\\
+&\geq \nm{A^{-1}}_\infty[a_{ii}-\sum_{j=1}^n|a_{ij}|]
+\end{align*}
+即
+\[\nm{A^{-1}}_\infty\leq\frac{1}{a_{ii}-\sum\limits_{j=1,j\neq i}^n|a_{ij}|}\quad \forall 1\leq i\leq n\]
+RHS取$\min$即得所需结论。
+\end{proof}
+
+
+
+
+\paragraph{3.}
+\begin{proof}
+\begin{align*}
+&A^{-1}(A-B)B^{-1}\\
+=&(I-A^{-1}B)B^{-1}\\
+=&(B^{-1}-A^{-1})
+\end{align*}
+取范数得
+\[\nm{A^{-1}-B^{-1}}=\nm{B^{-1}-A^{-1}}=\nm{A^{-1}(A-B)B^{-1}}\leq \nm{A^{-1}}\nm{B}^{-1}\nm{A-B}\]
+得证。
+\end{proof}
+
+\paragraph{4.}
+\begin{proof}
+对阶数$n$作归纳。
+
+\textbf{Case 1:}$n=1$时，$L=[1], D=[a_{11}]$即为所求。
+
+\textbf{Case 2:}设$n-1$阶的情形已被证明，则对于$n$阶的情形：
+既知$\Delta_i\neq 0$，故$a_{11}\neq 0$。故$A=\begin{bmatrix}a_{11}&\alpha^T\\ \alpha&\tilde{A}\end{bmatrix}$。
+
+易由初等变换得$A$的如下分解：
+\[A=\begin{bmatrix}1&0\\\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}\begin{bmatrix}a_{11}&0\\0&\tilde{A}\frac{1}{a_{11}}\alpha\alpha^T \end{bmatrix}\begin{bmatrix}1&0\\-\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}^T\]
+%今设$\hat{L}=\begin{bmatrix}1&0\\-\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}$
+%则$A=\hat{L}\hat{A}\hat{L}^T\quad \hat{A}=\begin{bmatrix}a_{11}&0\\0&\tilde{A}-\frac{1}{a_{11}}\alpha\alpha^T \end{bmatrix}$。
+
+注意到$\tilde{A}-\frac{1}{a_{11}}\alpha\alpha^T$是$n-1$阶对称矩阵。记$\Delta^i$为其第$i$个主子式，则$\Delta^i=\frac{\Delta_i}{a_{11}}\neq 0$，故其有分解$\tilde{A}=\tilde{L}\tilde{D}\tilde{L}^T$。
+
+综上，$A$有下述分解：
+\[A=\begin{bmatrix}1&0\\\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}
+\begin{bmatrix}1&0\\0&\tilde{L}\end{bmatrix}
+\begin{bmatrix}a_{11}&0\\0&\tilde{D}\end{bmatrix}
+\begin{bmatrix}1&0\\0&\tilde{L}\end{bmatrix}^T
+\begin{bmatrix}1&0\\\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}^T\]
+取$L=\begin{bmatrix}1&0\\\frac{\alpha}{a_{11}}&I_{n-1}\end{bmatrix}\begin{bmatrix}1&0\\0&\tilde{L}\end{bmatrix}=\begin{bmatrix}1&0\\\frac{\alpha}{a_{11}}&\tilde{L}\end{bmatrix}$，$D=\begin{bmatrix}a_{11}&0\\0&\tilde{D}\end{bmatrix}$即为所求之分解。
+\end{proof}
+
+\paragraph{5.}
+记$D=\mathrm{diag}\{d_1,\cdots, d_n\}$,$L=I+\sum_{i>j}l_{ij}E_{ij}$，其中$E_{ij}$是仅在$(i,j)$位置为$1$，其余位置为$0$的矩阵。
+
+注意到
+\begin{enumerate}
+%\item $a_{ji}=a_{ij}=d_j[\sum\limits_{k=1}^{i-1}l_{ik}l_{jk}+l_{ji}]\quad \forall i<j$
+\item $a_{ij}=d_j[\sum\limits_{k=1}^{j-1}l_{ik}l_{jk}+l_{ij}]\quad \forall i>j$
+\item $a_{ii}=d_i[\sum\limits_{k=1}^{i-1}l^2_{ik}+1]$
+\end{enumerate}
+
+首先进行如下操作：
+\begin{enumerate}
+\item $d_1=a_{11}$
+\item $l_{i1}=\frac{a_{i1}}{d_1}\quad \forall 2\leq i\leq n$
+\end{enumerate}
+今假设$L,D$的前$(j-1)$列已构造完成，则对于第$j$列，进行如下构造：
+\begin{enumerate}
+\item $d_j=\frac{a_{jj}}{\sum\limits_{k=1}^{j-1}l_{jk}^2+1}$
+\item $l_{ij}=\frac{1}{d_j}[a_{ij}-\sum\limits_{k=1}^{j-1}l_{ik}l_{jk}]\quad \forall j<i\leq n$
+\end{enumerate}
+
+\paragraph{6.}
+选列主元的Gauss消去法误差小，因为该算法稳定性好。
+
+改进平方根法误差小，因为相比平方根法没有进行非线性运算（开方），截断误差小。
+
+一般的$Gauss$消去法速度最快，但四种方法在计算量级上没有本质区别。
+
+
+\end{document}

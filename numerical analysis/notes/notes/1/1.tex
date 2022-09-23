@@ -1,0 +1,259 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{误差}
+\begin{Def} 设$x_A$ 为$x$ 的近似值，则称：
+\begin{enumerate}
+\item$x-x_A$：误差
+\item$|x-x_A|$：绝对误差
+\item$\frac{|x-x_A|}{|x|}$：相对误差
+\end{enumerate}
+此时若$\exists \varepsilon_A>0\st |x-x_A|\leq \varepsilon_A$，则称：
+\begin{enumerate}
+\item $\varepsilon_A$：绝对误差界
+\item $\frac{\varepsilon_A}{|x|}$：相对误差界
+\end{enumerate}
+\end{Def}
+
+\begin{Def}[有效数字]
+设$x_A$ 是$x$ 的近似值，$x_A=\pm10^k\times 0.d_1d_2\cdots d_i\cdots\quad d_i\in\{0,1,\cdots, 9\}, i\in \mathbf{N}, d_1\neq 0$。若$n$满足$|x-x_A|\leq 0.5\times 10^{k-n}$，则称$x_A$为$x$的具有$n$位十进制有效数字的近似值。
+\end{Def}
+
+误差分为输入误差、舍入误差、截断误差、传播误差。前两者无法避免，但仍要考虑其对算法的影响，后两者主要由算法改进处理。其中截断误差是对无穷过程的截断产生的误差，与相容性(consistensy)相关，传播误差是迭代过程中误差的传播、放大，与稳定性(stability)相关。
+
+\subsection{浮点数表示与舍入误差}
+二进制浮点数计数法表示为：
+\[a=\pm 0.d_1d_2\cdots d_t\times 2^J\qquad d_i\in\{0,1\},d_1=1, J\in \mathbf{Z}, L\leq J\leq U\]
+其中$0.d_1d_2\cdots d_t$称为“尾数”， $t$称为“字长”，$J$称为“所”。例如在IEEE标准下，单精度取$t=23,L=-126,U=127$，双精度取$t=52,L=-1022,U=1023$。
+
+以$\mathbf{F}$ 表示浮点数的集合，则$\mathbf{F}\subset [-M,-m]\cup\{0\}\cup[m,M]\quad m=2^{L-1},M=2^U(1-2^{-t})$。
+
+定义$\fl:[-M,M]\to \mathbf{F}$ 为取对应浮点数的函数，即\footnote{argmin函数表示使得其后面式子取得最小值时自变量的取值}
+\[\fl(x)=\begin{cases}
+\mathrm{argmin}_{y\in F}|x-y|& m\leq |x|\leq M\\
+0 &|x|<m
+\end{cases}\]
+
+注意到$F$只在局部均匀分布，全局地看并不均匀。事实上对此有如下刻画：
+\begin{Thm}
+设$x\in \R, m\leq |x|\leq M$，则$\exists \delta\in \R, |\delta|\leq 2^{-t}\st$
+\[\fl(x)=x(1+\delta)\]
+\end{Thm}
+\begin{proof}
+不失一般性，设$2^{\alpha-1}\leq x<2^\alpha$, 其间距为$2^{\alpha-t}$。则
+\[|\fl(x)-x|\leq \frac{1}{2}2^{\alpha-t}=2^{\alpha-1}\cdot 2^{-t}\leq x\cdot 2^{-t}\]
+即$\frac{|\fl(x)-x|}{|x|}<2^{-t}$，得证。
+\end{proof}
+因此性质，我们称$2^{-t}$为机器精度。
+
+注意到$F$对四则运算并不封闭，例如$x\oplus y=\fl(\fl(x)+\fl(y))=x+y+(x\delta_1x+y\delta_2y)(1+\delta_3)+[x(1+\delta_1x)+y(1+\delta_2y)\delta_3]$，由此产生的舍入误差在以下两种情况下将产生较严重的有效数字丢失：
+\begin{enumerate}
+\item 大数$\pm$小数。
+\item 两个大小相近的数相减。
+\end{enumerate}
+
+\begin{Eg}
+为计算$\log(2)$，一方面可以采用$\log(1+x)=\sum\limits_{n=1}^\infty (-1)^{n+1}\frac{x^n}{n}$并令$x=1$，但此时级数收敛慢且交错出现大小相近的数相减，精度低；另一方面可以采用$\log(\frac{1+x}{1-x})=2\sum\limits_{n=0}^\infty \frac{x^{2n+1}}{(2n+1)!}$取$x=\frac{1}{3}$，此时级数收敛快且舍入误差小。
+\end{Eg}
+
+\begin{Eg}
+解方程$x^2-2px+1=0$得$x_1=p+\sqrt{p^2-1},x_2=p-\sqrt{p^2-1}$。此时直接计算$x_2$将造成较大舍入误差。为此可以计算$x_2=\frac{1}{p+\sqrt{p^2-1}}$解决这一问题。
+\end{Eg}
+
+\subsection{传播误差与稳定性}
+记$\varepsilon_n$为迭代第$n$步的误差。若$|\varepsilon_n|=cn\varepsilon_0$，则称其为线性增长，此时的算法可以接受。若$|\varepsilon_n|=c^n\varepsilon_0$，则称其为指数增长，此时若$c>1$，算法不能接受。
+\begin{Eg}为计算$x_n=\frac{1}{3^n}$，有如下三种迭代：取$x_0=1,x_1=\frac{1}{3}$
+\begin{enumerate}
+\item $x_n=\frac{1}{3}x_{n-1}$
+\item $x_n=\frac{4}{3}x_{n-1}-\frac{1}{3}x_{n-2}$
+\item $x_n=\frac{10}{3}x_{n-1}-x_{n-2}$
+\end{enumerate}
+
+作为差分方程，后两者的通解分别为$x_n=\frac{c_1}{3^n}+c_2$，$x_n=\frac{c_1}{3^n}+c_23^n$。由于传播误差，多次迭代后输入方程的初值发生变化，使得$c_2\neq 0$。这使得方法2的误差趋于稳定，而方法3的误差趋于无穷。方法1则在每一步都使传播误差衰减，是所应该采用的方法。
+\end{Eg}
+
+\section{线性空间}
+\subsection{内积空间}
+定义，例子略
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\subsection{赋范空间}
+定义、例子略
+\begin{Def}
+$V$上两种范数$\nm{\cdot}_\alpha,\nm{\cdot}_\beta$，若存在$c_1,c_2>0\st$
+\[c_1\nm{u}_\alpha\leq \nm{u}_\beta\leq c_2\nm{u}_\alpha\]
+则称其为等价范数。
+\end{Def}
+
+有限维空间上的范数都等价，但无穷维空间不然。
+\begin{Lemma}
+$A\in\R^{n\times n},\nm{\cdot}$是$\R^n$上的范数，则$\nm{Ax}$是$\R^n$上的连续函数。
+\end{Lemma}
+\begin{proof}
+$|\nm{A(x+h)}-\nm{Ax}|\leq \nm{Ah}=\nm{\sum_{j=1}^nh_ja_j}\leq \sum\limits_{j=1}^n|h_j|\|a_j\|\leq M\max\limits_{1\leq j\leq n}|h_j|\quad M=\sum\limits_{j=1}^n\nm{a_j}$
+\end{proof}
+
+\begin{Cor}
+$\nm{x}$是连续函数。
+\end{Cor}
+
+\begin{Thm}
+$\R^n$上所有范数互相等价。
+\end{Thm}
+\begin{proof}
+证明所有范数与无穷范数等价。设$D=\{x\in\R^n,\|x\|_\infty=1\}$，其为$\R^n$上的有界闭集。设$\nm{\cdot}_\alpha$是任意范数，则$\nm{x}_\alpha$连续，在$D$上取最大值、最小值$M\geq m\geq 0$。
+
+$\forall x\in\R^n,x\neq 0, m\leq \nm{\frac{x}{\nm{x}_\infty}}_\alpha\leq M$，整理即得.
+\end{proof}
+
+
+\begin{Def}[矩阵范数]
+$\R^{n\times n}$的范数满足：
+\begin{enumerate}
+\item $\nm{\cdot}$是范数，满足三条定义。
+\item $\nm{AB}\leq \nm{A}\nm{B}$
+\end{enumerate}
+则称$\nm{A}$为$A$的范数。
+\end{Def}
+
+\begin{Eg}[Frobenius范数]
+$A=(a_{ij})_{n\times n}$，$\nm{A}_F=(\sum_{i,j=1}^n|a_{ij}|^2)^{\frac 1 2}=\mathrm{tr}(A^TA)$
+
+作为$n^2$维空间的$p$范数，只有上述$p=2$时是矩阵范数。事实上：$\nm{AB}_F^2=\sum\limits_{i,j=1}^n|a_i^Tb_j|^2\leq\sum\limits_{i=1}^n\sum\limits_{j=1}^n\nm{a_i}_2^2\nm{b_j}_2^2= \sum\limits_{i=1}^n\nm{a_i}_2^2\sum\limits_{j=1}^n\nm{b_j}_2^2=\nm{A}^2_F\nm{B}^2_F$
+\end{Eg}
+
+\begin{Def}
+对于$\R^n$上的范数$\nm{\cdot}$，$\R^{n\times n}$上的矩阵范数$\nm{\cdot}$，若
+\[\nm{Ax}\leq \nm{A}\nm{x}\quad \forall x\in\R^n,A\in \R^{n\times n}\]
+则称该矩阵范数与向量范数相容。
+\end{Def}
+
+\begin{Thm}
+设$\nm{x}$是$\R^n$上向量范数，则
+\[\nm{A}=\max_{x\neq 0}\frac{\nm{Ax}}{\nm{x}}=\max_{\nm{x}=1}\nm{Ax}\]
+定义了$\R^{n\times n}$上的一个矩阵范数。这样确定的矩阵范数称为“从属范数”或“诱导范数”。
+\end{Thm}
+\begin{proof}
+相容性，正定性是显然的。
+
+$x=\mathrm{argmax}_{\nm{z}=1}\nm{(A+B)z}$。$\nm{(A+B)x}\leq \nm{Ax}+\nm{Bx}\leq \nm{A}+\nm{B}$
+
+$y=\mathrm{argmax}_{\nm{x}=1}\nm{ABx}$。$\nm{AB}=\nm{ABy}\leq \nm{A}\nm{By}\leq \nm{A}\nm{B}\nm{y}=\nm{A}\nm{B}$
+
+\end{proof}
+
+
+这实际上是一种算子范数。
+
+Frobinius范数不是算子范数。这是因为单位矩阵的算子范数总为1，但Frobenius范数为$\sqrt{n}$。
+
+\begin{Eg}
+\begin{enumerate}
+\item$\nm{A}_1=\max\limits_{1\leq j\leq n}\sum_{j=1}^n|a_{ij}|,\nm{A}_\infty=\max\limits_{1\leq i\leq n}\sum_{j=1}^n|a_{ij}|$
+
+故曰1-范数为列范数，$\infty$-范数为行范数。
+\item $\nm{A}_2=(\rho(A^TA))^{\frac 1 2}$，其中$\rho$为谱半径（最大的特征值）。
+\end{enumerate}
+\end{Eg}
+
+\begin{proof}
+剖$A$为列向量$[a_1,\cdots,a_n]$，且$a_k=\mathrm{argmin}_{1\leq i\leq n}\nm{a_i}$。$\forall \nm{x}_1=1, \nm{Ax}_1=\nm{\sum\limits_{j=1}^n a_jx_j}_1\leq \sum\limits_{j=1}^n |x_j|\nm{a_j}_1\leq\nm{a_k}_1\sum\limits_{j=1}^n|x_j|=\nm{a_k}_1\nm{x}_1$，$x=e_k$时取等，即$\nm{A}_1=\nm{a_k}_1$
+
+$A^TA$为半正定矩阵，其特征值$\lambda_1\geq \lambda_2\geq\cdots\geq \lambda_n\geq 0$，特征向量$u_1,\cdots,u_n$。$\forall x\in \R^n, \nm{x}_2=1, x=\sum\limits_{i=1}^n \alpha_iu_i$($\alpha_i=x^T\cdot u_i,\sum\limits_{i=1}^n \alpha_i^2=1$)
+$\nm{Ax}_2^2=x^TA^TAx=(\sum\limits_{i=1}^n \alpha_i\lambda_iu_i)(\sum\limits_{j=1}^n\alpha_iu_i)=\sum\limits_{i=1}^n\lambda_i\alpha_i^2\leq \lambda_1$，即$\nm{A}_2^2\leq\lambda_1$且于$x=u_1$时取等，$\nm{A}_2=\sqrt{\lambda_1}$。
+
+\end{proof}
+
+\begin{Thm}
+设$\nm{\cdot}$为$\R^{n\times n}$上任意矩阵范数，则$\forall A\in \R^{n\times n},\rho(A)\leq \nm{A}$。但$\forall \varepsilon>0,\exists$ 矩阵范数$\nm{\cdot}_{\varepsilon}\st\nm{A}_\varepsilon<\rho(A)+\varepsilon$
+\end{Thm}
+
+\begin{proof}
+设$\lambda$是$A$的最大特征值且$x$的对应特征向量，则$\exists y\in \R^n\st xy^T$不是零矩阵。则$\rho(A)\nm{xy^T}=\nm{\lambda  xy^T}=\nm{Axy^T}\leq \nm{A}\nm{xy^T}\Rightarrow \rho(A)\leq \nm{A}$
+
+设$J=P^{-1}AP=\mathrm{diag}[J_1,\cdots,J_n]$为$A$的Jordan标准型，$J_k=\lambda I_k+J^0_k$，$D_\varepsilon=\mathrm{diag}(1,\varepsilon,\varepsilon^2,\cdots)$，$J_\varepsilon=D^{-1}_\varepsilon JD_\varepsilon=\lambda I+\varepsilon J^0$。$\nm{J_\varepsilon}=D^{-1}_\varepsilon P^{-1}APD_{\varepsilon}\leq \rho(A)+\varepsilon$。这是从属于$\nm{D^{-1}_\varepsilon P^{-1}x}$的范数。
+\end{proof}
+
+即：谱半径提供了矩阵范数的下界，且此下界为下确界。
+
+\begin{Thm}
+$\nm{\cdot}$是从属范数，$\nm{B}<1$，则$I+B$非异\footnote{此性质不需要范数是从属范数}且
+\[\nm{(I+B)^{-1}}\leq\frac{1}{1-\nm{B}}\]
+\end{Thm}
+\begin{proof}
+若$I+B$奇异，则$\exists x\neq 0\st (I+B)x=0\Rightarrow -1$是$B$的特征值$\Rightarrow \rho(B)\geq \nm{B}\geq 1$，矛盾！
+
+$1=\nm{I}=\nm{(I+B)(I+B)^{-1}}\geq \nm{(I+B)^{-1}}-\nm{B}\nm{(I+B)^{-1}}$，整理即得。
+\end{proof}
+
+在不是从属范数的情况下，有结论\[\nm{(I+B)^{-1}}\leq\frac{\nm{I}}{1-\nm{B}}\]
+
+\subsection{对角占优矩阵}
+\begin{Def}
+设$A=[a_{ij}]\in\R^{n\times n}$。
+
+若$|a_{ii}|>\sum\limits_{j=1,j\neq i}^n|a_{ij}|\quad \forall 1\leq i\leq n$，则称$A$为严格对角占优矩阵。
+
+若$|a_{ii}|\geq\sum\limits_{j=1,j\neq i}^n|a_{ij}|\quad \forall 1\leq i\leq n$且至少一个取严格的大于号，则称$A$为弱对角占优矩阵。
+\end{Def}
+
+对角占优矩阵常出现于（函数有限制条件的）Hessian矩阵。
+
+\begin{Thm}
+$A$严格对角占优，则$a_{ii}\neq 0\quad\forall 1\leq i\leq n$且$A$非异。
+\end{Thm}
+\begin{proof}
+反设$A$奇异，则$\exists x\in\R^n, \nm{x}_\infty=|x_k|=1\st Ax=0$。其第$k$个方程为:
+\begin{align*}
+a_{kk}x_k&=-\sum_{j=1,j\neq i}^n a_{kj}x_j\\
+|a_{kk}|=|a_{kk}x_k|&=\sum_{j=1,j\neq i}^n |a_{kj}||x_j|\leq\sum_{j=1,j\neq i}^n |a_{kj}|
+\end{align*}
+这与对角占优之定义矛盾。
+\end{proof}
+
+\begin{Def}
+$A^{n\times n}$，若存在排列矩阵$P_1,P_2\st P_1^TAP_2=\begin{bmatrix}\overline{A_{11}}&\overline{A_{12}}\\0&\overline{A_{22}}\end{bmatrix}$，其中$\overline{A_{11}},\overline{A_{22}}$为方阵，则称$A$为可约矩阵，否则称不可约矩阵。
+\end{Def}
+解可约矩阵参与的方程组时，可以约化为更小规模的线性方程组：$A_{22}x_2=b_2,A_{11}x_1=b_1-A_{12}x_2$。
+
+\begin{Thm}
+$A$弱对角占优且不可约，则$a_{ii}\neq 0$且$A$非异。
+\end{Thm}
+
+\begin{Eg}
+$\begin{bmatrix}-1& 1& 0\\1& -1&0\\0 &0& 1\end{bmatrix}$是可约的弱对角矩阵，但不可逆。
+\end{Eg}
+
+\begin{proof}
+反设$a_{ii}=0\Rightarrow \forall 1\leq j\leq n, a_{ji}=0$（即第$i$行为0），这与不可约矛盾！
+
+反设$A$奇异，则$\exists x\in\R^n, \nm{x}_\infty=1\st Ax=0$
+
+Case 1：$|x_1|=|x_2|=\cdots=|x_n|=1$，则$|a_{ii}|=|a_{ii}x_i|=|\sum\limits_{j=1,j\neq i}^n a_{ij}x_j|\leq \sum\limits_{j=1,j\neq i}^n|a_{ij}|\quad \forall 1\leq i\leq n$，与弱对角矛盾！
+
+Case 2：不妨设$|x_1|\leq \cdots \leq|x_m|<|x_{m+1}|=\cdots=|x_n|=1$，否则作置换。因$A$不可约，$\exists a_{kl}\neq 0\quad m+1\leq k\leq n,1\leq l\leq m$，即左下角有非零元。由$Ax=0$的第$k$个方程知：注意到$|a_{kl}||x_l|<|a_{kl}|$
+\[|a_{kk}|=|a_{kk}x_k|=|\sum_{j=1,j\neq k}|^n a_{kj}x_j|\leq |a_{kj}||x_j|<\sum_{j=1,j\neq k}^n|a_{k_j}|\]
+这与对角占优的定义矛盾！
+\end{proof}
+
+\end{document}

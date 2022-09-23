@@ -1,0 +1,362 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\nm}[1]{\left\|#1 \right\|}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\off}{\mathrm{off}}
+
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{矩阵特征值问题的数值方法}
+\subsection{特征值的估计与扰动}
+\begin{Thm}
+$A=[a_{ij}]\in \mathbf{C}^{n\times n}$，则$A$的特征值$\lambda\in\bigcup_{i=1}^nD_i$，其中$D_i$为复平面上以$a_{ii}$为中心，$r_i=\sum\limits_{j=1,j\neq i}^n|a_{ij}|$为半径的圆盘。
+\end{Thm}
+
+\begin{Cor}
+严格对角占优矩阵一定是非异的。
+\end{Cor}
+
+\begin{proof}
+$D=\mathrm{diag}\{a_{11},\cdots,a_{nn}\},\lambda\in\sigma(A),x$为相应特征向量，则
+\[(A-D)x=(\lambda I-D)x\]
+不妨设$\lambda\neq a_{ii}$，则
+\[\nm{(\lambda I-D)^{-1}(A-D)}_\infty\nm{x}_\infty\geq\nm{(\lambda I-D)^{-1}(A-D)x}_{\infty}=\nm{x}_\infty\]
+\[\max_{1\leq i\leq n}\frac{r_i}{|\lambda-a_{ii}|}=\nm{(\lambda I-D)^{-1}(A-D)}_\infty\geq 1\]
+$\Rightarrow \exists 1\leq i\leq n\st |\lambda-a_{ii}|\leq r_{i}$
+\end{proof}
+
+\begin{Thm}
+在上述定理的$n$个圆盘中，有$m$个构成了一个连通区域$S$，且$S$与其余$n-m$个圆盘严格分离，则$S$中有且只有A的$m$个特征值。
+\end{Thm}
+即连通分支由几个圆盘构成，就有几个特征值。
+
+\begin{proof}
+WLOG，设前$m$个圆盘连通。
+
+记号同上，记$A_\theta=\theta A+(1-\theta)D$。Fact：$A_\theta$的特征多项式的系数是$\theta$的多项式，故而为连续函数。
+
+令$D_i(\theta)=B_{\theta r_i}(a_{ii})$，$S(\theta)=\bigcup\limits_{i=1}^m D_i(\theta)$，$\tilde S=\bigcup\limits_{i=m+1}^n D_i(\theta)$。则$D_i(\theta)\subset D_i\Rightarrow S(\theta)$与$\tilde S(\theta)$严格分离，由连续性易得。
+\end{proof}
+
+由此我们在不计算特征值的情况下得到了对特征值的估计。特别地，作相似变换不会改变特征值，但会改变圆盘。
+
+\begin{Thm}
+设$\mu\in\sigma(A+E)\in\mathbf{C^{n\times n}}$，且$\exists X\in \mathbf{C}^{n\times n}\st AX=XD,D=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$，则
+\[\max_{\mu}\min_{\lambda\in\sigma(A)}|\lambda-\mu|\leq \nm{X^{-1}}_p\nm{X}_p\nm{E}_p\]
+其中$p=1,2,\infty$。
+\end{Thm}
+故$\nm{X^{-1}}_p\nm{X}_p$称为$A$关于特征值问题的条件数。该值$\geq 1$，于对称阵（$X$正交）取等。
+
+\begin{proof}
+WLOG，设$\mu\not\in\sigma(A)$，则$A+E-\mu I=X[D-\mu I+X^{-1}EX]X^{-1}$奇异，即$\exists y\in\mathbf{C^n}\st (D-\mu I)y=-(X^{-1}EX)y\Rightarrow y=-(D-\mu I)^{-1}(X^{-1}EX)y$。两边取p范数，整理得
+\[\min_{\lambda\in\sigma(A)}|\lambda-\mu|=\nm{(D-\mu I)^{-1}}^{-1}_p\leq \nm{X^{-1}}_p\nm{X}_p\nm{E}_p\]
+\end{proof}
+
+设$\lambda$是$A$的单特征值，设$x,y$是其左、右特征向量，即$Ax=\lambda x,y^HA=\lambda y^H$。设$\nm{x}_2=\nm{y}_2=1$，则$\exists x(\varepsilon),\lambda(\varepsilon)\in C^1\st$
+\[(A+\varepsilon F)x(\varepsilon)=\lambda(\varepsilon)x(\varepsilon)\quad \nm{F}_2=1\]
+其中$\lambda(0)=\lambda,x(0)=x$。对$\varepsilon$求导得
+\[Fx+A\dot x(0)=\dot\lambda(0)x+\lambda\dot x(0)\]
+两边同左乘$y^H$得
+\[\dot{\lambda}(0)=-\frac{y^HFx}{y^Hx}\]
+\[|\dot\lambda(0)|\leq \frac{1}{y^Hx}\]
+故称$\frac{1}{|y^Hx|}$为$A$关于特征值$\lambda$的条件数。特别地，该值$\geq 1$，于对称阵（左右特征向量相同）处取等。
+
+%综上，对称矩阵的特征值对于扰动是稳定的。
+
+\subsection{幂法和逆幂法}
+设矩阵最大的特征值与其余特征值分离，则幂法求解该最大特征值及其对应特征向量，收敛速度受gap大小影响。设$|\lambda_1|>|\lambda_2|\geq\cdots\geq |\lambda_n|$，对应特征向量$u_1,\cdots,u_n$，$x=\sum\limits_{i=1}^n\alpha_i u_i\Rightarrow A^k x=\sum\limits_{i=1}^n\alpha_i\lambda_i^ku_i=\lambda+1^k(\alpha_1 u_1+\sum\limits_{i=2}^n(\frac{\lambda_i}{\lambda_1})^k\alpha_i u_i)\to \lambda_1^k\alpha_1u_1\quad(k\to\infty)$，这是幂法的基本思想。实施过程中为降低误差需每一步实行一次归一化。
+
+
+设$z\in\R^n,\max(z)=z_i,|z_i|=\nm{z}_\infty$，则幂法的过程为
+\begin{itemize}
+\item $v^{(0)}\in\R^n$
+\item for $k=1,2,\cdots$
+\begin{align*}
+z^{(k)}&=Av^{(k-1)}\\
+m_k&=\max(z^{(k)})\\
+v^{(k)}&=\frac{z^{(k)}}{m_k}
+\end{align*}
+\end{itemize}
+
+\begin{Thm}
+设$A$有$n$个特征向量$x_1,\cdots,x_n$，对应特征值$|\lambda_1|>|\lambda_2|\geq\cdots\geq |\lambda_n|$，且$v^{(0)}$于$x_1$投影非零，则$v^{(k)}\to \frac{x_1}{\max(x_1)},m_k\to \lambda_1$
+\end{Thm}
+\begin{proof}
+\[v^{(k)}=\frac{A^kv^{(0)}}{m_km_{k-1}\cdots m_1}=\frac{A^kv^{(0)}}{\max(A^kv^{(0)})}\]
+注意到$\frac{A^kv^{(0)}}{\lambda_1^k\alpha_1}=x_1+\sum\limits_{i=2}^n\frac{\alpha_i}{\alpha_1}(\frac{\lambda_i}{\lambda_1})^kx_i$，故
+\[\lim\limits_{k\to\infty}\frac{A^kv^{(0)}}{\max(A^kv^{(0)})}=\lim\limits_{k\to\infty}\frac{A^kv^{(0)}}{\lambda_1^k\alpha_1}\frac{\lambda_1^k\alpha_1}{\max(A^kv^{(0)})}=\frac{x_1}{\max(x_1)}\]
+\begin{align*}
+m_k=&\max(z^{(k)})=\max(Av^{(k-1)})\\
+=&\max(A\frac{A^{k-1}v^{(0)}}{\max(A^{k-1}v^{(0)})})\\
+=&\frac{\max(A^{k}v^{(0)})}{\max(A^{k-1}v^{(0)})}\\
+=&\lambda_1\frac{\max(\alpha_1x_1+\sum\limits_{i=2}^n\alpha_i(\frac{\lambda_i}{\lambda_n})^kx_i)}{\max(\alpha_1x_1+\sum\limits_{i=2}^n\alpha_i(\frac{\lambda_i}{\lambda_n})^{k-1}x_i)}\\
+\to&\lambda_1\quad (k\to\infty)
+\end{align*}
+\end{proof}
+
+\subsection{逆幂法}
+
+\begin{itemize}
+\item $v^{(0)}\in\R^n$
+\item for $k=1,2,\cdots$
+\begin{align*}
+Az^{(k)}&=v^{(k-1)}\\
+m_k&=\max(z^{(k)})\\
+v^{(k)}&=\frac{z^{(k)}}{m_k}
+\end{align*}
+\end{itemize}
+该逆幂法求解最小特征值及其特征向量。在此基础上，将幂法用于$(A-qI)^{-1}$，可得原点位移的逆幂法：
+\begin{itemize}
+\item $v^{(0)}\in\R^n$
+\item for $k=1,2,\cdots$
+\begin{align*}
+(A-qI)z^{(k)}&=v^{(k-1)}\\
+m_k&=\max(z^{(k)})\\
+v^{(k)}&=\frac{z^{(k)}}{m_k}
+\end{align*}
+\end{itemize}
+
+$q$不宜距所需特征值过近，否则矩阵刚性过强，计算误差过大。
+
+\subsection{收缩方法}
+设$|\lambda_1|>|\lambda_2|>|\lambda_3|\geq\cdots\geq|\lambda_n|$，收缩方法用于计算$\lambda_1$后计算$\lambda_2$。收缩法欲构造缩小一维的方阵使得特征值不变（只是去除$\lambda_1$）。
+
+\paragraph{方法1} 设$\lambda_1,x_1$已知\footnote{特征向量已归一化}，取Householder变换$H\st Hx_1=e_1$。由$Ax_1=\lambda_1x_1$，得$HAH^{-1}e_1=\lambda_1e_1$，即$A_2=HAH^{-1}=\begin{bmatrix}\lambda_1&b_1^T\\0&B_2\end{bmatrix}$，其中$B_2$具特征值$\lambda_2,\cdots,\lambda_n$。设$B_2y_2=\lambda_2y_2$，则$A_2$对应的特征向量为$z_2=[\frac{b_1^Ty}{\lambda_2-\lambda_1},y_2]^T$，$A$对应特征向量$x_2=H^{-1}z_2$，以此类推。
+
+\paragraph{方法2} 将已算出的特征值归零。
+\begin{Thm}
+设$\lambda_1$的代数重数为1，$v^Tx_1=1$，则$B=A-\lambda_1x_1v^T$的特征值为$0,\lambda_2,\cdots,\lambda_n$，特征向量为$x_1,y_2,\cdots,y_n$，且$x_i=(\lambda_i-\lambda_1)y_i+\lambda_i(v^Ty_i)x_1\quad i=2,\cdots,n$
+\end{Thm}
+
+由此得到Wielandt收缩方法：设$x_{1i}\neq 0$，取$v=\frac{1}{\lambda x_{1i}}(a_{i1},\cdots,a_{in})^T$，则$v^Tx_1=1$，且$B=A-\lambda_1x_1v^T$的第$i$行为0。删去第i行、i列得到$B'\in\R^{(n-1)\times (n-1)}$，以幂法计算其特征值$\lambda_2$，特征向量$y'_2$，于第i个分量插入0得到$y'_2$，再由上述定理中的公式即得所需特征向量。
+
+\subsection{QR方法}
+基本的QR方法为：
+\begin{itemize}
+\item $A_1=A$
+\item for $k=1,2,\cdots$
+\begin{align*}
+A_k&=Q_kR_k\\
+A_{k+1}&=R_kQ_k
+\end{align*}
+\end{itemize}
+
+\begin{Thm}
+QR算法产生的$A_k$满足
+\begin{enumerate}
+\item $A_{k+1}=Q_k^TA_kQ_k$
+\item $\bar Q_k^TA\bar Q_k\quad \bar Q_k=Q_1Q_2\cdots Q_k$
+\item $A^k=\bar Q_k\bar R_k\quad \bar R_k=R_kR_{k-1}\cdots R_1$
+\end{enumerate}
+\end{Thm}
+\begin{proof}
+用数学归纳法直接验证。
+\end{proof}
+
+\begin{Def}
+若$\{A_k\}$的对角元素收敛，严格下三角部分收敛至$0$，（严格上三角部分可以不收敛），则称$\{A_k\}$基本收敛到上三角矩阵
+\end{Def}
+
+\begin{Thm}
+$A\in\R^{n\times n}$的特征值代数重数均为1，有完备的特征向量组$X=[x_1,\cdots,x_n]$，$X^{-1}=LU$，其中$L$为单位下三角矩阵，则QR算法产生的序列$A_k$基本收敛于上三角矩阵，且对角元的极限为
+\[\lim_{k\to\infty}a_{ii}^{(k)}=\lambda_i\]
+\end{Thm}
+
+\subsection{上Hessenberg矩阵}
+为降低QR分解的计算量，我们引入：
+\begin{Def}
+称$B\in\R^{n\times n}$为上Hessenberg矩阵，若$\forall i>j+1,b_{ij}=0$。称不可约的上Hessenberg矩阵，若$\forall i=2,\cdots,n, b_{i,i-1}\neq 0$。
+\end{Def}
+\begin{Thm}
+$A\in\R^{n\times n}$，存在$Q\in O(n)\st B=Q^TAQ$为上Hessenberg矩阵。
+\end{Thm}
+
+既得到上Hessenberg矩阵$H$，对$H$施QR分解以Givens变换，则
+\[U^T=J(n-1,n,\theta_{n-1})\cdots J(1,2,\theta_1),H=UR\]
+易见$U$是上Hessenberg矩阵，故$H_2=RU$犹为上Hessenberg矩阵。
+
+
+\begin{Thm}[隐式Q定理]
+$A=\R^{n\times n},Q=[q_1,\cdots, q_n],V=[v_1,\cdots,v_n]\in O(n)$，且$Q^TAQ=H,V^TAV=G$是上Hessenberg矩阵。记$k=\mathrm{argmin}\{h_{k+1,k}=0\}$若$q_1=v_1$，则$q_i=\pm v_i\quad i=2,\cdots n, |h_{i,i-1}|=|g_{i,i-1}|$，且若$k<n$，则$g_{k+1,k}=0$
+\end{Thm}
+
+\begin{proof}
+记$W=V^TQ$，只需说明$W$是单位阵。
+
+易知$GW=WH$，则对于$i=2,\cdots,n$，比较上式的第$i-1$列：
+\[Gw_{i-1}=[w_1,\cdots, w_n](h_{1,i-1},\cdots,h_{i,i-1},0,\cdots,0)\]
+整理得
+\[h_{i,i-1}w_i=Gw_{i-1}-\sum_{j=1}^{i-1}h_{j,i-1}w_j\]
+既知$v_1=q_1\Rightarrow w_1=e_1$。利用上式可知$w_k\in\mathrm{Span}\{e_1,\cdots,e_k\}$即$W$是上三角矩阵。又以其为正交矩阵，$w_i=\pm e_i\Rightarrow q_i=vw_i=vv^Tq_i=\pm v_i,|h_{i,i-1}|=|w_i^TGw_{i-1}|=|q_iVGV^Tq_{i-1}|=|q_i^TAq_{i-1}|=|v_i^TAv_{i-1}|=|g_{i,i-1}|$
+%to be continued
+\end{proof}
+
+\begin{Cor}
+若$Q^TAQ=H,V^TAV=G$均为不可约上Hessenberg矩阵，且$Q,V$的第一列相同，则$G=D^{-1}HD$，其中$D$是对角线元素为$\pm 1$的对角矩阵。
+\end{Cor}
+
+
+\subsection{带原点位移的QR方法}
+\begin{itemize}
+\item $H_1=H$
+\item for $k=1,2,\cdots$
+\[H_k-\mu_kI=U_kR_k\]
+\[H_{k+1}=R_kU_k+\mu_kI\]
+\end{itemize}
+$H_{k+1}=U_k^TH_kU_k$，故迭代过程犹产生相似的矩阵。
+
+$\mu_k$的取法为
+\begin{enumerate}
+\item $\mu_k=h^{(k)}_{nn}$，但在复特征值的情形下这种位移不会加速收敛。
+\item $B=\begin{bmatrix}h^{(k)}_{n-1,n-1}&h^{(k)}_{n-1,n}\\h^{(k)}_{n,n-1}&h^{(k)}_{n,n}\end{bmatrix}$的两个实特征值中接近$h_{n,n}^{(k)}$的一个。
+\end{enumerate}
+
+为避免上述选取位移过程中可能出现的复数，采用：
+\subsection{双重步QR方法}
+设$\mu_1,\mu_2$是$\begin{bmatrix}h^{(k)}_{n-1,n-1}&h^{(k)}_{n-1,n}\\h^{(k)}_{n,n-1}&h^{(k)}_{n,n}\end{bmatrix}$的共轭复特征值，分别以其为位移作QR迭代得$H_1,H_2$。设$\mathrm{Tr}(B)=s,\det(B)=t$。设
+\[M=(H-\mu_1 I)(H-\mu_2 I)=H^2-sH+tI\]，则
+\begin{align*}
+M&=(U_1R_1+(\mu_2-\mu_1)I)(H-\mu_1I)\\
+=&U_1(R_1U_1+(\mu_1-\mu_2)I)U^H(H-\mu_1 I)\\
+=&U_1(H-\mu_2 I)R_1\\
+=&(U_1U_2)(R_2R_1)=:ZR
+\end{align*}
+且
+\[H_2=U_2^HH_1U_2=(U_1U_2)^HH(U_1U_2)=Z^THZ\]
+故得
+\begin{itemize}
+\item $M=H^2-sH+tH$
+\item $M=ZR$
+\item $H_2=Z^THZ$
+\end{itemize}
+
+\begin{Thm}
+$H$是不可约的上Hessenberg矩阵，$\mu_1,\mu_2$不是$H$的特征值，则$H_2$犹为不可约上Hessenberg矩阵。
+\end{Thm}
+
+为避免计算$H^2$的巨大计算量，希望寻求替代方法计算$M$。为此应用隐式Q定理：希望找到$Z_1\in O(n)\st Z_1(:,1)=Z(:,1),Z_1^HZ_1$是不可约上Hessenberg矩阵，则由隐式Q定理，$H_2=Z_1^THZ_1$即为所求。
+
+故得算法：
+\begin{itemize}
+\item 计算$Me_1$（因QR分解之结构，Z的第一列与M的第一列平行）
+\item 计算Householder矩阵$P_0\st P_0(Me_1)=\pm\nm{Me_1}_2 e_1$。如此得到的$P_0$的第一列与$Z$的第一列平行。
+\item 计算Householder矩阵$P_1,\cdots,P_{n-2}$将$P_0^THP_0$变为上Hessenberg矩阵。
+\item 取$Z=P_0P_1\cdots P_{n-2}$即为所求。这是因为$P_1,\cdots,P_{n-2}$总保持第一列不变。
+\end{itemize}
+
+注意到$H$是上Hessenberg矩阵（第一列仅有前两个元素非零$\Rightarrow H^2$第一列仅前三个元素非零），并注意到$M$的结构：
+
+1.容易显式计算$Me_1$
+
+2.$P_0$仅是三阶的Householder变换，$P_0^THP_0$仅在$(3,1),(4,1),(4,2)$三个位置引入了非零元，并在之后的Householder变换中保持结构，每一步只需做3维的Householder变换。 
+
+\begin{Rmk}
+故QR迭代是不做QR分解的。
+\end{Rmk}
+
+
+\subsection{实对称矩阵计算特征值的方法}
+若$A$是实对称矩阵，则
+
+1.其对应Hessenberg矩阵是三对角矩阵（且构造过程只需一半的计算量）。
+
+2.特征值都是实数，单步位移便是足够的。
+
+3.可以利用隐式Q定理寻求$\bar{U}_k^TH_k\bar U_k=\tilde{H}_{k+1}$，其构造过程同上：只将$Me_1$替换为$H_k-\mu_k I$的第一列，该过程全程只做2维的Householder变换。
+
+
+\subsubsection{SVD的计算}
+在计算奇异值的过程中需要用到$A^TA$，故可以使用上述过程。%此时注意到：事实上可以采用如下方法
+%\[\begin{bmatrix}0&A^*\\ A&0\end{bmatrix}\begin{bmatrix}V&V\\U&-U\end{bmatrix}=\begin{bmatrix}V&V\\U&-U\end{bmatrix}\begin{bmatrix}\Sigma^*&0\\0&-\Sigma\end{bmatrix}\]
+
+\textbf{Step 1:}寻$P,Q\st B=PAQ^T$是上二对角矩阵（$\Rightarrow B^TB=AA^TAQ^T$是三对角矩阵）
+
+\textbf{Step 2:}对第$k$步迭代，选取合适的位移$\mu_k$，计算$P_0\st P_0((B_k^TB_k-\mu_k I)e_1)=\nm{B^TBe_1}e_1$。
+
+若采取显式的计算，则下面需要选取$P_1,\cdots, P_{n-2}\st Q=P_0\cdots P_{n-2},Q_k^TB_k^TB_kQ_k$是三对角矩阵。但这样需要显式构造$B^TB$，遂采用隐式方法：
+
+\textbf{Step 3:}计算$BP_0$。注意到$P_0$是二维的Householder变换，只在$(2,1)$处引入了非零元。用下面的过程将$B_kP_0$变回上二对角矩阵：
+\begin{itemize}
+\item $U_1\in O(m)\st U_1B_kP_0$用Householder变换将$(2,1)$处元素变为0，同时在(1,3)处引入非零元。
+\item $V_2\in O(n)\st U_1B_kP_0V_2$用Householder变换将$(3,1)$处元素变为0而引入$(2,3)$处非零元
+\item ……
+\item 重复此过程至$U_{n-1}\cdots U_1 B_kP_0V_2\cdots V_{n-1}$为上二对角矩阵。
+\end{itemize}
+此时记
+\[U=U_{n-1}\cdots U_1,V=P_0V_2\cdots V_{n-1}\]则$UB_kV$是上二对角矩阵，且$Ve_1=Qe_1$（这是由$V_k,2\leq k\leq n-1$的结构得出的），且$V^TB_k^TB_k V$为三对角矩阵。由隐式Q定理，$Q_k=V\mod \pm 1$，遂得
+\[Q_k=V\qquad B_{k+1}=UB_k V\]
+是为迭代过程。
+
+\subsubsection{Rayleigh商迭代法}
+\begin{Def}
+$A\in \mathbf{C}^{n\times n},x\in \mathbf{C}^n,x\neq 0$，则
+\[R(x)=\frac{(Ax,x)}{x,x}\]
+称为$A,x$的Rayleigh商。
+\end{Def}
+在原点位移的逆幂法中的每步选取$\mu_k=R(x^{(k)})$，则得到Rayleigh商迭代法：
+\begin{itemize}
+\item $v^{(0)}\in\R^n,\nm{v^{(0)}}=1$
+\item for $k=0,1,\cdots$
+\begin{itemize}
+\item $\mu_k=R(v^{(k)})$
+\item $(A-\mu_kI)y^{(k+1)}=v^{(k)}$
+\item $v^{(k+1)}=\frac{y^{(k+1)}}{\nm{y^{(k+1)}}}$
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Jacobi方法}
+对于对称矩阵$A$，寻找$P\in O(n)\st P^TAP=D$是对角阵。记$off(A)=\sum_{i,j=1,i\neq j}^n|a_{ij}|^2$，则希望$off(A)$在迭代中减小。为此考察Givens变换$J(p,q,\theta)$，$B=J^{-1}AJ$。记$\sin(\theta)=s,\cos(\theta)=c$，则$B$的元素为（非第$i,j$行、列的保持不变，略）：
+\begin{align*}
+b_{pp}&=a_{pp}c^2+a_{qq}s^2+2a_{pq}sc\\
+b_{qq}&=a_{pp}s^2+a_{qq}c^2-2a_{pq}sc\\
+b_{pq}=b_{qp}&=(a_{qq}-a{pp})sc+a_{pq}(c^2-s^2)\\
+b_{ip}=b_{pi}&=a_{ip}c+a_{iq}s\\
+b_{iq}=b_{qi}&=-a_{ip}s+a_{iq}c
+\end{align*}
+故
+\[b_{pp}^2+b_{qq}^2+2b_{pq}^2=a_{pp}^2+a_{qq}^2+2a_{pq}^2\]
+故
+\[\off(B)=\nm{B}_F^2-\sum_{i=1}^n b_{ii}^2=\nm{A}_F^2-\sum_{i=1,i\neq p,q}|a_{ii}|^2-(b_{pp}^2+b_{qq}^2)=\off(A)-2a_{pq}^2+2b_{pq}^2\]
+为此希望
+\begin{itemize}
+\item 使得$b_{pq}=0\Rightarrow \theta\st \cot(2\theta)=\frac{a_{pp}-a_{qq}}{2a_{pq}}=\tau$。解$t=\tan(\theta)$而取绝对值较小者$t=\frac{\mathrm{sign}(\tau)}{|\tau|+\sqrt{1+\tau^2}}\Rightarrow c=\frac{1}{\sqrt{1+t^2}},s=tc,|t|<1$
+
+\item $|a_{pq}|=\max\limits_{1\leq i<j\leq n}|a_{ij}|$使得收敛最快：$\off(A_{k+1})=\off(A_k)-2a_{pq}^2\leq (1-\frac{2}{n(n-1)})\off(A_k)\Rightarrow \lim\limits_{k\to\infty} A_k=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$
+\end{itemize}
+
+\begin{Lemma}
+记$A,E,A+E$的特征值为$\lambda_i,\nu_i,\mu_i$，则
+\[\lambda_i+\nu_n\leq\mu_i\leq \lambda_i+\nu_1\]
+\end{Lemma}
+
+\begin{Thm}
+$\lim\limits_{k\to\infty} A_k=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$
+\end{Thm}
+
+\begin{proof}
+记$E(A_k)=\sqrt{\off(A_k)}$，取$\delta=\min\{\lambda-\mu:\lambda,\mu\in\sigma(A), \lambda>\mu\}$，则$\exists N_0\st \forall k>N_0,E(A_k)<\varepsilon<\frac{\delta}{4}$。又$|\lambda_i-a^{(N_0)}_{ii}|<\varepsilon$，施数学归纳法可证$|\lambda_i-a^{(k)}_{ii}|<\varepsilon$
+\end{proof}
+
+这一方法的缺点在于收敛速度慢，优点在于可以并行运算。
+
+
+
+\end{document}

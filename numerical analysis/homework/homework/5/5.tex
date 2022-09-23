@@ -1,0 +1,139 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,graphicx, booktabs}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业5}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{1.}
+\begin{proof}
+设$A$的$l$个互不相同的特征值为$\lambda_1,\dots,\lambda_l$。
+
+因$A$对称正定，故$\exists Q\in O(\mathbf{C}^n)\st Q^TAQ=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$，故$A$的特征多项式为$f(x)=\prod_{i=1}^l(x-\lambda_i)=x^l-p(x)$，$\mathrm{deg}(f)=l,\mathrm{deg}(p)=l-1$。
+
+记$x^*$为精确解，则$x^*=\mathrm{argmin}\{\varphi(x):x\in \mathcal{K}(A,r^{(0)},n)\}$。注意到$f(A)r^0=0\Rightarrow \forall ,A^lr^{(0)}=p(A)r^{(0)}$，即$A^lr^{(0)}\in\mathrm{Span}\{r^{(0)},Ar^{(0)},\cdots, A^{l-1}r^{(0)}\}=\mathcal{K}(A,r^{(0)},l-1)$，即$\mathcal{K}(A,r^{(0)},l)=\mathcal{K}(A,r^{(0)},l-1)$。同理可得$\forall l\leq k\leq n, \mathcal{K}(A,r^{(0)},k)=\mathcal{K}(A,r^{(0)},l-1)$，故
+\[x^*=\mathrm{argmin}\{\varphi(x):x\in \mathcal{K}(A,r^{(0)},n)\}=\mathrm{argmin}\{\varphi(x):x\in \mathcal{K}(A,r^{(0)},l-1)\}=x^l\]
+即精确解在$l$步后得到。
+\end{proof}
+
+\paragraph{2.}
+\begin{proof}
+$z_k^Tr_k=(M^{-1}r^k)r^k=r^kM^{-1}r^k=(S^{-1}r^k)^T(S^{-1}r^k)$。因$S$非异，$r^k\neq 0$，$y_k=(S^{-1}r^k)\neq 0\Rightarrow z_k^Tr_k=\nm{y_k}^2_2>0$。
+\end{proof}
+
+\paragraph{3.}
+\begin{proof}
+用数学归纳法：
+
+\textbf{Case 1:}$k=0$时，由构造显然成立。
+
+\textbf{Case 2:}若已证明$\{q_0,\cdots,q_k\}$是$\mathcal{K}(A,r^0,k+1)$的单位正交基，则
+\begin{itemize}
+\item 显然$\nm{q_k}_2=1$
+\item $(q_{k+1},q_k)=\frac{1}{\nm{q_{k+1}}_2}(q_k^TAq_k-\alpha q^T_kq_k)=\frac{1}{\nm{q_{k+1}}_2}(\alpha-\alpha)=0$,$(q_{k+1},q_{k-1})=\frac{1}{\nm{q_{k+1}}_2}(q_{k-1}^TAq_k-\beta q^T_{k-1}q_{k-1})=\frac{1}{\nm{q_{k+1}}_2}(\beta-\beta)=0$。$\forall l<k-1, q_l\in \mathrm{Span}(r^0,\cdots,A^{l-1}r^0)\Rightarrow Aq_l\in\mathrm{Span}(r^0,\cdots,A^lr^0)=\mathcal{K}(A,r^0,l+1)\Rightarrow Aq_l=c_1 q_1+\cdots c_{l+1}q_{l+1}$。注意$l+1<k$，故$(q_{k+1},q_l)=\frac{1}{\nm{q_{k+1}}}(q_k,\sum_{i=1}^{l+1}c_iq_i)=0$，正交性得证。
+\item 由正交性立即推出线性无关性，故只需证明$q_{k+1}\in \mathrm{Span}\{r^0,\cdots,A^{k+1}r^0\}$即由空间维数与向量个数相同得到$\{q_0,\cdots,q_{k+1}\}$为基的结论。事实上，$q_k\in \mathrm{Span}\{r^0,\cdots,A^k r^0\}\Rightarrow Aq_k\in\mathrm{Span}\{Ar^0,\cdots, A^{k+1}r^0\}\subset\mathcal{K}(A,r^0,k+2),q_k\in \mathcal{K}(A,r^0,k+1)\subset\subset\mathcal{K}(A,r^0,k+2),q_{k-1}\in \mathcal{K}(A,r^0,k)\subset\subset\mathcal{K}(A,r^0,k+2)$，由$q_{k+1}$的定义得$q_{k+1}\in \mathcal{K}(A,r^0,k+2)$，得证。
+\end{itemize}
+\end{proof}
+
+\paragraph{4.}
+\begin{itemize}
+\item 取$r^0=b-Ax,q_1=\frac{r^0}{\nm{r^0}}$
+\item for k=1,2,3,$\cdots$
+\begin{itemize}
+\item 求$q_{k+1}, H_k$
+\item 求$H^k$的QR分解：$H_k=Q_kR_k$
+\item 用该QR分解解最小二乘问题$y^k=\mathrm{argmin}\{H_kz-\nm{r^0}e_1:z\in\mathbf{\R^k}\}$
+\item $x^k=[q_1,\cdots,q_n]y^k$
+\end{itemize}
+\end{itemize}
+其中求$q_k,H_k$的Arnoldi迭代过程的第k步为
+\begin{itemize}
+\item $\tilde{q}_{k+1}=Aq_{k}$
+\item for $l=1:k\qquad h_{jk}=[q_j]^TAq_k$,$\tilde q_{k+1}=\tilde{q}_k-h_{jk}q_j$
+\item $h_{k+1,k}=\nm{\tilde{q_k}},q_{k+1}=\frac{\tilde{q}_{k+1}}{\nm{\tilde{q}_{k+1}}}$
+\end{itemize}
+
+其中求$H^k$的QR分解的过程为：
+记$R_k(\theta)=\begin{bmatrix}\cos\theta&\sin\theta\\-\sin\theta&\cos\theta\end{bmatrix}$，其中$\theta=\mathrm{arctan}(\frac{h_{k,k+1}}{h_{k,k}})$。取$G_k=\mathrm{diag}\{I_{k-1},R(-\theta)\}$，则$Q_k=\mathrm{diag}\{Q_{k-1},1\}G_k,R_k=G^{-1}_k\begin{bmatrix}R_{k-1}&H_{k}(1:k,k)\\0,h_{k+1,k}\end{bmatrix}$
+
+既知QR分解，求解最小二乘问题是trivial的，不再赘述。
+
+\paragraph{5.}
+\textbf{方法1：}注意到法方程等价于$A^T(Ax-b)=0$，故求解法方程等价于求解
+\[Ax+r=b\]
+\[A^Tr=0\]
+即
+\[\begin{bmatrix}I&A\\A&0\end{bmatrix}\begin{bmatrix}r\\x\end{bmatrix}=\begin{bmatrix}b\\ 0\end{bmatrix}\]
+记$\tilde{A}=\begin{bmatrix}I&A\\A&0\end{bmatrix}$，$\tilde{b}=\begin{bmatrix}b\\ 0\end{bmatrix}$，再用共轭梯度法求解$\tilde{A}\tilde{x}=\tilde b$，最后取$x=\tilde{x}_{n+1:2n}$即得。
+
+\textbf{方法2：}被括号分隔的运算分为两步，故并不显式地构造$A^TA$
+\begin{itemize}
+\item 取$x^{(0)}\in \R^n$
+\item $r^{(0)}=b-A^T(Ax^{(0)}),p^{(0)}=r^{(0)}$
+\item $k=0,1,\cdots$
+\begin{align*}
+\alpha_k&=\frac{(r^{(k)},r^{(k)})}{(Ap^{(k)},Ap^{(k)})}\\
+x^{(k+1)}&=x^{(k)}+\alpha_kp^{(k)}\\
+r^{(k+1)}&=b-A^T(Ax^{(k+1)})\\
+\beta_k&=\frac{(r^{(k+1)},r^{(k+1)})}{(r^{(k)},r^{(k)})}\\
+p^{(k+1)}&=r^{(k+1)}+\beta_kp^{(k)}
+\end{align*}
+\end{itemize}
+
+\paragraph{6.}
+GMRES总收敛至精确解：
+\[ans =
+    1.0000,
+    1.7321,
+    2.4495\]
+但CG计算结果溢出：
+\[x =
+       NaN ,   1.0153 ,   1.0000\]
+\[x =
+       NaN ,   1.0002 ,   1.0000\]
+\[x =
+       NaN  ,  1.0000  ,  1.0000\]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

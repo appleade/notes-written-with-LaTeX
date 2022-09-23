@@ -1,0 +1,295 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\nm}[1]{\left\|#1 \right\|}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{非线性方程（组）的数值解法}
+\subsection{单方程的不动点迭代法}
+为求解方程$f(x)=0$，构造$\varphi(x)\st x^*=\varphi(x^*)\Leftrightarrow f(x^*)$。称$x^*$为$\varphi(x)$的不动点，相应迭代方法$x_{k+1}=\varphi(x_k)$称（单步定常）不动点迭代，$\varphi$称迭代函数。
+
+\begin{Thm}
+$\varphi\in C([a,b],[a,b])$，则其有不动点。又若$\exists L\in (0,1)\st |\varphi(x)-\varphi(y)|\leq L|x-y|$，则不动点唯一。
+\end{Thm}
+
+\begin{proof}
+WLOG，设$\varphi(a)>a,\varphi(b)<b$。设$\psi(x)=\varphi(x)-x$，则$\psi(a)\psi(b)<0$，由介值定理即得。
+
+设$x_1^*,x_2^*$是两个不动点，则$|x_1^*-x_2^*|=|\varphi(x_1^*)-\varphi(x_2^*)|\leq L|x_1^*-x_2^*|$，矛盾！
+\end{proof}
+
+\begin{Cor}
+设$\varphi\in C^1,|\varphi'(x)|\leq L<1$，则$\varphi(x)$于$[a,b]$有唯一不动点。
+\end{Cor}
+
+\begin{Thm}
+在上述条件下，$x_{k+1}=\varphi(x_k)$产生的序列收敛到不动点$x^*$，且有后验估计：
+\[|x_{k+p}-x_k|\leq\frac{1}{1-L}|x_{k+1}-x_k|\]
+\[|x^*-x_k|\leq \frac{L}{1-L}|x_k-x_{k-1}|\]
+\[|x^*-x_k|\leq \frac{L^k}{1-L}|x_1-x_0|\]
+\end{Thm}
+
+\begin{proof}
+1.施三角不等式拆成$p$项再以Lipschitz常数，然后再令$p\to \infty$。
+\end{proof}
+
+\begin{Def}
+设$\varphi$在区间$I$上有不动点$x^*$。若$\exists x^*$的邻域$S\subset I\st\forall x_0\in S$，迭代法产生的序列$\{x_k\}\subset S,x_k\to x^*\quad(k\to\infty)$，则称该迭代法局部收敛。
+\end{Def}
+
+\begin{Thm}
+设$x^*$是$\varphi$的不动点，$\varphi'$在$x^*$的某个邻域连续且$|\varphi'(x^*)|<1$，则该迭代法局部收敛。
+\end{Thm}
+
+若所构造的迭代方法是线性的，则$\varphi'$恰为迭代矩阵。
+
+\begin{Def}
+设$\lim\limits_{k\to\infty}x_k=x^*,e_k=x_k-x^*$
+\begin{enumerate}
+\item 若$\exists p\geq 1,C\neq 0\st$
+\[\lim_{k\to\infty}\frac{|e_{k+1}|}{|e_k|}=C\]
+其中$p=1$时，要求$C<1$，则称$\{x_k\}$为$p$阶收敛，$C$称为渐进误差常数。
+\item 若$\exists p\geq 1,C>0,K\in\mathbf{N}\st\forall k>K$
+\[|e_{k+1}|\leq C|e_k|^p\]
+则称$\{x_k\}$至少$p$阶收敛。
+\end{enumerate}
+\end{Def}
+
+\begin{Thm}
+设$x^*$是$\varphi$的不动点，$p\in\mathbf{N},\varphi\in C^p$，且$\varphi'(x^*)=\cdots=\varphi^{(p-1)}(x^*)=0,\varphi^{(p)}(x^*)\neq 0$，则由迭代法产生的序列$\{x_k\}$在$x^*$的邻域$p$阶收敛，且$\lim\limits_{k\to\infty}\frac{|e_{k+1}|}{|e_k|^p}=\frac{\varphi^{(p)}(x^*)}{p!}$
+\end{Thm}
+\begin{proof}
+施Taylor展开：$x_{k+1}-x^*=\varphi(x_k)-\varphi(x^*)=\frac{\varphi^{(p)}(\xi_k)}{p!}(x_k-x^*)^p$，按定义即得。
+\end{proof}
+
+\subsection{加速收敛的方法}
+只能作用于已经收敛的方法，不能使不收敛者收敛。
+
+\subsubsection{Aitken加速方法}
+设$\{x_k\}$线性收敛于$x^*$。若可以置信：
+\[\frac{x_{k+1}-x^*}{x_k-x^*}\sim\frac{x_{k+2}-x^*}{x_{k+1}-x^*}\]
+则
+\[x^*\sim\bar x_k=\frac{x_kx_{k+2}-x_{k+1}^2}{x_{k+2}-2x_{k+1}+x_k}\]
+\begin{Thm}
+设$\exists|\lambda|<1\st x_{k+1}-x^*=(\lambda+\delta_k)(x_k-x^*)$，其中$\lim\limits_{k\to\infty}\delta_k=0$，则对充分大的$k$，上述$\bar x_k$存在，且
+\[\lim_{k\to\infty}\frac{\bar x_k-x^*}{x_k-x^*}=0\]
+\end{Thm}
+\begin{proof}
+设$\Delta x_k=x_{k+1}-x_k=e_k[(\lambda-1)+\delta_k]$，则$\Delta^2 x_k=e_k[(\lambda-1)^2+\mu_k]\quad \mu_k<<1$。注意到$\bar x_k=x_k-\frac{(\Delta x_k)^2}{\Delta^2 x_k}$，故$\lim\limits_{k\to\infty}\frac{\bar x_k-x^*}{x_k-x^*}=\lim\limits_{k\to\infty}(1-\frac{[\lambda-1+\delta_k]^2}{(\lambda-1)^2+\mu_k})=0$，得证。
+\end{proof}
+
+\subsubsection{Steffensen迭代法}
+直接将$\bar x_k$作为所保留的序列，则得Steffensen迭代法：
+\begin{itemize}
+\item $y_k=\varphi(x_k)$
+\item $z_k=\varphi(y_k)$
+\item $x_{k+1}=x_k-\frac{(y_k-x_k)^2}{z_k-2y_k+x_k}$
+\end{itemize}
+其迭代函数为：
+\[\psi(x)=x-\frac{[\varphi(x)-x]^2}{\varphi(\varphi(x))-2\varphi(x)+x}=\frac{x\varphi(\varphi(x))-\varphi(x)^2}{\varphi(\varphi(x))-2\varphi(x)+x}\]
+
+\begin{Thm}
+若$x^*$是$\psi$的不动点，则$x^*$是$\varphi$的不动点。
+
+若$x^*$是$\varphi$的不动点，设$\varphi'$存在连续，$\varphi'(x^*)\neq 1$，则$x^*$是$\psi$的不动点。
+\end{Thm}
+
+\begin{Thm}
+设$x^*$是$\varphi$的不动点，$\varphi\in C^{p+1}$。对$p=1$，若$\varphi'(x^*)\neq 1$，则Steffensen迭代法二阶收敛；若$x_{k+1}=\varphi(x_k)\, p$阶收敛$(p>1)$，则Steffensen迭代法$2p-1$阶收敛。
+\end{Thm}
+
+\subsection{Newton迭代法与割线法}
+\subsubsection{Newton迭代法}
+为求解$f(x)=0$，作一阶近似$0=f(x^*)=f(x_k)+f'(x_k)(x^*-x_k)\Rightarrow x_{k+1}=x_k-\frac{f(x_k)}{f'(x_k)}$，遂得迭代函数：
+\[\varphi(x)=x-\frac{f(x)}{f'(x)}\]
+
+\begin{Thm}
+设$f(x^*)=0,f'(x^*)\neq 0$，且$f$在$x^*$的邻域上有二阶连续导数，则Newton迭代法局部收敛到$x^*$，收敛速度为至少二阶收敛：
+\[\lim_{k\to\infty}\frac{x_{k+1}-x^*}{(x_k-x^*)^2}=\frac{f''(x^*)}{2f'(x^*)}\]
+\end{Thm}
+即要求$x^*$是单根。
+
+\begin{proof}
+直接对LHS作Taylor展开。
+\end{proof}
+
+\subsubsection{重根情形}
+设$f(x)=(x-x^*)^mg(x)\quad m>1,g(x^*)\neq 0,g\in C^2$，则$\varphi(x)=x-\frac{(x-x^*)g(x)}{mg(x)+(x-x^*)g'(x)}\Rightarrow \varphi'(x^*)=1-\frac{1}{m}<1$，故此时Newton迭代法局部线性收敛。
+
+下面改进重根情形的Newton迭代法：
+
+\paragraph{方法1}若已知$m$，则取$\varphi(x)=x-\frac{mf(x)}{f'(x)}$，则$\varphi(x^*)=x^*,\varphi'(x^*)=0$，至少二阶收敛。
+
+\paragraph{方法2}设$\mu(x)=\frac{f(x)}{f'(x)}=(x-x^*)\frac{g(x)}{mg(x)+(x-x^*)g'(x)}$，则$x^*$是$\mu(x)$的单根。对$\mu(x)$用原始的Newton迭代法：
+\[\varphi(x)=x-\frac{f(x)f'(x)}{[f'(x)]^2-f(x)f''(x)}\]
+这种迭代法至少二阶收敛。但这种方法需要计算$f''(x)$，且$f(x),f'(x)$接近$0$，计算过程中出现小数与小数相除，丢失有效数字。
+
+\subsubsection{割线法}
+为避免计算$f'(x)$，用差商近似导数：
+\[f'(x_k)\approx \frac{f(x_k)-f(x_{k-1})}{x_k-x_{k-1}}\]
+则Newton法变为
+\[x_{k+1}=x_k-\frac{f(x_k)(x_{k}-x_{k-1})}{f(x_k)-f(x_{k-1})}\]
+割线法是一种多步法，不能写成$x_{k+1}=\varphi(x)$的形式，不能用上文的理论进行分析。
+\begin{Thm}
+设$f(x^*)=0,f'(x)$于$\Delta=B(x^*,\delta)$非退化，$f\in C^2(\Delta),M\delta<1$，其中$M=\frac{\max_{x\in \Delta}|f''(x)|}{2\min_{x\in \Delta}|f'(x)|}$，则当$x_0,x_1\in \Delta$时，割线法按$p=\frac{1+\sqrt{5}}{2}$阶收敛。
+\end{Thm}
+
+\begin{proof}
+记$x_k,x_{k+1}$的割线为$l_k(x^*)$，并估计插值误差$l_k(x^*)-f(x^*)$，由此可以估计$x_{k+1}-x^*$。为此，设
+\[p_1(x)=f(x_k)\frac{x-x_{k-1}}{x_k-x_{k-1}}+f(x_{k-1})\frac{x-x_k}{x_{k-1}-x_k}\]
+并设
+\[R(x)=P_1(x)-f(x)\]\[E(t)=R(t)-\frac{R(x^*)}{(x^*-x_{k-1})(x^*-x_k)}(t-x_{k-1})(t-x_k)\]则$E(x^*)=E(x_{k-1})=E(x_k)=0\Rightarrow \exists\xi\st $
+\[E''(\xi)=-f''(\xi)-\frac{2R(x^*)}{(x^*-x_{k-1})(x^*-x_k)}=0\]
+\[\Rightarrow R(x^*)=P_1(x^*)=-\frac{1}{2}f''(\xi)(x^*-x_{k-1})(x^*-x_k)\]
+另一方面
+\begin{align*}
+P_1(x^*)&=P_1(x^*)-P_1(x_{k+1})\\
+&=\frac{f(x_k)-f(x_{k-1})}{x_k-x_{k-1}}(x^*-x_{k+1})\\
+&=f'(\eta)(x^*-x_{k+1})
+\end{align*}
+故
+\[x^*-x_{k+1}=-\frac{1}{2}\frac{f''(\xi)}{f'(\eta)}(x^*-x_{k-1})(x^*-x_k)\]
+即$e_{k+1}=|\frac{f''(\xi)}{f'(\eta)}|e_ke_{k-1}\leq M\delta^2<\delta\Rightarrow x_{k+1}\in\Delta,e_k\leq (M\delta)^k\delta\to 0\Rightarrow \lim\limits_{k\to\infty}x_k=x^*$。
+\end{proof}
+
+\subsection{非线性方程组的不动点迭代法}
+求解方程可以转化为求解优化问题：$f(x^*)=0\Leftrightarrow x^*=\mathrm{argmin}|f(x)|^2$。可以用最速下降法求解，但步长难以确定。
+
+设$F:D\subset \R^n\to\R^n$。将$F(x)=0$改写为等价的不动点形式$x=\Phi(x)$，其中$\Phi(x):D\to \R^n$连续，并构造相应不动点迭代$x^{k+1}=\Phi(x^k)$。考察不动点迭代的一般性质：
+\begin{Def}
+称$\Phi:D\to\R^n$为压缩映射，如果$\exists L\in (0,1)\st\nm{\Phi(y)-\Phi(x)}\leq L\nm{x-y}\quad\forall x,y\in D_0\subset D$
+\end{Def}
+
+\begin{Thm}
+设$\Phi:D\to\R^n$，若存在凸区域$D_0\subset D\st \Phi\in C^1(D_0),\Phi(x)=(\varphi_1(x),\cdots, \varphi_n(x))^T$满足$\exists L\in (0,1),|\pp{\varphi_i(x)}{x_j}|\leq \frac{L}{n}$，则$\Phi$在$D_0$上对$\infty$范数是压缩的。
+\end{Thm}
+\begin{proof}
+对各维分别施微分中值定理，由凸性可以用于放缩。记$A=(a_{ij}),a_{ij}=\pp{\varphi_i(x+\xi_i h)}{x_j},\nm{A}_\infty\leq L$，故$\nm{\Phi(y)-\Phi(x)}_\infty\leq \nm{A}_\infty\nm{y-x}_\infty\leq L\nm{y-x}_\infty$
+\end{proof}
+
+\begin{Thm}
+设$\Phi:D_0\to \R^n$压缩，$\Phi(x)\in D_0\quad \forall x\in D_0$，则$\Phi$在$D_0$中由唯一的不动点$x^*$，不动点迭代收敛于$x^*$，且
+\[\nm{x^*-x^k}\leq \frac{1}{1-L}\nm{x^{k+1}-x^k}\leq \frac{L^k}{1-L}\nm{x^1-x^0}\]
+\end{Thm}
+
+\begin{proof}
+先用Cauchy收敛准则，再令$p\to\infty$，其余同一维情形。
+\end{proof}
+
+由此后验估计，我们得知$L$越小，收敛速度越快。
+
+\begin{Def}
+$\Phi :D\subset \R^n \to\R^n$，$x^*$为其不动点。若存在$x^*$的邻域$S\st\forall x^0\in S$，迭代序列$\{x^k\}\subset S,\lim\limits_{k\to\infty}x^k=x^*$，则称迭代法局部收敛。
+
+若$\exists p\geq 1,C>0\st$
+\[\lim_{k\to\infty}\frac{\nm{x^{k+1}-x^*}}{\nm{x^k-x^*}^p}=C\]
+则称$\{x^k\} p$阶收敛。
+
+若
+\[\nm{x^{k+1}-x^*}\leq C\nm{x^k-x^*}^p\]
+则称$\{x^{k}\}$至少$p$阶收敛。
+\end{Def}
+
+\begin{Thm}
+设$\Phi:D\subset \R^n\to\R^n,x^*\in D$是$\Phi$的不动点，且$\Phi$于$x^*$可导且满足
+\[\rho(\Phi'(x^*))=\sigma<1\]
+则$\exists S=B(x^*,\delta)\subset D\st\forall x^0\in S$，迭代法产生的序列$\{x^k\}$收敛于$x^*$，即局部收敛。
+\end{Thm}
+
+\begin{proof}
+$\nm{x^{k+1}-x^*}=\nm{\Phi(x^k)-\Phi(x^*)}\leq \nm{\Phi(x^k)-\Phi(x^*)-\Phi'(x^*)(x_k-x^*)}+\nm{\Phi'(x^*)(x^k-x^*)}=I_1+I_2$。取范数$\nm{\cdot}_\varepsilon\st \nm{\Phi'}_{\varepsilon}\leq \rho(\Phi')+\varepsilon<1$，则$I_2\leq \nm{|\Phi'(x^*)}_{\varepsilon}\nm{x^k-x^*}\leq (\rho(\Phi')+\varepsilon)\nm{x_k-x^*}$。由导数的定义，当$\nm{x^k-x^*}$充分小时，$I_1=o(\nm{x^k-x^*})\leq \varepsilon\nm{x^k-x^*}$，取$\varepsilon<\frac{1-\rho(\Phi')}{3}$即得。
+\end{proof}
+
+当迭代函数为线性时，结论与线性方程组的结论相容。
+
+可以想象，当谱半径退化至$0$时，收敛速度将超过一阶。
+
+\subsubsection{方程组的Newton法与拟Newton法}
+在一维的情形犹可以使用二分法，但对于非线性方程组难以做到。但可以构造类似线性方程组迭代解法的方法化为1阶情形：在求解$x_i^{k+1}$时，解方程$f_i(x_1^k,\cdots,x_{i-1}^k,x_i^{k+1},x_{i+1}^k,\cdots,x_n^k)=0$.这样便可以用解一维方程的方法求解$x^{k+1}$。因其在线性情形与Jacobi迭代相容，故称其为非线性方程的Jacobi迭代。类似地，解方程$f_i(x_1^{k+1},\cdots,x_{i-1}^{k+1},x_i^{k+1},x_{i+1}^k,\cdots,x_n^k)=0$的方法称为非线性方程的Gauss-Seidel迭代。取$\bar{x}^k=\omega x^k+(1-\omega)x^{k+1}$得到非线性方程的SOR迭代。上述迭代法收敛速度较慢。
+
+\paragraph{Newton法}作线性近似得到Newton迭代法：
+\[x^{k+1}=x^k-(F'(x^k))^{-1}F(x^k)\]
+其中要解线性方程组，要求$F'(x^k)$是非异的。
+
+\begin{Thm}
+设$D:D\subset \R^n\to\R^n,x^*\in D$满足$F(x^*)=0$，在$x^*$的开邻域$S_0\subset D$，$F$可导，$F'(x)$连续，$F'(x^*)$非异，则
+\begin{enumerate}
+\item $\exists B(x^*,\delta)\subset S_0\st$Newton迭代对$\forall x\in B(x^*,\delta)$有意义。
+\item Newton迭代法产生的序列$\{x^k\}$局部收敛于$x^*$，且超线性收敛。
+\item 若$\exists \gamma>0\st \nm{F'(x)-F'(x^*)}\leq \gamma{x-x^*}\quad \forall x^*\in S$（即一阶导数Lipschitz连续），则$\{x^k\}$至少平方收敛。
+\end{enumerate}
+\end{Thm}
+
+\begin{proof}
+\begin{enumerate}
+\item 设$\alpha=\nm{F'(x^*)^{-1}}$。由连续性，$\exists \delta>0\st\forall x\in B(x^*,\delta)\subset S_0$,$\nm{F'(x)-F'(x^*)}<\frac{1}{2\alpha}\Rightarrow F'(x)$可逆，$\nm{F'(x)^{-1}}\leq\frac{\alpha}{1-\frac{\alpha}{2\alpha}}=2\alpha\quad\forall x\in B(x^*,\delta)$
+\item 
+\begin{align*}
+&\nm{x^{k+1}-x^*}\\
+\leq &2\alpha\nm{F(x^*)-F(x^k)-F'(x^k)(x^*-x^k)}\\
+\leq &2\alpha[\nm{F(x^k)-F(x^*)-F'(x^*)(x-x^*)}+\nm{F'(x^*)-F'(x^k)}\nm{x^*-x^k}]\\
+=&I_1+I_2
+\end{align*}
+在$B(x^*,\delta_1(\varepsilon))$内，$I_1=o(\nm{x^*-x^k})<\varepsilon\nm{x^*-x^k}$。
+
+由连续性，$x\in B(x^*,\delta_2(\varepsilon))$时，$\nm{F'(x)-F'(x^*)}\leq\varepsilon$。
+
+今取$\varepsilon=\frac{1}{\delta\alpha}$，$\tilde{\delta}=\min\{\delta_1(\varepsilon),\delta_2(\varepsilon)\}$。
+
+若$x^k\in B(x^*,\tilde{\delta})$，则$\nm{x^{k+1}-x^*}\leq\frac{1}{2}\nm{x^k-x^*}$，故知其局部收敛，且\[\frac{\nm{x^{k+1}-x^*}}{\nm{x^k-x^*}}\leq 2\varepsilon\to 0\quad(k\to\infty)\]
+故知其超线性收敛。
+\item 
+
+此时容易估计$I_2\leq\alpha\gamma\nm{x^k-x^*}^2$。
+
+为估计$I_1$，考察单变量向量值函数\[g(t)=F(x^*+t(x^k-x^*))\]\[g'(t)=F'(x^*+t(x^k-x^*))(x^k-x^*)\]\[\nm{g'(t)-g'(0)}\leq \gamma t\nm{x^k-x^*}^2\] 故
+\[I_1=\nm{g(1)-g(0)-g'(0)}
+=\int_0^1 g'(t)-g'(0)\dd t
+\leq \frac{1}{2}\gamma\nm{x^k-x^*}^2\]
+
+综上$\{x^k\}$至少二阶收敛。
+\end{enumerate}
+\end{proof}
+
+上述定理表明初值的选择将显著影响收敛性，但遗憾的是并没有一般的选取初值的方法。
+\paragraph{拟Newton法}令$x^{k+1}=x^k-A_k^{-1}F(x^k)$，其中$A_k$是$F'(x^k)$的近似。其中要求$A_{k+1}-A_k=\Delta A_k,A_{k+1}(x^{k+1}-x^k)=F(x^{k+1}-F(x^k))$（对$n^2$个未知数设置$n$个约束）。选取$\Delta A$使得其Frobenius范数最小：
+\begin{align*}
+\Delta A_k&=\mathrm{argmin}_{A\in Q}\nm{A}_F\\
+Q&=\{A\in \R^{n\times n}:(A_k+A)p^k=q^k\}\\
+p^k&=x^{k+1}-x^k\\
+q^k&=F(x^{k+1})-F(x^k)
+\end{align*}
+
+用Lagrange乘子法解得$A=\frac{(q^k-A_kp^k)(p^k)^T}{\nm{p^k}_2^2}$。因该解满足$\mathrm{rank}(A)=1$，故称为Broyden秩1方法:
+\[x^{k+1}=x^k-A_k^{-1}F(x^k)\]
+\[A_{k+1}=A_k+\frac{(q^k-A_kp^k)(p^k)^T}{\nm{p^k}_2^2}\]
+
+\begin{Thm}[Sherman-Morrison公式]
+\[(A+u^Tv)^{-1}=A^{-1}-\frac{A^{-1}uv^TA^{-1}}{1+v^TA^{-1}u}\]
+\end{Thm}
+
+故得逆Broyden秩1方法：
+\[x^{k+1}=x^k-B_kF(x^k)\]
+\[B_{k+1}=B_k+\frac{(p^k-B_kq^k)(p^k)^TB_k}{(p^k)^TB_kq^k}\]
+
+
+
+\end{document}

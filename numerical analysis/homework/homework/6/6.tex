@@ -1,0 +1,66 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,graphicx, booktabs}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业6}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{1.}
+\begin{proof}
+对$\varepsilon$求导得
+\[Fx+A\dot x(0)=\dot\lambda(0)x+\lambda \dot x(0)\]
+即$(A-\lambda I)\dot x(0)=(\dot\lambda(0) I-F)x$。取$U,U_2$如题设所言，并在两边左乘$U^H$得到：（以$I=I_n,I'=I_{n-1}$）
+\[LHS=\begin{bmatrix}x^H(A-\lambda I)U_2\\ A_2-\lambda I'\end{bmatrix}U_2^H \dot x(0)\]
+\[RHS=(\dot\lambda(0)I-U^HFU)e_1\]
+故\[(\lambda I'-A_2)U_2^H\dot x(0)=U^HFU(2:n,1)\]
+整理得
+\[\dot x(0)_{2:n}=\Sigma^\perp F_{2:n,2:n}U_{2:n,1}\]
+两边取范数整理即得所需结论。\footnote{好吧确实是不会做了，用n-1阶矩阵控制n维向量怎么想都做不到吧……}
+\end{proof}
+
+\paragraph{2.}
+\begin{proof}
+注意到$A$有完备的特征向量组，故设$X=[x_1,\cdots,x_n]$，则$A=XDX^{-1}$，其中$D=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$。设$\alpha=[\alpha_1,\cdots,\alpha_n]^T$，则$v^{(0)}=X\alpha\Rightarrow A^kv^{(0)}=XD^k\alpha=\lambda^k_1(\alpha_1 x_1+\cdots +\alpha k x_k+\sum_{i=r+1}^n(\frac{\lambda_i}{\lambda_1})^k\alpha_i x_i)$，故$\lim\limits_{k\to\infty}\frac{A^kv^{(0)}}{\lambda^k}=\sum_{i=1}^r \alpha_i x_i=v$。注意到$Av=\sum_{i=1}^r\alpha_i\lambda_1 x_i=\lambda_1 v$，故$v$犹为特征向量。故：
+\[\lim_{k\to\infty}v^{(k)}=\lim_{k\to\infty}\frac{A^kv^{(0)}}{\lambda_1^k}\frac{\lambda_1^k}{\max{A^kv^{(0)}}}=\frac{v}{\max(v)}\]
+\[\lim_{k\to\infty}m_k=\lim_{k\to\infty}\max(Av^{(k-1)})=\frac{\max(A^kv^{(0)})}{\max(A^{k-1}v^{(0)})}=\lim_{k\to\infty}\lambda_1\frac{\max (v+\sum\limits_{i=r+1}^n \alpha_i x_i(\frac{\lambda_i}{\lambda_1})^k)}{\max (v+\sum\limits_{i=r+1}^n \alpha_i x_i(\frac{\lambda_i}{\lambda_1})^{k-1})}=\lambda_1\]
+得证。
+\end{proof}
+
+\paragraph{3.}
+\begin{proof}
+$\alpha$待定，记$\mu_i=\lambda_i-\alpha$，则用与上题相同的推导过程得到$m_k=\mu_1\frac{\max (\alpha_1x_1+\sum\limits_{i=r+1}^n \alpha_i x_i(\frac{\mu_i}{\mu_1})^k)}{\max (\alpha_1x_1+\sum\limits_{i=r+1}^n \alpha_i x_i(\frac{\mu_i}{\mu_1})^{k-1})}$。故当$k$充分大时，不妨设$\max (\alpha_1x_1 +\sum\limits_{i=r+1}^n \alpha_i x_i(\frac{\mu_i}{\mu_1})^k)=\alpha_1x_1^l+\sum\limits_{i=r+1}^n \alpha_i x^l_i(\frac{\mu_i}{\mu_1})^k$。记$e_k=m_k-\mu_1$，则$\frac{|e_{k+1}|}{|e_k|}=I\cdot |\frac{\mu_1}{m_k}|$，其中
+\[I=\frac{\sum_{i=2}^n \alpha_i x_i^l[(\frac{\mu_i}{\mu_1})^{k+1}-\frac{\mu_i}{\mu_1})^{k}]}{\sum_{i=2}^n \alpha_i x_i^l[(\frac{\mu_i}{\mu_1})^{k}-\frac{\mu_i}{\mu_1})^{k-1}]}\leq \max\{\frac{|\mu_i|}{\mu_1}:i=2,\cdots,n\}\]
+其中$\alpha_i=\delta_{ij},j=\mathrm{argmin}\{\frac{|\mu_i|}{\mu_1}:i=2,\cdots,n\}$时取等。而$\lim\limits_{k\to\infty}\frac{\mu_1}{m_k}=1$，故收敛的渐进常数即为$I\leq \max\{\frac{|\mu_i|}{\mu_1}:i=2,\cdots,n\}$。
+
+欲使得收敛最快，需选取$\alpha$使收敛的渐进常数最小，即$\alpha=\mathrm{argmin}\max\{|\lambda_i-\alpha|:i=2,\cdots,n\}$最小，由单调性这等价于$\alpha=\mathrm{argmin}\max\{|\lambda_2-\alpha|,|\lambda_n-\alpha|\}$，即$\alpha$位于其中点位置：$\alpha=\frac{\lambda_2+\lambda_n}{2}$
+\end{proof}
+
+\paragraph{4.}
+\subparagraph{(1)}
+$v=(1,1,0.5,0.5),m=10$
+\subparagraph{(2)}
+
+\begin{tabular}{lll}
+  & eigenvector     & eigenvalue \\
+1 & (1,-1,0,0)      & 1          \\
+2 & (0,-0.7071,1,1) & 5          \\
+3 & (0,0,1,1)       & 10         \\
+4 & (0,0,0,1)       & 2         
+\end{tabular}
+
+
+
+
+
+
+
+
+
+
+\end{document}

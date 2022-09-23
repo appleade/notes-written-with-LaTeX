@@ -1,0 +1,258 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{线性方程组直接解法}
+本章所研究的误差主要为传播误差，为此将会引入矩阵的“条件数”。
+\subsection{Gauss消去法}
+
+设$A\in \R^{n\times n},x,b\in \R^n$。令$[A^{(1)}|b^{(1)}]=[A|b]=
+\begin{bmatrix}
+a_{11}&\cdots&a_{1n}&b_1\\
+\vdots&\ddots&\vdots&\vdots\\
+a_{n1}&\cdots&a_{nn}&b_n
+\end{bmatrix}$
+
+设$a_{11}\neq 0,l_{i1}=\frac{a_{i1}}{a_{11}},l_1=(0,l_{21},\cdots,l_{n1}),L_1+I+l_il_i^T=
+\begin{bmatrix}
+1& & & \\
+l_{21}&1& & \\
+\vdots& &\ddots&\\
+l_{n1}& & &1
+\end{bmatrix}
+$，则$L_1^{-1}=I-l_1l_1^T=\begin{bmatrix}
+1& & & \\
+-l_{21}&1& & \\
+\vdots& &\ddots&\\
+-l_{n1}& & &1
+\end{bmatrix}$。$[A^{(2)}|b^(2)]=L_1^{-1}[A^{(1)}|b^{(1)}]=
+\begin{bmatrix}
+a_{11}^{(1)}&a_{12}^{(1)}&\cdots&a_{1n}^{(1)}&b_1^{(1)}\\
+0&a^{(2)}_{22}&\cdots&a^{(2)}_{2n}&b_2^{(2)}\\
+\vdots&\vdots&\ddots&\vdots&\vdots\\
+0&a^{(2)}_{n2}&\cdots&a^{(2)}_{nn}&b_n^{(2)}
+\end{bmatrix}$。
+
+
+假设已经完成$(k-1)$步消元，得$A^{(k)}x=b^{(k)}$，对应增广矩阵\[[A^{(k)}|b^{(k)}]=
+\begin{bmatrix}
+a_{11}^{(1)}&a_{12}^{(1)}&\cdots&a_{1k}^{(1)}&\cdots&a_{1n}^{(1)}&b_1^{(1)}\\
+0&a_{22}^{(2)}&\cdots&a_{2k}^{(2)}&\cdots&a_{2n}^{(2)}&b_2^{(2)}\\
+\vdots&\vdots&\ddots&\vdots&&\vdots&\vdots\\
+\vdots&\vdots&&a_{kk}^{(k)}&\cdots&a_{kn}^{(k)}&b_k^{(k)}\\
+\vdots&\vdots&&\vdots&&\vdots&\vdots\\
+0&0&\cdots&a_{nk}^{(k)}&\cdots&a_{nn}^{(k)}&b_n^{(k)}
+\end{bmatrix}
+\]设$a_{kk}\neq 0$，令$l_{i1}=\frac{a_{ik}}{a_{kk}},l_k=(0,\cdots,0,l_{(k+1),k},\cdots,l_{nk}),L_k=I+l_kl_k^T=
+\begin{bmatrix}
+1& & & & & \\
+ &\ddots& & & & \\
+ & &1& & & \\
+ & &-l_{k+1,k}&1& & \\
+ & & & &\ddots&\\
+ & &-l_{n,k}& & &1
+\end{bmatrix}
+$
+
+消元到最后得
+\[[A^{(n)}|b^{(n)}]=
+\begin{bmatrix}
+a_{11}^{(1)}& &\cdots&a_{1n}^{(1)}&b_1^{(1)}\\
+ &a_{22}^{(2)}&\cdots&a_{2n}^{(2)}&\vdots\\
+ & &\ddots& &\vdots\\
+ & & &a_{nn}^{(n)}&b_n^{(n)}
+\end{bmatrix}
+\]
+对应方程组$A^{(n)}x=b^{(n)},A^{(n)}=L_{n-1}^{-1}\cdots L_1^{-1}A$为上三角矩阵，其中$L_k$为单位下三角矩阵，其乘积犹为单位下三角矩阵。由此易得方程组的解$x_i=\frac{b_i^{(n)}-\sum_{j=i+1}^na_{ij}^{(i)}x_j}{a_{ii}^{(i)}}$
+
+计算量：第$k$步时作除法$(n-k)$次，作乘法加法各$(n-k)(n-k+1)$次，即计算量为$\sum_{k=1}^{n-1}(n-k)+2(n-k)(n+1-k)=\frac{2n^3}{3}+\frac{n^2}{2}-\frac{7n}{6}\sim O(n^3)$。
+
+\begin{Thm}
+$A\in \R^{n\times n}$，则$a_{ii}^{(i)}\neq 0\quad\forall 1\leq i\leq n$的充要条件为其顺序主子式$\triangle_i$皆不为$0$。
+
+此时$\exists! L,U$下三角、上三角且非异使得$A=LU$。
+\end{Thm}
+\begin{proof}
+作行变换不改变主子式的值，故由其结构易得。
+
+存在性由分解能够进行得知。反设分解不唯一，则$L_1U_1=L_2U_2\Rightarrow U_1U_2^{-1}=L_1^{-1}L_2=I$（这是因为LHS上三角而RHS下三角），矛盾！
+\end{proof}
+
+考虑到$a_{ii}^{(i)}=0$的情形，我们需要在消元之前交换两行使用最大元进行消元（这总能做到，否则$A$奇异），此时称选列主元的Gauss消元法(Gauss elimination with pivoting)。
+
+下以$e_i$表示除第$i$项外均为0的单位向量。
+
+$I_{i_k,k}=[e_1,\cdots, e_{ik},\cdots ,e_k,\cdots, e_n]\quad i_k\geq k$为置换矩阵，则\[L_{n-1}^{-1}I_{i_{n-1},n-1}\cdots L_1^{-1}I_{i_1,1}A=U\]。易知\[I_{i_k,k}L^{-1}_{k-1}=(I_{i_k,k}L_{k-1}^{-1}I_{i_k,k})I_{i_k,k}\]其中\[(I_{i_k,k}L_{k-1}^{-1}I_{i_k,k})=I-(I_{i_k,k}l_{k-1})e_k^T\]由此\[L^{-1}_{n-1}\tilde{L}^{-1}_{n-2}\cdots \tilde{L}^{-1}_1I_{i_{n-1},n-1}\cdots I_{i_1,1}A=U\]其中\[\tilde{L}^{-1}_{k}=I_{i_{n-1},n-1}\cdots I_{i_{k+1},k+1}L_k^{-1} I_{i_{k+1},k+1}\cdots I_{i_{n-1},n-1}\]
+
+此时记$I_{i_{k+1},k+1}\cdots I_{i_{n-1},n-1}=P$，则有分解$PA=LU$。
+
+为提高稳定性，可以考虑选全主元的Gauss消去法，但这样做的代价是更大的。实践中选列主元是足够的。此时有分解$PAQ=LU$。
+
+直接计算LU分解:$u_{1j}=a_{1j},l_{i1}=\frac{a_{i1}}{u_{11}},j=1,2,\cdots,\quad n\quad i=2,3,\cdots,n$
+
+设前$(k-1)$行已算出，则有
+\[a_{kj}=\sum_{j=1}^n l_{kr}u_{rj}=\sum_{r=1}^{k-1}l_{kr}u_{rj}+u_{kj}\]
+\[\Rightarrow u_{kj}=a_{kj}-\sum_{r=1}^{k-1}l_{kr}u_{rj}\]
+\[a_{ik}=\sum_{r=1}^n l_{ir}u_{rk}=\sum_{r=1}^{k-1}l_{ir}u_{rk}+l_{ik}u_{kk}\]
+\[\Rightarrow l_{ik}=\frac{1}{u_{kk}}[a_{ik}-\sum_{r=1}^{k-1}l_{ir}u_{rk}]\]
+
+这样做的计算量与$LU$分解无异。这样做能够进行的前提是不选主元的Gauss消去法可以进行。
+
+\begin{Thm}[Cholesky分解]
+$A\in\R^{n\times n}$正定，则$\exists !L$对角为正的下三角矩阵$\st A=LL^T$
+\end{Thm}
+\begin{proof}
+对阶数作归纳。
+
+\textbf{Case 1: }$ n=1:A=[\sqrt{a_{11}}][\sqrt{a_{11}}]^T$
+
+\textbf{Case 2: }设命题对$n-1$成立，则对$n$阶矩阵，$A=\begin{bmatrix}a_{11}& a\\ a&A_{22}\end{bmatrix}\quad a_{11}>0$
+\[A=\begin{bmatrix}\sqrt{a_{11}}&0\\\frac{a}{\sqrt{a_{11}}}& I\end{bmatrix}\begin{bmatrix}1&0\\ 0&\tilde{A}_{22}\end{bmatrix}\begin{bmatrix}\sqrt{a_{11}}&0\\\frac{a}{\sqrt{a_{11}}}& I\end{bmatrix}^T\]
+其中$\tilde{A}_{22}=A_{22}-\frac{aa^T}{a_{11}}$对称正定（相合变换不改变正定性），由归纳假设$\exists \tilde{L}\st \tilde{A}_{22}=\tilde{L}\tilde{L}^T$。取$L=\begin{bmatrix}\sqrt{a_{11}}&0\\ \frac{a}{\sqrt{a_{11}}}&\tilde{L}\end{bmatrix}$即得。
+\end{proof}
+
+直接计算法：
+
+\[a_{ij}=\sum_{k=1}^{j-1}l_{ik}l{jk}+l_{ij}l_{jj}\quad \forall i\geq j\]
+取$j=1$
+\[a_{i1}=l_{i1}l_{11}\Rightarrow l_{11}=\sqrt{a_{11}},l_{i1}=\frac{a_{i1}}{l_{11}}\]
+
+设前$j-1$列已算好，则取$i=j$，得$a_{jj}=\sum\limits_{j=1}l_{jk}^2+l_{jj}^2\Rightarrow$ \[l_{jj}=(a_{jj}-\sum_{k=1}^{j-1}l^2_{jk})^{\frac 1 2}\]
+
+取$i=j+1,\cdots, n$，则$a_{ij}=\sum_{k=1}^{j-1}l_{ik}l_{jk}+l_{jj}l_{ij}\Rightarrow$
+\[l_{ij}=\frac{1}{l_{jj}}(a_{jj}-\sum_{k=1}^{j-1}l_{ik}l_{jk})\quad i>j\]
+
+\paragraph{加边的Cholesky分解}
+
+设$A_i,L_i$为顺序主子式，$A_{i}=L_iL_i^T$,\[A_{i}=\begin{bmatrix}A_{i-1}&c\\c^T&a_{ii}\end{bmatrix}=\begin{bmatrix}L_{i-1}&0\\h^T&l_{ii}\end{bmatrix}\begin{bmatrix}L_{i-1}&0\\h^T&l_{ii}\end{bmatrix}^T\] 其中$c=(a_{i1},\cdots, a_{i,i_1})$。由此
+\[A_{i}=L_iL_i^T\]
+\[c=L_{i-1}h\Rightarrow L_{i-1}^{-1}c\]
+\[a_{ii}=hh^T+l^2_{ii}\Rightarrow l_{ii}=\sqrt{a_{ii}-hh^T}\]
+
+\begin{Thm}
+$A\in\R^{n\times n}$对称，顺序主子式均非零，则$\exists !L,D$单位下三角、对角$\st A=LDL^T$
+\end{Thm}
+即便对于正定矩阵，也常常将其分解称为这种形式，因为这样做不需要开根号。
+
+\paragraph{三对角矩阵的追赶法}
+\[A=\begin{bmatrix}
+b_1&c_1&&&\\
+a_2&b_2&c_2&&\\
+&\ddots&\ddots&\ddots&\\
+&&a_{n-1}&b_{n-1}&c_{n-1}\\
+&&&a_n&b_n
+\end{bmatrix}\]
+\[A=LU=
+\begin{bmatrix}
+1&&&\\
+l_2&\ddots&&\\
+&\ddots&\ddots&\\
+&&l_n&1
+\end{bmatrix}
+\begin{bmatrix}
+u_1&c_1&&\\
+&\ddots&\ddots&\\
+&&\ddots&c_{n-1}\\
+&&&u_n
+\end{bmatrix}
+\]
+
+这样的矩阵是常见的，例如解BVP:$u''=f,u(0)=u(1)=0$。取间距$h=\frac{1}{N}$以设格点离散原方程，取中心差分$u''(x_j)=\frac{u(x_{j+1})-2u(x_j)+u(x_{j-1})}{h^2}\Rightarrow (u_{j+1}+u_{j-1}-2u_j)=h^2f_j$，得到三对角矩阵：
+\[\begin{bmatrix}
+-2&1&&&\\
+1&-2&1&&\\
+&\ddots&\ddots&\ddots&\\
+&&1&-2&1\\
+&&&1&-2
+\end{bmatrix}\]
+
+追赶法的过程：
+\begin{enumerate}
+\item $u_1=b_1$
+\item $l_i=\frac{a_i}{u_{i-1}}$
+\item $u_i=b_i-l_ic_{i-1}$
+\end{enumerate}
+
+追赶法的计算量是$O(n)$
+
+
+由LU分解可得$Ax=d$的解$Ly=d,Ux=y$，其中
+\[y_1=d_1,y_1=d_1-l_1y_{i-1}\quad i=2,\cdots,n\]
+\[x_n=\frac{y_n}{u_n}\quad x_i=\frac{1}{u_i}(y_i-c_ix_{i+1})\quad i=n-1,\cdots,1\]
+
+追赶法实现的条件是$u_i\neq 0\quad \forall 1\leq i\leq n$。
+\begin{Thm}[追赶法成立的充分条件]
+设三对角矩阵$A$满足
+\begin{enumerate}
+\item $|b_1|>c_1>0$
+\item $|b_i|\geq |a_{i}|+|c_i|,a_ic_i\neq 0\quad i=2,\cdots,n-1$
+\item $|b_n|>|a_n|>0$
+\end{enumerate}
+则$A$非异，且追赶法过程中有
+\begin{enumerate}
+\item $u_i\neq 0\quad i=1,\cdots,n$
+\item $0<\frac{|c_i|}{|u_i|}<1\quad i=1,\cdots n-1$
+\item $|b_i|-|a_i|<|u_i|<|b_i|+|a_i|\quad i=2,\cdots,n$
+\end{enumerate}
+\end{Thm}
+
+\paragraph{循环三对角矩阵}$A=
+\begin{bmatrix}
+b_1&c_1&&&a_1\\
+a_2&b_2&c_2&&\\
+&\ddots&\ddots&\ddots&\\
+&&a_{n-1}&b_{n-1}&c_{n-1}\\
+c_n&&&a_n&b_n
+\end{bmatrix}$
+
+这样的矩阵是常见的，比如用周期边界条件$u(0)=u(1)$替换上文的Dirichlet边界条件，第一个方程为$u_1+u_{-1}-2u_0=h^2f_0$，其中由周期边界条件$u_{-1}=u_{N-1}$。相似地，最后一个方程为$u_{N-1}+u_0-2u_{N}=h^2f_j$。
+
+上述分解的计算过程如下：
+\begin{enumerate}
+\item $u_1=b_1,\rho_1=a_1,\sigma_1=\frac{c_n}{u_1}$
+\item $l_i=\frac{a_i}{u_{i-1}},u_i=b_i-l_ic_{i-1}\quad i=2,\cdots, n-1$
+
+$\rho_i=-l_i\rho_{i-1},\sigma_i=-\frac{\sigma_{i-1}c_{i-1}}{u_{i-1}}\quad i=2,\cdots,n-1$
+\item $l_n=\frac{a_n}{u_{n-1}},u_n=b_n-(\sigma_{n-1}+l_n)(c_{n-1}+\rho_{n-1})-\sum\limits_{i=1}^{n-2}\sigma_i\rho_i$
+\end{enumerate}
+
+$A=LU$，其中
+\[L=
+\begin{bmatrix}
+1&&&&\\
+l_2&1&&&\\
+&\ddots&\ddots&&\\
+&&l_{n-1}&1&\\
+\sigma_1&\cdots&\sigma_{n-2}&\sigma_{n-1}+l_n&1
+\end{bmatrix}\quad
+U=
+\begin{bmatrix}
+u_1&c_1&&&\rho_1\\
+&u_2&c_2&&\vdots\\
+&&\ddots&\ddots&\rho_{n-2}\\
+&&&u_{n-1}&c_{n-1}+\rho_{n-1}\\
+&&&&u_n
+\end{bmatrix}\]
+
+上述矩阵及其分解结果大多数元素为0，称为稀疏矩阵（相对于一般的稠密矩阵）。
+
+\end{document}

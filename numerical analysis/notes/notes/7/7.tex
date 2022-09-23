@@ -1,0 +1,274 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\nm}[1]{\left\|#1 \right\|}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{函数插值}
+给定$f:[a,b]\to \R,x_0,\cdots, x_n\in [a,b]$互异，$y_i=f(x_i)$
+
+插值问题：寻找$\varphi\in I\st$
+\[\varphi^{(k)}(x_i)=f^{(k)}(x_i)\]
+其中$I$称插值函数空间（多项式空间，分段多项式空间……），$\varphi$称插值函数，$f$称被插值函数，$x_0,\cdots,x_n$称插值节点。
+
+\subsection{Lagrange插值}
+最朴素的想法：求解线性方程组
+\[\varphi(x_i)=\sum_{k=0}^n a_ix)i^k=f(x_i)\]
+其系数矩阵为Vande Monde矩阵，当插值节点互异时，系数矩阵非异，解此方程可得Lagrange插值。由此我们证明了Lagrange插值的存在唯一性。但该矩阵条件数很大，不宜直接计算。
+
+$I=P_n=\{\text{不超过}n\text{次多项式全体}\}$。记
+\[l_i(x)=\prod\limits_{j=0,j\neq i}^n\frac{x-x_j}{x_i-x_j}\quad i=0,1,\cdots,n\]
+则其具有性质$l_i(x)\in P_n,l_i(x_j)=\delta_{ij}$。记$L_n(x)=\sum_{i=0}^n f(x_i)l_i(x)$
+
+\begin{Thm}
+设$x_0,\cdots, x_n$为插值节点，$f\in C^{n+1}[a,b],L_n$为对应的Lagrange多项式，则$\forall x\in [a,b],\exists \xi(x)\in (a,b)\st $
+\[R_n(x)=f(x)-L_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}w_{n+1}(x)\]
+其中$w_{n+1}(x)=\prod_{k=0}^n(x-x_k)\in P_{n+1}$
+\end{Thm}
+
+\begin{proof}
+去定$x$，记$G(t)=R_n(t)-\frac{w_{n+1}(t)}{w_{n+1}(x)}R_n(x)$。注意到$G(x)=0,G(x_i)=0\quad\forall 0\leq i\leq n$共$n+2$个零点，故由Rolle定理，$\exists \xi_j^{(1)}\in (a,b)\quad j=1,\cdots,n+1\st G^{(1)}(\xi_j^{(1)})=0$。如此重复使用Rolle定理，得$\exists \xi=\xi^{(n+1)}_1\in (a,b)\st $
+\[G^{(n+1)}(\xi)=0=f^{(n+1)}(\xi)-\frac{(n+1)!}{w_{n+1}(x)}R_n(x)\]
+整理即得。
+\end{proof}
+
+\begin{Cor}
+记$h=\max\limits_{1\leq j\leq n}|x_j-x_{j-1}|$，$f\in C^{n+1}([a,b])$被$L_{n+1}(x)$插值，则
+\[\nm{f-L_n}_\infty\leq \frac{h^{n+1}}{4(n+1)}\nm{f^{(n+1)}}_\infty\]
+\end{Cor}
+上述估计中，当$n$增大时，$f^{(n)}$随之变换，不能保证插值收敛至$0$。事实上，我们有Runge现象：对函数$f(x)=\frac{1}{1+\alpha^2x^2}$作等距插值时，误差将趋于$\infty$。为解决这一问题，常使用分段多项式。
+\begin{proof}
+断言：$|w_{n+1}(x)|\leq \frac{n!}{4}h^{n+1}$
+
+这是因为：设$x\in[x_k,x_{k+1}]\Rightarrow |(x-x_k)(x-x_{k+1})|\leq \frac{1}{4}h^2,|x-x_{k+2}|\leq 2h,\cdots, |x-x_n|\leq (n-k)h,|x-x_{k-1}|\leq 2h,\cdots,|x-x_0|\leq (k+1)h$，相乘即得。
+\end{proof}
+
+\subsection{均差与Newton插值多项式}
+\subsubsection{均差}
+\begin{Def}
+设$x_0,\cdots,x_n$为插值节点，则递归地定义均差为：
+\begin{itemize}
+\item $f[x_k]=f(x_k)$
+\item $f(x_k,\cdots,x_{k+j})=\frac{f[x_{k+1},\cdots, x_{k+j}]-f[x_k,\cdots,x_{k+j-1}]}{x_{k+j}-x_j}$
+\end{itemize}
+\end{Def}
+
+\begin{Prop}
+\begin{enumerate}
+\item 均差是零阶均差的线性组合。
+\item 均差关于插值节点是对称的（与插值顺序是无关的）
+\item 若$f[x,x_0,\cdots,x_k]$是$m$次多项式，则$f[x,x_0,\cdots, x_k,x_{k+1}]$是$m-1$次多项式。这是因为$f[x,x_0,\cdots,x_{k+1}]=\frac{f[x,x_0,\cdots,x_k]-f[x_0,\cdots,x_{k+1}]}{x-x_{k+1}}$ 特别地，若$f\in P_n$，则$f[x,x_0,\cdots,x_n]=0$
+\item $f\in C^n([a,b])\Rightarrow f[x_0,\cdots,x_n]=\frac{f^{(n)}(\xi)}{n!}$
+\end{enumerate}
+\end{Prop}
+
+\subsubsection{Newton插值多项式}
+\[f(x)=\sum_{k=0}^n f[x_0,\cdots,x_k]\prod_{l=0}^{k-1} (x-x_l)+f[x,x_0,\cdots,x_n]\prod_{l=0}^n (x-x_l)=:N_n(x)+R_n(x)\]
+其中$R_n(x)\in P_n$是$f(x)$的$n$次Newton插值多项式，$R_n(x)$为均差形式余项。$R_n(x)=\frac{f^{(n)}(\xi)}{n!}w_{n+1}(x)\Rightarrow f[x_0,\cdots,x_n]=\frac{f^{(n)}(\xi)}{n!}$
+
+\subsection{Hermite插值}
+求$H_{2n+1}\in P_{2n+1}\st H_{2n+1}(x_j)=f(x_j),H_{2n+1}'(x_j)=f'(x_j)$。为此，构造$\alpha_j,\beta_j\in P_{2n+1}\st \alpha_j(x_k)=\delta_{jk},\alpha'(x_k)=0,\beta_j(x_k)=0,\beta'(x_k)=\delta_{jk}$，则$H_{2n+1}(x)=\sum_{j=0}^n f(x_j)\alpha_j(x)+f'(x_j)\beta_j(x)$
+
+$\alpha_j$有$n$个二重零点，故$\alpha_j=(ax+b)\prod\limits_{i\neq j,i=1}^{n}(x-x_i)^2$，代入条件得\[\alpha_j(x)=[1-2l'_j(x_j)(x-x_j)]l^2_j(x)\]$\beta_j$有$n$个二重零点和一个单重零点，故$\beta_j(x)=c(x-x_j)\prod\limits_{i\neq j,i=1}^{n}(x-x_i)^2$，代入条件得\[\beta_j(x)=(x-x_j)l_j^2(x)\]
+
+\begin{Thm}
+$f\in C^{2n+2}[a,b]\Rightarrow \exists \xi(x)\in (a,b)\st$
+\[R_{2n+1}(x)=f(x)-H_{2n+1}(x)=\frac{f^{(2n+2)}(\xi)}{(2n+2)!}w_{n+1}^2(x)\]
+\end{Thm}
+这样的估计仍旧不能保证误差趋于$0$。
+
+一般地，可以利用重节点的均差描述Hermite插值的Newton插值多项式。
+
+对于更高阶的导数，可以引入“密切插值”。
+
+\subsection{分段插值}
+一般地，我们不会使用高于三次的插值，为在这种情况下获得好的估计，我们对插值区间作分段
+\[a=x_0<x_1<\cdots <x_n=b\quad h=\max_{0\leq j\leq n-1}|x_{j+1}-x_j|\]
+在每一个区间上构建插值多项式：
+\begin{enumerate}
+	\item Lagrange插值$\Rightarrow $分段线性插值，有误差估计$|f(x)-\varphi(x)|\leq \frac{h^2}{8}\nm{f''}_\infty$
+	\item Hermite插值$\Rightarrow $分段三次Hermite插值，有误差估计$|f(x)-\psi(x)|\leq \frac{1}{384}h^6\nm{f^{(4)}}_\infty$
+\end{enumerate}
+
+\subsection{三次样条插值}
+仅知道函数值，能否确定一个尽可能光滑的分段插值函数？想法：利用$f_i'(x_i)=f_{i+1}'(x_i)$作为光滑性条件限制。
+\begin{Def}
+给定剖分
+\[\Delta:a=x_0<x_1<\cdots<x_n=b\]
+$S$为满足下列条件的函数：
+\begin{enumerate}
+	\item $S\in C^2[a,b]$
+	\item $S$在$[x_j,x_{j+1}]$上是三次多项式。
+\end{enumerate}	
+若$S$满足$S(x_j)=f(x_j)$，则称$S$是$f$关于剖分$\Delta$的一个三次样条插值函数。
+\end{Def}
+
+设于$[x_j,x_{j+1}]$上，$S(x)=S_j(x)=a_jx^3+b_jx^2+c_jx+d_j$
+为确定$4n$个系数，我们有$4n-2$个条件（故不能要求更高的光滑性）
+\[S_j(x_j)=f(x_j)\quad j=0,\cdots,n-1\]
+\[S_{j-1}(x_j)=f(x_j)\quad j=1,\cdots,n\]
+\[S'_j(x_j)=S_{j-1}'(x_j)\quad j=1,\cdots n-1\]
+\[S''_j(x_j)=S''_{j-1}(x_j)\quad j=1,\cdots,n-1\]
+
+为补充剩余两个边界条件，常见的方法有：
+\begin{enumerate}
+\item I型边界条件：$S'(x_0)=f'(x_0),S'(x_n)=f'(x_n)$
+\item II型边界条件：$S''(x_0)=f''(x_0),S''(x_n)=f''(x_n)$
+\item 周期边界条件：$S(x_0)=S(x_n),S'(x_0)=S'(x_n),S''(x_0)=S''(x_n)$
+\end{enumerate}
+
+为计算三次样条，我们并不常用直接解方程的方法，而是作一定的约化。
+
+设$M_j=S''(x_j)=$。注意到$S''(x)$在每个区间上是线性函数，且$S''_j(x_j)=M_j,S''(x_{j+1})=M_{j+1}$。写出其线性形式并积分，得含两个参数$c_1,c_2$的函数。再代入$S_j(x_j)=f(x_j),S_j(x_{j+1})=f(x_{j+1})$解得$c_1,c_2$，得$S_j$的表达式：
+
+下求解$M_j$：利用$S_j'(x_j)=S_{j-1}'(x_j)$作$n-1$个方程（此时若为II型边界条件则直接解即得）
+\[\mu_jM_{j-1}+2M_j+\lambda_jM_{j+1}=d_j\]
+其中$\mu_j=\frac{h_{j-1}}{h_{j-1}+h_j},\lambda_j=1-\mu_j,d_j=6f[x_{j-1},x_j,x_{j+1}]$。这是严格对角占优的矩阵。
+
+若为I型边界条件，利用$S'(x_0)=f'(x_0),S'(x_n)=f'(x_n)$犹得严格对角占优矩阵：
+
+若为循环边界条件，则可化为严格对角占优的循环三对角矩阵。
+
+类似的计算方法：取$D_j=S'(x_j)$又易知$f(x_j)$，则在每一段上其为对应$f(x_j),f(x_{j+1},D_j,D_{j+1})$的Hermite插值多项式：$S_j(x)=f_j\alpha_j^0(x)+f_{j+1}\alpha_j^1(x)+D_j\beta_j^0(x)+D_{j+1}\beta_{j+1}^1(x)$，再求导利用二阶导数连续的条件（得三对角严格对角占优矩阵）求解$D_j$。
+
+基于这样的计算方式可以得到三次样条插值有误差估计：
+\begin{Thm}
+$f\in C^4$,$S$为对应的三次样条插值函数，则
+\[\nm{f-S}_\infty\leq \frac{5}{384}h^4\nm{f^{(4)}}_\infty\]
+\end{Thm}
+
+另有B-样条插值：注意到样条函数构成线性空间。因其有$4n$个未知数与$3(n-1)$个限制条件，该线性空间至少是$n+3$维的。寻其基函数$\varphi_0,\cdots,\varphi_{j+2}$，得$f(x_i)=\sum_{j=0}^{n+2}c_j\varphi_j(x_i)$。
+
+有一组自然的基\[\varphi_j(x)=\begin{cases}0 & x\leq x_j\\ (x-x_j)^3& x>x_j\end{cases}\quad j=0,\cdots,n-1\]\[\varphi_n(x)=1,\varphi_{n+1}(x)=x,\varphi_{n+2}(x)=x^2\]。这并不是一组好的基：它的条件数很大（当节点距离很小时，基函数接近线性相关）
+
+实际计算时采用这样的一组基$B_{k+1}=B_k*B_0,B_0^j=1_{[x_{j-1},x_j]}\quad k=0,1,2$。如此得到的$B_3$是所求的一组基。
+
+\section{函数逼近}
+函数逼近问题：给定$f:[a,b]\to\R$，逼近函数空间$\Phi$。求$p^*\in \Phi\st$
+\[p^*=\mathrm{argmin}\{\nm{f-p}:p^*\in\Phi\}\]
+其中$\nm{\cdot}$为预先给定的范数。
+
+常见地，取$\Phi$为多项式，有理分式，三角多项式，$\nm{\cdot}$常取为2-范数。取$\Phi$的一组（正交）基，则问题转化为求解最小二乘问题：
+\[\mathrm{argmin}\{\nm{f-\sum_{i=0}^n c_i\varphi_i}_2^2\}\]
+记$F(c_0,\cdots,c_n)=\frac{1}{2}\nm{f-\sum_{i=0}^n c_i\varphi_i}_2^2$，则$\pp{F}{c_j}=\left<f-\sum_{i=0}^n c_i\varphi_i,\varphi_j\right>=0\Rightarrow \left<f,\varphi_j\right>=\sum_{i=0}^n c_i\left<\varphi_i,\varphi_j\right>$。这$n$个方程构成$c_1,\cdots,c_n$的方程组，其系数矩阵为Gram矩阵（特别地，$f$的Hessian矩阵），以$\{\varphi_i\}$线性无关之故非异。注意到这是一个法方程，使用一般的一组基时条件数很大（如取多项式函数空间取基$\{1,x,x^2,\cdots,x^n\}$时，所得矩阵为高度病态的Hilbert矩阵），故常使用单位正交基解得$c_i=\left<f,\varphi_i\right>$。由此问题转变为求单位正交基。特别地，求正交多项式。
+
+因极值点之唯一性，无论怎样选取基，最终得到的最佳平方逼近函数是相同的（虽系数选取不同）。
+
+\subsection{正交多项式}
+\begin{Def}
+设$f,g,\rho\in C([a,b]),(f,g)=\int_a^b f(x)g(x)\rho(x)\dd x=0$，则称$f,g$在$[a,b]$上关于权函数$\rho$正交。其中$\rho> 0 \mathrm{a.e.}$
+\end{Def}
+
+\begin{Def}
+设$\varphi_n$是$[a,b]$上$n$次项系数不为0的$n$次多项式，$\rho$是$[a,b]$上的权函数。若多项式序列$\{\varphi_n\}$满足
+\[(\varphi_i,\varphi_j)=\begin{cases}0 & i\neq j\\A_j & i=j\end{cases}\]
+则称$\{\varphi_n\}$在$[a,b]$上关于$\rho$正交，称其为$[a,b]$上带权函数$\rho$的$n$次正交多项式。
+\end{Def}
+
+从自然的基出发，用Gram-Schmidt正交化构造正交多项式序列：
+\[\varphi_k(x)=x^k-\sum_{j=0}^{k-1}\frac{(x^k,\varphi_j)}{(\varphi_j,\varphi_j)}\varphi_j(x)\]
+
+\begin{Thm}
+$\varphi_n(x)$在$(a,b)$上有$n$个互异的零点。
+\end{Thm}
+
+\begin{proof}
+$(\varphi_n,1)=(\varphi_n,\varphi_0)=\int_a^b\rho(x)\varphi_n(x)\dd x=0\Rightarrow \varphi_n(x)$存在奇数重零点（否则$\varphi_n(x)>0 \mathrm{a.e.}$，矛盾！）。设$x_1,\cdots,x_m$为其全部的奇数重根，则$q(x)=\prod\limits_{j=1}^m(x-x_j)$，则$\varphi_n(x)q(x)>0 \mathrm{a.e.}$。若$m<n$，则与正交多项式之定义矛盾，故$\varphi_n(x)$有$n$个单重零点。
+\end{proof}
+
+\begin{Thm}
+设$\varphi_{-1}(x)=0$，则
+\[\varphi_{n+1}(x)=(\alpha_n x+\beta_n)\varphi_n(x)+\gamma_{n-1}(x)\varphi_{n-1}(x)\]
+\end{Thm}
+
+\begin{proof}
+设$\varphi_n(x)$的首项系数为$a_n$，取$\alpha_n=\frac{a_{n+1}}{a_n}$，则$\mathrm{deg} \varphi_{n+1}-\alpha_n x\varphi_n(x)\leq n$，可以被$\varphi_0,\cdots,\varphi_n$线性表出：
+\[\varphi_{n+1}-\alpha_n x\varphi_n(x)\leq n=\beta_n\varphi_n(x)+\sum_{j=0}^{n-1}\gamma_j\varphi_j(x)\]
+两边同与$\varphi_j(x)$作内积得
+\[\beta_n=\alpha_n\frac{(x\varphi_n,\varphi_n)}{(\varphi_n,\varphi_n)}\]
+\[\gamma_j=-\alpha_n\frac{(x\varphi_n,\varphi_j)}{\varphi_j,\varphi_j}\]
+注意到$(x\varphi_n,\varphi_j)=(\varphi_n,x\varphi_j)=0\quad j=0,1,\cdots n-2$，故得。
+
+特别地，$\gamma_{n-1}=-\frac{a_{n-1}a_{n+1}}{a_n^2}\frac{(\varphi_n,\varphi_n)}{(\varphi_{n-1},\varphi_{n-1})}$
+\end{proof}
+
+\subsubsection{Legendre多项式}
+取$\rho(x)\equiv 1$，得Legendre多项式：$p_n(x)=\frac{1}{2^nn!}\frac{\mathrm{d}^n}{\mathrm{d}x^n}[(x^2-1)^n]$
+
+其满足性质：
+\begin{enumerate}
+\item $(p_n,p_n)=\frac{2}{2n+1}$
+\item $(n+1)p_{n+1}=(2n+1)xp_n-np_{n-1}$
+\item $p_n(-x)=(-1)^n p_n(x)$
+\end{enumerate}
+
+\subsubsection{Laguerre多项式}
+$[a,b]=[0,+\infty),\rho(x)=e^{-x},L_n(x)=e^x\frac{\mathrm{d}^n}{\mathrm{d}x^n}(x^n e^{-x})$
+
+\subsubsection{Hermite多项式}
+$[a,b]=(-\infty,\infty),\rho(x)=e^{-x^2},H_n(x)=(-1)^ne^{x^2}\frac{\mathrm{d}^n}{\mathrm{d}x^n}e^{-x^2}$
+
+\subsubsection{Chebyshev多项式}
+Chebyshev多项式给出了$L^\infty$范数下的最佳逼近。
+$[a,b]=[-1,1],\rho(x)=\frac{1}{\sqrt{1-x^2}},T_n(x)=\cos(n \mathrm{arc}\cos(x))$
+
+其具有性质：
+\begin{enumerate}
+\item $T_{n+1}(x)=2xT_n(x)-T_{n-1}(x)$
+\item $T_n(-x)=(-1)^n T_n(x)$
+\item $(T_n,T_n)=\frac{\pi}{2}+\frac{\pi}{2}\delta_{0n}$
+\item $T_n$的首项系数为$2^{n-1}$
+\item $T_n$在$(-1,1)$的$n$个零点为$x_k=\cos\frac{(2k-1)\pi}{2n}\quad k=1,2,\cdots,n$，$n+1$个极值点为$\bar{x_k}=\cos(\frac{k\pi}{n})$，其中$T_n(\bar x_k)=(-1)^k$
+\end{enumerate}
+
+设$\tilde{T}_n=\frac{1}{2^{n-1}}T_n$。
+\begin{Thm}
+\[\frac{1}{2^{n-1}}=\nm{\tilde{T}}_{L^\infty[-1,1]}\leq\nm{\varphi}_{L^\infty[-1,1]}\quad \forall \varphi_n\in \mathcal{P}_n\]
+\end{Thm}
+
+\begin{proof}
+反设$\varphi_n$不满足定理，则$Q=\tilde{T}-\varphi_n\in \mathcal{P_{n-1}}$，$Q(\bar{x}_k)\begin{cases}<0 & k\text{为奇数}\\ >0 & k\text{为偶数}\end{cases}$。由介值定理，$Q$在$(-1,1)$至少有$n$个零点，矛盾！
+\end{proof}
+
+\begin{Thm}
+设$L_n(x)$为插值于Chebyshev多项式的零点的Lagrange多项式，则
+\[\nm{f-L_n}_{L^\infty[-1,1]}\leq\frac{1}{2^n(n+1)!}\nm{f^{(n+1)}}_{L^{\infty}[-1,1]}\]
+\end{Thm}
+\begin{proof}
+$LHS\leq \nm{f}_{L^\infty}\nm{\omega^{n+1}}_{\infty}$，其中$\omega^{n+1}=\prod_{j=0}^n (x-x_j)=\tilde{T}_{n+1}(x)\Rightarrow \nm{\omega}_\infty=\frac{1}{2^n}$
+
+\end{proof}
+
+\subsection{周期函数的最佳平方逼近}
+不妨设周期为$2\pi$，在连续与（等距取插值点的）离散的内积下，基函数$\{1,\cos x,\sin x,\cdots,\cos kx,\sin kx,\cdots\}$都是正交的。这给出最佳平方逼近$S_n^*(x)=\frac{1}{2}a_0+\sum_{k=1}^n a_k\cos kx+b_k \sin kx$，其中
+\[a_k=\frac{2}{N}\sum_{j=0}^{N-1}f(x_j)\cos (kx_j)\]
+\[b_k=\frac{2}{N}\sum_{j=0}^{N-1}f(x_j)\sin (kx_j)\]
+
+这称为DFT，复杂度显然为$O(N^2)$，其改进算法称为FFT，计算复杂度为$O(N\log N)$
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,109 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,graphicx, booktabs}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业3}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{1.}
+注意到\[(I-B)(S^{(k)})-I=-B^{k}\]故
+\subparagraph{(1)}
+\begin{proof}
+若$\rho(B)<1$，则
+\[\lim_{k\to\infty}\nm{(I-B)(S^{(k)})-I}=\lim_{k\to\infty}\nm{-B^k}\]
+又注意到$\lim\limits_{k\to\infty}\nm{B^k}^{\frac 1 k}=\rho(B)<1$，故$\exists 0<\delta<1,N\in\mathbf{N}\st\forall k>N$
+\[\nm{B^k}\leq \delta^k\to 0\quad (k\to\infty)\]
+
+代入上式即得$\lim\limits_{k\to\infty}\nm{(I-B)(S^{(k)})-I}=0$。整理即得$\lim\limits_{k\to\infty}S^{(k)}=(I-B)^{-1}$
+\end{proof}
+\subparagraph{(2)}
+\begin{proof}
+反设$\rho(B)\geq 1$。由(i)中结论，知$S^{(k)}\to (I-B)^{-1}\quad(k\to\infty)$，即$\lim\limits_{k\to\infty}\nm{(I-B)(S^{(k)})-I}=\lim\limits_{k\to\infty}\nm{-B^k}=0$。但同时$\nm{-B^k}\geq\rho(B)^k\geq 1$，矛盾！
+\end{proof}
+
+\paragraph{2.}
+\textbf{Jacobi迭代：}$eig(B_J)=\{0,-\frac{\sqrt{1-a^2}}{2},\frac{\sqrt{1-a^2}}{2}\}$，故迭代收敛$\Leftrightarrow a\in [-1,1]$。
+
+\textbf{Gauss-Seidels 迭代：}$eig(B_G)=\{0,0,\frac{1-a}{4}\}$，故迭代收敛$\Leftrightarrow a\in(-3,5)$。
+
+\paragraph{3.}
+\[x^{(k+1)}=(I+\alpha A)x^{(k)}-\alpha b\]
+设$B=I+\alpha A$，则$eig(A)=\{\alpha+1,4\alpha+1\}$。故迭代收敛$\Leftrightarrow\rho(B)<1\Leftrightarrow \alpha\in(-\frac{1}{2},0)$。注意到此时$\rho(B)=\begin{cases}\alpha+1&-\frac{2}{5}<\alpha<0\\ -1-4\alpha&-\frac{1}{2}<\alpha<-\frac{2}{5}\end{cases}$，且$R(B)=-\log(\rho(B))$。易知$R(B)$是先增后减的分段单调函数，于$\alpha=-\frac{2}{5}$处取极值，故$\alpha=-\frac{2}{5}$为最佳值。
+
+\paragraph{4.}
+\begin{proof}
+设$B_J$的特征多项式为$f(\lambda)=\det(\lambda I-B_J)$，则$B_\omega$的特征多项式为$g(\lambda)=\det((\lambda-(1-\omega))I-\omega A)\Rightarrow \omega^nf(\frac{\lambda-(1-\omega)}{\omega})=g(\lambda)$。即若$\lambda_0$是$B_\omega$的特征值，则$\frac{\lambda_0-(1-\omega)}{\omega}$是$B_J$的特征值。特别地，$|\frac{\lambda_0-(1-\omega)}{\omega}|<1\Rightarrow 1-2\omega<\lambda_0<1 $。注意到$0<\omega\leq 1$，故$|\lambda|<1\Rightarrow \rho(B_\omega)<1\Rightarrow$JOR迭代收敛。
+\end{proof}
+
+\paragraph{5.}
+\begin{proof}
+$\forall \mu\in\sigma(B_J),-\mu\in\sigma(B_J),\exists \lambda_\mu^+,\lambda_\mu^-\st (\lambda+\omega-1)^2=\lambda\omega^2\mu^2$。这样的对应是一一对应，故$\sigma(B_J),\sigma(B_\omega)$互相完全确定。
+
+若$\rho(B_J)<1,0<\omega<2$，则$\forall\mu\in\sigma(B_J)$，考察其确定的$\lambda$的取值范围：若$\lambda=0$，则结论显然成立；若$\lambda\neq 0:\mu^2\in[0,1)\Rightarrow 0<\frac{(\lambda+\omega-1)^2}{\lambda}<\omega^2$。由左侧不等式得到$\lambda>0$，解右侧不等式得$(w-1)^2<\lambda<1\Rightarrow |\lambda|<1$，故$\rho(B_\omega)<1$，SOR迭代收敛。
+
+若SOR迭代收敛，由讲义知$0<\omega<2$。若$\lambda=0$，则其对应$\mu=0$，故不妨设$\lambda\neq 0$。
+%\[\mu^2=f(\lambda,\omega)=\frac{1}{\lambda}[1+\frac{\lambda-1}{\omega}]^2\quad \omega\in(0,2),\lambda\in (-1,0)\cup (0,1)\]
+%，即证$f(\lambda,\omega)<1$。又$\nabla f=\frac{1}{\lambda^2\omega^2}(\omega(1-\omega),\lambda(1-\lambda))$，
+%故$f$无驻点，于边界取极值，即$\max|f|<\max\{|f(1,2)|,|f(-1,2)|,|f(1,-2)|,|f(-1,-2)|\}=$
+
+%则需证明在$\lambda\in(-1,1)$的情形下，$\mu^2=\frac{(\lambda+\omega-1)^2}{\lambda\omega^2}<1$。右侧不等式整理得$(\lambda-1)(\lambda-(\omega-1)^2)<0$。因$|\lambda|<1$，故原式等价于证明$\lambda>(1-\omega)^2$。
+
+%求最佳松弛因子即在$\mu$固定的情形下，求使得$\max\lambda$最小的$\omega$。记$f(\lambda)=\lambda^2-(\omega^2\mu^2-2\omega+2)\lambda+(\omega-1)^2$，则其对称轴为$\lambda_c=\frac{\omega^2\mu^2}{2}-(\omega-1)$，$f(\lambda)=0$的两根为$\lambda_\pm=\lambda_c\pm\frac{1}{2}\sqrt{(\omega^2\mu^2)^2-4(\omega-1)\omega^2\mu^2}$。
+
+考察方程
+\[\lambda^2-(\omega^2\mu^2-2\omega+2)\lambda+(\omega-1)^2=0\]
+其两根为
+\[\lambda_\pm(\mu,\omega)=\frac{\omega^2\mu^2}{2}-(\omega-1)\pm\frac{\omega\mu}{2}\sqrt{\omega^2\mu^2-4(\omega-1)}=\frac{1}{4}[\mu\omega\pm\sqrt{\mu^2\omega^2-4\omega+4}]^2>0\]
+其中，$\omega^2\mu^2-4\omega+4$的两根为$\omega_0<\omega_1$。由Vieta定理，$\omega_0\omega_1=2$，故$\omega_0<\omega_1$。计算得知$\omega_0=\frac{2-2\sqrt{1-\mu^4}}{\mu^2}=\frac{2}{1+\sqrt{1-\mu^2}}>1$。
+
+为研究$\omega_b$，我们设
+\[\rho(B_\omega)=M(\mu,\omega):=\max\{\lambda_+(\mu,\omega),\lambda_-(\mu,\omega)\}\]
+注意到其对称性$M(\mu,\omega)=M(-\mu,\omega)$，不妨设$\mu>0$。
+
+\textbf{Case 1：}若$|\mu|\geq 1$，则$\omega^2\mu^2-4(\omega-1)\geq (\omega-2)^2>0$，且$\rho(B_\omega)\geq\lambda_+\geq \frac{\omega^2}{2}-(\omega-1)+\frac{\omega(2-\omega)}{2}=1$，这与SOR迭代收敛矛盾！故$|\mu|<1$
+
+\textbf{Case 2: }若$0<\mu<1$，则
+
+\textbf{Case 2.1：}若$1<\omega_0<\omega<2$，则$\omega^2\mu^2-4(\omega-1)<0$，即$\lambda_\pm$是共轭的两根，由Vieta定理：$M=\sqrt(\lambda_+\lambda_-)=\sqrt{(\omega-1)^2}=\omega-1$
+
+\textbf{Case 2.2：}若$0<\omega<\omega_0$，则$\lambda_+^2-\lambda_-^2=\frac{1}{4}(\lambda_++\lambda_-)\mu\omega\sqrt{\mu^2\omega^2-4(\omega-1)}>0$，故$M(\mu,\omega)=\lambda_+$。
+
+综上所述，$\rho(B_\omega)=\begin{cases}\frac{1}{4}[\omega\mu+\sqrt{\omega^2\mu^2-4(\omega-1)}]^2&\omega\in(0,\omega_0)\\\omega-1&\omega\in [\omega_0,2)\end{cases}$
+
+下面只需要确定$\omega_b\equiv\omega_0$。为此考察$\rho(B_\omega)$的单调性：$\omega>\omega_0$时，严格单调递增；$\omega<\omega_0$时，$\rho(B_\omega)'=\sqrt{\lambda_+}\mu(1-\frac{\omega\mu}{\sqrt{\omega^2\mu^2-4(\omega-1)}})<0$，故单调递减，即$\rho(B_\omega)$于$\omega_0$处取最小值，即$\omega_b\equiv\omega_0$，得证。
+\end{proof}
+
+
+\paragraph{6.}
+
+
+\begin{tabular}{cccc}
+\toprule
+& \multicolumn{3}{c}{N=} \\
+\cmidrule{2-4}
+& 20 & 40 & 80 \\
+\midrule
+迭代次数 & 42 & 83 & 141 \\
+CPU时间 & 0.0809 & 1.5261& 36.8896 \\
+\bottomrule
+\end{tabular}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

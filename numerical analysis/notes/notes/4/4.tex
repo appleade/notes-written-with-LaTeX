@@ -1,0 +1,508 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\nm}[1]{\left\|#1 \right\|}
+\newcommand{\dif}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\section{线性方程组的迭代解法}
+\begin{itemize}
+\item $x^{(k+1)}=F(x^{(k)},\cdots, x^{(k-m)})$ 多步迭代法
+\item $x^{(k+1)}=F(x^{(k)})$ 单步迭代法
+\item $x^{(k+1)}=B_kx^{(k)}+f_k$ 单步线性迭代法
+\item $x^{(k+1)}=B_kx^{(k)}+f_k$ 定常单步线性迭代法
+\end{itemize}
+问题在于：是否收敛？如果收敛，是否收敛到方程的解？收敛速度有多快？
+
+\subsubsection{向量序列与矩阵序列的极限}
+\begin{Def}[向量序列收敛]
+称$x^{(k)}$收敛于$x$，若$\lim\limits_{k\to\infty}\nm{x^{(k)}-x}=0$.
+\end{Def}
+因各范数等价（特别地，$\infty$范数），故向量序列收敛$\Leftrightarrow$按分量收敛。
+
+\begin{Def}[矩阵序列收敛]
+称$A^{(k)}$收敛于$x$，若$\lim\limits_{k\to\infty}\nm{A^{(k)}-A}=0$.
+\end{Def}
+$\lim\limits_{k\to\infty}A^{(k)}=A\Leftrightarrow \lim\limits_{k\to\infty}a^{(k)}_{ij}=a_{ij}\quad\forall 1\leq i,j\leq n$
+
+\begin{Thm}
+$\lim\limits_{k\to\infty}A^{(k)}=0\Leftrightarrow \lim\limits_{k\to\infty}A^{(k)}x=0\quad\forall x\in \R^n$
+\end{Thm}
+\begin{proof}
+$\bm{\Rightarrow}:$ 显然
+
+$\bm{\Leftarrow}:$取$x=e_j\quad \forall 1\leq j\leq n$，则$\lim\limits{k\to\infty}a^{(k)}_j=0\quad\forall 1\leq j\leq n$，该关心对向量内每一项都成立，故$\lim\limits_{k\to\infty}A^{(k)}=0$。
+\end{proof}
+
+
+我们特别地关注序列$\{B^k\}$，对其收敛性有如下刻画：
+\begin{Thm}
+$B\in \R^{n\times n}$，则下列命题等价：
+\begin{enumerate}
+\item $\lim\limits_{k\to\infty}B^k=0$
+\item $\rho(B)<1$
+\item $\exists \nm{\cdot}$ 从属范数 $\st \nm{B}<1$
+\end{enumerate}
+\end{Thm}
+
+\begin{proof}
+\textbf{(1)$\Rightarrow$ (2) }设$\lambda$是$B$的特征值，其对应特征向量$x$。则$\nm{B^kx}=|\lambda|^k\nm{x}\to 0\Rightarrow |\lambda|<1$
+
+\textbf{(2)$\Rightarrow$ (3) }由第一章定理，$\nm{B}<\rho(B)$
+
+\textbf{(3)$\Rightarrow$ (1) }$\nm{B^k}\leq \nm{B}^k$，$k\to\infty$即得。
+\end{proof}
+
+\begin{Thm}
+$\lim\limits_{k\to\infty}\nm{B^k}^{\frac 1 k}=\rho(B)$
+\end{Thm}
+\begin{proof}
+一方面，$\rho(B)\leq\nm{B}\Rightarrow \rho(B)=[\rho(B^k)]^{\frac 1 k}\leq \nm{B^k}^{\frac 1 k}$
+
+另一方面，$\forall\varepsilon>0, B_\varepsilon=[\rho(B)+\varepsilon]^{-1}B\Rightarrow \rho(B_\varepsilon)<1\Rightarrow \lim\limits_{k\to\infty}B_\varepsilon^k=0\Rightarrow \exists N_\varepsilon\st\forall k>N_\varepsilon, \nm{B_\varepsilon}=\frac{\nm{B^k}}{[\rho(B)+\varepsilon]^k}<1$，整理取极限即得。
+\end{proof}
+
+
+\subsubsection{迭代法的收敛性}
+考察线性定常单步迭代法$x^{(k+1)}=Bx^{(k)}+f$，则其误差$e_k=B^ke_0$
+
+\begin{Thm}
+设$x^*$是$x=Bx+f$的唯一解，$\nm{B}=q<1$，则$x^{(k+1)}=Bx^{(k)}+f$收敛，且\[\nm{x^{(k)}-x^*}\leq \frac{q}{1-q}\nm{x^{(k)}-x^{(k-1)}}\]
+\[\nm{x^{(k)}-x^*}\leq \frac{q^k}{1-q}\nm{x^{(1)}-x^{(0)}}\]
+\end{Thm}
+这一估计称为后验误差估计（因使用计算的值进行估计，区别于$\nm{e^k}\leq \nm{B}^k\nm{e^0}$先验误差估计），用于确定迭代停止条件
+\begin{proof}
+$\nm{x^{(k)}-x^*}\leq q(\nm{x^{(k-1)}-x^{(k)}}+\nm{x^{(k)}-x^*})$，整理即得。
+
+后一式由前一式迭代而来。（故后一式是更松的估计）
+\end{proof}
+
+\begin{Def}[收敛率]
+$x^{(k+1)}=Bx^{(k)}+f$的平均收敛率\footnote{平均收敛率依赖于范数}为$R_k(B)=-\ln\nm{B^k}^{\frac 1 k}$，渐进收敛率为$R(B)=-\ln\rho(B)$
+\end{Def}
+
+\subsection{Jacobi和Gauss-Seidel迭代法}
+考察$Ax=b$，设$A$的对角线上元素非零，则记$A=D-L-U$，其中$L,U$是严格的下、上三角矩阵，$D$是对角矩阵，则
+
+$Dx=(L+U)x+b\Rightarrow x=D^{-1}(L+U)x+D^{-1}b$。由此
+\[x^{(k+1)}=B_Jx^{(k)}+f_J\quad B_J=D^{-1}(L+U), f_J=D^{-1}b\]
+称Jacobi迭代：$Dx^{(k+1)}=Ux^{(k)}+Lx^{(k)}+b$
+
+$(D-L)x=Ux+b\Rightarrow x=(D-L)^{-1}Ux+(D-L)^{-1}b$。由此
+\[x^{(k+1)}=B_Gx^{(k)}+f_G\quad B_G=(D-L)^{-1}Ux, f_G=(D-L)^{-1}b\]
+称Gauss-Seidel迭代：$Dx^{(k+1)}=Ux^{(k)}+Lx^{(k+1)}+b$
+
+Jacobi迭代中$x^{(k+1)}$的各分量可单独计算，适用于并行计算。Gauss-Seidel迭代中$Lx^{k+1}=\sum\limits_{j=1}^{i-1}l_{ij}x_j^{k+1}$，即$x^{(k+1)}_i$仅依赖于$x_1,\cdots, x_{i-1}$，可以将内存覆盖掉（只使用一个向量区别于Jacobi迭代的两个），节省空间，但它是串行的不能并行计算。
+
+\begin{Thm}
+$A$严格对角占优或不可约弱对角占优，则Jacobi迭代，Gauss-Seidels迭代收敛。
+\end{Thm}
+\begin{proof}
+今对Gauss-Seidel 迭代进行证明，Jacobi迭代的证明是类似的。
+
+由条件知$A$非异且$a_{ii}\neq 0\quad \forall 1\leq i\leq n$。
+
+反设$B_G$有一个特征值$\lambda\st |\lambda|\geq 1$，则$\det(\lambda I-B_G)=\det{(D-L)}^{-1}\det(\lambda(D-L)-U)=0$，即$\lambda(D-L)-U$非异。但是$\lambda(D-L)-U$与$A=D-L-U$的零元素位置相同，故犹不可约；又$\lambda>1$，故$\lambda(D-L)-U$犹对角占优，故$\lambda(D-L)-U$非异，矛盾！
+\end{proof}
+
+\begin{Thm}
+设$A$对称且对角线元素$>0$，则Jacobi迭代收敛当且仅当$A,2D-A$都正定。
+\end{Thm}
+
+\begin{proof}
+$D^{\frac 1 2}=\mathrm{diag}\{\sqrt{a_{11}},\cdots,\sqrt{a_{nn}}\}$，$B_J=I-D^{-1}A=D^{-\frac 1 2}(I-D^{-\frac 1 2}AD^{\frac 1 2})D^{\frac 1 2}$，即$B_G\sim I-D^{-\frac 1 2}AD^{-\frac 1 2}\Rightarrow eig(B_J)=1-\mu,\mu=eig(D^{-\frac 1 2}AD^{\frac 1 2})$。
+
+若Jacobi迭代收敛，则$\rho(B_J)<1\Rightarrow |1-\mu|<1\Rightarrow 0<\mu<2\Rightarrow D^{-\frac 1 2}AD^{\frac 1 2},2I-D^{-\frac 1 2}AD^{\frac 1 2}$正定$\Rightarrow A,2D-A$正定。倒推此过程则得另一边。
+\end{proof}
+
+\begin{Thm}
+$A$对称正定$\Rightarrow$Gauss-Seidel迭代收敛。
+\end{Thm}
+
+\begin{Thm}
+$A$对称非异，$a_{ii}>0\quad\forall 1\leq i\leq n$，则Gauss-Seidel迭代收敛$\Rightarrow A$正定。
+\end{Thm}
+\begin{proof}
+反设$A$非正定，则$\exists e^{(0)}\st (e^{(0)},Ae^{(0)})\leq 0$。记$e^{(n)}=x^n-x^*$，$\delta^{(k)}=e^{(k)}-e^{(k+1)}$。
+
+
+\begin{itemize}
+\item $\bm{(e^{(n)},Ae^{(n)})}$\textbf{是不增的序列：}
+注意到
+\[(D-L)e^{(k+1)}=Ue^{(k)}\Rightarrow (D-L)\delta^{(k)}=Ae^{(k)}\Rightarrow Ae^{k+1}=U\delta^{(k)}\]
+又注意到$U=L^T$且内积对称，故
+\begin{align*}
+&(e^{(n)},Ae^{(n)})-(e^{(n+1)},Ae^{(n+1)})\\
+=&(e^{(k)},A\delta^{(k)})+(\delta^{(k)},Ae^{(k+1)})\\
+=&(\delta^{(k)},Ae^{(k)}+Ae^{(k+1)})\\
+=&((D-L)\delta^{(k)}+U\delta^{(k)},\delta^{(k)})\\
+=&(\delta^{(k)},D\delta^{(k)})\geq 0
+\end{align*}
+故该序列不增。
+
+\item $\bm{(e^{(1)},Ae^{(1)})<0}$：
+
+$\delta^{(0)}=e^{(0)}-e^{(1)}=(I-B_G)e^{(0)}$。因Gauss-Seidel迭代收敛，故$\rho(B_G)<1\Rightarrow \delta^{(0)}\neq 0$。$(\delta^{(0)},D\delta^{(0)})>0\Rightarrow (e^{(1)},Ae^{(1)})<(e^{(0)},Ae^{(0)})\leq 0$
+\end{itemize}
+综上，不增序列$(e^{(n)},Ae^{(n)})$有负的初值，故不能收敛到0，矛盾！
+\end{proof}
+
+$(D-U)x^{n+1}=Lx^{n}+b$同样称Gauss-Seidel迭代，其理论与原Gauss-Seidel迭代是完全一致的。
+
+\subsection{SOR}
+\begin{Def}
+\[x_i^{(k+1)}=(1-\omega)x_i^{(k)}+\frac{\omega}{a_{ii}}(b_i-\sum\limits_{j=1}^{i-1}a_{ij}x_j^{(k+1)}-\sum_{j=i+1}^na_{ij}x_j^{(k)})\]
+称为逐次超松弛迭代法(SOR)，其中$\omega$称超松弛因子。
+\end{Def}
+
+以矩阵形式表示即为
+\[x^{(k+1)}=(1-\omega)x^{(k)}+\omega D^{-1}(b+Lx^{(k+1)}+Ux^{(k)})\]
+即
+\[x^{(k+1)}=B_\omega x^{(k)}+\omega(D-\omega L)^{-1}b\]
+\[B_\omega=(D-\omega L)^{-1}[1-\omega D+\omega U]\]
+\subsubsection{SOR的收敛性}
+\begin{Thm}
+$\forall A\in\R^{n\times n}\text{ 非异 },a_{ii}\neq 0\quad\forall 1\leq i\leq n, \rho(B_\omega)\geq|1-\omega|$
+\end{Thm}
+\begin{proof}
+$\det(B_\omega)=\det(D-\omega L)^{-1}\det(\omega U+(1-\omega)D)=\det(D^{-1})\det(1-\omega)D=(1-\omega)^n$
+
+$\rho(B_\omega)=|\prod_{i=1}^n \lambda_{\max}|^{\frac 1 n}\geq |\prod\limits_{i=1}^n \lambda_i|^{\frac 1 n}=|1-\omega|$
+\end{proof}
+
+\begin{Cor}
+若SOR迭代收敛，则$0<\omega<2$。
+\end{Cor}
+
+\begin{Thm}
+$A$对称正定，$0<\omega<2$，则SOR收敛。
+\end{Thm}
+
+\begin{proof}
+设$\lambda$是$B_\omega$的特征值，$x$是对应特征向量，则：
+\[[(1-\omega)D+\omega U]x=\lambda(D-\omega L)x\]
+以Rayleigh qutient的方式计算特征值：
+\[(1-\omega)(Dx,x)+\omega(Ux,x)=\lambda[(Dx,x)-\omega(Lx,x)]\]
+整理即得
+\[\lambda=\frac{(1-\omega)(Dx,x)+\omega (Ux,x)}{(Dx,x)-\omega(Lx,x)}\]
+记$(Dx,x)=p>0,(Lx,x)=\alpha+i\beta, (Ux,x)=(x,Lx)=\overline{(Lx,x)}=\alpha-i\beta$，得到
+\[\lambda=\frac{(1-\omega)p+\omega\alpha-i\omega\beta}{p-\omega\alpha-i\omega\beta}\]
+\[\Rightarrow|\lambda|^2=\frac{(p-\omega(p-\alpha))^2+\omega^2\beta^2}{(p-\omega\alpha)^2+\omega^2\beta^2}=1+\frac{p\omega(2-\omega)(2\alpha-p)}{(p-\omega\alpha)^2+\omega^2\beta^2}\]
+其中因$A$正定，$(Ax,x)=(Dx,x)-(Lx,x)-(Ux,x)=p-2\alpha>0$，故$|\lambda|^2<1\Rightarrow \rho(B_\omega)<1$，迭代收敛，得证。
+\end{proof}
+
+也即，在$A$对称正定的条件下，SOR收敛$\Leftrightarrow 0<\omega<2$。
+
+\begin{Def}
+\[\omega_0=\min_{0<\omega<2}\rho(B_\omega)\]
+称为SOR迭代的最优松弛因子。
+\end{Def}
+
+只有对特殊的$A$，松弛因子可以计算。
+
+\begin{Def}
+$A\in \R^{n\times n}$称具有相容次序的矩阵，若对某整数$t$，$\exists \{1,\cdots,n\}$的$t$个互不相交的子集$S_1,\cdots, S_t\st \bigcup S_i=\{1,\cdots,n\}\st\forall i\in S_k,\{j<i|a_{ij}\neq 0\}\subset S_{k-1},\{j>i|a_{ij}\neq 0\}\subset S_{k+1}$
+\end{Def}
+
+例如，取$S_k=\{k\}$，则三对角矩阵是具有相容次序的。
+
+\begin{Thm}
+设$A$具有相容次序，$a_{ii}\neq 0\quad 1\leq i\leq n$，$\omega\in (0,2)$，则
+\begin{enumerate}
+\item 若$\mu\in\sigma(B_J)$，则$-\mu\in\sigma_{B_J}$
+\item 若$\mu\in\sigma(B_J)$，且$\lambda$满足$(\lambda+\omega-1)^2=\lambda\omega^2\mu^2$，则$\lambda\in\sigma(B_\omega)$
+\item 若$\lambda\neq 0,\lambda\in\sigma(B_\omega)$，则满足上述关系的$\mu\in\sigma(B_J)$
+\end{enumerate}
+\end{Thm}
+
+\begin{Thm}
+设$A$具有相容次序，$a_{ii}\neq 0\quad \forall 1\leq i\leq n$，$\sigma(B_J)\subset \R$，则SOR迭代收敛当且仅当$\mu=\rho(B_J)<1$，且最优松弛因子$\omega_b=\frac{2}{1+\sqrt{1-\mu^2}}$。此时
+\[\rho(B_\omega)=\begin{cases}\frac{1}{4}[\omega\mu+\sqrt{\omega^2\mu^2-4(\omega-1)}]^2&\omega\in(0,\omega_b)\\\omega-1&\omega\in [\omega_b,2)\end{cases}\]
+\end{Thm}
+
+\begin{Eg}[一维Poisson方程边值问题的差分格式]
+给定一维Poisson方程：
+\[u''(x)=f(x)\quad x\in (0,1)\]
+\[u(0)=a,u(1)=b\]
+作空间离散$x_j=jh,h=\frac{1}{N+1},j=0,\cdots, N+1$，使用二阶中心差分进行逼近
+\[u''(x_j)=\frac{1}{h^2}(u(x_{j+1})-2u(x_j)+u(x_{j-1}))+O(h^2)\]
+得到差分格式
+\[\frac{u_{j+1}-2u_j+u_{j-1}}{h^2}=f_j=f(x_j)\quad j=1,\cdots,N\]
+\[u_0=a, u_{N+1}=b\]
+写成矩阵形式：$Au=d$，其中
+\[A=
+\begin{bmatrix}
+-2&1&&&\\
+1&-2&1&&\\
+&\ddots&\ddots&\ddots&\\
+&&1&-2&1\\
+&&&1&-2
+\end{bmatrix}
+\]
+\[d=[h^2f_1-a,h^2f_2,\cdots, h^2f_{N-1},h^2f_N-b]'\in\R^N\]
+\[B_J=I-D^{-1}A=I+\frac{1}{2}A=
+\begin{bmatrix}
+0&\frac{1}{2}&&&\\
+\frac{1}{2}&0&\frac{1}{2}&&\\
+&\ddots&\ddots&\ddots&\\
+&&\frac{1}{2}&0&\frac{1}{2}\\
+&&&\frac{1}{2}&0
+\end{bmatrix}
+\]
+其特征值为
+\[\mu_j=\cos(j\pi h)\Rightarrow \rho(B_J)=\cos(\pi h)=1-\frac{1}{2}\pi^2h^2+O(h^4)\]
+对应特征向量为
+\[v_j=[\sin(jk\pi h)]_{k=1,\cdots,N}\in \R^N\]
+\[\rho(B_G)=\rho(B_J)^2=\cos^2(\pi h)=1+\pi^2h^2+O(h^4)\]
+\[\omega_b=\frac{1}{1+\sin(\pi h)}\Rightarrow \rho(\omega_b)=\omega_b-1=\frac{\cos^2(\pi h)}{(1+\sin(\pi h))^2}\]
+收敛速度为：
+\begin{align*}
+R(B_J)&=\frac{1}{2}\pi^2h^2+O(h^4)\\
+R(B_G)&=\pi^2h^2+O(h^4)\\
+R(B_{\omega_b})&=2\pi h+O(h^3)
+\end{align*}
+\end{Eg}
+
+
+\section{共轭梯度法}
+考虑线性方程$Ax=b\st A\in \R^{n\times n}$对称正定。
+\begin{Thm}
+定义二次函数$\varphi(x)=\frac{1}{2}x^TAx=b^T x$，则$Ax=b$的解等价于$\varphi(x)$的极小值点：
+\[Ax^*=b\Leftrightarrow x^*=\mathrm{argmin}_{x\in \R^n}\varphi(x)\]
+\end{Thm}
+\begin{proof}
+$x^*$是极小值点$\Rightarrow \nabla \varphi(x^*)=Ax^*-b=0$。
+
+若$Ax^*=b$，则$\varphi(x^*+y)=\varphi(x^*)+\frac{1}{2}y^TAy\geq \varphi(x^*)\Rightarrow x^*=\mathrm{argmin}\varphi(x)$。
+\end{proof}
+这便把解方程问题转化为了优化问题。
+
+\subsection{最速下降法(Gradient Descent)}
+$\nabla \varphi(x^k)=Ax^k-b=-r^k=:$残差
+
+$x^{k+1}=x^k-\alpha_k\nabla\varphi(x^k)$，其中$\alpha_k=\mathrm{argmin}_{\alpha\in\R}\in\varphi(x^k-\alpha\nabla \varphi(x^k))\Rightarrow \alpha_k=\frac{(r^k,r^k)}{(r^k,Ar^k)}$
+
+这是因为
+\begin{align*}
+0&=\dif{}{\alpha}\varphi(x^k-\alpha\nabla\varphi(x^k))\\
+&=-\nabla\varphi(x^k)\cdot\nabla\varphi(x^k+\alpha r^k)\\
+&=-r^k\cdot(b-A(x^k+\alpha r^k))\\
+&=-(r^k,r^k)+\alpha(r^k,Ar^k)
+\end{align*}
+
+\begin{Thm}
+设$A$的特征值为$0<\lambda_1\leq\cdots\leq\lambda_n$，则最速下降法产生的$\{x^k\}$满足
+\[\nm{x^k-x^*}_A\leq(\frac{\lambda_n-\lambda_1}{\lambda_n+\lambda_1})^k\nm{x^0-x^*}_A\]
+其中$x^*=A^{-1}b,\nm{x}_A=\sqrt{x^TAx}$
+\end{Thm}
+
+\begin{proof}
+由构造，$\varphi(x^k)\leq \varphi(x^{k-1}+\alpha r^{k-1})$，则
+\begin{align*}
+&(x^k-x^*)A(x^k-x^*)\\
+=&2\varphi(x^k)+(x^*)^TAx^*\\
+\leq& 2\varphi(x^{k-1}+\alpha r^{k-1})+(x^*)^TAx^*\\
+=&(x^{k-1}+\alpha r^{k-1}-x^*)^TA(x^{k-1}+\alpha r^{k-1}-x^*)\\
+=&[(I-\alpha A)(x^{k-1}-x^*)]^TA[(I-\alpha A)(x^{k-1}-x^*)]
+\end{align*}
+$\Rightarrow \nm{x^k-x^*}_A\leq\min\limits_{\alpha\in\R}\nm{(I-\alpha A)(x^{k-1}-x^*)}_A$
+
+设$\{u_1,\cdots,u_n\}$是$A$的对应于$\lambda_1,\cdots,\lambda_n$的单位特征向量，则其构成一组单位正交基。令$x^{k-1}-x^*=\sum\limits_{i=1}^n \beta_iu_i$，则
+\begin{align*}
+&\nm{(I-\alpha A)(x^{k-1}-x^*)}^2_A\\
+=&\nm{\sum_{i=1}^n\beta_i(1-\alpha\lambda_i)u_i}^2_A\\
+=&(\sum_{i=1}^n\beta_i(1-\alpha\lambda_i)u_i)(\sum_{i=1}^n\lambda_i\beta_i(1-\alpha\lambda_i)u_i)\\
+=&\sum_{i=1}^n\lambda_i\beta_i^2(1-\alpha\lambda_i)^2\\
+\leq &\max_{1\leq i\leq n}(1-\alpha\lambda_i)^2\sum_{i=1}^n\lambda_i\beta_i^2\\
+=&\max_{1\leq i\leq n}(1-\alpha\lambda_i)^2\nm{x^{k-1}-x^*}_A^2
+\end{align*}
+由此
+\[\nm{x^k-x^*}_A\leq\min_{\alpha\in \R}\max_{1\leq i\leq n}|1-\alpha\lambda_i|\nm{x^{k-1}-x^*}_A\leq \frac{\lambda_n-\lambda_1}{\lambda_n+\lambda_1}\nm{x^{k-1}-x^*}_A\]
+上述不等式于$\alpha=\frac{2}{\lambda_1+\lambda_n}$时取等。
+\end{proof}
+
+\subsection{共轭梯度法(Conjugate Gradient)}
+重新选择下降方向$\{p^{(0)},p^{(1)},\cdots\}\st(Ap^{(i)},p^(j))=0\quad\forall i\neq j$，则称$\{p^{(0)},p^{(1)}\cdots\}$为$A$-共轭向量组。
+
+此时希望$x^k$实现
+\[x^k=\mathrm{argmin}\{\varphi(x)\}\quad x\in x^0+\mathrm{Span}\{p_0,\cdots,p_{k-1}\}\]
+为此考察$\varphi(x^{k+1})$：
+\begin{align*}
+&2\varphi(x^{k+1})\\
+=&\varphi(x^k+\alpha_kp_k)\\
+=&(x^k+\alpha_kp_k)^TA(x^k+\alpha_kp_k)+2b^T(x^k+\alpha_kp_k)\\
+=&(x^k)^TAx^k+2b^Tx^k+\alpha^2_kp_k^TAp_k+2b^T\alpha_kp_k+2\alpha_k(x^k)^TAp_k
+\end{align*}
+此时若交叉项退化，则$\varphi(x^{k+1})$可以写成解耦的两项！而共轭向量组可以做到这点！再将$b$展开，便得
+\[\alpha p^T_kAp_k-r^0p_k=0\Rightarrow \alpha=\frac{(r^0,p_k)}{p^T_kAp_k}\]
+
+此时考察$\dif{}{\alpha}\varphi(x^k+\alpha p_k)=0\Rightarrow p_k\cdot(A(x^k+\alpha p_k)-b)=0\Rightarrow \alpha=\frac{(r^k,p_k)}{p^T_kAp_k}=\frac{(r^0,p_k)}{p^T_kAp_k}$
+
+这便将$k+1$维优化问题（积累$k+1$步所得的优化问题）
+\[\mathrm{argmin}\varphi(x)\quad x\in x_0+\mathrm{Span}\{p_0,\cdots,p_k\}\]
+转化为$k+1$个一维优化问题
+\[\min\varphi(\alpha_0,\cdots,\alpha_k)=\varphi_0(\alpha_0)+\cdots+\varphi_k(\alpha_k)\]
+
+遂有共轭梯度法的过程：
+\[x^{(k+1)}=x^{(k)}+\alpha_kp^{(k)}\]
+\[\alpha_k=\mathrm{argmin}_{\alpha\in\R}\varphi(x^{(k)}+\alpha p^{(k)})=\frac{(r^{(k)},p^{(k)})}{p^{(k)},Ap^{(k)}}\]
+
+
+\begin{Thm}
+若$\{p^{(0)},\cdots, p^{(1)},\cdots\}$为$A-$共轭的向量组，则上述过程给出的序列满足
+\[x^{(k)}=\mathrm{argmin}_{x-x^{(0)}\in \mathrm{Span}\{p^{(0)},\cdots, p^{(k-1)}\}}\varphi(x)\]
+
+\end{Thm}
+
+
+为寻找$p_k$，我们进行下面的操作：这一特殊选取方法不需要在前$k-1$维空间上作正交投影，只需要在前一维上作正交投影。
+\begin{enumerate}
+\item $p^{(0)}=r^{(0)}$
+\item 设$p^{(0)},\cdots,p^{(k-1)}$已经取出，则取$p^{(k)}=r^{(k)}+\beta_{k-1}p^{(k-1)}$，其中$\beta_{k-1}=-\frac{(r^{(k)},Ap^{(k-1)})}{(p^{(k-1)},Ap^{(k-1)})}$
+\end{enumerate}
+
+\begin{Thm}
+由上述构造给出的序列有如下性质：
+\[(r^{(i)},r^{(j)})=0\quad \forall i\neq j\]
+\[(Ap^{(i)},p^{(j)})=0\quad\forall i\neq j\]
+\end{Thm}
+\begin{proof}
+施数学归纳法，过程略。
+\end{proof}
+
+总结：共轭梯度法的过程为
+\begin{itemize}
+\item 取$x^{(0)}\in \R^n$
+\item $r^{(0)}=b-Ax^{(0)},p^{(0)}=r^{(0)}$
+\item $k=0,1,\cdots$
+\begin{align*}
+\alpha_k&=\frac{(r^{(k)},r^{(k)})}{(p^{(k)},Ap^{(k)})}\\
+x^{(k+1)}&=x^{(k)}+\alpha_kp^{(k)}\\
+r^{(k+1)}&=b-Ax^{(k+1)}\\
+\beta_k&=\frac{(r^{(k+1)},r^{(k+1)})}{(r^{(k)},r^{(k)})}\\
+p^{(k+1)}&=r^{(k+1)}+\beta_kp^{(k)}
+\end{align*}
+\end{itemize}
+
+\begin{Lemma}
+共轭梯度法有如下性质：
+\begin{enumerate}
+\item $(r^{(j)},p^{(i)})=0\quad i<j$
+\item $\mathrm{Span}\{r^{(0)},\cdots,r^{(k)}\}=\mathrm{Span}\{p^{(0)},\cdots,p^{(k)}\}=\mathrm{Span}\{r^{(0)},\cdots, A^kr^{(0)}\}$
+\end{enumerate}
+\end{Lemma}
+
+这个空间称为$Krylov$子空间，记作$\mathcal{K}(A,r^{(0)},k)$。
+
+\begin{proof}
+施数学归纳法。$i=0,j=1,k=1$时是trivial的。
+
+设结论对$i<j\leq k$成立，则对于$k+1$：由$\alpha_k$的定义
+\[(r^{(k+1)},p^{(k)})=0\]
+\[(r^{(k+1)},p^{(i)})=(r^{(k)},p^{(i)})-\alpha_k(Ap^{(k)},p^{(i)})=0\]
+由共轭梯度法的过程知：
+$p^{(k+1)}\in\mathrm{Span}\{r^{(k+1)},p^{(k)}\}\subset \mathrm{Span}\{r^{(0)},\cdots,r^{(k+1)}\}\Rightarrow \mathrm{Span}\{p^{(0)},\cdots,p^{(k)}\}=\mathrm{Span}\{r^{(0)},\cdots,r^{(k+1)}\}$。
+
+$r^{(k+1)}\in\mathrm{Span}\{r^{(k)},Ap^{(k)}\}\subset \mathrm{Span}\{r^{(0)},Ar^{(0)},\cdots,A^{k+1}r^{(0)}\}$
+\end{proof}
+
+\begin{Thm}
+共轭梯度法有如下误差估计：
+\[\nm{x^{(k)}-x^*}_A\leq 2(\frac{\sqrt{\kappa_2}-1}{\sqrt{\kappa_2}+1})^k\nm{x^{(0)}-x^*}_A\]
+\end{Thm}
+\begin{proof}
+记$P_k$为常数项为$1$的$k$次多项式全体。
+\begin{align*}
+\nm{x^{(k)}-x^*}_A=&2\varphi(x^{(k)})+(x^*)^TA(x^*)\\
+=&\min\{2\varphi(x)+(x^*)^TA(x^*)|x\in x^{(0)}+\mathcal{K}(A,r^{(0)},k)\}\\
+=&\min\{\nm{x-x^*}_A|x\in x^{(0)}+\mathcal{K}(A,r^{(0)},k)\}\\
+=&\min_{p_k\in P_k}\nm{A^{-1}p_k(A)r^{(0)}}_A\\
+=&\min_{p_k\in P_k}\nm{p_k(A)A^{-1}r^{(0)}}_A\quad \text{将}A^{-1}r^{(0)}\text{作单位正交特征向量为基下的分解}\\
+\leq&\min_{p_k\in P_k}\max_{1\leq i\leq n}|P_k(\lambda_i)|\nm{A^{-1}r^{(0)}}_A\\
+\leq&\min_{p_k\in P_k}\max_{\lambda_1\leq\lambda\leq \lambda_n}|P_k(\lambda)|\nm{A^{-1}r^{(0)}}=\frac{1}{T_k(\frac{\lambda_1+\lambda_n}{\lambda_n-\lambda_1})}\leq 2(\frac{\sqrt{\kappa}-1}{\sqrt{\kappa}+1})^k
+\end{align*}
+其中，$\lambda_1\leq\cdots\leq\lambda_n$是$A$的特征值。最后一步是由Chebyshev多项式得到的。
+\end{proof}
+
+\subsection{预处理共轭梯度法(PCG)}
+$Ax=b\Leftrightarrow \tilde{A}\tilde{x}=\tilde{b}$，其中$\tilde{A}=PAQ,\tilde{x}=Q^{-1}x,\tilde{b}=Pb$。在共轭梯度法中，$P=S^{-1},Q=(S^{-1})^T$。
+
+令$z^{(k)}=M^{-1}r^{(k)},M=SS^T$，在各步中还原原方法，则得到预处理的共轭梯度法：
+\begin{itemize}
+\item $x^{(0)}\in\R^{n}$
+\item $r^{(0)}=b-Ax^{(0)},z^{(0)}=M^{-1}r^{(0)},p^{(0)}=z^{(0)}$
+\item for $k=0,1,\cdots$
+\begin{align*}
+\alpha_k&=\frac{(z^{(k)},r^{(k)})}{(p^{(k)},Ap^{(k)})}\\
+x^{(k+1)}&=x^{(k)}+\alpha_kp^{(k)}\\
+r^{(k+1)}&=r^{(k)}-\alpha_kp^{(k)}\\
+Mz^{(k+1)}&=r^{(k+1)}\\
+\beta_k&=\frac{(z^{(k+1)},r^{(k+1)})}{(z^{(k)},r^{(k)})}\\
+p^{(k+1)}&=z^{(k+1)}+\beta_kp^{(k)}
+\end{align*}
+\end{itemize}
+
+对$M$的选择：
+\begin{itemize}
+\item $M=\mathrm{diag}(A)$
+\item 不完全的Cholesky分解，如对于稀疏矩阵只在$A$的非零元上作分解。
+\item 多项式预处理矩阵：既然$M$仅用在解方程$Mz^{(k+1)}=r^{(k+1)}$处，又希望使$M$接近于$A$，遂使用某种迭代方法隐式地构造：分解$A=M_1-N_1$，构造迭代法$M_1z^{(k+1)}=N_1z^{(k)}+r$，实际操作中以次迭代计算$z$即可。这里
+\[M^{-1}=(I+G+\cdots+G^{p-1})M_1^{-1}\quad G=M_1^{-1}N\]
+\end{itemize}
+
+\subsection{GMRES}
+GMRES：:\textbf{g}eneralized \textbf{m}inimal \textbf{res}idue
+
+基本想法：求解
+\[x^k=\mathrm{argmin}\{\nm{Ax-b}_2^2: x\in x^0+\mathcal{K}(A,r^{(0)},k)\}\]
+
+取$q_0=\frac{r^0}{\nm{r^0}_2},Q_k=[q_0,\cdots,q_{k-1}]\in\R^{n\times k}$构成$\mathcal{K}(A,r^0,k)$的单位正交基。
+此时
+
+\[\min_{x\in x^0+\mathcal{K}(A,r^0,k)}\nm{Ax-b}_2^2\Leftrightarrow \min_{z\in \R^k}\nm{AQ_kz-r^0}_2^2\]
+注意到$Aq_j\in \mathcal{K}(A,r^0,j+2)\quad j=0,1,\cdots,k-1$，故$\exists H_k\in \R^{(k+1)\times k}\st $
+\[AQ_k=Q_{k+1}H_k\]
+其中
+\begin{itemize}
+\item $q_k=\frac{\tilde q_k}{\nm{\tilde q_k}_2}$
+\item $\tilde{q}_k=Aq_{k-1}-\alpha_0q_0-\cdots-\alpha_{k-1}q_{k-1}$，其中$\alpha_j=q_j^TAq_{k-1}$。
+\end{itemize}
+
+这一过程称为Arnodi process。
+
+在此记号下，
+\[\min_{z\in\R^k}\nm{AQ_kz-r^0}_2^2\Leftrightarrow \min_{z\in\R^k}\nm{Q_{k+1}H_kz-Q_{k+1}\nm{r^0}e_1}_2^2\Leftrightarrow\min_{z\in\R^k}\nm{H_kz-\nm{r^0}e_1}_2^2\]
+
+$H^k$具有近似上三角的结构，容易利用Givens变换对其作QR分解：
+
+利用$H_{k-1}$的QR分解：
+\[H_k=\begin{bmatrix}H_{k-1}&\bm{\alpha_k}\\0&\nm{\tilde{q_k}_2}\end{bmatrix}\]
+其中$\bm{\alpha_k}=[\alpha_0,\cdots,\alpha_{k-1}]^T$。
+
+这是因为：$AQ_k=A[Q_{k-1},q_{k-1}]=[Q_{k}H_{k-1},Q_{k+1}\bm{\alpha_k}]=[Q_{k},q_{k+1}]\begin{bmatrix}H_{k-1}&\bm{\alpha_k}\\0&\nm{\tilde{q_k}_2}\end{bmatrix}^T$
+
+设$H_{k-1}$已完成QR分解，则$H_k=\begin{bmatrix}Q_{k-1}&0\\0&1\end{bmatrix}\begin{bmatrix}R_{k-1}&\bm{\alpha_k}\\0&\nm{\tilde{q}_k}_2\end{bmatrix}$，再只需施一步Givens变换即得。
+
+GMRES的注意事项：MATLAB中调用GMRES时有restart参数，用于从当前$x^k$开始重启迭代。这是因为即便$A$是稀疏的，$Q$也不一定是稀疏的，且其每一个列向量在迭代过程中都需要保存，内存开销大。
+
+一般地，迭代至$n$步时Krylov子空间不再扩张，则$AQ_n=Q_nH_n$，其中$H_n\in \R^{n\times n}$。此时若$A$是对称的，则$H_n=Q_n^TAQ_n$是对称的三对角矩阵，即$Aq_k\in\mathrm{Span}\{q_{k-1},q_k,q_{k+1}\}$，即只需向前两维上作正交投影即可，可以极大地节省内存。经过这一观察而简化后的GMRES称为Lanczos process。
+
+
+\end{document}

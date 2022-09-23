@@ -1,0 +1,33 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,graphicx, booktabs}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业8}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+%\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{3.}
+\begin{proof}
+只需证明该分布具有与正态分布相同的特征函数即可。今对$Y_1$证明，$Y_2$的情形是类似的。
+
+考察其特征函数：
+\[\varphi(\xi)=E[e^{i\xi Y_1}]=\iint_{[0,1]^2}e^{i\xi\sqrt{-2\log(x_1)}\cos(2\pi x_2)}\dd x_1\dd x_2\]
+作极坐标替换：令$x_1=e^{-\frac{r^2}{2}}\Leftrightarrow r=\sqrt{-2\log(x_1)},x_2=\frac{\theta}{2\pi}\Leftrightarrow \theta=2\pi x_2$，则
+\[\varphi(\xi)=\int_0^{2\pi}\int_0^\infty e^{i\xi r\cos(\theta)}\frac{1}{2\pi}e^{-\frac{r^2}{2}}   r\dd r\dd \theta\]
+再取直角坐标$u_1=r\cos(\theta),u_2=r\sin(\theta)$，则
+\begin{align*}
+\varphi(\xi)
+&=\frac{1}{2\pi}\iint_{\R^2}e^{i\xi u_1-\frac{u_1^2+u_2^2}{2}}\dd u_1\dd u_2\\
+&=e^{-\frac{\xi^2}{2}}{2}\frac{1}{\sqrt{2\pi}}\int_\R e^{\frac{(u_1-i\xi)^2}{2}}\dd u_1\frac{1}{\sqrt{2\pi}}\int_R e^{-\frac{u_2^2}{2}}\dd u_2\\
+&=e^{-\frac{\xi^2}{2}}
+\end{align*}
+故其与标准正态分布具有相同的特征函数，得证。
+\end{proof}
+
+
+\end{document}

@@ -1,0 +1,84 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem,graphicx, booktabs}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析作业3}
+\author{数91\and 董浚哲\and 2019011985}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\nm}[1]{\left\|#1\right\|}
+
+\paragraph{1.}
+\begin{proof}
+$0<\omega<2$是SOR收敛的必要条件，课上已证，不再赘言。
+
+考察$B_J$的特征值$\mu$。该特征值满足$\det(\mu I-B_J)=\det(D)^{-1}\det(\mu D-(L+U))=\det(D)^{-1}\det(\mu D+(A-D))=0$，即
+\[\det(A-(1-\mu)D)=0\]
+
+因$A$对称，故$\exists Q\in O_n\st QAQ^T=T=\mathrm{diag}\{\lambda_1,\cdots,\lambda_n\}$，其中$\lambda_1,\cdots,\lambda_n$是$A$的特征值，其中因A非异而非正定，$\exists 1\leq k\leq n\st \lambda_k<0$。又因$Q$正交，$D$是对角矩阵在正交阵的合同变换下不变，故
+\[\det(T-(1-\mu)D)=0\]
+考虑到其对角形式，上式等价于
+\[\lambda_l-(1-\mu)a_{ll}=0\quad \exists 1\leq l\leq n\]
+
+即$\lambda_l=(1-\mu)a_{ll}>0$。这构建了$B_J$与$A$之间特征值的双射，故$\forall\lambda\in \sigma(A),\lambda>0$，故$A$正定。
+\end{proof}
+
+\paragraph{2.}
+\begin{proof}
+以$e^0$为起始误差，则$e^{k+1}=Be^k$。即证$e^n=B^ne^0=0\quad\forall e_0\in \R^n$
+
+设$B$的Jordan标准型为$J=\mathrm{diag}\{J_1,\cdots,J_k\}\quad k\leq n$，其中
+\[J_i=
+\begin{bmatrix}
+0&1& & \\
+ &\ddots&\ddots& \\
+ & &0&1\\
+ & & &0
+\end{bmatrix}\]
+不妨设$k=1$，则$\exists V\in\R^{n\times n}$非异$\st B=VJV^{-1}\Rightarrow B^n=VJ^nV^{-1}$。由$J$的形状知$J^n=0$，故$B_n=0\Rightarrow e_n=b^ne_0=0$
+\end{proof}
+
+\paragraph{3.}
+\begin{proof}
+注意到$\varphi(x)\geq 0$。这是因为$\delta\varphi(x)=A$正定，故$\varphi$是严格凸的函数，有唯一的极小值点作为最小值；又该最小值为$\varphi(x^*)=0$，故$\varphi(x)\geq 0$
+
+记$\kappa=\kappa_2(A)$。
+
+由定理4.5.2的证明知，
+\[\nm{x^k-x^*}_A^2=2\varphi(x^k)+b^{-1}Ab\]
+\[\nm{x^{k+1}-x^*}_A\leq\frac{\kappa-1}{\kappa+1}\nm{x^k-x^*}_A\]
+
+因$A$正定，故$A^{-1}$正定，故记$C=b^TA^{-1}b>0$，则将上述两式整理得
+
+\[\varphi(x^{k+1})\leq(\frac{\kappa-1}{\kappa+1})^2\varphi(x^{k})-\frac{2\kappa}{(\kappa+1)^2}C\leq(\frac{\kappa-1}{\kappa+1})^2\varphi(x^{k})\]
+
+注意到$\kappa>1$，故$(\frac{\kappa-1}{\kappa+1})^2\backslash (1-\frac{1}{\kappa})=\frac{\kappa(\kappa-1)}{(\kappa+1)^2}<1$，故
+\[\varphi(x^{k+1})\leq(1-\frac{1}{\kappa})\varphi(x^k)\]
+得证。
+\end{proof}
+
+
+\paragraph{4.}
+\begin{proof}
+反设$\{p_1,\cdots,p_k\}$线性相关，则$\exists c_1,\cdots ,c_k$不全为0$\st \sum_{i=1}^k c_ip_i=0\Rightarrow \sum_{i=1}^k c_iAp_i=0\Rightarrow \sum_{i=1}^n c_ip_j^TAp_i=p_j^TAp_j=0\quad \forall 1\leq j\leq k \st c_j\neq 0$。因$A$对称正定，$p_j=0$，矛盾！
+
+\end{proof}
+
+\paragraph{5.}
+\begin{tabular}{llll}
+      & Jacobi迭代 & Gauss-Seidel迭代 & 共轭梯度法    \\
+用时（秒） & 0.011937 & 0.008770       & 0.025307 \\
+步数    & 35       & 59             & 5       
+\end{tabular}
+
+
+
+
+
+
+
+
+\end{document}

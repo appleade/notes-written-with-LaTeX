@@ -1,0 +1,244 @@
+\documentclass{ctexart}
+\usepackage{amsmath,amssymb,amsthm,bm,ulem}
+\usepackage[margin=1 in]{geometry}
+\title{数值分析笔记}
+\author{数91 董浚哲}
+\begin{document}
+\maketitle
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\st}{\text{ s.t. }}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\fl}{\mathrm{fl}}
+\newcommand{\nm}[1]{\left\|#1 \right\|}
+
+\newtheorem{Thm}{定理}[section]
+\newtheorem{Lemma}[Thm]{引理}
+\newtheorem{Prop}[Thm]{命题}
+\newtheorem{Cor}[Thm]{推论}
+\newtheorem{Def}{定义}[section]
+\newtheorem{Rmk}{注}[section]
+\newtheorem{Eg}{例}[section]
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+
+\section{矩阵的条件数}
+
+条件数(condition number)说明舍入误差是否会在求解过程中被放大，放大多少。
+
+\begin{Thm}
+$A\in\R^{n\times n},\det(A)\neq 0, x,x+\delta x$分别满足$Ax=b,(A+\delta A)(x+\delta x)=b+\delta b$。设$\nm{\delta A}$充分小使得$\nm{A^{-1}}\nm{\delta A}<1$，则有对相对误差的估计：
+\[\frac{\nm{\delta x}}{\nm{x}}\leq \frac{\nm{A}\nm{A^{-1}}}{1-\nm{\delta A}\nm{A^{-1}}}(\frac{\nm{\delta A}}{\nm{A}}+\frac{\nm{\delta b}}{\nm{b}})\]
+其中的范数是任意一种向量范数及其对应从属范数。
+\end{Thm}
+
+注意到上述估计的系数中，分母是可以控制的，但分子不然。遂定义分子为矩阵的条件数。条件数越大，求解方程越困难。
+
+\begin{proof}
+注意到$A+\delta A=A(I+A^{-1}\delta A)$。因$\nm{A^{-1}}\nm{\delta A}<1$，$A+\delta A$非异且$\nm{I+A^{-1}\delta A}\leq\frac{1}{1-\nm{A^{-1}}\nm{\delta A}}$。
+
+故有
+\begin{align*}
+x+\delta x&=(A+\delta A)^{-1}(b+\delta b)\\
+\delta x&=(A+\delta A)^{-1}(b+\delta b-(A+\delta A)x)\\
+&=(I+A^{-1}\delta A)^{-1}A^{-1}(\delta b-\delta A x)\\
+\nm{\delta x}&\leq \frac{\nm{A^{-1}}}{1-\nm{A^{-1}}\nm{\delta A}}(\frac{\nm{\delta A}}{\nm{A}}\nm{A}\nm{x}+\frac{\nm{\delta b}}{\nm{b}}\nm{A}\nm{x})\\
+\frac{\nm{\delta x}}{\nm{x}}&\leq \frac{\nm{A}\nm{A^{-1}}}{1-\nm{A^{-1}}\nm{\delta A}}(\frac{\nm{\delta A}}{\nm{A}}+\frac{\nm{\delta b}}{\nm{b}})
+\end{align*}
+
+%化简易知$\delta x=(I+A^{-1}\delta A)^{-1}A^{-1}(\delta b-\delta A x)$，取范数整理即得。
+\end{proof}
+
+\begin{Def}
+$A\in \R^{n\times n},\det(A)\neq 0$，则对任意一种从属范数，定义$\mathrm{cond}(A)=\nm{A}\nm{A^{-1}}$称为矩阵$A$的条件数。
+\end{Def}
+
+\newcommand{\cnd}{\mathrm{cond}}
+
+\begin{Prop}
+\begin{enumerate}
+\item $\cnd(A)\geq 1, \cnd(A)=\cnd(A^{-1})$
+\item $\cnd(\alpha A)=\cnd(A)\quad \forall \alpha\in\R,\alpha\neq 0$
+\item $A$正交，则$\cnd(A)_2=1$
+\item $\nm{A}_2=\max\{y^TAx:\nm{x}_2=\nm{y}_2=1\}\Rightarrow \cnd(A)_2=\cnd(A^T)_2$
+\item $U$正交$\Rightarrow \cnd(A)_2=\cnd(UA)_2=\cnd(AU)_2$
+\item $\cnd(A)\geq \frac{|\lambda_1|}{|\lambda_n|}$，于对称阵，$2-$模取等。
+\item \[\frac{1}{n}\cnd(A)_2\leq\cnd(A)_1\leq n\cnd(A)_2\]
+\[\frac{1}{n}\cnd(A)_\infty\leq\cnd(A)_2\leq n\cnd(A)_\infty\]
+\[\frac{1}{n^2}\cnd(A)_1\leq\cnd(A)_\infty\leq n^2\cnd(A)_1\]
+\end{enumerate}
+\end{Prop}
+
+\begin{proof}
+\begin{enumerate}
+\item 因$\cnd(I)=1$
+\item 由范数定义即得
+\item 由$\nm{A}_2=\rho(A^TA)^{\frac 1 2},A^TA=I$
+\item $\nm{z}_2=\max\limits_y\{y^Tz:\nm{y}_2=1\}\Rightarrow \nm{A}_2=\max\limits_x\max\limits_y\{y^TAx:\nm{x}_2=\nm{y}_2=1\}$
+\item 因正交阵不改变2-范数
+\item 因$\nm{A}\geq\rho(A)=|\lambda_1|,\nm{A^{-1}}\geq\rho(A^{-1})=\frac{1}{|\lambda_n|}$。对于2-范数，对称阵，$\nm{A}_2=\rho(A^TA)^{\frac 1 2}=\rho(A)$
+\end{enumerate}
+\end{proof}
+
+\begin{Thm}
+$A\in\R^{n\times n}, \det(A)\neq 0\Rightarrow$\[ \min_{A+\delta A \text{奇异}}\frac{\nm{\delta A}_2}{\nm{A}_2}=\frac{1}{\cnd(A)_2}\]
+\end{Thm}
+
+也即：离奇异矩阵越接近，误差就越大。
+
+\begin{proof}
+即证$\min\limits_{A+\delta A \text{奇异}}\nm{\delta A}_2=\frac{1}{\nm{A^{-1}}_2}$。
+
+一方面，若$\nm{A^{-1}}_2\nm{\delta A}_2<1$，则$A+\delta A=A(I+A^{-1}\delta A)$非异，故$\min\limits_{A+\delta A \text{奇异}}\nm{\delta A}_2\geq\frac{1}{\nm{A^{-1}}_2}$
+
+另一方面，由定义知$\exists x\in \R^{n},\nm{x}_2=1\st\nm{A^{-1}x}_2=\nm{A^{-1}}_2$。令$y=\frac{A^{-1}x}{\nm{A^{-1}}_2},\delta A=-\frac{xy^T}{\nm{A^{-1}}_2}$，则$\nm{y}_2=1$。$(A+\delta A)y=Ay+(\delta A)y=\frac{x}{\nm{A^{-1}}_2}-\frac{x}{\nm{A^{-1}}_2}=0\Rightarrow A+\delta A$奇异。又$\nm{\delta A}_2=\max\limits_{\nm{z}_2=1}\nm{\frac{xy^T}{\nm{A^{-1}}_2}z}_2\leq\frac{\nm{x}_2}{\nm{A^{-1}}_2}\max\limits_{\nm{z}_2=1}|y^Tz|=\frac{1}{\nm{A^{-1}}_2}\Rightarrow \min\limits_{A+\delta A\text{奇异}}\leq \nm{\frac{xy^T}{\nm{A^{-1}}_2}}_2=\frac{1}{\nm{A^{-1}}_2}$
+\end{proof}
+
+条件数很大的矩阵称为病态(ill-conditioned)矩阵。如Hilbert矩阵：其条件数随阶数迅速增长，但其行列式恒为1。面对病态矩阵，可以选择使用更高精度减小舍入误差，但更广泛使用的方法是预处理：如取$P,Q$非异，$Ax=b\Leftrightarrow PAQy=Pb$使得$PAQ$的条件数较小，此时$P,Q$称为预处理子(pre-conditioner)。
+
+选列主元的Gauss消元法有下列误差估计：
+\[\nm{\delta A}_\infty\leq 4.09n^3\rho\varepsilon\nm{A}_\infty\]
+其中$\varepsilon$是舍入误差。
+
+\section{最小二乘问题的直接解法}
+\begin{Def}
+设$A\in\R^{m\times n},b\in\R^m$，求$x\in\R^n\st \nm{b-Ax}_2=\min\limits_{y\in\R^n}\nm{Ay-b}_2$。其中我们关心$m>n,\mathrm{rank}(A)=n$的情形。
+
+该问题称为最小二乘问题，其中$r(x)=Ax-b$称为残向量。$x$称为$Ax=b$的最小二乘解，其中$Ax=b$是超定方程组。
+\end{Def}
+当方程良定时，解同时也是最小二乘解。
+
+最小二乘解实际上是$b$到$A$的列空间上的投影。
+
+最小二乘解一定存在，但不一定唯一，如$m<n$时的欠定方程。
+
+\begin{Thm}
+$Ax=b$的最小二乘解总是存在，其解唯一$\Leftrightarrow N(A)=0$，即$A$列满秩。
+\end{Thm}
+\begin{proof}
+$\forall b\in \R^m,b=b_1+b_2\st b_1\in R(A), b_2\in R(A)^\perp\Rightarrow \nm{r(x)}_2^2=\nm{b_1-Ax}_2^2+\nm{b_2}_2^2$。由于$b_1\in\R(A)$，故$\exists x\in \R^n\st Ax=b_1\Rightarrow \nm{b_1-Ax}_2^2=0$达到极小。该$x$唯一$\Leftrightarrow N(A)=0$。
+\end{proof}
+
+\begin{Thm}
+$x$是$Ax=b$的最小二乘解$\Leftrightarrow A^TAx=A^Tb$
+\end{Thm}
+\begin{proof}
+$x$是最小二乘解$\Rightarrow Ax=b_1\in R(A),r(x)=b-Ax=b-b_1=b_2\in R(A)^\perp\Rightarrow A^T(b-Ax)=A^Tr(x)=A^Tb_2=0$
+
+反之，若$x\in\R^n$满足$A^TAx=b$，则$\forall y\in \R^n$
+\begin{align*}
+\nm{b-A(x+y)}_2^2&=\nm{b-Ax}_2^2-2y^TA^T(b-Ax)+\nm{Ay}_2^2\\
+&=\nm{b-Ax}_2^2+\nm{Ay}_2^2\geq \nm{b-Ax}_2^2
+\end{align*}
+\end{proof}
+
+$A^TAx=A^Tb$遂称原方程组的法方程组或正则方程组。
+
+事实上，视$l(x)=\nm{Ax-b}_2^2$，则$\nabla l(x)=A^TAx-A^Tb$。而$l(x)$是一个严格凸函数，故该驻点就是最小值点。
+
+若$A$列满秩，则$A^TA$对称正定，遂可以用Cholesky分解解得。从数值计算角度看，这不是好的计算方法。
+
+若$A$列满秩，则$x=(A^TA)^{-1}Ab$，遂定义$x=A^+=x=(A^TA)^{-1}A$为$A$的Moore-Penrose逆
+
+\begin{Def}[MP逆]
+若$X\in R^{n\times m}$满足$AXA=A,XAX=X,(AX)^T=AX,(XA)^T=XA$，则称$X$是$A$的Moore-Penrose逆。
+\end{Def}
+
+考察最小二乘问题的误差
+\begin{Thm}
+设$b_1,\tilde{b}_1$分别是$b,\tilde{b}$在$R(A)$上的正交投影，则
+\[\frac{\nm{\delta x}_2}{\nm{x}_2}\leq\kappa_2(A)\frac{\nm{b_1-\tilde{b}_1}_2}{\nm{b_1}_2}\]
+其中$\kappa_2(A)=\nm{A}\nm{A^+}$
+\end{Thm}
+
+\begin{proof}
+$b=b_1+b_2$分解如上，则 $A^+b=A^+b_1+A^+b_2=A^+b_1$。同理$A^+\tilde b=A^+\tilde b_1$
+\[\nm{\delta x}_2=\nm{A^+(b-\tilde{b})}_2=\nm{A^+(b_1-\tilde{b_1})}_2\leq \nm{A^+}_2\nm{(b_1-\tilde b_1)}_2\]
+\[\frac{\nm{\delta x}_2}{\nm{x}_2}\leq\kappa_2(A)\frac{\nm{b_1-b_2}_2}{\nm{A}_2\nm{x}_2}\leq\kappa(A)\frac{\nm{b_1-\tilde{b_1}}_2}{\nm{b_1}_2}\]
+\end{proof}
+
+\begin{Thm}
+$A$列满秩，则$\kappa_2(A)^2=\cnd_2(A^TA)$
+\end{Thm}
+\begin{proof}
+$\nm{A}_2^2=\rho(A^TA)=\nm{A^TA}_2,\nm{A^+}_2^2=\nm{A^+(A^+)^T}_2=\nm{(A^TA)^{-1}}_2$，相乘即得。
+\end{proof}
+
+\subsection{QR分解}
+$A=QR$，其中$Q\in O_m(\R), R\in \R^{m\times n}$是上三角矩阵。若QR分解成立，则最小二乘问题转化为求解$\min\nm{Q^T(Ax-b)}_2=\min\nm{Rx-Q^Tb}_2$，其中$Rx=\begin{bmatrix}\bar Rx\\0\end{bmatrix}, Q^Tb=\begin{bmatrix}b_1\\b_2\end{bmatrix}$。故$Rx-Q^Tb=\begin{bmatrix}\bar Rx-b_1\\ b_2\end{bmatrix}\Rightarrow \min\nm{Ax-b}=\min\nm{\bar{R}x-b_1}+\nm{b_2}$。求解$\bar Rx=b_1$即得所求。
+
+Gram-Schmidt正交化可以做QR分解，但在数值上这是不稳定的：因为这里涉及的相减操作（大数-大数）与归一化操作（除以小数）将放大误差。故计算时不会用Gram-Schmidt正交化分解。
+
+\subsubsection{Householder变换}
+设$\omega\in \R^n,\nm{\omega}_2=1$，则定义其对应Householder变换为$P=I-2\omega\omega^T$。
+
+\begin{Prop}
+\begin{enumerate}
+\item $P^T=P,P^TP=I$
+\item $Px$与$x$关于超平面$\mathrm{Span}\{\omega\}^\perp$镜像对称：$x=u+\alpha\omega,u\in \mathrm{Span}\{\omega\}^\perp$，则$Px=u-\alpha\omega$
+\end{enumerate}
+\end{Prop}
+
+\begin{Thm}
+$\forall x\in\R^n, \exists \omega\in \R^n,\nm{\omega}_2=1\st Px=\alpha e_1\quad \alpha=\pm\nm{x}_2$。
+其中$P$是由$\omega$给出的Householder变换。
+\end{Thm}
+
+\begin{proof}
+$\omega=\pm\frac{x-\alpha e_1}{\nm{x-\alpha e_1}}$
+\end{proof}
+为减少有效数字损失（避免接近的两数相减），可以取$\alpha=-\mathrm{sgn}(x_1)\nm{x}_2$。
+
+在计算$\nm{x}_2$的过程中，为避免溢出（大数）和精度损失（小数），可以将$x$归一化为$\frac{x}{\nm{x}_\infty}$
+
+计算Householder变换的具体过程：$P_{n-1}\cdots P_2P_1A=R$，其中$P_i=\begin{bmatrix}I_{i-1}&0\\0& I_{n-i+1}-\omega\omega^T\end{bmatrix}$。取$Q=(P_{n-1}\cdots P_2P_1)^T$即得。
+
+\subsubsection{Givens变换}
+\begin{Def}
+$\forall\theta\in \R,s=\sin(\theta),c=\cos(\theta)$
+\[J(i,k,\theta)=\]
+\end{Def}
+左乘$J(i,k,\theta)$相当于对第$i,k$行作旋转:$y=J(i,k,\theta)x\Rightarrow y_i=cx_i+sx_k, y_k=-sx_i+cx_k$
+
+Givens变换的过程$\prod_{k=1}^{n-1}\prod_{i=k}^{n}G_{k,i}A$，其中$G_{k,i}=\begin{bmatrix}I_{k-1}&0\\0&J(k,i,\theta)\end{bmatrix}$
+
+Householder变换适用于较稠密的矩阵，Givens变换则适用于较稀疏的矩阵。
+
+
+\section{多重网格法}
+Jacobi迭代收敛较慢，对不同频率的项（不同的特征向量对应的系数）收敛速度不同（注意到特征值的分布）：
+\[u^{0}-u=\sum_{k=1}^{M-1}\alpha_ke^k\]
+\[u^{(n)}-u=\sum_{k=1}^{M-1}\alpha_k(\lambda_k(\omega))^n e^k\]
+故不同的分量具有不同的衰减速度（取决于特征值），靠近频率极值（最低，最高）的收敛最慢。
+
+利用上述性质设计的更高效的迭代方法便称为多重网格法：若干步后丢掉收敛很快的频率，由此降低计算规模。但计算特征向量的计算量远大于计算特征值，故不应在特征向量上作分解，而应该寻求其它类似分解。同时我们希望低频分量收敛慢，高频分量收敛快。
+
+所谓多重网格，即对于丢掉后的更光滑的新矩阵、函数，更粗糙的网格就能满足计算要求。
+
+采用阻尼Jacobi迭代法求解：$J_\omega=I-\frac{\omega}{2}(2I-S)$，其中$S$的特征值为$2\cos\mu h\pi\quad \mu=1,\cdots,n$。
+
+%$\lambda$
+
+$\omega_b=\frac{2}{3}$，这使得后一半的频率对应特征值最大值最小。
+
+无论$\omega$如何取，低频项收敛的更慢了。
+
+\subsection{双重网格法}
+引入两套网格：$\Omega_h,\Omega_{2h}$。
+
+先迭代$\nu_1$步，得$\u_h^{(\nu_1)}$，其残差$r_{h,j}=f_{h,j}-(L_h u_h^{\nu_1})_j$，则其误差$e_{h,j}$满足
+\[(L_he_h)_j=r_{h,j},e_{h,0}=e_{h,M}=0\]
+设$e_h=I^h_{2h}e_{2h}$，得$(I^h_{2h})^T(L_hI^h_{2h}e_h)=(I^h_{2h})^T r_h$
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
